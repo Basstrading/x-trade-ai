@@ -161,7 +161,7 @@
       <div class="problem-grid reveal">
         <div class="problem-card">
           <div class="problem-icon">&#128176;</div>
-          <h3 id="p1-title">80% of prop firm traders fail</h3>
+          <h3 id="p1-title">93% of prop firm traders never get paid</h3>
           <p id="p1-desc">Not because they can't trade. Because they can't manage risk. One bad day erases a week of gains.</p>
         </div>
         <div class="problem-card">
@@ -365,7 +365,7 @@
             <span class="price-period" id="trial-period">/7 days</span>
           </div>
           <div class="price-desc" id="trial-desc">Full access. No credit card. See if it saves your account.</div>
-          <ul class="price-features">
+          <ul class="price-features" id="trial-features">
             <li>1 prop firm account</li>
             <li>All risk modules</li>
             <li>Real-time dashboard</li>
@@ -376,15 +376,15 @@
         </div>
 
         <div class="price-card pro">
-          <div class="price-badge">PER ACCOUNT</div>
+          <div class="price-badge" id="pro-badge">PER ACCOUNT</div>
           <div class="price-tier">Risk Desk</div>
           <div class="price-amount">
             <span class="price-currency">$</span>
-            <span class="price-number">29</span>
-            <span class="price-period">/account/month</span>
+            <span class="price-number">39</span>
+            <span class="price-period" id="pro-period">/account/month</span>
           </div>
-          <div class="price-desc" id="pro-desc">One payout covers years of this. 3 accounts? $87/mo. Still cheaper than one blown account.</div>
-          <ul class="price-features">
+          <div class="price-desc" id="pro-desc">One payout covers years of this. Or $29/mo billed annually. Still cheaper than one blown account.</div>
+          <ul class="price-features" id="pro-features">
             <li>1 prop firm account per license</li>
             <li>All 5 prop firms supported</li>
             <li>Admin panel (AUTO/MANUAL controls)</li>
@@ -393,7 +393,8 @@
             <li>Priority rule updates</li>
             <li>Cancel anytime</li>
           </ul>
-          <a href="/onboarding?mode=paid" class="btn-primary btn-full" id="pro-btn">Get Started — $29/mo</a>
+          <a href="/onboarding?mode=paid" class="btn-primary btn-full" id="pro-btn">Get Started — $39/mo</a>
+          <div style="text-align:center;margin-top:8px;font-size:11px;color:var(--text-2)" id="pro-annual">or $29/mo billed annually — save 26%</div>
         </div>
       </div>
     </div>
@@ -472,7 +473,7 @@
       'hero-title': 'Your prop firm account<br/><s>won\'t blow itself up.</s><br/><span class="gradient-text">We make sure of it.</span>',
       'hero-sub': 'x-trade.ai is your personal risk desk. It calculates your size, sets your stops,<br/>and blocks you before you hit the drawdown. You trade. It protects.',
       'hero-cta-1': 'Start Free Trial', 'hero-cta-2': 'How It Works',
-      'p1-title': '80% of prop firm traders fail', 'p1-desc': 'Not because they can\'t trade. Because they can\'t manage risk. One bad day erases a week of gains.',
+      'p1-title': '93% of prop firm traders never get paid', 'p1-desc': 'According to FPFX Tech (300,000 accounts, 10 firms), only 7% ever receive a payout. The #1 reason? Drawdown violations.',
       'p2-title': 'No daily loss limit = no safety net', 'p2-desc': 'Topstep removed daily limits. One emotional session and your $2,000 drawdown is gone. Forever.',
       'p3-title': '"I\'ll manage my risk myself"', 'p3-desc': 'You said that before your last blown account too. Willpower doesn\'t work at 3 consecutive losses.',
       'p4-title': 'So close to payout, then...', 'p4-desc': '$2,800 of $3,000 target. One FOMC candle, full size, no plan. Back to zero.',
@@ -501,7 +502,12 @@
       'price-title': 'Your blown account cost you $2,000.<br/><span class="gradient-text">This costs less than one losing trade.</span>',
       'trial-title': 'Free Trial', 'trial-period': '/7 days',
       'trial-desc': 'Full access. No credit card. See if it saves your account.', 'trial-btn': 'Start Free Trial',
-      'pro-desc': 'One payout covers years of this. 3 accounts? $87/mo. Still cheaper than one blown account.', 'pro-btn': 'Get Started \u2014 $29/mo',
+      'trial-features': '<li>1 prop firm account</li><li>All risk modules</li><li>Real-time dashboard</li><li>Payout tracking</li><li>Auto-detection (news, tilt, regime)</li>',
+      'pro-badge': 'PER ACCOUNT', 'pro-period': '/account/month',
+      'pro-desc': 'One payout covers years of this. Or $29/mo billed annually. Still cheaper than one blown account.',
+      'pro-btn': 'Get Started \u2014 $39/mo',
+      'pro-annual': 'or $29/mo billed annually \u2014 save 26%',
+      'pro-features': '<li>1 prop firm account per license</li><li>All 5 prop firms supported</li><li>Admin panel (AUTO/MANUAL controls)</li><li>Full trade history & analytics</li><li>Persistence & payout tracking</li><li>Priority rule updates</li><li>Cancel anytime</li>',
       'cta-title': 'Your next losing streak is coming.<br/><span class="gradient-text">This time, you\'ll survive it.</span>',
       'cta-desc': 'Every prop firm trader who blew an account wishes they had a risk desk. Now you do.', 'cta-btn': 'Start Free Trial',
       'footer-desc': 'Institutional prop firm risk management for futures traders.',
@@ -512,7 +518,7 @@
       'hero-title': 'Votre compte prop firm<br/><s>ne va pas se cramer tout seul.</s><br/><span class="gradient-text">On s\'en assure.</span>',
       'hero-sub': 'x-trade.ai est votre risk desk personnel. Il calcule votre taille, fixe vos stops,<br/>et vous bloque avant de toucher le drawdown. Vous tradez. Il protege.',
       'hero-cta-1': 'Essai gratuit', 'hero-cta-2': 'Comment ca marche',
-      'p1-title': '80% des traders prop firm echouent', 'p1-desc': 'Pas parce qu\'ils ne savent pas trader. Parce qu\'ils ne gerent pas le risque. Un mauvais jour efface une semaine de gains.',
+      'p1-title': '93% des traders prop firm ne sont jamais payes', 'p1-desc': 'Selon FPFX Tech (300,000 comptes, 10 firms), seuls 7% recoivent un payout. La raison #1 ? Les violations de drawdown.',
       'p2-title': 'Pas de daily limit = pas de filet', 'p2-desc': 'Topstep a supprime les daily limits. Une session emotionnelle et votre drawdown de $2,000 est parti. Pour toujours.',
       'p3-title': '"Je vais gerer mon risque moi-meme"', 'p3-desc': 'Vous avez dit ca avant votre dernier compte crame. La volonte ne marche pas apres 3 pertes consecutives.',
       'p4-title': 'Si pres du payout, et puis...', 'p4-desc': '$2,800 sur $3,000 d\'objectif. Une bougie FOMC, pleine taille, pas de plan. Retour a zero.',
@@ -541,7 +547,12 @@
       'price-title': 'Votre compte crame vous a coute $2,000.<br/><span class="gradient-text">Ceci coute moins qu\'un trade perdant.</span>',
       'trial-title': 'Essai gratuit', 'trial-period': '/7 jours',
       'trial-desc': 'Acces complet. Sans carte bancaire. Voyez si ca sauve votre compte.', 'trial-btn': 'Commencer l\'essai',
-      'pro-desc': 'Un payout couvre des annees. 3 comptes ? $87/mois. Moins cher qu\'un compte crame.', 'pro-btn': 'Commencer \u2014 $29/mois',
+      'trial-features': '<li>1 compte prop firm</li><li>Tous les modules risk</li><li>Dashboard temps reel</li><li>Suivi du payout</li><li>Auto-detection (news, tilt, regime)</li>',
+      'pro-badge': 'PAR COMPTE', 'pro-period': '/compte/mois',
+      'pro-desc': 'Un payout couvre des annees. Ou $29/mois en annuel. Moins cher qu\'un compte crame.',
+      'pro-btn': 'Commencer \u2014 $39/mois',
+      'pro-annual': 'ou $29/mois en annuel \u2014 economisez 26%',
+      'pro-features': '<li>1 compte prop firm par licence</li><li>Les 5 prop firms supportees</li><li>Panneau admin (controles AUTO/MANUEL)</li><li>Historique complet & analytics</li><li>Persistence & suivi payout</li><li>Mises a jour prioritaires des regles</li><li>Annulation libre</li>',
       'cta-title': 'Votre prochaine serie de pertes arrive.<br/><span class="gradient-text">Cette fois, vous y survivrez.</span>',
       'cta-desc': 'Chaque trader prop firm qui a crame un compte aurait voulu avoir un risk desk. Maintenant vous l\'avez.', 'cta-btn': 'Commencer l\'essai',
       'footer-desc': 'Risk management institutionnel pour traders prop firm futures.',
