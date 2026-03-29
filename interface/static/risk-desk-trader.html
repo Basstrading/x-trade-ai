@@ -246,17 +246,26 @@
             <div class="circuit-segment" id="cb-red"></div>
         </div>
 
+        <!-- Regime & Volatilite (barre info) -->
+        <div id="regimeBar" style="display:flex;gap:6px;margin-bottom:12px;justify-content:center">
+            <span id="regimeBadge" style="padding:4px 12px;border-radius:12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:rgba(0,255,136,0.1);color:var(--green)">TREND</span>
+            <span id="volBadge" style="padding:4px 12px;border-radius:12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:rgba(0,224,255,0.1);color:var(--accent)">VOL NORMAL</span>
+            <span id="atrBadge" style="padding:4px 12px;border-radius:12px;font-size:10px;font-weight:700;letter-spacing:1px;background:rgba(255,255,255,0.04);color:var(--text2)">ATR --</span>
+        </div>
+
         <!-- Parametres du trade -->
         <div class="trade-params">
             <div class="param-card">
-                <div class="param-label">Taille</div>
+                <div class="param-label">Taille max</div>
                 <div class="param-value" id="contracts">--</div>
                 <div class="param-unit" id="instrument">--</div>
+                <div style="font-size:9px;color:var(--text2);margin-top:4px">Vous pouvez trader moins</div>
             </div>
             <div class="param-card">
-                <div class="param-label">Stop</div>
+                <div class="param-label">Stop max</div>
                 <div class="param-value" id="stopPts">--</div>
                 <div class="param-unit">pts</div>
+                <div style="font-size:9px;color:var(--text2);margin-top:4px">Serrer OK, elargir NON</div>
             </div>
             <div class="param-card">
                 <div class="param-label">Perte max</div>
@@ -386,6 +395,16 @@
 
             document.getElementById('balance').textContent = '$' + fw.balance.toLocaleString();
             document.getElementById('volRegime').textContent = fw.vol_regime.toUpperCase();
+
+            // Regime & vol badges
+            const volColors = {low:'var(--accent)',normal:'var(--green)',high:'var(--gold)',extreme:'var(--red)'};
+            const volBgs = {low:'rgba(0,224,255,0.1)',normal:'rgba(0,255,136,0.1)',high:'rgba(255,204,68,0.1)',extreme:'rgba(255,61,90,0.1)'};
+            const vb = document.getElementById('volBadge');
+            vb.textContent = 'VOL ' + fw.vol_regime.toUpperCase();
+            vb.style.color = volColors[fw.vol_regime] || 'var(--text2)';
+            vb.style.background = volBgs[fw.vol_regime] || 'rgba(255,255,255,0.04)';
+
+            document.getElementById('atrBadge').textContent = 'ATR ' + fw.atr_5min;
 
             // Circuit breaker
             const levels = ['green', 'yellow', 'orange', 'red'];
