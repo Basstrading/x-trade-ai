@@ -59,11 +59,20 @@ def create_app(brain):
 
 # --- Static files ---
 static_dir = os.path.join(os.path.dirname(__file__), 'static')
+landing_dir = os.path.join(os.path.dirname(__file__), '..', 'RiskGuardian', 'web')
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
+app.mount("/landing", StaticFiles(directory=landing_dir), name="landing")
 
 
 @app.get("/")
+async def landing_page():
+    """Landing page x-trade.ai — le client arrive ici."""
+    return FileResponse(os.path.join(landing_dir, "index.html"))
+
+
+@app.get("/dashboard")
 async def dashboard():
+    """Ancien dashboard trading D6."""
     return FileResponse(os.path.join(static_dir, "dashboard.html"))
 
 
