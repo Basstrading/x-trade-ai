@@ -19,6 +19,13 @@ TOPSTEPX_URLS = ConnectionURLS(
 )
 
 
+async def safe_await(result):
+    """Await si c'est une coroutine, sinon retourne tel quel."""
+    if asyncio.iscoroutine(result) or asyncio.isfuture(result):
+        return await result
+    return result
+
+
 class BrokerConnector:
     """
     Connecteur broker unifie.
@@ -32,13 +39,9 @@ class BrokerConnector:
         self.username = ""
         self.accounts: List[dict] = []
         self.active_account_id: Optional[int] = None
-        self.contract_id: Optional[int] = None
 
     async def connect(self, username: str = "", api_key: str = "") -> dict:
-        """
-        Connexion au broker.
-        Retourne {ok, accounts, error}.
-        """
+        """Connexion au broker. Retourne {ok, accounts, error}."""
         username = username or os.getenv('PROJECTX_USERNAME', '')
         api_key = api_key or os.getenv('PROJECTX_API_KEY', '')
 
@@ -47,23 +50,19 @@ class BrokerConnector:
 
         try:
             self.client = ProjectXClient(TOPSTEPX_URLS)
-            login_result = self.client.login({
+            await safe_await(self.client.login({
                 "auth_type": "api_key",
                 "userName": username,
                 "apiKey": api_key,
-            })
-            if hasattr(login_result, '__await__'):
-                await login_result
+            }))
             self.username = username
             self.connected = True
 
             # Liste les comptes
-            raw_accounts = self.client.search_for_account()
-            if hasattr(raw_accounts, '__await__'):
-                raw_accounts = await raw_accounts
+            raw_accounts = await safe_await(self.client.search_for_account())
             self.accounts = []
-            for acc in raw_accounts:
-                a = acc if isinstance(acc, dict) else acc.__dict__
+            for acc in (raw_accounts or []):
+                a = acc if isinstance(acc, dict) else getattr(acc, '__dict__', {})
                 self.accounts.append({
                     "id": a.get('id', a.get('accountId')),
                     "name": a.get('name', a.get('accountName', '')),
@@ -72,11 +71,7 @@ class BrokerConnector:
                 })
 
             logger.success(f"Broker connecte: {username} — {len(self.accounts)} comptes")
-            return {
-                "ok": True,
-                "accounts": self.accounts,
-                "username": username,
-            }
+            return {"ok": True, "accounts": self.accounts, "username": username}
 
         except Exception as e:
             logger.error(f"Connexion broker echouee: {e}")
@@ -87,14 +82,11 @@ class BrokerConnector:
         """Liste les comptes avec balance a jour."""
         if not self.connected or not self.client:
             return self.accounts
-
         try:
-            raw = self.client.search_for_account()
-            if hasattr(raw, '__await__'):
-                raw = await raw
+            raw = await safe_await(self.client.search_for_account())
             self.accounts = []
-            for acc in raw:
-                a = acc if isinstance(acc, dict) else acc.__dict__
+            for acc in (raw or []):
+                a = acc if isinstance(acc, dict) else getattr(acc, '__dict__', {})
                 self.accounts.append({
                     "id": a.get('id', a.get('accountId')),
                     "name": a.get('name', a.get('accountName', '')),
@@ -103,7 +95,6 @@ class BrokerConnector:
                 })
         except Exception as e:
             logger.warning(f"Erreur refresh comptes: {e}")
-
         return self.accounts
 
     async def get_positions(self, account_id: int) -> List[dict]:
@@ -111,12 +102,10 @@ class BrokerConnector:
         if not self.connected or not self.client:
             return []
         try:
-            raw = self.client.search_for_positions(accountId=account_id)
-            if hasattr(raw, '__await__'):
-                raw = await raw
+            raw = await safe_await(self.client.search_for_positions(accountId=account_id))
             positions = []
-            for pos in raw:
-                p = pos if isinstance(pos, dict) else pos.__dict__
+            for pos in (raw or []):
+                p = pos if isinstance(pos, dict) else getattr(pos, '__dict__', {})
                 positions.append({
                     "contract_id": p.get('contractId', p.get('contract_id')),
                     "size": p.get('size', 0),
@@ -127,34 +116,6 @@ class BrokerConnector:
             return positions
         except Exception as e:
             logger.warning(f"Erreur positions: {e}")
-            return []
-
-    async def get_trades_today(self, account_id: int) -> List[dict]:
-        """Trades du jour sur un compte."""
-        if not self.connected or not self.client:
-            return []
-        try:
-            from datetime import datetime, timedelta
-            now = datetime.utcnow()
-            start = now.replace(hour=0, minute=0, second=0)
-            raw = await self.client.search_for_trades(
-                accountId=account_id,
-                startTime=start,
-                endTime=now,
-            )
-            trades = []
-            for t in (raw or []):
-                tr = t if isinstance(t, dict) else t.__dict__
-                trades.append({
-                    "time": tr.get('timestamp', tr.get('time', '')),
-                    "side": 'BUY' if tr.get('side', 0) == 1 else 'SELL',
-                    "size": tr.get('size', 0),
-                    "price": tr.get('price', 0),
-                    "pnl": tr.get('profit', 0),
-                })
-            return trades
-        except Exception as e:
-            logger.debug(f"Erreur trades: {e}")
             return []
 
     def get_status(self) -> dict:
@@ -169,7 +130,7 @@ class BrokerConnector:
     async def disconnect(self):
         if self.client:
             try:
-                await self.client.logout()
+                await safe_await(self.client.logout())
             except Exception:
                 pass
         self.connected = False
