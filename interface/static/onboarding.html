@@ -277,6 +277,8 @@
     <div class="step-dot" id="sd3">3</div>
     <div class="step-line" id="sl3"></div>
     <div class="step-dot" id="sd4">4</div>
+    <div class="step-line" id="sl4"></div>
+    <div class="step-dot" id="sd5">5</div>
 </div>
 
 <div class="container">
@@ -334,8 +336,34 @@
         <div class="options" id="instrOptions"></div>
     </div>
 
-    <!-- PAGE 5 : Done -->
+    <!-- PAGE 5 : Broker Connection -->
     <div class="page" id="page5">
+        <div class="question">Connectez votre broker</div>
+        <div style="text-align:center;color:var(--text2);font-size:13px;margin-bottom:20px">
+            Entrez vos identifiants API pour que le Risk Desk puisse suivre vos trades.
+        </div>
+        <div class="email-section" style="max-width:450px">
+            <input type="text" class="email-input" id="brokerUser" placeholder="Username (ex: Bass123)" style="margin-bottom:10px">
+            <input type="password" class="email-input" id="brokerKey" placeholder="API Key">
+        </div>
+        <div style="text-align:center;margin-top:20px">
+            <div class="option" onclick="connectBroker()" style="max-width:450px;margin:0 auto;justify-content:center">
+                <div class="option-icon" style="background:rgba(0,255,136,0.1);color:var(--green)">GO</div>
+                <div class="option-text">
+                    <h3>Connecter</h3>
+                    <p>Le Risk Desk observe vos trades. Il ne prend aucun ordre.</p>
+                </div>
+            </div>
+        </div>
+        <div style="text-align:center;margin-top:16px">
+            <a href="#" onclick="skipBroker();return false" style="color:var(--text2);font-size:12px;text-decoration:underline">Passer cette etape (je connecterai plus tard)</a>
+        </div>
+        <div class="msg" id="msg5" style="display:none"></div>
+        <div id="accountsList" style="margin-top:20px"></div>
+    </div>
+
+    <!-- PAGE 6 : Done -->
+    <div class="page" id="page6">
         <div class="done-screen">
             <div class="done-icon">&#10003;</div>
             <div class="done-title">C'est pret !</div>
@@ -406,7 +434,7 @@ const instruments = [
 function goTo(page) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page' + page).classList.add('active');
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 5; i++) {
         const dot = document.getElementById('sd' + i);
         const line = document.getElementById('sl' + (i-1));
         if (i < page) {
@@ -519,7 +547,7 @@ async function selectInstrument(sym) {
     if (state.mode === 'trial') {
         const res = await fetch(`${API}/api/license/trial?trader_id=${encodeURIComponent(state.email.split('@')[0])}&email=${encodeURIComponent(state.email)}&firm=${state.firm}&plan=${state.plan}`, { method: 'POST' });
         const data = await res.json();
-        if (data.error) {
+        if (data.error && !data.key) {
             showMsg('msg1', data.error, 'error');
             goTo(1);
             return;
@@ -541,15 +569,48 @@ async function selectInstrument(sym) {
             window.location.href = data.checkout_url;
             return;
         }
-        // Stripe pas configure → trial fallback
         const trial = await fetch(`${API}/api/license/trial?trader_id=${encodeURIComponent(state.email.split('@')[0])}&email=${encodeURIComponent(state.email)}&firm=${state.firm}&plan=${state.plan}`, { method: 'POST' });
         const tdata = await trial.json();
         state.licenseKey = tdata.key || '';
     }
 
-    // Configure le desk
-    await fetch(`${API}/api/risk-desk/framework`);
+    // Etape broker
+    goTo(5);
+}
 
+async function connectBroker() {
+    const user = document.getElementById('brokerUser').value.trim();
+    const key = document.getElementById('brokerKey').value.trim();
+    if (!user || !key) {
+        showMsg('msg5', 'Entrez votre username et API key', 'error');
+        return;
+    }
+
+    const res = await fetch(`${API}/api/broker/connect?username=${encodeURIComponent(user)}&api_key=${encodeURIComponent(key)}`, { method: 'POST' });
+    const data = await res.json();
+
+    if (!data.ok) {
+        showMsg('msg5', data.error || 'Connexion echouee', 'error');
+        return;
+    }
+
+    // Afficher les comptes trouves
+    const el = document.getElementById('accountsList');
+    el.innerHTML = '<div style="text-align:center;margin-bottom:12px;color:var(--green);font-size:14px;font-weight:600">' +
+        data.accounts.length + ' compte(s) trouve(s)</div>';
+    el.innerHTML += data.accounts.map(a =>
+        '<div class="option" style="max-width:450px;margin:0 auto 8px">' +
+        '<div class="option-icon" style="font-size:12px">' + (a.id+'').slice(-4) + '</div>' +
+        '<div class="option-text"><h3>' + a.name + '</h3><p>ID: ' + a.id + '</p></div></div>'
+    ).join('');
+
+    state.brokerConnected = true;
+
+    // Aller a done apres 2s
+    setTimeout(showDone, 2000);
+}
+
+function skipBroker() {
     showDone();
 }
 
@@ -558,10 +619,11 @@ async function selectInstrument(sym) {
 function showDone() {
     const firmName = firms[state.firm]?.name || state.firm;
     const planLabel = firms[state.firm]?.plans[state.plan]?.label || state.plan;
+    const broker = state.brokerConnected ? 'Broker connecte' : 'Broker non connecte (configurable plus tard)';
     document.getElementById('doneSummary').innerHTML =
         `${firmName} ${planLabel} — ${state.instrument}<br>` +
-        `<span style="color:var(--text2);font-size:13px">Votre Risk Desk est actif et vous protege.</span>`;
-    goTo(5);
+        `<span style="color:var(--text2);font-size:13px">${broker}</span>`;
+    goTo(6);
 }
 
 // ── Utils ──

@@ -1304,6 +1304,57 @@ def _get_param(name: str):
 
 
 # ==================================================================
+# BROKER CONNECTION
+# ==================================================================
+
+_broker = None
+
+def _get_broker():
+    global _broker
+    if not _broker:
+        from core.broker_connector import BrokerConnector
+        _broker = BrokerConnector()
+    return _broker
+
+
+@app.post("/api/broker/connect")
+async def broker_connect(username: str = "", api_key: str = ""):
+    """Connecte le broker (ProjectX/Topstep). Le user entre ses credentials."""
+    broker = _get_broker()
+    result = await broker.connect(username, api_key)
+    return result
+
+
+@app.get("/api/broker/status")
+async def broker_status():
+    """Statut de la connexion broker."""
+    broker = _get_broker()
+    return broker.get_status()
+
+
+@app.get("/api/broker/accounts")
+async def broker_accounts():
+    """Liste les comptes avec balance a jour."""
+    broker = _get_broker()
+    accounts = await broker.get_accounts()
+    return {"accounts": accounts, "connected": broker.connected}
+
+
+@app.get("/api/broker/positions")
+async def broker_positions(account_id: int):
+    """Positions ouvertes sur un compte."""
+    broker = _get_broker()
+    return await broker.get_positions(account_id)
+
+
+@app.get("/api/broker/trades")
+async def broker_trades(account_id: int):
+    """Trades du jour."""
+    broker = _get_broker()
+    return await broker.get_trades_today(account_id)
+
+
+# ==================================================================
 # LICENSING & STRIPE
 # ==================================================================
 
