@@ -248,9 +248,9 @@ class ProfitProtector:
         return self.min_pnl
 
     def is_breached(self, current_pnl: float) -> bool:
-        """Le P&L a-t-il atteint le plancher ?"""
+        """Le P&L a-t-il franchi le plancher ?"""
         if self.locked_profit > 0:
-            return current_pnl <= self.locked_profit
+            return current_pnl < self.locked_profit
         return False
 
     def reset(self):
@@ -275,8 +275,12 @@ class OvernightGuard:
         self.no_weekend = no_weekend
 
     def can_open_new_position(self) -> Tuple[bool, str]:
-        utc_now = datetime.now(timezone.utc)
-        et_now = utc_now - timedelta(hours=4)
+        try:
+            from zoneinfo import ZoneInfo
+            et_now = datetime.now(ZoneInfo("America/New_York"))
+        except Exception:
+            utc_now = datetime.now(timezone.utc)
+            et_now = utc_now - timedelta(hours=5)  # EST fallback
 
         if self.no_weekend and et_now.weekday() in (5, 6):
             return False, "Weekend — marche ferme"
@@ -291,8 +295,12 @@ class OvernightGuard:
         return True, ""
 
     def must_close_positions(self) -> Tuple[bool, str]:
-        utc_now = datetime.now(timezone.utc)
-        et_now = utc_now - timedelta(hours=4)
+        try:
+            from zoneinfo import ZoneInfo
+            et_now = datetime.now(ZoneInfo("America/New_York"))
+        except Exception:
+            utc_now = datetime.now(timezone.utc)
+            et_now = utc_now - timedelta(hours=5)  # EST fallback
 
         if self.no_overnight and et_now.time() >= time(15, 55):
             return True, "Fermeture obligatoire — overnight interdit"
@@ -404,7 +412,7 @@ class RiskProfile:
             "account_size": self.prop_firm_rules.account_size,
             "instrument": self.instrument.symbol,
             "daily_limit_firm": self.prop_firm_rules.daily_loss_limit,
-            "daily_dd_pct": self.agent_daily_dd_pct,
+            "daily_base_pct": self.agent_base_daily_pct,
             "max_drawdown": self.prop_firm_rules.max_drawdown,
             "trailing_drawdown": self.prop_firm_rules.trailing_drawdown,
             "max_contracts": self.prop_firm_rules.max_contracts,
@@ -970,7 +978,9 @@ class RiskDeskEngine:
             'min_trading_days', 'daily_trade_limit',
         )
         profile_keys = (
-            'agent_daily_dd_pct', 'agent_max_trades',
+            'agent_base_daily_pct', 'agent_dd_remaining_cap',
+            'agent_dd_block_pct', 'agent_max_consec_losing_days',
+            'agent_max_trades',
             'agent_max_consecutive_losses', 'allowed_sessions',
             'cb_yellow_pct', 'cb_orange_pct', 'cb_red_pct',
             'atr_stop_multiplier',

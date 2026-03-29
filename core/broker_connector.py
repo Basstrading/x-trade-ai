@@ -238,7 +238,7 @@ class BrokerConnector:
                         self._last_known_positions[acc_id] = current_positions
 
                 except Exception as e:
-                    logger.debug(f"Trade monitor: {e}")
+                    logger.warning(f"Trade monitor: {e}")
 
                 await asyncio.sleep(interval)
 

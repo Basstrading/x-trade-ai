@@ -41,7 +41,8 @@ def require_admin(request: Request):
     if not key:
         key = request.cookies.get("admin_key", "")
 
-    if key != ADMIN_KEY:
+    import hmac
+    if not hmac.compare_digest(key, ADMIN_KEY):
         raise HTTPException(status_code=403, detail="Acces refuse — cle admin requise")
     return True
 
@@ -1380,9 +1381,10 @@ async def broker_positions(account_id: int):
 
 @app.get("/api/broker/trades")
 async def broker_trades(account_id: int):
-    """Trades du jour."""
+    """Trades du jour — via les positions du broker."""
     broker = _get_broker()
-    return await broker.get_trades_today(account_id)
+    positions = await broker.get_positions(account_id)
+    return {"account_id": account_id, "positions": positions}
 
 
 # ==================================================================
@@ -1438,10 +1440,10 @@ async def stripe_webhook(request: Request):
     sig = request.headers.get("stripe-signature", "")
 
     try:
-        if webhook_secret:
-            event = stripe.Webhook.construct_event(payload, sig, webhook_secret)
-        else:
-            event = json.loads(payload)
+        if not webhook_secret:
+            logger.error("Stripe webhook: STRIPE_WEBHOOK_SECRET non configure, rejet")
+            return {"error": "Webhook secret not configured"}
+        event = stripe.Webhook.construct_event(payload, sig, webhook_secret)
     except Exception as e:
         logger.error(f"Stripe webhook error: {e}")
         return {"error": str(e)}
@@ -1630,7 +1632,7 @@ async def websocket_endpoint(websocket: WebSocket):
 async def broadcast(message: dict):
     """Envoie un message a tous les clients WebSocket"""
     dead = set()
-    for ws in _ws_clients:
+    for ws in list(_ws_clients):
         try:
             await ws.send_json(message)
         except Exception:
