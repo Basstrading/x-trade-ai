@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Risk Desk — Trader View</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -280,6 +281,23 @@
             </div>
         </div>
 
+        <!-- Protection gains -->
+        <div class="budget-section" id="profitProtection" style="display:none">
+            <div class="budget-header">
+                <span class="budget-label" style="color:var(--green)">Profit protege</span>
+                <span class="budget-value" style="color:var(--green)" id="lockedProfit">$0</span>
+            </div>
+            <div style="font-size:10px;color:var(--text2);margin-top:4px">
+                Plancher du jour : <span id="minPnl" style="color:var(--gold)">--</span> —
+                Peak : <span id="peakPnl" style="color:var(--accent)">--</span>
+            </div>
+        </div>
+
+        <!-- Stop info -->
+        <div style="text-align:center;margin-bottom:16px;padding:10px;background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid var(--border)">
+            <span style="font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:1px">Stop = maximum. Vous pouvez serrer, jamais elargir.</span>
+        </div>
+
         <!-- Stats -->
         <div class="stats-row">
             <div class="stat">
@@ -349,6 +367,17 @@
             const bar = document.getElementById('budgetBar');
             bar.style.width = budgetPct + '%';
             bar.style.background = budgetPct > 50 ? 'var(--green)' : budgetPct > 25 ? 'var(--gold)' : 'var(--red)';
+
+            // Profit protection
+            const ppDiv = document.getElementById('profitProtection');
+            if (fw.locked_profit > 0) {
+                ppDiv.style.display = 'block';
+                document.getElementById('lockedProfit').textContent = '$' + fw.locked_profit;
+                document.getElementById('minPnl').textContent = '$' + fw.min_daily_pnl;
+                document.getElementById('peakPnl').textContent = '$' + fw.daily_peak_pnl;
+            } else {
+                ppDiv.style.display = 'none';
+            }
 
             // Stats
             const pnl = document.getElementById('dailyPnl');

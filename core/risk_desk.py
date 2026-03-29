@@ -78,11 +78,14 @@ class TradingFramework:
 
     # ── Parametres du prochain trade ──
     contracts: int = 0                  # Taille de position pour le prochain trade
-    stop_distance_pts: float = 0.0      # Distance du stop en points (ATR-based)
-    max_loss_per_trade: float = 0.0     # Perte max en $ si le stop est touche
+    stop_distance_pts: float = 0.0      # STOP MAX — le trader peut serrer mais PAS elargir
+    max_loss_per_trade: float = 0.0     # Perte max en $ si le stop max est touche
 
     # ── Budget du jour ──
     daily_pnl: float = 0.0             # P&L realise du jour
+    daily_peak_pnl: float = 0.0        # Plus haut P&L du jour
+    locked_profit: float = 0.0          # Profit verrouille (le trader ne peut pas le rendre)
+    min_daily_pnl: float = 0.0          # P&L plancher du jour (ne peut pas descendre en dessous)
     risk_budget_remaining: float = 0.0  # Budget risque restant en $
     trades_today: int = 0               # Trades effectues aujourd'hui
     trades_remaining: int = 0           # Trades restants
@@ -115,6 +118,9 @@ class TradingFramework:
             "stop_distance_pts": round(self.stop_distance_pts, 2),
             "max_loss_per_trade": round(self.max_loss_per_trade, 2),
             "daily_pnl": round(self.daily_pnl, 2),
+            "daily_peak_pnl": round(self.daily_peak_pnl, 2),
+            "locked_profit": round(self.locked_profit, 2),
+            "min_daily_pnl": round(self.min_daily_pnl, 2),
             "risk_budget_remaining": round(self.risk_budget_remaining, 2),
             "trades_today": self.trades_today,
             "trades_remaining": self.trades_remaining,
@@ -186,6 +192,80 @@ class ConsistencyMonitor:
 # ═══════════════════════════════════════════════════════════════
 # OVERNIGHT GUARD — Protection positions overnight
 # ═══════════════════════════════════════════════════════════════
+
+# ═══════════════════════════════════════════════════════════════
+# PROFIT PROTECTOR — Protection des gains intraday
+# ═══════════════════════════════════════════════════════════════
+
+class ProfitProtector:
+    """
+    Trailing daily P&L — protege les gains du trader.
+
+    Un trader qui gagne $300 ne doit PAS finir a -$400.
+    Le desk verrouille une partie du profit au fur et a mesure.
+
+    Paliers de verrouillage :
+    - $0-$150   : pas de lock (le trader a besoin de room)
+    - $150-$300 : 40% du peak verrouille
+    - $300-$500 : 50% du peak verrouille
+    - $500+     : 60% du peak verrouille
+
+    Le plancher P&L = -(budget_restant) mais jamais en dessous du profit locke.
+    """
+
+    def __init__(self):
+        self.peak_pnl: float = 0.0
+        self.locked_profit: float = 0.0
+        self.min_pnl: float = 0.0  # Plancher P&L du jour
+
+    def update(self, current_pnl: float, base_daily_limit: float):
+        """
+        Met a jour apres chaque trade.
+        Retourne le nouveau plancher P&L.
+        """
+        # Mise a jour du peak
+        if current_pnl > self.peak_pnl:
+            self.peak_pnl = current_pnl
+
+        # Calcul du lock
+        if self.peak_pnl >= 500:
+            self.locked_profit = self.peak_pnl * 0.60
+        elif self.peak_pnl >= 300:
+            self.locked_profit = self.peak_pnl * 0.50
+        elif self.peak_pnl >= 150:
+            self.locked_profit = self.peak_pnl * 0.40
+        else:
+            self.locked_profit = 0.0
+
+        # Plancher = max entre le base limit et le profit locke
+        # base_daily_limit est negatif (ex: -$400)
+        # Si locked_profit = $150, le plancher est $150 (pas en dessous)
+        if self.locked_profit > 0:
+            self.min_pnl = self.locked_profit
+        else:
+            self.min_pnl = base_daily_limit
+
+        return self.min_pnl
+
+    def is_breached(self, current_pnl: float) -> bool:
+        """Le P&L a-t-il atteint le plancher ?"""
+        if self.locked_profit > 0:
+            return current_pnl <= self.locked_profit
+        return False
+
+    def reset(self):
+        """Reset quotidien."""
+        self.peak_pnl = 0.0
+        self.locked_profit = 0.0
+        self.min_pnl = 0.0
+
+    def get_status(self) -> dict:
+        return {
+            "peak_pnl": round(self.peak_pnl, 2),
+            "locked_profit": round(self.locked_profit, 2),
+            "min_pnl": round(self.min_pnl, 2),
+        }
+
 
 class OvernightGuard:
     """Empeche les positions overnight si la prop firm l'interdit."""
@@ -392,6 +472,9 @@ class RiskDeskEngine:
             no_weekend=profile.prop_firm_rules.no_weekend,
         )
 
+        # Protection des gains intraday
+        self.profit_protector = ProfitProtector()
+
         # Session Config — AUTO/MANUEL pour chaque parametre
         self.session_config = SessionConfig(
             base_max_trades=profile.agent_max_trades,
@@ -555,6 +638,15 @@ class RiskDeskEngine:
                 f"(${self.irm.daily_pnl:,.0f} / ${daily_limit:,.0f})"
             )
 
+        # Check protection des gains (trailing daily P&L)
+        self.profit_protector.update(self.irm.daily_pnl, daily_limit)
+        if allowed and self.profit_protector.is_breached(self.irm.daily_pnl):
+            allowed = False
+            blocked_reason = (
+                f"Profit protege — gains verrouilles a "
+                f"${self.profit_protector.locked_profit:,.0f}"
+            )
+
         # Check overnight
         if allowed:
             on_ok, on_reason = self.overnight.can_open_new_position()
@@ -667,6 +759,9 @@ class RiskDeskEngine:
             stop_distance_pts=round(stop_distance, 2),
             max_loss_per_trade=round(max_loss, 2),
             daily_pnl=round(self.irm.daily_pnl, 2),
+            daily_peak_pnl=round(self.profit_protector.peak_pnl, 2),
+            locked_profit=round(self.profit_protector.locked_profit, 2),
+            min_daily_pnl=round(self.profit_protector.min_pnl, 2),
             risk_budget_remaining=round(budget_remaining, 2),
             trades_today=self.irm.daily_trades,
             trades_remaining=trades_remaining,
