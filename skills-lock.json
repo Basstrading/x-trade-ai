@@ -20,6 +20,26 @@
       "source": "omer-metin/skills-for-antigravity",
       "sourceType": "github",
       "computedHash": "58494d5e86047c80c4f5b6b892a649e6866fcee93a14d9d4998e700d13b43504"
+    },
+    "seo-content-brief": {
+      "source": "inferen-sh/skills",
+      "sourceType": "github",
+      "computedHash": "e9052582883ee29976fce4b7c5a5c75134561d67679ac563cc409651578011a4"
+    },
+    "seo-content-writer": {
+      "source": "aaron-he-zhu/seo-geo-claude-skills",
+      "sourceType": "github",
+      "computedHash": "b4a0764f7888475721dec15a6046dca2b1783a6abeec79bbd08591e82a6b66ff"
+    },
+    "seo-geo": {
+      "source": "resciencelab/opc-skills",
+      "sourceType": "github",
+      "computedHash": "1d38520f453282af8712874c360e3e34a379827f737fb536bd45055e2d60d964"
+    },
+    "seo-keyword-strategist": {
+      "source": "sickn33/antigravity-awesome-skills",
+      "sourceType": "github",
+      "computedHash": "83f5d0b47c23a01b6a2a730367ff6683739c955bef40928e611e680623d8248e"
     }
   }
 }

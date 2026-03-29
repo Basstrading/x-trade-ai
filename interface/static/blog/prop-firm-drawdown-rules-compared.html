@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prop Firm Drawdown Rules Compared: Topstep vs Apex vs Bulenox vs TPT (2026) | x-trade.ai</title>
+    <meta name="description" content="Side-by-side comparison of trailing drawdown, daily loss limits, consistency rules, and hidden traps for every major futures prop firm in 2026.">
+    <link rel="canonical" href="https://x-trade.ai/blog/prop-firm-drawdown-rules-compared">
+    <meta property="og:title" content="Prop Firm Drawdown Rules Compared (2026)">
+    <meta property="og:description" content="Topstep vs Apex vs Bulenox vs Tradeify vs TakeProfitTrader — every drawdown rule compared.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg:#07090f; --bg2:#0f1420; --green:#22d97f; --cyan:#06b6d4; --gold:#f59e0b; --red:#ef4444; --text:#f0f4f8; --dim:#94a3b8; --border:rgba(255,255,255,0.06); }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); }
+        .nav { padding:16px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+        .nav a { color:var(--dim); text-decoration:none; font-size:13px; margin-left:20px; }
+        .logo { font-family:'JetBrains Mono',monospace; font-size:15px; font-weight:700; color:var(--cyan); }
+        .logo span { color:var(--text); }
+        article { max-width:900px; margin:0 auto; padding:60px 24px 80px; }
+        .tag { display:inline-block; padding:4px 12px; border-radius:12px; font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; background:rgba(6,182,212,0.1); color:var(--cyan); margin-bottom:16px; }
+        h1 { font-size:34px; font-weight:800; line-height:1.2; margin-bottom:16px; }
+        .meta { color:var(--dim); font-size:13px; margin-bottom:40px; }
+        h2 { font-size:24px; font-weight:700; margin:40px 0 16px; }
+        h3 { font-size:18px; font-weight:600; margin:28px 0 12px; color:var(--cyan); }
+        p { font-size:16px; line-height:1.8; color:var(--dim); margin-bottom:20px; }
+        strong { color:var(--text); }
+        table { width:100%; border-collapse:collapse; margin:24px 0; font-size:13px; overflow-x:auto; display:block; }
+        th { text-align:left; padding:12px; background:var(--bg2); color:var(--cyan); font-size:10px; text-transform:uppercase; letter-spacing:1px; border-bottom:2px solid var(--border); white-space:nowrap; }
+        td { padding:12px; border-bottom:1px solid var(--border); color:var(--dim); white-space:nowrap; }
+        td strong { color:var(--text); }
+        tr:hover td { background:rgba(6,182,212,0.03); }
+        .warn { color:var(--red); font-weight:600; }
+        .ok { color:var(--green); }
+        .note { color:var(--gold); font-style:italic; }
+        blockquote { border-left:3px solid var(--gold); padding:16px 20px; margin:24px 0; background:rgba(245,158,11,0.05); border-radius:0 8px 8px 0; color:var(--text); }
+        .cta-box { background:linear-gradient(135deg,rgba(6,182,212,0.08),rgba(34,217,127,0.05)); border:1px solid rgba(6,182,212,0.2); border-radius:14px; padding:32px; text-align:center; margin:40px 0; }
+        .cta-box h3 { color:var(--green); margin:0 0 12px; font-size:20px; }
+        .cta-box p { margin-bottom:16px; }
+        .cta-btn { display:inline-block; padding:14px 32px; background:var(--green); color:var(--bg); font-weight:700; border-radius:10px; text-decoration:none; }
+        .footer { text-align:center; padding:40px; color:var(--dim); font-size:11px; border-top:1px solid var(--border); }
+        .footer a { color:var(--cyan); text-decoration:none; }
+        @media(max-width:600px) { h1{font-size:26px;} table{font-size:11px;} }
+    </style>
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"Article","headline":"Prop Firm Drawdown Rules Compared: Topstep vs Apex vs Bulenox vs TPT (2026)","author":{"@type":"Organization","name":"x-trade.ai"},"datePublished":"2026-03-29","description":"Side-by-side comparison of trailing drawdown, daily loss limits, and consistency rules for major futures prop firms."}
+    </script>
+</head>
+<body>
+    <div class="nav">
+        <a href="/" class="logo"><span>x-trade</span>.ai</a>
+        <div><a href="/">Home</a><a href="/blog">Blog</a><a href="/onboarding">Start Free</a></div>
+    </div>
+
+    <article>
+        <span class="tag">Comparison</span>
+        <h1>Prop Firm Drawdown Rules Compared: Topstep vs Apex vs Bulenox vs Tradeify vs TPT (2026)</h1>
+        <div class="meta">12 min read · March 2026 · Updated with Apex 4.0 changes</div>
+
+        <p>Every prop firm has different drawdown rules. Some use trailing, some use EOD. Some have daily limits, some removed them. Some have consistency rules, some don't. <strong>Each one is designed to make it harder for you to reach payout.</strong></p>
+
+        <p>This guide compares every major futures prop firm's risk rules so you know exactly what you're up against — and how to protect yourself.</p>
+
+        <h2>The Big Comparison Table ($50K Accounts)</h2>
+
+        <table>
+            <tr>
+                <th>Rule</th>
+                <th>Topstep</th>
+                <th>Apex 4.0</th>
+                <th>Bulenox Opt1</th>
+                <th>Bulenox Opt2</th>
+                <th>Tradeify</th>
+                <th>TPT</th>
+            </tr>
+            <tr>
+                <td><strong>Max Drawdown</strong></td>
+                <td>$2,000</td>
+                <td>$2,000</td>
+                <td>$2,500</td>
+                <td>$2,500</td>
+                <td>$2,000</td>
+                <td>$2,000</td>
+            </tr>
+            <tr>
+                <td><strong>DD Type</strong></td>
+                <td>EOD Trailing</td>
+                <td>Trailing</td>
+                <td class="warn">Tick-by-tick</td>
+                <td>EOD</td>
+                <td>EOD Trailing</td>
+                <td>EOD (eval) / <span class="warn">Intraday (PRO)</span></td>
+            </tr>
+            <tr>
+                <td><strong>DD Locks at BE?</strong></td>
+                <td>-</td>
+                <td>-</td>
+                <td class="ok">Yes</td>
+                <td>-</td>
+                <td class="ok">Yes (+$100)</td>
+                <td class="ok">Yes</td>
+            </tr>
+            <tr>
+                <td><strong>Daily Loss Limit</strong></td>
+                <td class="warn">NONE</td>
+                <td>$1,000 (EOD)</td>
+                <td class="warn">NONE</td>
+                <td>$1,100</td>
+                <td>$1,250</td>
+                <td class="warn">NONE</td>
+            </tr>
+            <tr>
+                <td><strong>Max Contracts</strong></td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>7 (scaling)</td>
+                <td>4</td>
+                <td>6</td>
+            </tr>
+            <tr>
+                <td><strong>Profit Target</strong></td>
+                <td>$3,000</td>
+                <td>$3,000</td>
+                <td>$3,000</td>
+                <td>$3,000</td>
+                <td>$3,000</td>
+                <td>$3,000</td>
+            </tr>
+            <tr>
+                <td><strong>Consistency Rule</strong></td>
+                <td>50%</td>
+                <td>50%</td>
+                <td>40%</td>
+                <td>40%</td>
+                <td>35%</td>
+                <td>50% (eval only)</td>
+            </tr>
+            <tr>
+                <td><strong>Overnight</strong></td>
+                <td class="warn">No</td>
+                <td class="warn">No</td>
+                <td class="ok">Yes</td>
+                <td class="ok">Yes</td>
+                <td class="warn">No (eval)</td>
+                <td class="warn">No</td>
+            </tr>
+            <tr>
+                <td><strong>News Trading</strong></td>
+                <td class="ok">Allowed</td>
+                <td class="ok">Allowed</td>
+                <td class="ok">Allowed</td>
+                <td class="ok">Allowed</td>
+                <td class="ok">Allowed</td>
+                <td class="warn">Banned (PRO)</td>
+            </tr>
+            <tr>
+                <td><strong>Min Trading Days</strong></td>
+                <td>-</td>
+                <td>5 (payout)</td>
+                <td>10 (payout)</td>
+                <td>10 (payout)</td>
+                <td>1 (eval)</td>
+                <td>5</td>
+            </tr>
+        </table>
+
+        <h2>The Hidden Traps</h2>
+
+        <h3>Topstep: No Daily Loss Limit = No Safety Net</h3>
+        <p>Since August 2024, Topstep removed the daily loss limit. Your <strong>only</strong> protection is the $2,000 trailing drawdown. One bad session and the account is dead. This is why <strong>you need your own daily limit</strong> — our risk desk imposes one automatically.</p>
+
+        <h3>Apex 4.0: Everything Changed in March 2026</h3>
+        <p>Apex did a complete overhaul. Drawdowns reduced, contracts cut, consistency changed from 30% to 50%. The $250K and $300K accounts are gone. <strong>If you're using old Apex numbers, you're trading with wrong limits.</strong></p>
+
+        <h3>Bulenox Option 1: Tick-by-Tick Trailing is Brutal</h3>
+        <p>Option 1 has no daily limit and full contract access, which sounds great. But the drawdown trails <strong>every single tick</strong>, including intraday wicks. A 3-second wick can trigger the drawdown even if the trade comes back green. This is the most aggressive drawdown type of all prop firms.</p>
+
+        <h3>TakeProfitTrader: EOD in Eval, Intraday in PRO</h3>
+        <p>This is the biggest trap. During evaluation, the drawdown is EOD — forgiving. Once you pass and get a PRO account, it switches to <strong>intraday trailing</strong> — much stricter. Many traders pass the eval easily then blow the PRO because they don't adjust.</p>
+
+        <h3>Tradeify: Scaling Starts You Small</h3>
+        <p>Tradeify gives you full contracts during evaluation but <strong>starts you at 2 contracts when funded</strong>. You unlock more as your equity grows. Many traders don't realize this and plan their funded strategy around full size.</p>
+
+        <blockquote>Every prop firm rule is designed to make it statistically harder for you to reach payout. Understanding these rules — and having a system that enforces them for you — is the difference between the 94% who fail and the 6% who get paid.</blockquote>
+
+        <h2>How x-trade.ai Handles Each Firm</h2>
+
+        <p>x-trade.ai has <strong>all 5 prop firms pre-loaded</strong> with their exact rules. When you select your firm and plan, the risk desk automatically:</p>
+
+        <ul>
+            <li>Sets the correct drawdown type (EOD, trailing, tick-by-tick)</li>
+            <li>Creates a daily loss limit where the firm doesn't have one</li>
+            <li>Adjusts position size for the firm's max contracts</li>
+            <li>Monitors the consistency rule</li>
+            <li>Blocks overnight if the firm requires it</li>
+            <li>Reduces size on news days (especially important for TPT PRO)</li>
+        </ul>
+
+        <p>You don't need to remember any of these rules. The desk knows them all.</p>
+
+        <div class="cta-box">
+            <h3>Stop Guessing Your Prop Firm's Rules</h3>
+            <p>x-trade.ai pre-loads every rule for every firm. You just trade.</p>
+            <a href="/onboarding?mode=trial" class="cta-btn">Start Free Trial</a>
+        </div>
+
+        <p style="font-size:12px;color:var(--dim);margin-top:40px"><em>Rules verified March 2026. Prop firms change rules frequently — we update our database monthly. Sources: topstepx.com, apextraderfunding.com, bulenox.com, tradeify.co, takeprofittrader.com.</em></p>
+    </article>
+
+    <div class="footer">
+        <a href="/blog">Back to Blog</a> · <a href="https://x-trade.ai">x-trade.ai</a><br>
+        <a href="https://basstrading.fr">Bass Trading</a> · <a href="https://hubtrading.fr">HubTrading</a>
+    </div>
+</body>
+</html>

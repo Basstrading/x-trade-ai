@@ -85,6 +85,19 @@ async def owner_page(admin_key: str = ""):
     return FileResponse(os.path.join(static_dir, "owner.html"))
 
 
+@app.get("/blog")
+async def blog_index():
+    return FileResponse(os.path.join(static_dir, "blog", "index.html"))
+
+
+@app.get("/blog/{slug}")
+async def blog_post(slug: str):
+    path = os.path.join(static_dir, "blog", f"{slug}.html")
+    if os.path.exists(path):
+        return FileResponse(path)
+    return FileResponse(os.path.join(static_dir, "blog", "index.html"))
+
+
 @app.get("/onboarding")
 async def onboarding_page():
     """Page d'onboarding — le client configure son Risk Desk en 4 clics."""
