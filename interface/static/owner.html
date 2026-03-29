@@ -5,204 +5,359 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>x-trade.ai — Owner Panel</title>
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #07090f;
-            --bg-card: #0f1420;
-            --green: #00ff88;
-            --red: #ff3d5a;
-            --accent: #00e0ff;
-            --gold: #ffcc44;
-            --violet: #9b6dff;
-            --text1: #e2eaf5;
-            --text2: #5d7490;
-            --border: rgba(0,224,255,0.08);
+            --bg: #060a10;
+            --bg2: #0c1018;
+            --bg3: #111827;
+            --surface: #151c2c;
+            --green: #22d97f;
+            --red: #ef4444;
+            --cyan: #06b6d4;
+            --gold: #f59e0b;
+            --violet: #a78bfa;
+            --text: #f0f4f8;
+            --dim: #475569;
+            --border: rgba(255,255,255,0.06);
+            --glow-green: rgba(34,217,127,0.15);
+            --glow-gold: rgba(245,158,11,0.15);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text1); min-height: 100vh; }
-        .header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 16px 24px; border-bottom: 1px solid var(--border); background: var(--bg-card);
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Outfit',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+        /* ── Topbar ── */
+        .topbar {
+            display:flex; justify-content:space-between; align-items:center;
+            padding:14px 28px; background:var(--bg2); border-bottom:1px solid var(--border);
+            position:sticky; top:0; z-index:100; backdrop-filter:blur(20px);
         }
-        .header h1 { font-size: 18px; font-weight: 800; color: var(--gold); letter-spacing: 2px; }
-        .header span { font-size: 11px; color: var(--text2); }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 20px 24px; max-width: 1200px; margin: 0 auto; }
+        .topbar-left { display:flex; align-items:center; gap:14px; }
+        .topbar-logo { font-family:'Space Mono',monospace; font-size:15px; font-weight:700; color:var(--cyan); letter-spacing:1px; }
+        .topbar-logo span { color:var(--text); }
+        .topbar-badge {
+            padding:3px 10px; border-radius:20px; font-size:10px; font-weight:700;
+            background:var(--glow-gold); color:var(--gold); letter-spacing:1.5px; text-transform:uppercase;
+        }
+        .topbar-right { font-size:10px; color:var(--dim); font-family:'Space Mono',monospace; }
+
+        /* ── Main grid ── */
+        .main { max-width:1280px; margin:0 auto; padding:24px; }
+        .grid { display:grid; grid-template-columns:repeat(12,1fr); gap:16px; }
+
+        /* ── Cards ── */
         .card {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 12px; padding: 20px;
+            background:var(--surface); border:1px solid var(--border); border-radius:14px;
+            padding:22px; position:relative; overflow:hidden;
+            transition:border-color 0.3s;
         }
-        .card.full { grid-column: 1 / -1; }
-        .card-title {
-            font-size: 10px; text-transform: uppercase; letter-spacing: 2px;
-            color: var(--accent); margin-bottom: 14px; font-weight: 700;
+        .card:hover { border-color:rgba(255,255,255,0.1); }
+        .card::before {
+            content:''; position:absolute; top:0; left:0; right:0; height:1px;
+            background:linear-gradient(90deg,transparent,rgba(6,182,212,0.3),transparent);
         }
-        .stat-row { display: flex; gap: 20px; flex-wrap: wrap; }
-        .stat-box { text-align: center; flex: 1; min-width: 80px; }
-        .stat-num { font-size: 28px; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
-        .stat-label { font-size: 10px; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; }
-        .num-green { color: var(--green); }
-        .num-gold { color: var(--gold); }
-        .num-accent { color: var(--accent); }
-        .num-violet { color: var(--violet); }
-        table { width: 100%; border-collapse: collapse; font-size: 12px; font-family: 'JetBrains Mono', monospace; }
-        th { text-align: left; color: var(--text2); font-size: 9px; text-transform: uppercase; letter-spacing: 1px; padding: 8px 6px; border-bottom: 1px solid var(--border); }
-        td { padding: 8px 6px; border-bottom: 1px solid rgba(255,255,255,0.02); }
-        .badge { padding: 2px 8px; border-radius: 8px; font-size: 10px; font-weight: 600; }
-        .badge-green { background: rgba(0,255,136,0.1); color: var(--green); }
-        .badge-gold { background: rgba(255,204,68,0.1); color: var(--gold); }
-        .badge-violet { background: rgba(155,109,255,0.1); color: var(--violet); }
-        .btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        .btn-accent { background: rgba(0,224,255,0.15); color: var(--accent); border: 1px solid rgba(0,224,255,0.3); }
-        .btn-gold { background: rgba(255,204,68,0.1); color: var(--gold); border: 1px solid rgba(255,204,68,0.2); }
-        .btn:hover { opacity: 0.85; }
-        input, select { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text1); padding: 8px 12px; font-family: 'JetBrains Mono', monospace; font-size: 12px; outline: none; }
-        input:focus, select:focus { border-color: var(--accent); }
-        .form-row { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
-        .form-row label { font-size: 11px; color: var(--text2); min-width: 80px; }
-        .promo-list { max-height: 300px; overflow-y: auto; }
+        .card-12 { grid-column:span 12; }
+        .card-6 { grid-column:span 6; }
+        .card-4 { grid-column:span 4; }
+        .card-8 { grid-column:span 8; }
+
+        .card-label {
+            font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase;
+            color:var(--dim); margin-bottom:18px; display:flex; align-items:center; gap:8px;
+        }
+        .card-label::before {
+            content:''; width:3px; height:12px; border-radius:2px; background:var(--cyan);
+        }
+
+        /* ── Stats ── */
+        .stats { display:flex; gap:0; }
+        .stat-item {
+            flex:1; text-align:center; padding:16px 8px;
+            border-right:1px solid var(--border); position:relative;
+        }
+        .stat-item:last-child { border-right:none; }
+        .stat-num {
+            font-family:'Space Mono',monospace; font-size:32px; font-weight:700;
+            line-height:1; margin-bottom:6px;
+        }
+        .stat-label { font-size:10px; color:var(--dim); letter-spacing:1px; text-transform:uppercase; }
+        .c-green { color:var(--green); }
+        .c-gold { color:var(--gold); }
+        .c-cyan { color:var(--cyan); }
+        .c-violet { color:var(--violet); }
+        .c-red { color:var(--red); }
+
+        /* ── Promo form ── */
+        .form-group { margin-bottom:14px; }
+        .form-label { font-size:11px; color:var(--dim); margin-bottom:6px; display:block; letter-spacing:0.5px; }
+        .form-input {
+            width:100%; padding:10px 14px; background:var(--bg2); border:1px solid var(--border);
+            border-radius:8px; color:var(--text); font-family:'Space Mono',monospace; font-size:13px;
+            outline:none; transition:border-color 0.2s;
+        }
+        .form-input:focus { border-color:var(--cyan); box-shadow:0 0 0 3px rgba(6,182,212,0.1); }
+        .form-row { display:flex; gap:12px; }
+        .form-row .form-group { flex:1; }
+
+        .btn {
+            padding:11px 22px; border:none; border-radius:9px; cursor:pointer;
+            font-family:'Outfit',sans-serif; font-size:12px; font-weight:600;
+            letter-spacing:0.5px; transition:all 0.2s; display:inline-flex; align-items:center; gap:8px;
+        }
+        .btn-gold {
+            background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(245,158,11,0.08));
+            color:var(--gold); border:1px solid rgba(245,158,11,0.25);
+        }
+        .btn-gold:hover { background:linear-gradient(135deg,rgba(245,158,11,0.3),rgba(245,158,11,0.15)); transform:translateY(-1px); }
+        .btn-cyan {
+            background:linear-gradient(135deg,rgba(6,182,212,0.2),rgba(6,182,212,0.08));
+            color:var(--cyan); border:1px solid rgba(6,182,212,0.25);
+        }
+
+        /* ── Promo codes list ── */
+        .promo-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:8px; max-height:280px; overflow-y:auto; }
+        .promo-chip {
+            display:flex; justify-content:space-between; align-items:center;
+            padding:10px 14px; background:var(--bg2); border:1px solid var(--border);
+            border-radius:8px; font-family:'Space Mono',monospace; font-size:12px;
+            transition:border-color 0.2s;
+        }
+        .promo-chip:hover { border-color:var(--gold); }
+        .promo-code { color:var(--gold); font-weight:700; }
+        .promo-meta { font-size:9px; color:var(--dim); }
+        .promo-active { color:var(--green); font-size:8px; }
+
+        /* ── Table ── */
+        .table-wrap { overflow-x:auto; }
+        table { width:100%; border-collapse:collapse; }
+        th {
+            text-align:left; font-size:9px; font-weight:600; letter-spacing:1.5px;
+            text-transform:uppercase; color:var(--dim); padding:10px 12px;
+            border-bottom:1px solid var(--border); background:var(--bg2);
+        }
+        th:first-child { border-radius:8px 0 0 0; }
+        th:last-child { border-radius:0 8px 0 0; }
+        td {
+            padding:12px; border-bottom:1px solid var(--border); font-size:13px;
+            font-family:'Space Mono',monospace;
+        }
+        tr:hover td { background:rgba(6,182,212,0.03); }
+        .badge {
+            display:inline-block; padding:3px 10px; border-radius:20px;
+            font-size:10px; font-weight:700; letter-spacing:0.5px;
+        }
+        .badge-paid { background:var(--glow-gold); color:var(--gold); }
+        .badge-trial { background:var(--glow-green); color:var(--green); }
+        .badge-promo { background:rgba(167,139,250,0.15); color:var(--violet); }
+
+        /* ── Result toast ── */
+        .result {
+            margin-top:14px; padding:14px 18px; border-radius:10px;
+            background:rgba(34,217,127,0.08); border:1px solid rgba(34,217,127,0.2);
+            font-size:12px; color:var(--green); display:none;
+            font-family:'Space Mono',monospace; max-height:200px; overflow-y:auto;
+        }
+
+        /* ── Empty state ── */
+        .empty {
+            text-align:center; padding:30px; color:var(--dim); font-size:13px;
+        }
+
+        /* ── Animations ── */
+        @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+        .card { animation:fadeUp 0.4s ease-out both; }
+        .card:nth-child(2) { animation-delay:0.05s; }
+        .card:nth-child(3) { animation-delay:0.1s; }
+        .card:nth-child(4) { animation-delay:0.15s; }
+
+        /* ── Scrollbar ── */
+        ::-webkit-scrollbar { width:4px; height:4px; }
+        ::-webkit-scrollbar-track { background:transparent; }
+        ::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.08); border-radius:2px; }
+
+        /* ── Responsive ── */
+        @media (max-width:900px) {
+            .card-6,.card-4,.card-8 { grid-column:span 12; }
+            .stats { flex-wrap:wrap; }
+            .stat-item { min-width:33%; border-bottom:1px solid var(--border); }
+        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div>
-            <h1>OWNER PANEL</h1>
-            <span>x-trade.ai — Business & License Management</span>
+    <div class="topbar">
+        <div class="topbar-left">
+            <div class="topbar-logo"><span>x-trade</span>.ai</div>
+            <div class="topbar-badge">Owner</div>
         </div>
-        <span id="refreshTime" style="color:var(--text2);font-size:10px"></span>
+        <div class="topbar-right" id="clock"></div>
     </div>
 
-    <div class="grid">
-        <!-- Stats business -->
-        <div class="card full">
-            <div class="card-title">Business Overview</div>
-            <div class="stat-row" id="stats">
-                <div class="stat-box"><div class="stat-num num-green" id="s-active">-</div><div class="stat-label">Licences actives</div></div>
-                <div class="stat-box"><div class="stat-num num-gold" id="s-paid">-</div><div class="stat-label">Payantes</div></div>
-                <div class="stat-box"><div class="stat-num num-accent" id="s-trial">-</div><div class="stat-label">Trials</div></div>
-                <div class="stat-box"><div class="stat-num num-violet" id="s-promo">-</div><div class="stat-label">Promo</div></div>
-                <div class="stat-box"><div class="stat-num num-green" id="s-mrr">-</div><div class="stat-label">MRR ($)</div></div>
-                <div class="stat-box"><div class="stat-num num-accent" id="s-codes">-</div><div class="stat-label">Codes promo</div></div>
-            </div>
-        </div>
+    <div class="main">
+        <div class="grid">
 
-        <!-- Creer codes promo -->
-        <div class="card">
-            <div class="card-title">Creer des codes promo</div>
-            <div class="form-row">
-                <label>Nombre</label>
-                <input type="number" id="promoCount" value="10" min="1" max="100" style="width:60px">
+            <!-- Business Overview -->
+            <div class="card card-12">
+                <div class="card-label">Business Overview</div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-num c-green" id="s-active">0</div>
+                        <div class="stat-label">Licences actives</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num c-gold" id="s-paid">0</div>
+                        <div class="stat-label">Payantes</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num c-cyan" id="s-trial">0</div>
+                        <div class="stat-label">Trials</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num c-violet" id="s-promo">0</div>
+                        <div class="stat-label">Promo</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num c-green" id="s-mrr">$0</div>
+                        <div class="stat-label">MRR</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num c-cyan" id="s-codes">0</div>
+                        <div class="stat-label">Codes actifs</div>
+                    </div>
+                </div>
             </div>
-            <div class="form-row">
-                <label>Duree (jours)</label>
-                <input type="number" id="promoDays" value="30" min="1" max="365" style="width:60px">
-            </div>
-            <div class="form-row">
-                <label>Note</label>
-                <input type="text" id="promoNote" placeholder="Ex: Formation avril 2026" style="flex:1">
-            </div>
-            <button class="btn btn-gold" onclick="createPromos()">Generer les codes</button>
-            <div id="promoResult" style="margin-top:12px;font-size:11px;color:var(--green);display:none"></div>
-        </div>
 
-        <!-- Codes promo existants -->
-        <div class="card">
-            <div class="card-title">Codes promo actifs</div>
-            <div class="promo-list" id="promoList">Chargement...</div>
-        </div>
+            <!-- Create Promos -->
+            <div class="card card-4">
+                <div class="card-label">Generer des codes promo</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Nombre</label>
+                        <input type="number" class="form-input" id="promoCount" value="10" min="1" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Duree (jours)</label>
+                        <input type="number" class="form-input" id="promoDays" value="30" min="1" max="365">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Note</label>
+                    <input type="text" class="form-input" id="promoNote" placeholder="Ex: Formation avril 2026">
+                </div>
+                <button class="btn btn-gold" onclick="createPromos()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                    Generer
+                </button>
+                <div class="result" id="promoResult"></div>
+            </div>
 
-        <!-- Licences actives -->
-        <div class="card full">
-            <div class="card-title">Licences actives</div>
-            <table>
-                <thead><tr><th>Cle</th><th>Type</th><th>Email</th><th>Firm</th><th>Plan</th><th>Jours restants</th><th>Copy accounts</th></tr></thead>
-                <tbody id="licTable">
-                    <tr><td colspan="7" style="color:var(--text2)">Chargement...</td></tr>
-                </tbody>
-            </table>
+            <!-- Promo Codes -->
+            <div class="card card-8">
+                <div class="card-label">Codes promo</div>
+                <div class="promo-grid" id="promoList">
+                    <div class="empty">Aucun code</div>
+                </div>
+            </div>
+
+            <!-- Licenses -->
+            <div class="card card-12">
+                <div class="card-label">Licences actives</div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr><th>Cle</th><th>Type</th><th>Email</th><th>Firm</th><th>Plan</th><th>Jours</th><th>Copies</th></tr>
+                        </thead>
+                        <tbody id="licTable">
+                            <tr><td colspan="7" class="empty">Aucune licence</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
-    <script>
-    const API = window.location.origin;
-    const params = new URLSearchParams(window.location.search);
-    const ADMIN_KEY = params.get('admin_key') || '';
+<script>
+const API = window.location.origin;
+const ADMIN_KEY = new URLSearchParams(window.location.search).get('admin_key') || '';
 
-    function adminFetch(url, opts = {}) {
-        opts.headers = opts.headers || {};
-        opts.headers['X-Admin-Key'] = ADMIN_KEY;
-        return fetch(url, opts);
-    }
+function adminFetch(url, opts={}) {
+    opts.headers = opts.headers || {};
+    opts.headers['X-Admin-Key'] = ADMIN_KEY;
+    return fetch(url, opts);
+}
 
-    async function refresh() {
-        try {
-            const res = await adminFetch(`${API}/api/admin/licenses`);
-            const data = await res.json();
+function updateClock() {
+    document.getElementById('clock').textContent = new Date().toLocaleString('fr-FR');
+}
+setInterval(updateClock, 1000);
+updateClock();
 
-            if (data.error) { document.getElementById('licTable').innerHTML = '<tr><td colspan="7" style="color:var(--red)">'+data.error+'</td></tr>'; return; }
+async function refresh() {
+    try {
+        const [licRes, promoRes] = await Promise.all([
+            adminFetch(`${API}/api/admin/licenses`),
+            adminFetch(`${API}/api/admin/promo/list`),
+        ]);
+        const lic = await licRes.json();
+        const promos = await promoRes.json();
 
-            const s = data.stats || {};
-            document.getElementById('s-active').textContent = s.active_licenses || 0;
-            document.getElementById('s-paid').textContent = s.paid || 0;
-            document.getElementById('s-trial').textContent = s.trials || 0;
-            document.getElementById('s-promo').textContent = s.promo || 0;
-            document.getElementById('s-mrr').textContent = '$' + (s.mrr || 0);
-            document.getElementById('s-codes').textContent = s.active_promo_codes || 0;
-
-            const tbody = document.getElementById('licTable');
-            if (data.active && data.active.length > 0) {
-                tbody.innerHTML = data.active.map(l => `<tr>
-                    <td style="font-size:10px">${l.key.substring(0,15)}...</td>
-                    <td><span class="badge ${l.type==='paid'?'badge-gold':l.type==='trial'?'badge-green':'badge-violet'}">${l.type}</span></td>
-                    <td>${l.email || '-'}</td>
-                    <td>${l.firm}</td>
-                    <td>${l.plan}</td>
-                    <td>${l.days_remaining}j</td>
-                    <td>${l.copy_accounts?.length || 0}</td>
-                </tr>`).join('');
-            } else {
-                tbody.innerHTML = '<tr><td colspan="7" style="color:var(--text2)">Aucune licence active</td></tr>';
-            }
-
-            // Promos
-            const pRes = await adminFetch(`${API}/api/admin/promo/list`);
-            const promos = await pRes.json();
-            const pList = document.getElementById('promoList');
-            if (Array.isArray(promos) && promos.length > 0) {
-                pList.innerHTML = promos.map(p => `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.03);font-size:11px">
-                    <span style="font-family:'JetBrains Mono',monospace;color:var(--gold)">${p.code}</span>
-                    <span style="color:var(--text2)">${p.duration_days}j</span>
-                    <span style="color:var(--text2)">${p.uses}/${p.max_uses}</span>
-                    <span style="color:${p.active?'var(--green)':'var(--red)'}">${p.active?'Actif':'Expire'}</span>
-                    <span style="color:var(--text2);font-size:9px">${p.note||''}</span>
-                </div>`).join('');
-            } else {
-                pList.innerHTML = '<span style="color:var(--text2);font-size:11px">Aucun code</span>';
-            }
-
-            document.getElementById('refreshTime').textContent = 'Mis a jour: ' + new Date().toLocaleTimeString();
-        } catch(e) { console.error(e); }
-    }
-
-    async function createPromos() {
-        const count = document.getElementById('promoCount').value;
-        const days = document.getElementById('promoDays').value;
-        const note = document.getElementById('promoNote').value;
-
-        const res = await adminFetch(`${API}/api/admin/promo/batch?count=${count}&duration_days=${days}&note=${encodeURIComponent(note)}`, { method: 'POST' });
-        const data = await res.json();
-
-        if (data.codes) {
-            const el = document.getElementById('promoResult');
-            el.style.display = 'block';
-            el.innerHTML = '<strong>' + data.codes.length + ' codes crees :</strong><br>' +
-                data.codes.map(c => '<span style="font-family:JetBrains Mono;color:var(--gold)">' + c + '</span>').join('<br>');
-            refresh();
+        if (lic.stats) {
+            const s = lic.stats;
+            document.getElementById('s-active').textContent = s.active_licenses;
+            document.getElementById('s-paid').textContent = s.paid;
+            document.getElementById('s-trial').textContent = s.trials;
+            document.getElementById('s-promo').textContent = s.promo;
+            document.getElementById('s-mrr').textContent = '$' + s.mrr;
+            document.getElementById('s-codes').textContent = s.active_promo_codes;
         }
-    }
 
-    refresh();
-    setInterval(refresh, 10000);
-    </script>
+        // Licenses table
+        const tbody = document.getElementById('licTable');
+        if (lic.active && lic.active.length > 0) {
+            tbody.innerHTML = lic.active.map(l => `<tr>
+                <td style="font-size:10px;color:var(--dim)">${l.key.substring(0,16)}...</td>
+                <td><span class="badge badge-${l.type}">${l.type}</span></td>
+                <td>${l.email || '—'}</td>
+                <td style="text-transform:uppercase">${l.firm}</td>
+                <td>${l.plan}</td>
+                <td>${l.days_remaining}j</td>
+                <td>${l.copy_accounts?.length || 0}</td>
+            </tr>`).join('');
+        } else {
+            tbody.innerHTML = '<tr><td colspan="7" class="empty">Aucune licence active</td></tr>';
+        }
+
+        // Promo codes
+        const pList = document.getElementById('promoList');
+        if (Array.isArray(promos) && promos.length > 0) {
+            pList.innerHTML = promos.map(p => `<div class="promo-chip">
+                <div>
+                    <div class="promo-code">${p.code}</div>
+                    <div class="promo-meta">${p.duration_days}j · ${p.uses}/${p.max_uses} · ${p.note||''}</div>
+                </div>
+                <div class="promo-active">${p.active?'●':''}</div>
+            </div>`).join('');
+        } else {
+            pList.innerHTML = '<div class="empty">Aucun code</div>';
+        }
+    } catch(e) { console.error(e); }
+}
+
+async function createPromos() {
+    const count = document.getElementById('promoCount').value;
+    const days = document.getElementById('promoDays').value;
+    const note = document.getElementById('promoNote').value;
+    const res = await adminFetch(`${API}/api/admin/promo/batch?count=${count}&duration_days=${days}&note=${encodeURIComponent(note)}`, {method:'POST'});
+    const data = await res.json();
+    if (data.codes) {
+        const el = document.getElementById('promoResult');
+        el.style.display = 'block';
+        el.innerHTML = data.codes.join('\n');
+        refresh();
+    }
+}
+
+refresh();
+setInterval(refresh, 15000);
+</script>
 </body>
 </html>
