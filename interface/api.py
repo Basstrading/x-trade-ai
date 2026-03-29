@@ -1318,10 +1318,23 @@ def _get_broker():
 
 
 @app.post("/api/broker/connect")
-async def broker_connect(username: str = "", api_key: str = ""):
-    """Connecte le broker (ProjectX/Topstep). Le user entre ses credentials."""
+async def broker_connect(username: str = "", api_key: str = "",
+                         instrument: str = "MNQ"):
+    """Connecte le broker et demarre le flux de marche."""
     broker = _get_broker()
     result = await broker.connect(username, api_key)
+
+    if result.get("ok") and _risk_desk:
+        # Brancher le flux de marche sur le Risk Desk
+        broker.set_callbacks(
+            bar_callback=_risk_desk.feed_bar,
+            price_callback=_risk_desk.feed_price,
+        )
+        # Demarrer le market feed en background
+        await broker.start_market_feed(instrument=instrument, interval=30)
+        result["feed"] = "started"
+        result["instrument"] = instrument
+
     return result
 
 
