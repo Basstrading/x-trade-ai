@@ -330,9 +330,10 @@
         <div class="options" id="planOptions"></div>
     </div>
 
-    <!-- PAGE 4 : Instrument -->
+    <!-- PAGE 4 : Instrument (choix initial, changeable apres) -->
     <div class="page" id="page4">
-        <div class="question">Quel instrument tradez-vous ?</div>
+        <div class="question">Quel instrument principal ?</div>
+        <div style="text-align:center;color:var(--text2);font-size:12px;margin-bottom:16px">Vous pourrez changer ou ajouter des marches a tout moment dans le dashboard.</div>
         <div class="options" id="instrOptions"></div>
     </div>
 
@@ -543,35 +544,41 @@ function buildInstrOptions() {
 async function selectInstrument(sym) {
     state.instrument = sym;
 
-    // Activation selon le mode
-    if (state.mode === 'trial') {
-        const res = await fetch(`${API}/api/license/trial?trader_id=${encodeURIComponent(state.email.split('@')[0])}&email=${encodeURIComponent(state.email)}&firm=${state.firm}&plan=${state.plan}`, { method: 'POST' });
-        const data = await res.json();
-        if (data.error && !data.key) {
-            showMsg('msg1', data.error, 'error');
-            goTo(1);
-            return;
+    try {
+        const traderId = encodeURIComponent(state.email.split('@')[0]);
+        const email = encodeURIComponent(state.email);
+
+        if (state.mode === 'promo') {
+            const res = await fetch(`${API}/api/license/activate-promo?code=${encodeURIComponent(state.promoCode)}&trader_id=${traderId}&email=${email}&firm=${state.firm}&plan=${state.plan}`, { method: 'POST' });
+            const data = await res.json();
+            state.licenseKey = data.key || '';
+            if (data.error && !data.key) {
+                showMsg('msg1', data.error, 'error');
+                goTo(1);
+                return;
+            }
+        } else if (state.mode === 'paid') {
+            // Essayer Stripe d'abord
+            try {
+                const res = await fetch(`${API}/api/stripe/create-checkout?email=${email}&firm=${state.firm}&plan=${state.plan}`, { method: 'POST' });
+                const data = await res.json();
+                if (data.checkout_url) {
+                    window.location.href = data.checkout_url;
+                    return;
+                }
+            } catch(e) {}
+            // Stripe pas configure → trial
+            const res = await fetch(`${API}/api/license/trial?trader_id=${traderId}&email=${email}&firm=${state.firm}&plan=${state.plan}`, { method: 'POST' });
+            const data = await res.json();
+            state.licenseKey = data.key || '';
+        } else {
+            // Trial
+            const res = await fetch(`${API}/api/license/trial?trader_id=${traderId}&email=${email}&firm=${state.firm}&plan=${state.plan}`, { method: 'POST' });
+            const data = await res.json();
+            state.licenseKey = data.key || '';
         }
-        state.licenseKey = data.key;
-    } else if (state.mode === 'promo') {
-        const res = await fetch(`${API}/api/license/activate-promo?code=${encodeURIComponent(state.promoCode)}&trader_id=${encodeURIComponent(state.email.split('@')[0])}&email=${encodeURIComponent(state.email)}&firm=${state.firm}&plan=${state.plan}`, { method: 'POST' });
-        const data = await res.json();
-        if (data.error) {
-            showMsg('msg1', data.error, 'error');
-            goTo(1);
-            return;
-        }
-        state.licenseKey = data.key;
-    } else if (state.mode === 'paid') {
-        const res = await fetch(`${API}/api/stripe/create-checkout?email=${encodeURIComponent(state.email)}&firm=${state.firm}&plan=${state.plan}`, { method: 'POST' });
-        const data = await res.json();
-        if (data.checkout_url) {
-            window.location.href = data.checkout_url;
-            return;
-        }
-        const trial = await fetch(`${API}/api/license/trial?trader_id=${encodeURIComponent(state.email.split('@')[0])}&email=${encodeURIComponent(state.email)}&firm=${state.firm}&plan=${state.plan}`, { method: 'POST' });
-        const tdata = await trial.json();
-        state.licenseKey = tdata.key || '';
+    } catch(e) {
+        console.error('License error:', e);
     }
 
     // Etape broker
