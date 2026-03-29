@@ -10,6 +10,7 @@
     <meta property="og:title" content="Prop Firm Risk Management Blog | x-trade.ai">
     <meta property="og:description" content="Expert articles on prop firm risk management and drawdown protection for futures traders.">
     <meta property="og:url" content="https://x-trade.ai/blog">
+    <meta name="robots" content="index, follow">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --bg:#07090f; --bg2:#0f1420; --green:#22d97f; --cyan:#06b6d4; --gold:#f59e0b; --red:#ef4444; --text:#f0f4f8; --dim:#64748b; --border:rgba(255,255,255,0.06); }
@@ -18,8 +19,9 @@
         .nav { padding:16px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
         .nav a { color:var(--dim); text-decoration:none; font-size:13px; margin-left:20px; }
         .nav a:hover { color:var(--text); }
-        .logo { font-family:'JetBrains Mono',monospace; font-size:15px; font-weight:700; color:var(--cyan); }
+        .logo { font-family:'JetBrains Mono',monospace; font-size:15px; font-weight:700; color:var(--cyan); text-decoration:none; }
         .logo span { color:var(--text); }
+        .lang-btn { background:none; border:1px solid rgba(255,255,255,0.15); color:var(--text); padding:4px 10px; border-radius:6px; cursor:pointer; font-size:12px; font-weight:600; margin-left:12px; }
         .container { max-width:800px; margin:0 auto; padding:60px 24px; }
         h1 { font-size:36px; font-weight:800; margin-bottom:12px; }
         .subtitle { color:var(--dim); font-size:16px; margin-bottom:50px; }
@@ -41,48 +43,111 @@
     <div class="nav">
         <a href="/" class="logo"><span>x-trade</span>.ai</a>
         <div>
-            <a href="/">Home</a>
-            <a href="/blog" style="color:var(--cyan)">Blog</a>
-            <a href="/onboarding">Start Free</a>
+            <a href="/" data-en="Home" data-fr="Accueil">Home</a>
+            <a href="/blog" style="color:var(--cyan)" data-en="Blog" data-fr="Blog">Blog</a>
+            <a href="/onboarding" data-en="Start Free" data-fr="Essai gratuit">Start Free</a>
+            <button class="lang-btn" id="langBtn" onclick="toggleLang()">FR</button>
         </div>
     </div>
 
     <div class="container">
-        <h1>Blog</h1>
-        <p class="subtitle">Prop firm risk management, drawdown protection & trading psychology.</p>
+        <h1 id="blog-title">Blog</h1>
+        <p class="subtitle" id="blog-sub">Prop firm risk management, drawdown protection & trading psychology.</p>
 
         <a href="/blog/why-prop-firm-traders-fail" class="post-card">
-            <span class="post-tag tag-risk">Risk</span>
-            <div class="post-title">Why 94% of Prop Firm Traders Fail (And the One Fix That Changes Everything)</div>
-            <p class="post-excerpt">The #1 reason traders fail prop firm challenges isn't bad strategy — it's drawdown violations. Here's the data, and what institutional desks do differently.</p>
-            <div class="post-meta"><span>10 min read</span><span>March 2026</span></div>
+            <span class="post-tag tag-risk" id="tag1">Risk</span>
+            <div class="post-title" id="post1-title">Why 93% of Prop Firm Traders Never Get Paid (And the One Fix That Changes Everything)</div>
+            <p class="post-excerpt" id="post1-desc">The #1 reason traders fail prop firm challenges isn't bad strategy — it's drawdown violations. Here's the data, and what institutional desks do differently.</p>
+            <div class="post-meta"><span id="post1-time">10 min read</span><span>March 2026</span></div>
         </a>
 
         <a href="/blog/prop-firm-drawdown-rules-compared" class="post-card">
-            <span class="post-tag tag-compare">Compare</span>
-            <div class="post-title">Prop Firm Drawdown Rules Compared: Topstep vs Apex vs Bulenox vs TPT (2026)</div>
-            <p class="post-excerpt">Side-by-side comparison of trailing drawdown, daily loss limits, consistency rules, and hidden traps for every major futures prop firm.</p>
-            <div class="post-meta"><span>12 min read</span><span>March 2026</span></div>
+            <span class="post-tag tag-compare" id="tag2">Compare</span>
+            <div class="post-title" id="post2-title">Prop Firm Drawdown Rules Compared: Topstep vs Apex vs Bulenox vs TPT (2026)</div>
+            <p class="post-excerpt" id="post2-desc">Side-by-side comparison of trailing drawdown, daily loss limits, consistency rules, and hidden traps for every major futures prop firm.</p>
+            <div class="post-meta"><span id="post2-time">12 min read</span><span>March 2026</span></div>
         </a>
 
         <a href="/blog/revenge-trading-prop-firm" class="post-card">
-            <span class="post-tag tag-psychology">Psychology</span>
-            <div class="post-title">Revenge Trading: How to Stop It Before It Stops You</div>
-            <p class="post-excerpt">3 trades in 5 minutes, 2 losses, size doubled. Sound familiar? Here's how automated risk controls physically prevent revenge trading.</p>
-            <div class="post-meta"><span>7 min read</span><span>March 2026</span></div>
+            <span class="post-tag tag-psychology" id="tag3">Psychology</span>
+            <div class="post-title" id="post3-title">Revenge Trading: How to Stop It Before It Stops You</div>
+            <p class="post-excerpt" id="post3-desc">3 trades in 5 minutes, 2 losses, size doubled. Sound familiar? Here's how automated risk controls physically prevent revenge trading.</p>
+            <div class="post-meta"><span id="post3-time">7 min read</span><span>March 2026</span></div>
         </a>
 
         <a href="/blog/pass-prop-firm-evaluation" class="post-card">
-            <span class="post-tag tag-guide">Guide</span>
-            <div class="post-title">How to Pass Your Prop Firm Evaluation: The Risk-First Approach</div>
-            <p class="post-excerpt">The traders who pass risk under 1% per trade and never breach daily limits. Here's the exact framework they use.</p>
-            <div class="post-meta"><span>8 min read</span><span>March 2026</span></div>
+            <span class="post-tag tag-guide" id="tag4">Guide</span>
+            <div class="post-title" id="post4-title">How to Pass Your Prop Firm Evaluation: The Risk-First Approach</div>
+            <p class="post-excerpt" id="post4-desc">The traders who pass risk under 1% per trade and never breach daily limits. Here's the exact framework they use.</p>
+            <div class="post-meta"><span id="post4-time">8 min read</span><span>March 2026</span></div>
         </a>
     </div>
 
     <div class="footer">
-        <a href="https://x-trade.ai">x-trade.ai</a> — Prop firm risk management for futures traders<br>
+        <a href="https://x-trade.ai">x-trade.ai</a> — <span id="footer-desc">Prop firm risk management for futures traders</span><br>
         <a href="https://basstrading.fr">Bass Trading</a> · <a href="https://hubtrading.fr">HubTrading</a>
     </div>
+
+    <script>
+    let lang = localStorage.getItem('xtrade_lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en');
+
+    const TR = {
+        en: {
+            'blog-title': 'Blog',
+            'blog-sub': 'Prop firm risk management, drawdown protection & trading psychology.',
+            'tag1': 'Risk', 'tag2': 'Compare', 'tag3': 'Psychology', 'tag4': 'Guide',
+            'post1-title': 'Why 93% of Prop Firm Traders Never Get Paid (And the One Fix That Changes Everything)',
+            'post1-desc': 'The #1 reason traders fail prop firm challenges isn\'t bad strategy — it\'s drawdown violations. Here\'s the data, and what institutional desks do differently.',
+            'post1-time': '10 min read',
+            'post2-title': 'Prop Firm Drawdown Rules Compared: Topstep vs Apex vs Bulenox vs TPT (2026)',
+            'post2-desc': 'Side-by-side comparison of trailing drawdown, daily loss limits, consistency rules, and hidden traps for every major futures prop firm.',
+            'post2-time': '12 min read',
+            'post3-title': 'Revenge Trading: How to Stop It Before It Stops You',
+            'post3-desc': '3 trades in 5 minutes, 2 losses, size doubled. Sound familiar? Here\'s how automated risk controls physically prevent revenge trading.',
+            'post3-time': '7 min read',
+            'post4-title': 'How to Pass Your Prop Firm Evaluation: The Risk-First Approach',
+            'post4-desc': 'The traders who pass risk under 1% per trade and never breach daily limits. Here\'s the exact framework they use.',
+            'post4-time': '8 min read',
+            'footer-desc': 'Prop firm risk management for futures traders',
+        },
+        fr: {
+            'blog-title': 'Blog',
+            'blog-sub': 'Gestion du risque prop firm, protection du drawdown & psychologie du trading.',
+            'tag1': 'Risque', 'tag2': 'Comparatif', 'tag3': 'Psychologie', 'tag4': 'Guide',
+            'post1-title': 'Pourquoi 93% des traders prop firm ne sont jamais payes (et la seule solution qui change tout)',
+            'post1-desc': 'La raison #1 des echecs en prop firm n\'est pas une mauvaise strategie — ce sont les violations de drawdown. Voici les donnees et ce que les desks institutionnels font differemment.',
+            'post1-time': '10 min de lecture',
+            'post2-title': 'Regles de drawdown prop firm comparees : Topstep vs Apex vs Bulenox vs TPT (2026)',
+            'post2-desc': 'Comparaison cote a cote du trailing drawdown, des daily loss limits, des regles de consistance et des pieges caches de chaque prop firm futures.',
+            'post2-time': '12 min de lecture',
+            'post3-title': 'Revenge Trading : comment l\'arreter avant qu\'il ne vous arrete',
+            'post3-desc': '3 trades en 5 minutes, 2 pertes, taille doublee. Ca vous parle ? Voici comment les controles automatiques empechent physiquement le revenge trading.',
+            'post3-time': '7 min de lecture',
+            'post4-title': 'Comment reussir votre evaluation prop firm : l\'approche Risk-First',
+            'post4-desc': 'Les traders qui reussissent risquent moins de 1% par trade et ne touchent jamais la daily limit. Voici le framework exact qu\'ils utilisent.',
+            'post4-time': '8 min de lecture',
+            'footer-desc': 'Gestion du risque prop firm pour traders futures',
+        }
+    };
+
+    function applyLang() {
+        for (const [id, html] of Object.entries(TR[lang] || TR.en)) {
+            const el = document.getElementById(id);
+            if (el) el.innerHTML = html;
+        }
+        document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+            el.textContent = el.getAttribute('data-' + lang);
+        });
+        document.getElementById('langBtn').textContent = lang === 'en' ? 'FR' : 'EN';
+    }
+
+    function toggleLang() {
+        lang = lang === 'en' ? 'fr' : 'en';
+        localStorage.setItem('xtrade_lang', lang);
+        applyLang();
+    }
+
+    document.addEventListener('DOMContentLoaded', applyLang);
+    </script>
 </body>
 </html>
