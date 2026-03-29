@@ -189,7 +189,13 @@
             <div class="topbar-logo"><span>x-trade</span>.ai</div>
             <div class="topbar-badge">Owner</div>
         </div>
-        <div class="topbar-right" id="clock"></div>
+        <div style="display:flex;align-items:center;gap:10px">
+            <a href="/" style="color:var(--dim);text-decoration:none;font-size:11px;padding:5px 12px;border:1px solid var(--border);border-radius:6px" target="_blank">Landing</a>
+            <a href="/onboarding" style="color:var(--dim);text-decoration:none;font-size:11px;padding:5px 12px;border:1px solid var(--border);border-radius:6px" target="_blank">Onboarding</a>
+            <a href="/risk-desk" style="color:var(--cyan);text-decoration:none;font-size:11px;padding:5px 12px;border:1px solid rgba(6,182,212,0.25);border-radius:6px" target="_blank">Dashboard Trader</a>
+            <a id="adminLink" style="color:var(--gold);text-decoration:none;font-size:11px;padding:5px 12px;border:1px solid rgba(245,158,11,0.25);border-radius:6px;cursor:pointer" target="_blank">Admin Risk</a>
+            <div class="topbar-right" id="clock"></div>
+        </div>
     </div>
 
     <div class="main">
@@ -355,6 +361,9 @@ async function createPromos() {
         refresh();
     }
 }
+
+// Set admin link with key
+document.getElementById('adminLink').href = '/risk-desk/admin?admin_key=' + ADMIN_KEY;
 
 refresh();
 setInterval(refresh, 15000);
