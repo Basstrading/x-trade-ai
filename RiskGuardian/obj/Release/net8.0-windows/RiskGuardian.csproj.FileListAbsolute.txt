@@ -1,0 +1,12 @@
+C:\Users\PC\RiskGuardian\obj\Release\net8.0-windows\RiskGuardian.csproj.AssemblyReference.cache
+C:\Users\PC\RiskGuardian\obj\Release\net8.0-windows\RiskGuardian.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\PC\RiskGuardian\obj\Release\net8.0-windows\RiskGuardian.AssemblyInfoInputs.cache
+C:\Users\PC\RiskGuardian\obj\Release\net8.0-windows\RiskGuardian.AssemblyInfo.cs
+C:\Users\PC\RiskGuardian\obj\Release\net8.0-windows\RiskGuardian.csproj.CoreCompileInputs.cache
+C:\Users\PC\RiskGuardian\bin\Release\net8.0-windows\RiskGuardian.deps.json
+C:\Users\PC\RiskGuardian\bin\Release\net8.0-windows\RiskGuardian.dll
+C:\Users\PC\RiskGuardian\bin\Release\net8.0-windows\RiskGuardian.pdb
+C:\Users\PC\RiskGuardian\obj\Release\net8.0-windows\RiskGuardian.dll
+C:\Users\PC\RiskGuardian\obj\Release\net8.0-windows\refint\RiskGuardian.dll
+C:\Users\PC\RiskGuardian\obj\Release\net8.0-windows\RiskGuardian.pdb
+C:\Users\PC\RiskGuardian\obj\Release\net8.0-windows\ref\RiskGuardian.dll

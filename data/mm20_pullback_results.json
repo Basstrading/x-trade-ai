@@ -1,0 +1,166 @@
+{
+  "best_config": {
+    "pb_bars": 10,
+    "pb_dist": 15
+  },
+  "top10": [
+    {
+      "pb_bars": 10,
+      "pb_dist": 15,
+      "trades": 1192,
+      "wr": 51.8,
+      "pnl": 209512.0,
+      "pf": 2.06,
+      "sharpe": 3.78,
+      "max_dd": 6660.0,
+      "avg_trade": 175.77,
+      "avg_win": 660.87,
+      "avg_loss": -347.18,
+      "score": 64.80401201201202
+    },
+    {
+      "pb_bars": 10,
+      "pb_dist": 5,
+      "trades": 1182,
+      "wr": 51.4,
+      "pnl": 207342.0,
+      "pf": 2.08,
+      "sharpe": 3.82,
+      "max_dd": 6660.0,
+      "avg_trade": 175.42,
+      "avg_win": 656.26,
+      "avg_loss": -335.66,
+      "score": 64.75545945945946
+    },
+    {
+      "pb_bars": 10,
+      "pb_dist": 0,
+      "trades": 1171,
+      "wr": 51.8,
+      "pnl": 205906.0,
+      "pf": 2.09,
+      "sharpe": 3.84,
+      "max_dd": 6660.0,
+      "avg_trade": 175.84,
+      "avg_win": 651.23,
+      "avg_loss": -335.84,
+      "score": 64.61614714714715
+    },
+    {
+      "pb_bars": 8,
+      "pb_dist": 5,
+      "trades": 1179,
+      "wr": 51.2,
+      "pnl": 206306.0,
+      "pf": 2.07,
+      "sharpe": 3.8,
+      "max_dd": 6660.0,
+      "avg_trade": 174.98,
+      "avg_win": 659.3,
+      "avg_loss": -335.51,
+      "score": 64.12213513513514
+    },
+    {
+      "pb_bars": 8,
+      "pb_dist": 10,
+      "trades": 1186,
+      "wr": 51.7,
+      "pnl": 206752.0,
+      "pf": 2.06,
+      "sharpe": 3.77,
+      "max_dd": 6660.0,
+      "avg_trade": 174.33,
+      "avg_win": 656.9,
+      "avg_loss": -344.34,
+      "score": 63.95031831831832
+    },
+    {
+      "pb_bars": 10,
+      "pb_dist": 10,
+      "trades": 1190,
+      "wr": 51.7,
+      "pnl": 207534.0,
+      "pf": 2.05,
+      "sharpe": 3.77,
+      "max_dd": 6660.0,
+      "avg_trade": 174.4,
+      "avg_win": 657.45,
+      "avg_loss": -344.65,
+      "score": 63.88058558558558
+    },
+    {
+      "pb_bars": 8,
+      "pb_dist": 15,
+      "trades": 1190,
+      "wr": 51.6,
+      "pnl": 207036.0,
+      "pf": 2.04,
+      "sharpe": 3.75,
+      "max_dd": 6660.0,
+      "avg_trade": 173.98,
+      "avg_win": 660.47,
+      "avg_loss": -347.02,
+      "score": 63.41643243243243
+    },
+    {
+      "pb_bars": 8,
+      "pb_dist": 0,
+      "trades": 1163,
+      "wr": 51.4,
+      "pnl": 198394.0,
+      "pf": 2.05,
+      "sharpe": 3.74,
+      "max_dd": 6660.0,
+      "avg_trade": 170.59,
+      "avg_win": 647.25,
+      "avg_loss": -335.69,
+      "score": 61.06722222222221
+    },
+    {
+      "pb_bars": 5,
+      "pb_dist": 15,
+      "trades": 1182,
+      "wr": 51.4,
+      "pnl": 199162.0,
+      "pf": 2.04,
+      "sharpe": 3.7,
+      "max_dd": 6660.0,
+      "avg_trade": 168.5,
+      "avg_win": 643.84,
+      "avg_loss": -335.05,
+      "score": 61.004576576576575
+    },
+    {
+      "pb_bars": 3,
+      "pb_dist": 10,
+      "trades": 1164,
+      "wr": 49.7,
+      "pnl": 193660.0,
+      "pf": 2.05,
+      "sharpe": 3.79,
+      "max_dd": 6612.0,
+      "avg_trade": 166.37,
+      "avg_win": 652.73,
+      "avg_loss": -317.16,
+      "score": 60.042800967937076
+    }
+  ],
+  "comparison": {
+    "classic": {
+      "trades": 1038,
+      "wr": 51.1,
+      "pnl": 168458.0,
+      "pf": 1.88,
+      "sharpe": 3.34,
+      "max_dd": 15894.0
+    },
+    "pullback": {
+      "trades": 1192,
+      "wr": 51.8,
+      "pnl": 209512.0,
+      "pf": 2.06,
+      "sharpe": 3.78,
+      "max_dd": 6660.0
+    }
+  }
+}

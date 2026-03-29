@@ -1,0 +1,53 @@
+{
+  "strategy": "OPR",
+  "instrument": "MNQ",
+  "account": "topstep_150k",
+  "version": "DynSL-PeriodsHighLow-cap200",
+  "params": {
+    "tp_long": 217.75,
+    "tp_short": 205.75,
+    "sl_type": "periods_high_low",
+    "sl_long_periods": 9,
+    "sl_long_delta": -41.75,
+    "sl_short_periods": 15,
+    "sl_short_delta": 0.25,
+    "sl_max_pts": 200,
+    "max_trades": 6,
+    "max_longs": 3,
+    "max_shorts": 3,
+    "min_range": 15,
+    "max_range": 999,
+    "close_hour": 20,
+    "close_min": 49,
+    "daily_loss_limit": -1800,
+    "topstep_daily_limit": -4500,
+    "topstep_trailing_dd": -4500,
+    "point_value": 2.0,
+    "contracts": 4,
+    "sar_enabled": false
+  },
+  "backtest": {
+    "data_range": "2026-01-09 to 2026-03-09",
+    "trading_days": 42,
+    "trades": 67,
+    "win_rate": 65.7,
+    "pnl_total": 19498.0,
+    "profit_factor": 1.82,
+    "sharpe_ratio": 4.17,
+    "max_drawdown": 2636.0,
+    "expectancy": 291.01,
+    "projected_monthly_20j": 9749.0,
+    "days_over_agent": 1,
+    "days_over_topstep": 0,
+    "sl_avg": 175.4,
+    "sl_max_observed": 200.0,
+    "sl_median": 200.0
+  },
+  "previous_version": {
+    "version": "VIDEO-optimisee-SAR",
+    "pnl_total": 17936.0,
+    "profit_factor": 1.75,
+    "max_drawdown": 3394.0,
+    "note": "remplacee le 2026-03-09"
+  }
+}

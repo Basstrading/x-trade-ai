@@ -76,6 +76,14 @@ async def dashboard():
     return FileResponse(os.path.join(static_dir, "dashboard.html"))
 
 
+@app.get("/owner")
+async def owner_page(admin_key: str = ""):
+    """Owner panel — gestion business, licences, codes promo."""
+    if admin_key != ADMIN_KEY:
+        return FileResponse(os.path.join(static_dir, "risk-desk-login.html"))
+    return FileResponse(os.path.join(static_dir, "owner.html"))
+
+
 @app.get("/onboarding")
 async def onboarding_page():
     """Page d'onboarding — le client configure son Risk Desk en 4 clics."""

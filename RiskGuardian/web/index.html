@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/landing/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
   <link rel="manifest" href="/landing/manifest.json" />
 </head>
 <body>
@@ -26,33 +27,34 @@
         <span class="logo-icon">&#9632;</span> x-trade<span class="accent">.ai</span>
       </a>
       <div class="nav-links">
-        <a href="#how">How It Works</a>
-        <a href="#features">Features</a>
-        <a href="#firms">Prop Firms</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#pricing" class="btn-nav">Start Free Trial</a>
+        <a href="#how" data-en="How It Works" data-fr="Comment ca marche">How It Works</a>
+        <a href="#features" data-en="Features" data-fr="Fonctionnalites">Features</a>
+        <a href="#firms" data-en="Prop Firms" data-fr="Prop Firms">Prop Firms</a>
+        <a href="#pricing" data-en="Pricing" data-fr="Tarifs">Pricing</a>
+        <a href="#pricing" class="btn-nav" data-en="Start Free Trial" data-fr="Essai gratuit">Start Free Trial</a>
+        <button onclick="toggleLang()" id="langBtn" style="background:none;border:1px solid rgba(255,255,255,0.15);color:#e2eaf5;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;margin-left:8px">FR</button>
       </div>
     </div>
   </nav>
 
   <!-- ====== HERO ====== -->
   <section class="hero" id="hero">
-    <div class="hero-badge reveal">INSTITUTIONAL RISK DESK FOR PROP FIRM TRADERS</div>
-    <h1 class="hero-title reveal">
+    <div class="hero-badge reveal" id="hero-badge">INSTITUTIONAL RISK DESK FOR PROP FIRM TRADERS</div>
+    <h1 class="hero-title reveal" id="hero-title">
       Your prop firm account<br/>
       <span class="text-strike">won't blow itself up.</span><br/>
       <span class="gradient-text">We make sure of it.</span>
     </h1>
-    <p class="hero-sub reveal">
+    <p class="hero-sub reveal" id="hero-sub">
       x-trade.ai is your personal risk desk. It calculates your size, sets your stops,<br/>
       and blocks you before you hit the drawdown. You trade. It protects.
     </p>
     <div class="hero-cta reveal">
       <a href="#pricing" class="btn-primary">
-        <span>Start Free Trial</span>
+        <span id="hero-cta-1">Start Free Trial</span>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
-      <a href="#how" class="btn-ghost">How It Works</a>
+      <a href="#how" class="btn-ghost" id="hero-cta-2">How It Works</a>
     </div>
 
     <!-- STATS -->
@@ -129,29 +131,29 @@
       <div class="problem-grid reveal">
         <div class="problem-card">
           <div class="problem-icon">&#128176;</div>
-          <h3>80% of prop firm traders fail</h3>
-          <p>Not because they can't trade. Because they can't manage risk. One bad day erases a week of gains.</p>
+          <h3 id="p1-title">80% of prop firm traders fail</h3>
+          <p id="p1-desc">Not because they can't trade. Because they can't manage risk. One bad day erases a week of gains.</p>
         </div>
         <div class="problem-card">
           <div class="problem-icon">&#128293;</div>
-          <h3>No daily loss limit = no safety net</h3>
-          <p>Topstep removed daily limits. One emotional session and your $2,000 drawdown is gone. Forever.</p>
+          <h3 id="p2-title">No daily loss limit = no safety net</h3>
+          <p id="p2-desc">Topstep removed daily limits. One emotional session and your $2,000 drawdown is gone. Forever.</p>
         </div>
         <div class="problem-card">
           <div class="problem-icon">&#9200;</div>
-          <h3>"I'll manage my risk myself"</h3>
-          <p>You said that before your last blown account too. Willpower doesn't work at 3 consecutive losses.</p>
+          <h3 id="p3-title">"I'll manage my risk myself"</h3>
+          <p id="p3-desc">You said that before your last blown account too. Willpower doesn't work at 3 consecutive losses.</p>
         </div>
         <div class="problem-card">
           <div class="problem-icon">&#128200;</div>
-          <h3>So close to payout, then...</h3>
-          <p>$2,800 of $3,000 target. One FOMC candle, full size, no plan. Back to zero.</p>
+          <h3 id="p4-title">So close to payout, then...</h3>
+          <p id="p4-desc">$2,800 of $3,000 target. One FOMC candle, full size, no plan. Back to zero.</p>
         </div>
       </div>
       <div class="problem-solution reveal">
         <p class="solution-text">
-          <span class="gradient-text">In banks, traders don't manage their own risk. A desk does.</span><br/>
-          x-trade.ai is that desk. For you. For your prop firm account.
+          <span id="solution"><span class="gradient-text">In banks, traders don't manage their own risk. A desk does.</span><br/>
+          x-trade.ai is that desk. For you. For your prop firm account.</span>
         </p>
       </div>
     </div>
@@ -162,25 +164,25 @@
     <div class="container">
       <div class="section-header reveal">
         <div class="section-badge">HOW IT WORKS</div>
-        <h2>You trade. <span class="gradient-text">The desk handles everything else.</span></h2>
+        <h2 id="how-title">You trade. <span class="gradient-text">The desk handles everything else.</span></h2>
       </div>
       <div class="steps reveal">
         <div class="step">
           <div class="step-num">1</div>
-          <h3>Pick your prop firm & plan</h3>
-          <p>Topstep, Apex, Bulenox, Tradeify, TakeProfitTrader. All rules pre-loaded. Nothing to configure.</p>
+          <h3 id="how-1-title">Pick your prop firm & plan</h3>
+          <p id="how-1-desc">Topstep, Apex, Bulenox, Tradeify, TakeProfitTrader. All rules pre-loaded. Nothing to configure.</p>
         </div>
         <div class="step-line"></div>
         <div class="step">
           <div class="step-num">2</div>
-          <h3>See your framework</h3>
-          <p>Green light = trade. The desk shows your size, your stop, your budget. Updated in real-time.</p>
+          <h3 id="how-2-title">See your framework</h3>
+          <p id="how-2-desc">Green light = trade. The desk shows your size, your stop, your budget. Updated in real-time.</p>
         </div>
         <div class="step-line"></div>
         <div class="step">
           <div class="step-num">3</div>
-          <h3>Execute & reach payout</h3>
-          <p>You focus on setups. The desk tightens when you lose, protects on FOMC days, and tracks your payout progress.</p>
+          <h3 id="how-3-title">Execute & reach payout</h3>
+          <p id="how-3-desc">You focus on setups. The desk tightens when you lose, protects on FOMC days, and tracks your payout progress.</p>
         </div>
       </div>
     </div>
@@ -321,18 +323,18 @@
     <div class="container">
       <div class="section-header reveal">
         <div class="section-badge">PRICING</div>
-        <h2>Your blown account cost you $2,000.<br/><span class="gradient-text">This costs less than one losing trade.</span></h2>
+        <h2 id="price-title">Your blown account cost you $2,000.<br/><span class="gradient-text">This costs less than one losing trade.</span></h2>
       </div>
 
       <div class="pricing-grid reveal">
         <div class="price-card">
-          <div class="price-tier">Free Trial</div>
+          <div class="price-tier" id="trial-title">Free Trial</div>
           <div class="price-amount">
             <span class="price-currency">$</span>
             <span class="price-number">0</span>
-            <span class="price-period">/7 days</span>
+            <span class="price-period" id="trial-period">/7 days</span>
           </div>
-          <div class="price-desc">Full access. No credit card. See if it saves your account.</div>
+          <div class="price-desc" id="trial-desc">Full access. No credit card. See if it saves your account.</div>
           <ul class="price-features">
             <li>1 prop firm account</li>
             <li>All risk modules</li>
@@ -340,7 +342,7 @@
             <li>Payout tracking</li>
             <li>Auto-detection (news, tilt, regime)</li>
           </ul>
-          <a href="/onboarding?mode=trial" class="btn-primary btn-full" id="btn-trial">Start Free Trial</a>
+          <a href="/onboarding?mode=trial" class="btn-primary btn-full" id="trial-btn">Start Free Trial</a>
         </div>
 
         <div class="price-card pro">
@@ -351,7 +353,7 @@
             <span class="price-number">29</span>
             <span class="price-period">/account/month</span>
           </div>
-          <div class="price-desc">One payout covers years of this. 3 accounts? $87/mo. Still cheaper than one blown account.</div>
+          <div class="price-desc" id="pro-desc">One payout covers years of this. 3 accounts? $87/mo. Still cheaper than one blown account.</div>
           <ul class="price-features">
             <li>1 prop firm account per license</li>
             <li>All 5 prop firms supported</li>
@@ -361,7 +363,7 @@
             <li>Priority rule updates</li>
             <li>Cancel anytime</li>
           </ul>
-          <a href="/onboarding?mode=paid" class="btn-primary btn-full" id="btn-subscribe">Get Started — $29/mo</a>
+          <a href="/onboarding?mode=paid" class="btn-primary btn-full" id="pro-btn">Get Started — $29/mo</a>
         </div>
       </div>
     </div>
@@ -371,10 +373,10 @@
   <section class="section cta-final">
     <div class="container">
       <div class="cta-box reveal">
-        <h2>Your next losing streak is coming.<br/><span class="gradient-text">This time, you'll survive it.</span></h2>
-        <p>Every prop firm trader who blew an account wishes they had a risk desk. Now you do.</p>
+        <h2 id="cta-title">Your next losing streak is coming.<br/><span class="gradient-text">This time, you'll survive it.</span></h2>
+        <p id="cta-desc">Every prop firm trader who blew an account wishes they had a risk desk. Now you do.</p>
         <a href="#pricing" class="btn-primary btn-lg">
-          <span>Start Free Trial</span>
+          <span id="cta-btn">Start Free Trial</span>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
       </div>
@@ -387,7 +389,7 @@
       <div class="footer-inner">
         <div class="footer-brand">
           <span class="logo-icon">&#9632;</span> x-trade<span class="accent">.ai</span>
-          <p>Institutional risk management for prop firm traders.</p>
+          <p id="footer-desc">Institutional risk management for prop firm traders.</p>
         </div>
         <div class="footer-links">
           <a href="#how">How It Works</a>
@@ -397,7 +399,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 x-trade.ai. Built by traders who blew accounts, for traders who won't.</p>
+        <p id="footer-copy">&copy; 2026 x-trade.ai. Built by traders who blew accounts, for traders who won't.</p>
       </div>
     </div>
   </footer>
@@ -409,5 +411,89 @@
   </div>
 
   <script src="/landing/app.js"></script>
+  <script>
+  // ── FR/EN Translation ──
+  let lang = localStorage.getItem('xtrade_lang') || 'en';
+
+  const T = {
+    // Hero
+    'hero-badge': { en: 'INSTITUTIONAL RISK DESK FOR PROP FIRM TRADERS', fr: 'RISK DESK INSTITUTIONNEL POUR TRADERS PROP FIRM' },
+    'hero-title': {
+      en: 'Your prop firm account<br/><s>won\'t blow itself up.</s><br/><span class="gradient-text">We make sure of it.</span>',
+      fr: 'Votre compte prop firm<br/><s>ne va pas se cramer tout seul.</s><br/><span class="gradient-text">On s\'en assure.</span>'
+    },
+    'hero-sub': {
+      en: 'x-trade.ai is your personal risk desk. It calculates your size, sets your stops,<br/>and blocks you before you hit the drawdown. You trade. It protects.',
+      fr: 'x-trade.ai est votre risk desk personnel. Il calcule votre taille, fixe vos stops,<br/>et vous bloque avant de toucher le drawdown. Vous tradez. Il protege.'
+    },
+    'hero-cta-1': { en: 'Start Free Trial', fr: 'Essai gratuit' },
+    'hero-cta-2': { en: 'How It Works', fr: 'Comment ca marche' },
+    // Problem
+    'p1-title': { en: '80% of prop firm traders fail', fr: '80% des traders prop firm echouent' },
+    'p1-desc': { en: 'Not because they can\'t trade. Because they can\'t manage risk. One bad day erases a week of gains.', fr: 'Pas parce qu\'ils ne savent pas trader. Parce qu\'ils ne gerent pas le risque. Un mauvais jour efface une semaine de gains.' },
+    'p2-title': { en: 'No daily loss limit = no safety net', fr: 'Pas de daily limit = pas de filet' },
+    'p2-desc': { en: 'Topstep removed daily limits. One emotional session and your $2,000 drawdown is gone. Forever.', fr: 'Topstep a supprime les daily limits. Une session emotionnelle et votre drawdown de $2,000 est parti. Pour toujours.' },
+    'p3-title': { en: '"I\'ll manage my risk myself"', fr: '"Je vais gerer mon risque moi-meme"' },
+    'p3-desc': { en: 'You said that before your last blown account too. Willpower doesn\'t work at 3 consecutive losses.', fr: 'Vous avez dit ca avant votre dernier compte crame aussi. La volonte ne marche pas apres 3 pertes consecutives.' },
+    'p4-title': { en: 'So close to payout, then...', fr: 'Si pres du payout, et puis...' },
+    'p4-desc': { en: '$2,800 of $3,000 target. One FOMC candle, full size, no plan. Back to zero.', fr: '$2,800 sur $3,000 d\'objectif. Une bougie FOMC, pleine taille, pas de plan. Retour a zero.' },
+    'solution': {
+      en: '<span class="gradient-text">In banks, traders don\'t manage their own risk. A desk does.</span><br/>x-trade.ai is that desk. For you. For your prop firm account.',
+      fr: '<span class="gradient-text">En banque, les traders ne gerent pas leur propre risque. Un desk le fait.</span><br/>x-trade.ai est ce desk. Pour vous. Pour votre compte prop firm.'
+    },
+    // How
+    'how-title': { en: 'You trade. <span class="gradient-text">The desk handles everything else.</span>', fr: 'Vous tradez. <span class="gradient-text">Le desk gere tout le reste.</span>' },
+    'how-1-title': { en: 'Pick your prop firm & plan', fr: 'Choisissez votre prop firm' },
+    'how-1-desc': { en: 'Topstep, Apex, Bulenox, Tradeify, TakeProfitTrader. All rules pre-loaded. Nothing to configure.', fr: 'Topstep, Apex, Bulenox, Tradeify, TakeProfitTrader. Toutes les regles pre-chargees. Rien a configurer.' },
+    'how-2-title': { en: 'See your framework', fr: 'Voyez votre cadre' },
+    'how-2-desc': { en: 'Green light = trade. The desk shows your size, your stop, your budget. Updated in real-time.', fr: 'Feu vert = tradez. Le desk affiche votre taille, votre stop, votre budget. Mis a jour en temps reel.' },
+    'how-3-title': { en: 'Execute & reach payout', fr: 'Executez & atteignez le payout' },
+    'how-3-desc': { en: 'You focus on setups. The desk tightens when you lose, protects on FOMC days, and tracks your payout progress.', fr: 'Concentrez-vous sur vos setups. Le desk serre quand vous perdez, protege les jours FOMC, et suit votre progression payout.' },
+    // Pricing
+    'price-title': {
+      en: 'Your blown account cost you $2,000.<br/><span class="gradient-text">This costs less than one losing trade.</span>',
+      fr: 'Votre compte crame vous a coute $2,000.<br/><span class="gradient-text">Ceci coute moins qu\'un trade perdant.</span>'
+    },
+    'trial-title': { en: 'Free Trial', fr: 'Essai gratuit' },
+    'trial-period': { en: '/7 days', fr: '/7 jours' },
+    'trial-desc': { en: 'Full access. No credit card. See if it saves your account.', fr: 'Acces complet. Sans carte bancaire. Voyez si ca sauve votre compte.' },
+    'trial-btn': { en: 'Start Free Trial', fr: 'Commencer l\'essai' },
+    'pro-desc': { en: 'One payout covers years of this. 3 accounts? $87/mo. Still cheaper than one blown account.', fr: 'Un payout couvre des annees. 3 comptes ? $87/mois. Moins cher qu\'un compte crame.' },
+    'pro-btn': { en: 'Get Started — $29/mo', fr: 'Commencer — $29/mois' },
+    // CTA
+    'cta-title': {
+      en: 'Your next losing streak is coming.<br/><span class="gradient-text">This time, you\'ll survive it.</span>',
+      fr: 'Votre prochaine serie de pertes arrive.<br/><span class="gradient-text">Cette fois, vous y survivrez.</span>'
+    },
+    'cta-desc': { en: 'Every prop firm trader who blew an account wishes they had a risk desk. Now you do.', fr: 'Chaque trader prop firm qui a crame un compte aurait voulu avoir un risk desk. Maintenant vous l\'avez.' },
+    'cta-btn': { en: 'Start Free Trial', fr: 'Commencer l\'essai' },
+    // Footer
+    'footer-desc': { en: 'Institutional risk management for prop firm traders.', fr: 'Risk management institutionnel pour traders prop firm.' },
+    'footer-copy': { en: '&copy; 2026 x-trade.ai. Built by traders who blew accounts, for traders who won\'t.', fr: '&copy; 2026 x-trade.ai. Construit par des traders qui ont crame des comptes, pour ceux qui ne le feront plus.' },
+  };
+
+  function applyLang() {
+    document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+      el.textContent = el.getAttribute('data-' + lang);
+    });
+    for (const [id, texts] of Object.entries(T)) {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = texts[lang];
+    }
+    document.getElementById('langBtn').textContent = lang === 'en' ? 'FR' : 'EN';
+  }
+
+  function toggleLang() {
+    lang = lang === 'en' ? 'fr' : 'en';
+    localStorage.setItem('xtrade_lang', lang);
+    applyLang();
+  }
+
+  // Auto-detect browser language
+  if (!localStorage.getItem('xtrade_lang')) {
+    lang = navigator.language.startsWith('fr') ? 'fr' : 'en';
+  }
+  document.addEventListener('DOMContentLoaded', applyLang);
+  </script>
 </body>
 </html>

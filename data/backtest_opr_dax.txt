@@ -1,0 +1,64 @@
+Loading FDXM 5min data...
+  28660 bars | 2025-09-12 -> 2026-03-11
+
+Running OPR DAX backtest...
+=====================================================================================
+  STRATEGIE OPR DAX 08h-09h | 2 Mini-DAX (10 EUR/pt) | FLAT 13h
+=====================================================================================
+  Trades     : 123
+  Win Rate   : 39.8%
+  PnL        : EUR +440
+  PF         : 1.01
+  Sharpe     : 0.07
+  Avg Win    : EUR +896
+  Avg Loss   : EUR -587
+  Max DD     : EUR 7,410
+  Sorties    : sl 62x, flat_13h 44x, tp 17x
+
+  --- P&L Mensuel ---
+  2025-09  |  13t  |  WR  38.5%  |  EUR      -190  |  cumul      -190  -
+  2025-10  |  23t  |  WR  34.8%  |  EUR    -1,900  |  cumul    -2,090  -
+  2025-11  |  20t  |  WR  50.0%  |  EUR      +790  |  cumul    -1,300  +
+  2025-12  |  18t  |  WR  38.9%  |  EUR    -2,400  |  cumul    -3,700  -
+  2026-01  |  21t  |  WR  38.1%  |  EUR    +2,820  |  cumul      -880  +
+  2026-02  |  20t  |  WR  30.0%  |  EUR    -2,080  |  cumul    -2,960  -
+  2026-03  |   8t  |  WR  62.5%  |  EUR    +3,400  |  cumul      +440  +
+
+  Jours: 49+ / 74- / 0= sur 123 jours trades
+
+
+Running MM20 Pullback DAX backtest...
+=====================================================================================
+  MM20 PULLBACK DAX | 2 Mini-DAX (10 EUR/pt) | 10h-close CET
+=====================================================================================
+  Trades     : 214
+  Win Rate   : 57.9%
+  PnL        : EUR +73,340
+  PF         : 3.2
+  Sharpe     : 5.85
+  Avg Win    : EUR +861
+  Avg Loss   : EUR -371
+  Max DD     : EUR 4,650
+
+  --- P&L Mensuel ---
+  2025-09  |  19t  |  WR  47.4%  |  EUR    +4,200  |  cumul    +4,200  +
+  2025-10  |  33t  |  WR  72.7%  |  EUR   +16,290  |  cumul   +20,490  +
+  2025-11  |  36t  |  WR  69.4%  |  EUR   +23,440  |  cumul   +43,930  +
+  2025-12  |  26t  |  WR  42.3%  |  EUR    +6,810  |  cumul   +50,740  +
+  2026-01  |  34t  |  WR  52.9%  |  EUR    +9,820  |  cumul   +60,560  +
+  2026-02  |  41t  |  WR  63.4%  |  EUR    +8,000  |  cumul   +68,560  +
+  2026-03  |  25t  |  WR  44.0%  |  EUR    +4,780  |  cumul   +73,340  +
+
+
+=====================================================================================
+  COMPARATIF — 6 MOIS DAX (Sep 2025 - Mar 2026)
+=====================================================================================
+                                       OPR 8h-9h   MM20 Pullback
+  --------------------------------------------------------------
+  Trades                                     123             214
+  Win Rate                                 39.8%           57.9%
+  PnL Total                                +440E        +73,340E
+  Profit Factor                             1.01             3.2
+  Sizing                              2 Mini-DAX      2 Mini-DAX
+  Horaires                           08h-13h CET   10h-close CET
+  Type                              Breakout OPR     Trend SMA20

@@ -1,0 +1,502 @@
+[
+  {
+    "params": {
+      "trail_bars": 12,
+      "tp_points": 400,
+      "start_offset_min": 30,
+      "min_sma_dist": 15,
+      "max_sma_dist": 0,
+      "daily_loss_stop": 2,
+      "atr_min": 0
+    },
+    "trades": 80,
+    "win_rate": 58.8,
+    "pnl": 52150.0,
+    "avg_trade": 651.88,
+    "pf": 2.75,
+    "max_dd": 3305.0,
+    "sharpe": 5.43,
+    "exits": {
+      "tp": 0,
+      "trail": 57,
+      "time": 22,
+      "eod": 1
+    },
+    "score": 43.39
+  },
+  {
+    "params": {
+      "trail_bars": 15,
+      "tp_points": 400,
+      "start_offset_min": 30,
+      "min_sma_dist": 20,
+      "max_sma_dist": 0,
+      "daily_loss_stop": 2,
+      "atr_min": 0
+    },
+    "trades": 66,
+    "win_rate": 66.7,
+    "pnl": 57575.0,
+    "avg_trade": 872.35,
+    "pf": 3.54,
+    "max_dd": 5235.0,
+    "sharpe": 6.86,
+    "exits": {
+      "tp": 0,
+      "trail": 44,
+      "time": 21,
+      "eod": 1
+    },
+    "score": 38.93
+  },
+  {
+    "params": {
+      "trail_bars": 15,
+      "tp_points": 400,
+      "start_offset_min": 30,
+      "min_sma_dist": 20,
+      "max_sma_dist": 150,
+      "daily_loss_stop": 2,
+      "atr_min": 0
+    },
+    "trades": 67,
+    "win_rate": 65.7,
+    "pnl": 53665.0,
+    "avg_trade": 800.97,
+    "pf": 3.13,
+    "max_dd": 4315.0,
+    "sharpe": 5.93,
+    "exits": {
+      "tp": 1,
+      "trail": 44,
+      "time": 21,
+      "eod": 1
+    },
+    "score": 38.93
+  },
+  {
+    "params": {
+      "trail_bars": 12,
+      "tp_points": 400,
+      "start_offset_min": 30,
+      "min_sma_dist": 20,
+      "max_sma_dist": 0,
+      "daily_loss_stop": 2,
+      "atr_min": 0
+    },
+    "trades": 78,
+    "win_rate": 60.3,
+    "pnl": 53395.0,
+    "avg_trade": 684.55,
+    "pf": 2.86,
+    "max_dd": 4010.0,
+    "sharpe": 5.66,
+    "exits": {
+      "tp": 0,
+      "trail": 55,
+      "time": 22,
+      "eod": 1
+    },
+    "score": 38.08
+  },
+  {
+    "params": {
+      "trail_bars": 15,
+      "tp_points": 400,
+      "start_offset_min": 30,
+      "min_sma_dist": 20,
+      "max_sma_dist": 150,
+      "daily_loss_stop": 3,
+      "atr_min": 0
+    },
+    "trades": 71,
+    "win_rate": 64.8,
+    "pnl": 54050.0,
+    "avg_trade": 761.27,
+    "pf": 2.97,
+    "max_dd": 4315.0,
+    "sharpe": 5.71,
+    "exits": {
+      "tp": 1,
+      "trail": 45,
+      "time": 24,
+      "eod": 1
+    },
+    "score": 37.2
+  },
+  {
+    "params": {
+      "trail_bars": 15,
+      "tp_points": 400,
+      "start_offset_min": 30,
+      "min_sma_dist": 20,
+      "max_sma_dist": 0,
+      "daily_loss_stop": 3,
+      "atr_min": 0
+    },
+    "trades": 70,
+    "win_rate": 65.7,
+    "pnl": 57960.0,
+    "avg_trade": 828.0,
+    "pf": 3.33,
+    "max_dd": 5235.0,
+    "sharpe": 6.58,
+    "exits": {
+      "tp": 0,
+      "trail": 45,
+      "time": 24,
+      "eod": 1
+    },
+    "score": 36.87
+  },
+  {
+    "params": {
+      "trail_bars": 15,
+      "tp_points": 300,
+      "start_offset_min": 30,
+      "min_sma_dist": 20,
+      "max_sma_dist": 0,
+      "daily_loss_stop": 2,
+      "atr_min": 0
+    },
+    "trades": 70,
+    "win_rate": 64.3,
+    "pnl": 59510.0,
+    "avg_trade": 850.14,
+    "pf": 3.25,
+    "max_dd": 5450.0,
+    "sharpe": 6.31,
+    "exits": {
+      "tp": 4,
+      "trail": 44,
+      "time": 21,
+      "eod": 1
+    },
+    "score": 35.49
+  },
+  {
+    "params": {
+      "trail_bars": 15,
+      "tp_points": 300,
+      "start_offset_min": 30,
+      "min_sma_dist": 20,
+      "max_sma_dist": 150,
+      "daily_loss_stop": 2,
+      "atr_min": 0
+    },
+    "trades": 69,
+    "win_rate": 66.7,
+    "pnl": 54590.0,
+    "avg_trade": 791.16,
+    "pf": 3.2,
+    "max_dd": 5030.0,
+    "sharpe": 6.19,
+    "exits": {
+      "tp": 3,
+      "trail": 44,
+      "time": 21,
+      "eod": 1
+    },
+    "score": 34.73
+  },
+  {
+    "params": {
+      "trail_bars": 15,
+      "tp_points": 300,
+      "start_offset_min": 30,
+      "min_sma_dist": 20,
+      "max_sma_dist": 0,
+      "daily_loss_stop": 3,
+      "atr_min": 0
+    },
+    "trades": 74,
+    "win_rate": 63.5,
+    "pnl": 59895.0,
+    "avg_trade": 809.39,
+    "pf": 3.09,
+    "max_dd": 5450.0,
+    "sharpe": 6.09,
+    "exits": {
+      "tp": 4,
+      "trail": 45,
+      "time": 24,
+      "eod": 1
+    },
+    "score": 33.96
+  },
+  {
+    "params": {
+      "trail_bars": 15,
+      "tp_points": 300,
+      "start_offset_min": 30,
+      "min_sma_dist": 20,
+      "max_sma_dist": 100,
+      "daily_loss_stop": 3,
+      "atr_min": 0
+    },
+    "trades": 73,
+    "win_rate": 63.0,
+    "pnl": 54615.0,
+    "avg_trade": 748.15,
+    "pf": 2.79,
+    "max_dd": 4575.0,
+    "sharpe": 5.7,
+    "exits": {
+      "tp": 3,
+      "trail": 45,
+      "time": 24,
+      "eod": 1
+    },
+    "score": 33.31
+  },
+  {
+    "params": {
+      "trail_bars": 12,
+      "tp_points": 300,
+      "start_offset_min": 30,
+      "min_sma_dist": 15,
+      "max_sma_dist": 0,
+      "daily_loss_stop": 2,
+      "atr_min": 0
+    },
+    "trades": 84,
+    "win_rate": 57.1,
+    "pnl": 54085.0,
+    "avg_trade": 643.87,
+    "pf": 2.57,
+    "max_dd": 4185.0,
+    "sharpe": 5.04,
+    "exits": {
+      "tp": 4,
+      "trail": 57,
+      "time": 22,
+      "eod": 1
+    },
+    "score": 33.21
+  },
+  {
+    "params": {
+      "trail_bars": 15,
+      "tp_points": 300,
+      "start_offset_min": 30,
+      "min_sma_dist": 20,
+      "max_sma_dist": 150,
+      "daily_loss_stop": 3,
+      "atr_min": 0
+    },
+    "trades": 73,
+    "win_rate": 65.8,
+    "pnl": 54975.0,
+    "avg_trade": 753.08,
+    "pf": 3.03,
+    "max_dd": 5030.0,
+    "sharpe": 5.96,
+    "exits": {
+      "tp": 3,
+      "trail": 45,
+      "time": 24,
+      "eod": 1
+    },
+    "score": 33.12
+  },
+  {
+    "params": {
+      "trail_bars": 12,
+      "tp_points": 300,
+      "start_offset_min": 30,
+      "min_sma_dist": 20,
+      "max_sma_dist": 0,
+      "daily_loss_stop": 2,
+      "atr_min": 0
+    },
+    "trades": 82,
+    "win_rate": 58.5,
+    "pnl": 55330.0,
+    "avg_trade": 674.76,
+    "pf": 2.66,
+    "max_dd": 4445.0,
+    "sharpe": 5.24,
+    "exits": {
+      "tp": 4,
+      "trail": 55,
+      "time": 22,
+      "eod": 1
+    },
+    "score": 33.11
+  },
+  {
+    "params": {
+      "trail_bars": 15,
+      "tp_points": 400,
+      "start_offset_min": 30,
+      "min_sma_dist": 20,
+      "max_sma_dist": 100,
+      "daily_loss_stop": 3,
+      "atr_min": 0
+    },
+    "trades": 72,
+    "win_rate": 61.1,
+    "pnl": 55395.0,
+    "avg_trade": 769.38,
+    "pf": 2.73,
+    "max_dd": 4575.0,
+    "sharpe": 5.34,
+    "exits": {
+      "tp": 2,
+      "trail": 45,
+      "time": 24,
+      "eod": 1
+    },
+    "score": 33.06
+  },
+  {
+    "params": {
+      "trail_bars": 15,
+      "tp_points": 400,
+      "start_offset_min": 30,
+      "min_sma_dist": 15,
+      "max_sma_dist": 150,
+      "daily_loss_stop": 3,
+      "atr_min": 0
+    },
+    "trades": 75,
+    "win_rate": 62.7,
+    "pnl": 51890.0,
+    "avg_trade": 691.87,
+    "pf": 2.74,
+    "max_dd": 4315.0,
+    "sharpe": 5.29,
+    "exits": {
+      "tp": 1,
+      "trail": 46,
+      "time": 27,
+      "eod": 1
+    },
+    "score": 32.95
+  },
+  {
+    "params": {
+      "trail_bars": 15,
+      "tp_points": 400,
+      "start_offset_min": 30,
+      "min_sma_dist": 15,
+      "max_sma_dist": 150,
+      "daily_loss_stop": 2,
+      "atr_min": 0
+    },
+    "trades": 70,
+    "win_rate": 62.9,
+    "pnl": 50045.0,
+    "avg_trade": 714.93,
+    "pf": 2.82,
+    "max_dd": 4315.0,
+    "sharpe": 5.37,
+    "exits": {
+      "tp": 1,
+      "trail": 45,
+      "time": 23,
+      "eod": 1
+    },
+    "score": 32.71
+  },
+  {
+    "params": {
+      "trail_bars": 15,
+      "tp_points": 400,
+      "start_offset_min": 30,
+      "min_sma_dist": 15,
+      "max_sma_dist": 0,
+      "daily_loss_stop": 2,
+      "atr_min": 0
+    },
+    "trades": 69,
+    "win_rate": 63.8,
+    "pnl": 53955.0,
+    "avg_trade": 781.96,
+    "pf": 3.16,
+    "max_dd": 5235.0,
+    "sharpe": 6.21,
+    "exits": {
+      "tp": 0,
+      "trail": 45,
+      "time": 23,
+      "eod": 1
+    },
+    "score": 32.57
+  },
+  {
+    "params": {
+      "trail_bars": 15,
+      "tp_points": 400,
+      "start_offset_min": 30,
+      "min_sma_dist": 15,
+      "max_sma_dist": 0,
+      "daily_loss_stop": 3,
+      "atr_min": 0
+    },
+    "trades": 74,
+    "win_rate": 63.5,
+    "pnl": 55800.0,
+    "avg_trade": 754.05,
+    "pf": 3.05,
+    "max_dd": 5235.0,
+    "sharpe": 6.09,
+    "exits": {
+      "tp": 0,
+      "trail": 46,
+      "time": 27,
+      "eod": 1
+    },
+    "score": 32.51
+  },
+  {
+    "params": {
+      "trail_bars": 15,
+      "tp_points": 250,
+      "start_offset_min": 30,
+      "min_sma_dist": 20,
+      "max_sma_dist": 0,
+      "daily_loss_stop": 2,
+      "atr_min": 0
+    },
+    "trades": 76,
+    "win_rate": 61.8,
+    "pnl": 58945.0,
+    "avg_trade": 775.59,
+    "pf": 2.87,
+    "max_dd": 5235.0,
+    "sharpe": 5.87,
+    "exits": {
+      "tp": 10,
+      "trail": 44,
+      "time": 21,
+      "eod": 1
+    },
+    "score": 32.32
+  },
+  {
+    "params": {
+      "trail_bars": 15,
+      "tp_points": 300,
+      "start_offset_min": 30,
+      "min_sma_dist": 20,
+      "max_sma_dist": 100,
+      "daily_loss_stop": 2,
+      "atr_min": 0
+    },
+    "trades": 69,
+    "win_rate": 63.8,
+    "pnl": 54230.0,
+    "avg_trade": 785.94,
+    "pf": 2.92,
+    "max_dd": 4940.0,
+    "sharpe": 5.91,
+    "exits": {
+      "tp": 3,
+      "trail": 44,
+      "time": 21,
+      "eod": 1
+    },
+    "score": 32.05
+  }
+]
