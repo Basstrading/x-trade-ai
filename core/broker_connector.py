@@ -47,16 +47,20 @@ class BrokerConnector:
 
         try:
             self.client = ProjectXClient(TOPSTEPX_URLS)
-            await self.client.login({
+            login_result = self.client.login({
                 "auth_type": "api_key",
                 "userName": username,
                 "apiKey": api_key,
             })
+            if hasattr(login_result, '__await__'):
+                await login_result
             self.username = username
             self.connected = True
 
             # Liste les comptes
-            raw_accounts = await self.client.search_for_account()
+            raw_accounts = self.client.search_for_account()
+            if hasattr(raw_accounts, '__await__'):
+                raw_accounts = await raw_accounts
             self.accounts = []
             for acc in raw_accounts:
                 a = acc if isinstance(acc, dict) else acc.__dict__
@@ -85,7 +89,9 @@ class BrokerConnector:
             return self.accounts
 
         try:
-            raw = await self.client.search_for_account()
+            raw = self.client.search_for_account()
+            if hasattr(raw, '__await__'):
+                raw = await raw
             self.accounts = []
             for acc in raw:
                 a = acc if isinstance(acc, dict) else acc.__dict__
@@ -105,7 +111,9 @@ class BrokerConnector:
         if not self.connected or not self.client:
             return []
         try:
-            raw = await self.client.search_for_positions(accountId=account_id)
+            raw = self.client.search_for_positions(accountId=account_id)
+            if hasattr(raw, '__await__'):
+                raw = await raw
             positions = []
             for pos in raw:
                 p = pos if isinstance(pos, dict) else pos.__dict__
