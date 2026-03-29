@@ -1,217 +1,655 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prop Firm Drawdown Rules Compared: Topstep vs Apex vs Bulenox vs TPT (2026) | x-trade.ai</title>
-    <meta name="description" content="Side-by-side comparison of trailing drawdown, daily loss limits, consistency rules, and hidden traps for every major futures prop firm in 2026.">
-    <link rel="canonical" href="https://x-trade.ai/blog/prop-firm-drawdown-rules-compared">
-    <meta property="og:title" content="Prop Firm Drawdown Rules Compared (2026)">
-    <meta property="og:description" content="Topstep vs Apex vs Bulenox vs Tradeify vs TakeProfitTrader — every drawdown rule compared.">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root { --bg:#07090f; --bg2:#0f1420; --green:#22d97f; --cyan:#06b6d4; --gold:#f59e0b; --red:#ef4444; --text:#f0f4f8; --dim:#94a3b8; --border:rgba(255,255,255,0.06); }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); }
-        .nav { padding:16px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
-        .nav a { color:var(--dim); text-decoration:none; font-size:13px; margin-left:20px; }
-        .logo { font-family:'JetBrains Mono',monospace; font-size:15px; font-weight:700; color:var(--cyan); }
-        .logo span { color:var(--text); }
-        article { max-width:900px; margin:0 auto; padding:60px 24px 80px; }
-        .tag { display:inline-block; padding:4px 12px; border-radius:12px; font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; background:rgba(6,182,212,0.1); color:var(--cyan); margin-bottom:16px; }
-        h1 { font-size:34px; font-weight:800; line-height:1.2; margin-bottom:16px; }
-        .meta { color:var(--dim); font-size:13px; margin-bottom:40px; }
-        h2 { font-size:24px; font-weight:700; margin:40px 0 16px; }
-        h3 { font-size:18px; font-weight:600; margin:28px 0 12px; color:var(--cyan); }
-        p { font-size:16px; line-height:1.8; color:var(--dim); margin-bottom:20px; }
-        strong { color:var(--text); }
-        table { width:100%; border-collapse:collapse; margin:24px 0; font-size:13px; overflow-x:auto; display:block; }
-        th { text-align:left; padding:12px; background:var(--bg2); color:var(--cyan); font-size:10px; text-transform:uppercase; letter-spacing:1px; border-bottom:2px solid var(--border); white-space:nowrap; }
-        td { padding:12px; border-bottom:1px solid var(--border); color:var(--dim); white-space:nowrap; }
-        td strong { color:var(--text); }
-        tr:hover td { background:rgba(6,182,212,0.03); }
-        .warn { color:var(--red); font-weight:600; }
-        .ok { color:var(--green); }
-        .note { color:var(--gold); font-style:italic; }
-        blockquote { border-left:3px solid var(--gold); padding:16px 20px; margin:24px 0; background:rgba(245,158,11,0.05); border-radius:0 8px 8px 0; color:var(--text); }
-        .cta-box { background:linear-gradient(135deg,rgba(6,182,212,0.08),rgba(34,217,127,0.05)); border:1px solid rgba(6,182,212,0.2); border-radius:14px; padding:32px; text-align:center; margin:40px 0; }
-        .cta-box h3 { color:var(--green); margin:0 0 12px; font-size:20px; }
-        .cta-box p { margin-bottom:16px; }
-        .cta-btn { display:inline-block; padding:14px 32px; background:var(--green); color:var(--bg); font-weight:700; border-radius:10px; text-decoration:none; }
-        .footer { text-align:center; padding:40px; color:var(--dim); font-size:11px; border-top:1px solid var(--border); }
-        .footer a { color:var(--cyan); text-decoration:none; }
-        @media(max-width:600px) { h1{font-size:26px;} table{font-size:11px;} }
-    </style>
-    <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"Article","headline":"Prop Firm Drawdown Rules Compared: Topstep vs Apex vs Bulenox vs TPT (2026)","author":{"@type":"Organization","name":"x-trade.ai"},"datePublished":"2026-03-29","description":"Side-by-side comparison of trailing drawdown, daily loss limits, and consistency rules for major futures prop firms."}
-    </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prop Firm Drawdown Rules Compared (2026) | x-trade.ai</title>
+<meta name="description" content="Side-by-side comparison of drawdown rules for Topstep, Apex, Bulenox, Tradeify &amp; TPT on $50K accounts. Hidden traps, daily limits &amp; consistency rules explained.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://x-trade.ai/blog/prop-firm-drawdown-rules-compared">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Prop Firm Drawdown Rules Compared (2026) | x-trade.ai">
+<meta property="og:description" content="Topstep vs Apex vs Bulenox vs Tradeify vs TPT — every drawdown rule compared side by side for $50K accounts.">
+<meta property="og:url" content="https://x-trade.ai/blog/prop-firm-drawdown-rules-compared">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Prop Firm Drawdown Rules Compared (2026) | x-trade.ai">
+<meta name="twitter:description" content="Topstep vs Apex vs Bulenox vs Tradeify vs TPT — every drawdown rule compared side by side for $50K accounts.">
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Article",
+  "headline":"Prop Firm Drawdown Rules Compared: Topstep vs Apex vs Bulenox (2026)",
+  "author":{"@type":"Person","name":"Bass","jobTitle":"Founder, x-trade.ai"},
+  "datePublished":"2026-03-29",
+  "dateModified":"2026-03-29",
+  "publisher":{"@type":"Organization","name":"x-trade.ai","url":"https://x-trade.ai"},
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://x-trade.ai/blog/prop-firm-drawdown-rules-compared"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"Which prop firm has the easiest drawdown rules?","acceptedAnswer":{"@type":"Answer","text":"Bulenox Option 2 offers the most forgiving drawdown at $2,500 EOD trailing with overnight holding allowed. However, Topstep's $2,000 EOD trailing with no daily loss limit is also very trader-friendly. The 'easiest' depends on your style — scalpers benefit from EOD calculation, while swing traders need overnight permissions."}},
+    {"@type":"Question","name":"What is a trailing drawdown in prop firm trading?","acceptedAnswer":{"@type":"Answer","text":"A trailing drawdown is a maximum loss limit that moves upward as your account reaches new profit highs. For example, on a $50K account with a $2,000 trailing drawdown, your floor starts at $48,000. If your account reaches $52,000, the floor trails up to $50,000. The key difference is whether it trails tick-by-tick (intraday) or only at end of day (EOD). Tick-by-tick trailing is far more dangerous because unrealised profits during a session raise the floor permanently."}},
+    {"@type":"Question","name":"What is the difference between EOD and intraday drawdown?","acceptedAnswer":{"@type":"Answer","text":"EOD (End of Day) drawdown is calculated only at session close based on your closing balance. Intraday drawdown tracks your equity in real time, including open positions. EOD is significantly more forgiving because temporary drawdowns during a session don't count — only your final balance matters. Intraday drawdown can trigger a breach from a momentary equity dip even if you close the day profitable."}},
+    {"@type":"Question","name":"Which prop firms allow overnight and weekend positions?","acceptedAnswer":{"@type":"Answer","text":"Among major futures prop firms in 2026, Bulenox (both Option 1 and Option 2) allows overnight and weekend holding on funded accounts. Topstep, Apex 4.0, and Tradeify (during evaluation) do not permit overnight holding. TakeProfitTrader (TPT) does not allow overnight positions. Always verify current rules on each firm's official website as policies change frequently."}}
+  ]
+}
+</script>
+<style>
+:root{--bg:#07090f;--bg2:#0f1420;--cyan:#06b6d4;--green:#22d97f;--red:#ef4444;--gold:#f59e0b;--text:#f0f4f8;--dim:#94a3b8;--border:rgba(255,255,255,0.06)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}
+code,pre,.mono{font-family:'JetBrains Mono',monospace}
+a{color:var(--cyan);text-decoration:none;transition:color .2s}
+a:hover{color:var(--green)}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(7,9,15,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-weight:800;font-size:1.15rem;color:var(--text);letter-spacing:-.5px}
+.nav-logo span{color:var(--cyan)}
+.nav-links{display:flex;align-items:center;gap:1.5rem}
+.nav-links a{color:var(--dim);font-size:.875rem;font-weight:500}
+.nav-links a:hover{color:var(--text)}
+.lang-btn{background:transparent;border:1px solid var(--cyan);color:var(--cyan);padding:4px 12px;border-radius:6px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
+.lang-btn:hover{background:var(--cyan);color:var(--bg)}
+
+/* ARTICLE */
+.article-wrap{max-width:760px;margin:0 auto;padding:3rem 1.5rem 4rem}
+.breadcrumb{font-size:.8rem;color:var(--dim);margin-bottom:2rem}
+.breadcrumb a{color:var(--dim)}
+.breadcrumb a:hover{color:var(--cyan)}
+.article-meta{display:flex;align-items:center;gap:.75rem;font-size:.8rem;color:var(--dim);margin-bottom:1.25rem;flex-wrap:wrap}
+.article-meta .tag{background:rgba(6,182,212,.1);color:var(--cyan);padding:2px 10px;border-radius:99px;font-weight:500}
+h1{font-size:2.25rem;font-weight:800;line-height:1.2;letter-spacing:-.5px;margin-bottom:1.5rem}
+h2{font-size:1.5rem;font-weight:700;margin:2.5rem 0 1rem;letter-spacing:-.3px;color:var(--text)}
+h3{font-size:1.15rem;font-weight:600;margin:1.75rem 0 .75rem;color:var(--green)}
+p{margin-bottom:1.25rem;color:var(--dim);font-size:1rem}
+strong{color:var(--text)}
+
+/* KEY TAKEAWAYS */
+.takeaways{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--cyan);border-radius:10px;padding:1.5rem 1.75rem;margin-bottom:2.5rem}
+.takeaways h3{color:var(--cyan);margin:0 0 .75rem;font-size:1rem}
+.takeaways ul{list-style:none;padding:0}
+.takeaways li{position:relative;padding-left:1.5rem;margin-bottom:.5rem;color:var(--dim);font-size:.95rem}
+.takeaways li::before{content:"\2713";position:absolute;left:0;color:var(--green);font-weight:700}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;margin:1.5rem 0 2rem;border-radius:10px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:.82rem;min-width:700px}
+th{text-align:left;padding:10px 12px;background:var(--bg2);color:var(--cyan);font-size:.7rem;text-transform:uppercase;letter-spacing:.8px;border-bottom:2px solid var(--border);white-space:nowrap;position:sticky;top:0}
+td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--dim);white-space:nowrap}
+td strong{color:var(--text)}
+tr:hover td{background:rgba(6,182,212,.03)}
+.warn{color:var(--red);font-weight:600}
+.ok{color:var(--green)}
+.note{color:var(--gold);font-style:italic}
+th:first-child,td:first-child{position:sticky;left:0;background:var(--bg);z-index:2}
+tr:hover td:first-child{background:rgba(6,182,212,.03)}
+
+/* LISTS */
+.article-wrap ul,.article-wrap ol{margin:0 0 1.25rem 1.25rem;color:var(--dim)}
+.article-wrap li{margin-bottom:.4rem;font-size:1rem}
+
+/* FAQ */
+.faq-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1rem}
+.faq-q{font-weight:600;color:var(--text);margin-bottom:.5rem;font-size:1.05rem}
+.faq-a{color:var(--dim);font-size:.95rem}
+
+/* CTA */
+.cta-box{background:linear-gradient(135deg,rgba(6,182,212,.12),rgba(34,217,127,.08));border:1px solid rgba(6,182,212,.25);border-radius:14px;padding:2.5rem;text-align:center;margin:3rem 0 2rem}
+.cta-box h2{margin:0 0 .75rem;font-size:1.5rem}
+.cta-box p{color:var(--dim);margin-bottom:1.5rem}
+.cta-btn{display:inline-block;background:var(--cyan);color:var(--bg);padding:12px 32px;border-radius:8px;font-weight:700;font-size:1rem;transition:all .25s}
+.cta-btn:hover{background:var(--green);color:var(--bg);transform:translateY(-1px)}
+
+/* CROSS LINKS */
+.cross-links{border-top:1px solid var(--border);padding-top:2rem;margin-top:2rem}
+.cross-links h3{font-size:1rem;color:var(--dim);margin-bottom:1rem}
+.cross-link{display:block;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin-bottom:.75rem;color:var(--text);font-weight:500;transition:border-color .2s}
+.cross-link:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* HIDDEN TRAPS */
+.trap-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1.25rem}
+.trap-box h3{color:var(--red);margin:0 0 .5rem;font-size:1rem}
+.trap-box p{margin-bottom:.5rem;font-size:.95rem}
+.trap-box p:last-child{margin-bottom:0}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;text-align:center;font-size:.8rem;color:var(--dim)}
+.footer a{color:var(--dim)}
+.footer a:hover{color:var(--cyan)}
+.footer-links{display:flex;justify-content:center;gap:1.5rem;margin-bottom:.75rem;flex-wrap:wrap}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+h1{font-size:1.6rem}
+h2{font-size:1.25rem}
+.article-wrap{padding:2rem 1rem 3rem}
+.nav{padding:0 1rem}
+.nav-links{gap:1rem}
+table{font-size:.72rem}
+}
+</style>
 </head>
 <body>
-    <div class="nav">
-        <a href="/" class="logo"><span>x-trade</span>.ai</a>
-        <div><a href="/">Home</a><a href="/blog">Blog</a><a href="/onboarding">Start Free</a></div>
-    </div>
 
-    <article>
-        <span class="tag">Comparison</span>
-        <h1>Prop Firm Drawdown Rules Compared: Topstep vs Apex vs Bulenox vs Tradeify vs TPT (2026)</h1>
-        <div class="meta">12 min read · March 2026 · Updated with Apex 4.0 changes</div>
+<!-- NAV -->
+<nav class="nav">
+  <a href="/" class="nav-logo">x-trade<span>.ai</span></a>
+  <div class="nav-links">
+    <a href="/" id="navHome">Home</a>
+    <a href="/blog" id="navBlog">Blog</a>
+    <a href="/onboarding?mode=trial" id="navStart">Start Free</a>
+    <button class="lang-btn" id="langBtn" onclick="toggleLang()">FR</button>
+  </div>
+</nav>
 
-        <p>Every prop firm has different drawdown rules. Some use trailing, some use EOD. Some have daily limits, some removed them. Some have consistency rules, some don't. <strong>Each one is designed to make it harder for you to reach payout.</strong></p>
+<!-- ARTICLE -->
+<main class="article-wrap">
 
-        <p>This guide compares every major futures prop firm's risk rules so you know exactly what you're up against — and how to protect yourself.</p>
+  <div class="breadcrumb" id="breadcrumb"><a href="/">Home</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; Prop Firm Drawdown Rules Compared</div>
 
-        <h2>The Big Comparison Table ($50K Accounts)</h2>
+  <div class="article-meta">
+    <span class="tag" id="metaTag">Comparison</span>
+    <span id="metaDate">March 29, 2026</span>
+    <span>&middot;</span>
+    <span id="metaRead">14 min read</span>
+  </div>
 
-        <table>
-            <tr>
-                <th>Rule</th>
-                <th>Topstep</th>
-                <th>Apex 4.0</th>
-                <th>Bulenox Opt1</th>
-                <th>Bulenox Opt2</th>
-                <th>Tradeify</th>
-                <th>TPT</th>
-            </tr>
-            <tr>
-                <td><strong>Max Drawdown</strong></td>
-                <td>$2,000</td>
-                <td>$2,000</td>
-                <td>$2,500</td>
-                <td>$2,500</td>
-                <td>$2,000</td>
-                <td>$2,000</td>
-            </tr>
-            <tr>
-                <td><strong>DD Type</strong></td>
-                <td>EOD Trailing</td>
-                <td>Trailing</td>
-                <td class="warn">Tick-by-tick</td>
-                <td>EOD</td>
-                <td>EOD Trailing</td>
-                <td>EOD (eval) / <span class="warn">Intraday (PRO)</span></td>
-            </tr>
-            <tr>
-                <td><strong>DD Locks at BE?</strong></td>
-                <td>-</td>
-                <td>-</td>
-                <td class="ok">Yes</td>
-                <td>-</td>
-                <td class="ok">Yes (+$100)</td>
-                <td class="ok">Yes</td>
-            </tr>
-            <tr>
-                <td><strong>Daily Loss Limit</strong></td>
-                <td class="warn">NONE</td>
-                <td>$1,000 (EOD)</td>
-                <td class="warn">NONE</td>
-                <td>$1,100</td>
-                <td>$1,250</td>
-                <td class="warn">NONE</td>
-            </tr>
-            <tr>
-                <td><strong>Max Contracts</strong></td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
-                <td>7 (scaling)</td>
-                <td>4</td>
-                <td>6</td>
-            </tr>
-            <tr>
-                <td><strong>Profit Target</strong></td>
-                <td>$3,000</td>
-                <td>$3,000</td>
-                <td>$3,000</td>
-                <td>$3,000</td>
-                <td>$3,000</td>
-                <td>$3,000</td>
-            </tr>
-            <tr>
-                <td><strong>Consistency Rule</strong></td>
-                <td>50%</td>
-                <td>50%</td>
-                <td>40%</td>
-                <td>40%</td>
-                <td>35%</td>
-                <td>50% (eval only)</td>
-            </tr>
-            <tr>
-                <td><strong>Overnight</strong></td>
-                <td class="warn">No</td>
-                <td class="warn">No</td>
-                <td class="ok">Yes</td>
-                <td class="ok">Yes</td>
-                <td class="warn">No (eval)</td>
-                <td class="warn">No</td>
-            </tr>
-            <tr>
-                <td><strong>News Trading</strong></td>
-                <td class="ok">Allowed</td>
-                <td class="ok">Allowed</td>
-                <td class="ok">Allowed</td>
-                <td class="ok">Allowed</td>
-                <td class="ok">Allowed</td>
-                <td class="warn">Banned (PRO)</td>
-            </tr>
-            <tr>
-                <td><strong>Min Trading Days</strong></td>
-                <td>-</td>
-                <td>5 (payout)</td>
-                <td>10 (payout)</td>
-                <td>10 (payout)</td>
-                <td>1 (eval)</td>
-                <td>5</td>
-            </tr>
-        </table>
+  <h1 id="title">Prop Firm Drawdown Rules Compared: Topstep vs Apex vs Bulenox (2026)</h1>
 
-        <h2>The Hidden Traps</h2>
+  <!-- KEY TAKEAWAYS -->
+  <div class="takeaways">
+    <h3 id="takeawaysTitle">Key Takeaways</h3>
+    <ul>
+      <li id="tk1">Bulenox Option 1 uses tick-by-tick trailing drawdown &mdash; the most dangerous type &mdash; while Topstep and Apex 4.0 use EOD trailing, giving you far more breathing room.</li>
+      <li id="tk2">Only Bulenox allows overnight and weekend holding on funded accounts. Topstep, Apex, Tradeify, and TPT all require flat positions at session close.</li>
+      <li id="tk3">Topstep is the only major firm with zero daily loss limit, but that freedom can be a trap if you don't set your own.</li>
+      <li id="tk4">Consistency rules range from 35% (Tradeify) to 50% (Topstep, Apex, TPT) &mdash; this determines how much of your total profit can come from a single day.</li>
+    </ul>
+  </div>
 
-        <h3>Topstep: No Daily Loss Limit = No Safety Net</h3>
-        <p>Since August 2024, Topstep removed the daily loss limit. Your <strong>only</strong> protection is the $2,000 trailing drawdown. One bad session and the account is dead. This is why <strong>you need your own daily limit</strong> — our risk desk imposes one automatically.</p>
+  <!-- INTRO -->
+  <p id="intro"><strong>93% of prop firm traders never receive a payout</strong> (FPFX Tech). The number one reason is not bad strategy, bad entries, or bad timing. It is <strong>drawdown violations</strong>. Most traders don't fully understand the drawdown rules of the firm they're trading with until it's too late &mdash; and by then, the account is gone and the challenge fee is lost.</p>
 
-        <h3>Apex 4.0: Everything Changed in March 2026</h3>
-        <p>Apex did a complete overhaul. Drawdowns reduced, contracts cut, consistency changed from 30% to 50%. The $250K and $300K accounts are gone. <strong>If you're using old Apex numbers, you're trading with wrong limits.</strong></p>
+  <p id="intro2">This guide provides a complete side-by-side comparison of drawdown rules, daily loss limits, consistency requirements, and hidden traps for the six most popular futures prop firm account types in 2026 &mdash; all based on $50K accounts. Whether you're choosing your first firm or deciding where to move next, this breakdown will help you avoid costly surprises.</p>
 
-        <h3>Bulenox Option 1: Tick-by-Tick Trailing is Brutal</h3>
-        <p>Option 1 has no daily limit and full contract access, which sounds great. But the drawdown trails <strong>every single tick</strong>, including intraday wicks. A 3-second wick can trigger the drawdown even if the trade comes back green. This is the most aggressive drawdown type of all prop firms.</p>
+  <p id="lastUpdated" style="font-size:.85rem;color:var(--gold);font-weight:500;">Last updated: March 2026</p>
 
-        <h3>TakeProfitTrader: EOD in Eval, Intraday in PRO</h3>
-        <p>This is the biggest trap. During evaluation, the drawdown is EOD — forgiving. Once you pass and get a PRO account, it switches to <strong>intraday trailing</strong> — much stricter. Many traders pass the eval easily then blow the PRO because they don't adjust.</p>
+  <!-- THE BIG TABLE -->
+  <h2 id="h2table">The Complete $50K Account Comparison</h2>
 
-        <h3>Tradeify: Scaling Starts You Small</h3>
-        <p>Tradeify gives you full contracts during evaluation but <strong>starts you at 2 contracts when funded</strong>. You unlock more as your equity grows. Many traders don't realize this and plan their funded strategy around full size.</p>
+  <p id="tableIntro">Below is every rule that matters for capital preservation on a $50K account. Pay close attention to the drawdown type column &mdash; it is the single most important factor in determining how forgiving a firm actually is.</p>
 
-        <blockquote>Every prop firm rule is designed to make it statistically harder for you to reach payout. Understanding these rules — and having a system that enforces them for you — is the difference between the 94% who fail and the 6% who get paid.</blockquote>
+  <div class="table-wrap">
+    <table id="compTable">
+      <thead>
+        <tr>
+          <th id="thRule">Rule</th>
+          <th id="thTopstep">Topstep</th>
+          <th id="thApex">Apex 4.0</th>
+          <th id="thBul1">Bulenox Opt1</th>
+          <th id="thBul2">Bulenox Opt2</th>
+          <th id="thTradeify">Tradeify</th>
+          <th id="thTPT">TPT</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td id="rowDD"><strong>Max Drawdown</strong></td>
+          <td>$2,000</td>
+          <td>$2,000</td>
+          <td>$2,500</td>
+          <td>$2,500</td>
+          <td>$2,000</td>
+          <td>$2,000</td>
+        </tr>
+        <tr>
+          <td id="rowType"><strong>DD Type</strong></td>
+          <td class="ok">EOD trailing</td>
+          <td class="note">Trailing</td>
+          <td class="warn">Tick-by-tick (DANGER)</td>
+          <td class="ok">EOD</td>
+          <td class="ok">EOD trailing</td>
+          <td class="note">EOD (eval) / Intraday (PRO)</td>
+        </tr>
+        <tr>
+          <td id="rowLock"><strong>Locks at BE?</strong></td>
+          <td>&mdash;</td>
+          <td>&mdash;</td>
+          <td class="ok">Yes</td>
+          <td>&mdash;</td>
+          <td class="note">Yes (+$100)</td>
+          <td class="ok">Yes</td>
+        </tr>
+        <tr>
+          <td id="rowDaily"><strong>Daily Loss Limit</strong></td>
+          <td class="ok">NONE</td>
+          <td>$1,000 (EOD)</td>
+          <td class="ok">NONE</td>
+          <td>$1,100</td>
+          <td>$1,250</td>
+          <td class="ok">NONE</td>
+        </tr>
+        <tr>
+          <td id="rowContracts"><strong>Max Contracts</strong></td>
+          <td>5</td>
+          <td>6</td>
+          <td>7</td>
+          <td>7 (scaling)</td>
+          <td>4</td>
+          <td>6</td>
+        </tr>
+        <tr>
+          <td id="rowTarget"><strong>Profit Target</strong></td>
+          <td>$3,000</td>
+          <td>$3,000</td>
+          <td>$3,000</td>
+          <td>$3,000</td>
+          <td>$3,000</td>
+          <td>$3,000</td>
+        </tr>
+        <tr>
+          <td id="rowConsist"><strong>Consistency Rule</strong></td>
+          <td>50%</td>
+          <td>50%</td>
+          <td>40%</td>
+          <td>40%</td>
+          <td>35%</td>
+          <td>50% (eval)</td>
+        </tr>
+        <tr>
+          <td id="rowOvernight"><strong>Overnight</strong></td>
+          <td class="warn">No</td>
+          <td class="warn">No</td>
+          <td class="ok">Yes</td>
+          <td class="ok">Yes</td>
+          <td class="warn">No (eval)</td>
+          <td class="warn">No</td>
+        </tr>
+        <tr>
+          <td id="rowNews"><strong>News Trading</strong></td>
+          <td class="ok">Allowed</td>
+          <td class="ok">Allowed</td>
+          <td class="ok">Allowed</td>
+          <td class="ok">Allowed</td>
+          <td class="ok">Allowed</td>
+          <td class="warn">Banned (PRO)</td>
+        </tr>
+        <tr>
+          <td id="rowMinDays"><strong>Min Days</strong></td>
+          <td>&mdash;</td>
+          <td>5 (payout)</td>
+          <td>10 (payout)</td>
+          <td>10</td>
+          <td>1 (eval)</td>
+          <td>5</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-        <h2>How x-trade.ai Handles Each Firm</h2>
+  <p id="tableNote"><strong>How to read this table:</strong> Green values are trader-friendly. Yellow values have conditions attached. Red values represent significant risk to your account. The dash (&mdash;) means the rule either doesn't exist or has no restriction.</p>
 
-        <p>x-trade.ai has <strong>all 5 prop firms pre-loaded</strong> with their exact rules. When you select your firm and plan, the risk desk automatically:</p>
+  <!-- UNDERSTANDING DRAWDOWN TYPES -->
+  <h2 id="h2types">Understanding the Three Drawdown Types</h2>
 
-        <ul>
-            <li>Sets the correct drawdown type (EOD, trailing, tick-by-tick)</li>
-            <li>Creates a daily loss limit where the firm doesn't have one</li>
-            <li>Adjusts position size for the firm's max contracts</li>
-            <li>Monitors the consistency rule</li>
-            <li>Blocks overnight if the firm requires it</li>
-            <li>Reduces size on news days (especially important for TPT PRO)</li>
-        </ul>
+  <p id="typeIntro">The drawdown type is more important than the drawdown amount. A $2,500 tick-by-tick trailing drawdown can be harder to survive than a $2,000 EOD trailing drawdown. Here's why each type behaves differently in practice.</p>
 
-        <p>You don't need to remember any of these rules. The desk knows them all.</p>
+  <h3 id="h3eod">EOD Trailing Drawdown (Topstep, Bulenox Opt2, Tradeify)</h3>
+  <p id="eodP1">End-of-day trailing drawdown only updates at session close. If your $50K account reaches $52,000 in equity during the session but closes at $50,800, the drawdown floor only moves up by $800 (from $48,000 to $48,800). This gives you <strong>significant intraday flexibility</strong> &mdash; you can hold through temporary drawdowns without the floor chasing you tick by tick.</p>
+  <p id="eodP2">This is the most forgiving drawdown model for active intraday traders. It rewards traders who close positions before session end and don't hold overnight (which most of these firms prohibit anyway).</p>
 
-        <div class="cta-box">
-            <h3>Stop Guessing Your Prop Firm's Rules</h3>
-            <p>x-trade.ai pre-loads every rule for every firm. You just trade.</p>
-            <a href="/onboarding?mode=trial" class="cta-btn">Start Free Trial</a>
-        </div>
+  <h3 id="h3tick">Tick-by-Tick Trailing Drawdown (Bulenox Opt1)</h3>
+  <p id="tickP1">This is the most dangerous drawdown type in the industry. The drawdown floor rises in real time with every tick of unrealised profit. If your account touches $52,000 for even a single second, your floor permanently moves to $49,500 &mdash; regardless of where you close the day.</p>
+  <p id="tickP2">The practical impact is brutal: <strong>you can never let a winning trade run without permanently raising your risk floor</strong>. A large unrealised gain followed by a partial pullback can breach your drawdown even if you close the trade profitably. Many traders are eliminated by this mechanic without understanding what happened.</p>
 
-        <p style="font-size:12px;color:var(--dim);margin-top:40px"><em>Rules verified March 2026. Prop firms change rules frequently — we update our database monthly. Sources: topstepx.com, apextraderfunding.com, bulenox.com, tradeify.co, takeprofittrader.com.</em></p>
-    </article>
+  <h3 id="h3intraday">Intraday Drawdown (TPT PRO)</h3>
+  <p id="intradayP1">TPT uses EOD trailing during the evaluation phase but switches to intraday drawdown on PRO (funded) accounts. This means your real-time equity is monitored, and any dip below the drawdown floor triggers an immediate breach. The shift from eval to funded rules catches many traders off guard &mdash; they pass the evaluation comfortably and then breach within days on the funded account because the drawdown mechanics have fundamentally changed.</p>
 
-    <div class="footer">
-        <a href="/blog">Back to Blog</a> · <a href="https://x-trade.ai">x-trade.ai</a><br>
-        <a href="https://basstrading.fr">Bass Trading</a> · <a href="https://hubtrading.fr">HubTrading</a>
-    </div>
+  <!-- HIDDEN TRAPS -->
+  <h2 id="h2traps">Hidden Traps: What the Marketing Pages Don't Tell You</h2>
+
+  <p id="trapsIntro">Every prop firm has rules that are technically public but buried in terms of service or FAQ pages. These are the traps that blow up accounts after the challenge is already paid for.</p>
+
+  <div class="trap-box">
+    <h3 id="trapTopstep">Topstep</h3>
+    <p id="trapTopstepP1">Topstep has no daily loss limit, which sounds like freedom. In practice, it means a single bad day can consume your entire $2,000 drawdown. Without a self-imposed daily cap, one emotional session wipes out everything. Additionally, the 50% consistency rule means no single day can account for more than half your total profits at payout time &mdash; so that one great day of $2,500 profit may not qualify you if your other days are thin.</p>
+  </div>
+
+  <div class="trap-box">
+    <h3 id="trapApex">Apex 4.0</h3>
+    <p id="trapApexP1">Apex's trailing drawdown is calculated intraday during the evaluation, not just at EOD. The $1,000 daily loss limit is calculated at end of day, but the trailing drawdown tracks throughout the session. This hybrid approach confuses many traders who assume all limits use the same calculation method. Also note: the 5-day minimum is for payout qualification, not for passing the eval &mdash; you can pass the eval quickly but must trade at least 5 days before requesting your first withdrawal.</p>
+  </div>
+
+  <div class="trap-box">
+    <h3 id="trapBulenox">Bulenox</h3>
+    <p id="trapBulenoxP1">Option 1's tick-by-tick trailing is the most punishing drawdown in futures prop trading. Many traders choose Option 1 because of the higher $2,500 drawdown and no daily limit, not realising the tick-by-tick mechanic will likely eliminate them faster than a lower drawdown with EOD calculation. The drawdown locks at breakeven once your balance reaches $52,500, but surviving to that point with tick-by-tick trailing requires extremely disciplined trade management. The 10-day payout minimum also means you're exposed to risk for a longer period compared to firms like Tradeify.</p>
+  </div>
+
+  <div class="trap-box">
+    <h3 id="trapTradeify">Tradeify</h3>
+    <p id="trapTradeifyP1">Tradeify's drawdown locks at breakeven, but only after reaching +$100 above starting balance &mdash; a detail many traders miss. The 4-contract maximum is the lowest on this list, which limits scalpers who rely on larger position sizes for quick moves. The 1-day minimum evaluation sounds attractive for fast-pass marketing, but the 35% consistency rule on funded accounts means you still need distributed profits over time to receive payouts.</p>
+  </div>
+
+  <div class="trap-box">
+    <h3 id="trapTPT">TakeProfitTrader (TPT)</h3>
+    <p id="trapTPTP1">TPT's biggest trap is the drawdown type switch between evaluation and PRO accounts. You evaluate with comfortable EOD trailing, then trade funded with intraday drawdown &mdash; a fundamentally different risk environment. News trading is banned on PRO accounts, which means any position held through a major economic release can result in account termination, even if the trade is profitable. Combined with no overnight holding, this makes TPT the most restrictive firm for active news and swing traders.</p>
+  </div>
+
+  <!-- WHICH FIRM FOR WHICH STYLE -->
+  <h2 id="h2style">Which Firm Fits Your Trading Style?</h2>
+
+  <p id="styleIntro">There is no universally "best" prop firm. The right choice depends entirely on how you trade. Here is a framework for matching your style to the right rule set.</p>
+
+  <p id="styleScalper"><strong>If you're a scalper</strong> (quick in-and-out, multiple trades per day): Topstep or Apex 4.0. EOD trailing drawdown gives you room for intraday noise, and the higher contract limits (5-6) allow meaningful position sizes. Avoid Bulenox Option 1 &mdash; tick-by-tick trailing will punish your unrealised P&L swings.</p>
+
+  <p id="styleSwing"><strong>If you hold trades for hours or overnight</strong>: Bulenox is your only realistic option among these firms, as it's the only one allowing overnight positions on funded accounts. Choose Option 2 (EOD drawdown) over Option 1 (tick-by-tick) unless you have exceptional discipline with profit targets.</p>
+
+  <p id="styleConservative"><strong>If you're conservative and want maximum safety</strong>: Tradeify's 35% consistency rule is the most lenient, and the drawdown locks at breakeven early. The trade-off is a 4-contract maximum, which limits profit potential. Pair it with your own daily loss limit of $400-500 and you have a very survivable setup.</p>
+
+  <p id="styleAggressive"><strong>If you trade news events</strong>: Avoid TPT entirely (news banned on PRO). All other firms allow news trading, but remember that high-volatility events combined with tick-by-tick drawdown (Bulenox Opt1) is an extremely high-risk combination.</p>
+
+  <!-- THE CONSISTENCY RULE -->
+  <h2 id="h2consistency">The Consistency Rule: The Silent Account Killer</h2>
+
+  <p id="consistP1">Consistency rules limit how much of your total profit can come from a single trading day. A 50% consistency rule means no single day can represent more than half your cumulative profits when you request a payout. A 40% rule is slightly more lenient, and Tradeify's 35% is the most forgiving.</p>
+
+  <p id="consistP2">Here's why this matters more than most traders realise. Imagine you trade for 10 days on a Topstep $50K account. You grind out $200 per day for 9 days ($1,800 total), then nail a great setup on day 10 for $1,500. Your total profit is $3,300 &mdash; above the $3,000 target. But the $1,500 day represents 45% of total profits. With a 50% rule, you pass. With a 40% rule (Bulenox), you would also pass. But if that single day had been $1,900, it would represent 51% of $3,700 total &mdash; and Topstep would block your payout until you trade more days to dilute it.</p>
+
+  <p id="consistP3"><strong>The lesson:</strong> Don't just hit the profit target. Make sure your daily P&L distribution is compatible with the firm's consistency requirement. Track your best single day as a percentage of total profits throughout the evaluation, not just at the end.</p>
+
+  <!-- PROTECTING YOURSELF -->
+  <h2 id="h2protect">How to Protect Yourself Regardless of Firm</h2>
+
+  <p id="protectP1">No matter which firm you choose, the most effective protection is <strong>setting your own limits tighter than the firm's</strong>. Here are the four rules every prop firm trader should enforce on themselves:</p>
+
+  <ul>
+    <li id="rule1"><strong>Self-imposed daily loss limit:</strong> Even if the firm doesn't require one (Topstep, Bulenox Opt1, TPT), set your own at 40-50% of the max drawdown divided by 5 trading days. For a $2,000 drawdown, that's $200-250/day maximum loss.</li>
+    <li id="rule2"><strong>Volatility-adjusted position sizing:</strong> Trade smaller during high-ATR conditions. A 1-lot NQ during a 250-point ATR day carries very different risk than the same lot during a 150-point day.</li>
+    <li id="rule3"><strong>Profit protection:</strong> Once you're 50% to the profit target, tighten your daily loss limit further. Don't give back hard-earned gains to one emotional session.</li>
+    <li id="rule4"><strong>Revenge trade blocking:</strong> After two consecutive losing trades, stop trading for the day or enforce a 15-minute cooldown minimum. This single rule prevents more blown accounts than any other. For more on this, read our <a href="/blog/revenge-trading-prop-firm">revenge trading guide</a>.</li>
+  </ul>
+
+  <p id="protectP2">These are exactly the kind of controls that institutional risk desks enforce automatically. Tools like <a href="/onboarding?mode=trial">x-trade.ai</a> replicate this infrastructure for retail-funded traders, applying rules programmatically so there's no emotional override possible.</p>
+
+  <!-- EXTERNAL LINKS -->
+  <p id="officialLinks" style="font-size:.9rem;">Verify current rules on each firm's official site: <a href="https://www.topstep.com" target="_blank" rel="noopener">Topstep</a> &middot; <a href="https://www.apextraderfunding.com" target="_blank" rel="noopener">Apex Trader Funding</a> &middot; <a href="https://www.bulenox.com" target="_blank" rel="noopener">Bulenox</a> &middot; <a href="https://www.tradeify.com" target="_blank" rel="noopener">Tradeify</a> &middot; <a href="https://www.takeprofittrader.com" target="_blank" rel="noopener">TakeProfitTrader</a></p>
+
+  <!-- FAQ -->
+  <h2 id="h2faq">Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq1q">Which prop firm has the easiest drawdown rules?</div>
+    <div class="faq-a" id="faq1a">Bulenox Option 2 offers the most forgiving drawdown at $2,500 EOD trailing with overnight holding allowed. However, Topstep's $2,000 EOD trailing with no daily loss limit is also very trader-friendly. The "easiest" depends on your style &mdash; scalpers benefit from EOD calculation, while swing traders need overnight permissions. Always factor in consistency rules and minimum trading days, not just the drawdown number.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq2q">What is a trailing drawdown in prop firm trading?</div>
+    <div class="faq-a" id="faq2a">A trailing drawdown is a maximum loss limit that moves upward as your account reaches new profit highs. For example, on a $50K account with a $2,000 trailing drawdown, your floor starts at $48,000. If your account reaches $52,000, the floor trails up to $50,000. The critical difference is whether it trails tick-by-tick (intraday) or only at end of day (EOD). Tick-by-tick trailing is far more dangerous because even momentary unrealised profits raise the floor permanently.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq3q">What is the difference between EOD and intraday drawdown?</div>
+    <div class="faq-a" id="faq3a">EOD (End of Day) drawdown is calculated only at session close based on your closing balance. Intraday drawdown tracks your equity in real time, including open positions. EOD is significantly more forgiving because temporary drawdowns during a session don't count &mdash; only your final balance matters. Intraday drawdown can trigger a breach from a momentary equity dip even if you close the day profitable. TPT notably switches from EOD (evaluation) to intraday (funded), which catches many traders off guard.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq4q">Which prop firms allow overnight and weekend positions?</div>
+    <div class="faq-a" id="faq4a">Among major futures prop firms in 2026, Bulenox (both Option 1 and Option 2) is the only firm that allows overnight and weekend holding on funded accounts. Topstep, Apex 4.0, Tradeify (during evaluation), and TakeProfitTrader all require positions to be closed before session end. If swing trading or holding through overnight sessions is part of your strategy, Bulenox is currently your only viable choice among these firms.</div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-box">
+    <h2 id="ctaTitle">Don't Let Drawdown Rules Blow Your Account</h2>
+    <p id="ctaText">x-trade.ai enforces daily loss limits, volatility-adjusted sizing, and profit protection automatically &mdash; tailored to your prop firm's exact rules. Set up in under 5 minutes.</p>
+    <a href="/onboarding?mode=trial" class="cta-btn" id="ctaBtn">Start Free Trial</a>
+  </div>
+
+  <!-- CROSS LINKS -->
+  <div class="cross-links">
+    <h3 id="crossTitle">Related Articles</h3>
+    <a href="/blog/why-prop-firm-traders-fail" class="cross-link" id="cross1">Why 93% of Prop Firm Traders Never Get Paid &mdash; The 5 Risk Mistakes</a>
+    <a href="/blog/revenge-trading-prop-firm" class="cross-link" id="cross2">Revenge Trading: The #1 Prop Firm Account Killer (And How to Stop It)</a>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="/blog" id="footBlog">Blog</a>
+    <a href="/onboarding?mode=trial" id="footTrial">Free Trial</a>
+    <a href="https://basstrading.fr" target="_blank" rel="noopener">basstrading.fr</a>
+    <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a>
+  </div>
+  <span id="footCopy">&copy; 2026 x-trade.ai &mdash; All rights reserved.</span>
+</footer>
+
+<script>
+let lang = localStorage.getItem('xtrade_lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en');
+
+const TR = {
+en: {
+'navHome': 'Home',
+'navBlog': 'Blog',
+'navStart': 'Start Free',
+'breadcrumb': '<a href="/">Home</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; Prop Firm Drawdown Rules Compared',
+'metaTag': 'Comparison',
+'metaDate': 'March 29, 2026',
+'metaRead': '14 min read',
+'title': 'Prop Firm Drawdown Rules Compared: Topstep vs Apex vs Bulenox (2026)',
+'takeawaysTitle': 'Key Takeaways',
+'tk1': 'Bulenox Option 1 uses tick-by-tick trailing drawdown \u2014 the most dangerous type \u2014 while Topstep and Apex 4.0 use EOD trailing, giving you far more breathing room.',
+'tk2': 'Only Bulenox allows overnight and weekend holding on funded accounts. Topstep, Apex, Tradeify, and TPT all require flat positions at session close.',
+'tk3': 'Topstep is the only major firm with zero daily loss limit, but that freedom can be a trap if you don\'t set your own.',
+'tk4': 'Consistency rules range from 35% (Tradeify) to 50% (Topstep, Apex, TPT) \u2014 this determines how much of your total profit can come from a single day.',
+'intro': '<strong>93% of prop firm traders never receive a payout</strong> (FPFX Tech). The number one reason is not bad strategy, bad entries, or bad timing. It is <strong>drawdown violations</strong>. Most traders don\'t fully understand the drawdown rules of the firm they\'re trading with until it\'s too late \u2014 and by then, the account is gone and the challenge fee is lost.',
+'intro2': 'This guide provides a complete side-by-side comparison of drawdown rules, daily loss limits, consistency requirements, and hidden traps for the six most popular futures prop firm account types in 2026 \u2014 all based on $50K accounts. Whether you\'re choosing your first firm or deciding where to move next, this breakdown will help you avoid costly surprises.',
+'lastUpdated': 'Last updated: March 2026',
+'h2table': 'The Complete $50K Account Comparison',
+'tableIntro': 'Below is every rule that matters for capital preservation on a $50K account. Pay close attention to the drawdown type column \u2014 it is the single most important factor in determining how forgiving a firm actually is.',
+'thRule': 'Rule',
+'thTopstep': 'Topstep',
+'thApex': 'Apex 4.0',
+'thBul1': 'Bulenox Opt1',
+'thBul2': 'Bulenox Opt2',
+'thTradeify': 'Tradeify',
+'thTPT': 'TPT',
+'rowDD': '<strong>Max Drawdown</strong>',
+'rowType': '<strong>DD Type</strong>',
+'rowLock': '<strong>Locks at BE?</strong>',
+'rowDaily': '<strong>Daily Loss Limit</strong>',
+'rowContracts': '<strong>Max Contracts</strong>',
+'rowTarget': '<strong>Profit Target</strong>',
+'rowConsist': '<strong>Consistency Rule</strong>',
+'rowOvernight': '<strong>Overnight</strong>',
+'rowNews': '<strong>News Trading</strong>',
+'rowMinDays': '<strong>Min Days</strong>',
+'tableNote': '<strong>How to read this table:</strong> Green values are trader-friendly. Yellow values have conditions attached. Red values represent significant risk to your account. The dash (\u2014) means the rule either doesn\'t exist or has no restriction.',
+'h2types': 'Understanding the Three Drawdown Types',
+'typeIntro': 'The drawdown type is more important than the drawdown amount. A $2,500 tick-by-tick trailing drawdown can be harder to survive than a $2,000 EOD trailing drawdown. Here\'s why each type behaves differently in practice.',
+'h3eod': 'EOD Trailing Drawdown (Topstep, Bulenox Opt2, Tradeify)',
+'eodP1': 'End-of-day trailing drawdown only updates at session close. If your $50K account reaches $52,000 in equity during the session but closes at $50,800, the drawdown floor only moves up by $800 (from $48,000 to $48,800). This gives you <strong>significant intraday flexibility</strong> \u2014 you can hold through temporary drawdowns without the floor chasing you tick by tick.',
+'eodP2': 'This is the most forgiving drawdown model for active intraday traders. It rewards traders who close positions before session end and don\'t hold overnight (which most of these firms prohibit anyway).',
+'h3tick': 'Tick-by-Tick Trailing Drawdown (Bulenox Opt1)',
+'tickP1': 'This is the most dangerous drawdown type in the industry. The drawdown floor rises in real time with every tick of unrealised profit. If your account touches $52,000 for even a single second, your floor permanently moves to $49,500 \u2014 regardless of where you close the day.',
+'tickP2': 'The practical impact is brutal: <strong>you can never let a winning trade run without permanently raising your risk floor</strong>. A large unrealised gain followed by a partial pullback can breach your drawdown even if you close the trade profitably. Many traders are eliminated by this mechanic without understanding what happened.',
+'h3intraday': 'Intraday Drawdown (TPT PRO)',
+'intradayP1': 'TPT uses EOD trailing during the evaluation phase but switches to intraday drawdown on PRO (funded) accounts. This means your real-time equity is monitored, and any dip below the drawdown floor triggers an immediate breach. The shift from eval to funded rules catches many traders off guard \u2014 they pass the evaluation comfortably and then breach within days on the funded account because the drawdown mechanics have fundamentally changed.',
+'h2traps': 'Hidden Traps: What the Marketing Pages Don\'t Tell You',
+'trapsIntro': 'Every prop firm has rules that are technically public but buried in terms of service or FAQ pages. These are the traps that blow up accounts after the challenge is already paid for.',
+'trapTopstep': 'Topstep',
+'trapTopstepP1': 'Topstep has no daily loss limit, which sounds like freedom. In practice, it means a single bad day can consume your entire $2,000 drawdown. Without a self-imposed daily cap, one emotional session wipes out everything. Additionally, the 50% consistency rule means no single day can account for more than half your total profits at payout time \u2014 so that one great day of $2,500 profit may not qualify you if your other days are thin.',
+'trapApex': 'Apex 4.0',
+'trapApexP1': 'Apex\'s trailing drawdown is calculated intraday during the evaluation, not just at EOD. The $1,000 daily loss limit is calculated at end of day, but the trailing drawdown tracks throughout the session. This hybrid approach confuses many traders who assume all limits use the same calculation method. Also note: the 5-day minimum is for payout qualification, not for passing the eval \u2014 you can pass the eval quickly but must trade at least 5 days before requesting your first withdrawal.',
+'trapBulenox': 'Bulenox',
+'trapBulenoxP1': 'Option 1\'s tick-by-tick trailing is the most punishing drawdown in futures prop trading. Many traders choose Option 1 because of the higher $2,500 drawdown and no daily limit, not realising the tick-by-tick mechanic will likely eliminate them faster than a lower drawdown with EOD calculation. The drawdown locks at breakeven once your balance reaches $52,500, but surviving to that point with tick-by-tick trailing requires extremely disciplined trade management. The 10-day payout minimum also means you\'re exposed to risk for a longer period compared to firms like Tradeify.',
+'trapTradeify': 'Tradeify',
+'trapTradeifyP1': 'Tradeify\'s drawdown locks at breakeven, but only after reaching +$100 above starting balance \u2014 a detail many traders miss. The 4-contract maximum is the lowest on this list, which limits scalpers who rely on larger position sizes for quick moves. The 1-day minimum evaluation sounds attractive for fast-pass marketing, but the 35% consistency rule on funded accounts means you still need distributed profits over time to receive payouts.',
+'trapTPT': 'TakeProfitTrader (TPT)',
+'trapTPTP1': 'TPT\'s biggest trap is the drawdown type switch between evaluation and PRO accounts. You evaluate with comfortable EOD trailing, then trade funded with intraday drawdown \u2014 a fundamentally different risk environment. News trading is banned on PRO accounts, which means any position held through a major economic release can result in account termination, even if the trade is profitable. Combined with no overnight holding, this makes TPT the most restrictive firm for active news and swing traders.',
+'h2style': 'Which Firm Fits Your Trading Style?',
+'styleIntro': 'There is no universally "best" prop firm. The right choice depends entirely on how you trade. Here is a framework for matching your style to the right rule set.',
+'styleScalper': '<strong>If you\'re a scalper</strong> (quick in-and-out, multiple trades per day): Topstep or Apex 4.0. EOD trailing drawdown gives you room for intraday noise, and the higher contract limits (5-6) allow meaningful position sizes. Avoid Bulenox Option 1 \u2014 tick-by-tick trailing will punish your unrealised P&L swings.',
+'styleSwing': '<strong>If you hold trades for hours or overnight</strong>: Bulenox is your only realistic option among these firms, as it\'s the only one allowing overnight positions on funded accounts. Choose Option 2 (EOD drawdown) over Option 1 (tick-by-tick) unless you have exceptional discipline with profit targets.',
+'styleConservative': '<strong>If you\'re conservative and want maximum safety</strong>: Tradeify\'s 35% consistency rule is the most lenient, and the drawdown locks at breakeven early. The trade-off is a 4-contract maximum, which limits profit potential. Pair it with your own daily loss limit of $400-500 and you have a very survivable setup.',
+'styleAggressive': '<strong>If you trade news events</strong>: Avoid TPT entirely (news banned on PRO). All other firms allow news trading, but remember that high-volatility events combined with tick-by-tick drawdown (Bulenox Opt1) is an extremely high-risk combination.',
+'h2consistency': 'The Consistency Rule: The Silent Account Killer',
+'consistP1': 'Consistency rules limit how much of your total profit can come from a single trading day. A 50% consistency rule means no single day can represent more than half your cumulative profits when you request a payout. A 40% rule is slightly more lenient, and Tradeify\'s 35% is the most forgiving.',
+'consistP2': 'Here\'s why this matters more than most traders realise. Imagine you trade for 10 days on a Topstep $50K account. You grind out $200 per day for 9 days ($1,800 total), then nail a great setup on day 10 for $1,500. Your total profit is $3,300 \u2014 above the $3,000 target. But the $1,500 day represents 45% of total profits. With a 50% rule, you pass. With a 40% rule (Bulenox), you would also pass. But if that single day had been $1,900, it would represent 51% of $3,700 total \u2014 and Topstep would block your payout until you trade more days to dilute it.',
+'consistP3': '<strong>The lesson:</strong> Don\'t just hit the profit target. Make sure your daily P&L distribution is compatible with the firm\'s consistency requirement. Track your best single day as a percentage of total profits throughout the evaluation, not just at the end.',
+'h2protect': 'How to Protect Yourself Regardless of Firm',
+'protectP1': 'No matter which firm you choose, the most effective protection is <strong>setting your own limits tighter than the firm\'s</strong>. Here are the four rules every prop firm trader should enforce on themselves:',
+'rule1': '<strong>Self-imposed daily loss limit:</strong> Even if the firm doesn\'t require one (Topstep, Bulenox Opt1, TPT), set your own at 40-50% of the max drawdown divided by 5 trading days. For a $2,000 drawdown, that\'s $200-250/day maximum loss.',
+'rule2': '<strong>Volatility-adjusted position sizing:</strong> Trade smaller during high-ATR conditions. A 1-lot NQ during a 250-point ATR day carries very different risk than the same lot during a 150-point day.',
+'rule3': '<strong>Profit protection:</strong> Once you\'re 50% to the profit target, tighten your daily loss limit further. Don\'t give back hard-earned gains to one emotional session.',
+'rule4': '<strong>Revenge trade blocking:</strong> After two consecutive losing trades, stop trading for the day or enforce a 15-minute cooldown minimum. This single rule prevents more blown accounts than any other. For more on this, read our <a href="/blog/revenge-trading-prop-firm">revenge trading guide</a>.',
+'protectP2': 'These are exactly the kind of controls that institutional risk desks enforce automatically. Tools like <a href="/onboarding?mode=trial">x-trade.ai</a> replicate this infrastructure for retail-funded traders, applying rules programmatically so there\'s no emotional override possible.',
+'officialLinks': 'Verify current rules on each firm\'s official site: <a href="https://www.topstep.com" target="_blank" rel="noopener">Topstep</a> &middot; <a href="https://www.apextraderfunding.com" target="_blank" rel="noopener">Apex Trader Funding</a> &middot; <a href="https://www.bulenox.com" target="_blank" rel="noopener">Bulenox</a> &middot; <a href="https://www.tradeify.com" target="_blank" rel="noopener">Tradeify</a> &middot; <a href="https://www.takeprofittrader.com" target="_blank" rel="noopener">TakeProfitTrader</a>',
+'h2faq': 'Frequently Asked Questions',
+'faq1q': 'Which prop firm has the easiest drawdown rules?',
+'faq1a': 'Bulenox Option 2 offers the most forgiving drawdown at $2,500 EOD trailing with overnight holding allowed. However, Topstep\'s $2,000 EOD trailing with no daily loss limit is also very trader-friendly. The "easiest" depends on your style \u2014 scalpers benefit from EOD calculation, while swing traders need overnight permissions. Always factor in consistency rules and minimum trading days, not just the drawdown number.',
+'faq2q': 'What is a trailing drawdown in prop firm trading?',
+'faq2a': 'A trailing drawdown is a maximum loss limit that moves upward as your account reaches new profit highs. For example, on a $50K account with a $2,000 trailing drawdown, your floor starts at $48,000. If your account reaches $52,000, the floor trails up to $50,000. The critical difference is whether it trails tick-by-tick (intraday) or only at end of day (EOD). Tick-by-tick trailing is far more dangerous because even momentary unrealised profits raise the floor permanently.',
+'faq3q': 'What is the difference between EOD and intraday drawdown?',
+'faq3a': 'EOD (End of Day) drawdown is calculated only at session close based on your closing balance. Intraday drawdown tracks your equity in real time, including open positions. EOD is significantly more forgiving because temporary drawdowns during a session don\'t count \u2014 only your final balance matters. Intraday drawdown can trigger a breach from a momentary equity dip even if you close the day profitable. TPT notably switches from EOD (evaluation) to intraday (funded), which catches many traders off guard.',
+'faq4q': 'Which prop firms allow overnight and weekend positions?',
+'faq4a': 'Among major futures prop firms in 2026, Bulenox (both Option 1 and Option 2) is the only firm that allows overnight and weekend holding on funded accounts. Topstep, Apex 4.0, Tradeify (during evaluation), and TakeProfitTrader all require positions to be closed before session end. If swing trading or holding through overnight sessions is part of your strategy, Bulenox is currently your only viable choice among these firms.',
+'ctaTitle': 'Don\'t Let Drawdown Rules Blow Your Account',
+'ctaText': 'x-trade.ai enforces daily loss limits, volatility-adjusted sizing, and profit protection automatically \u2014 tailored to your prop firm\'s exact rules. Set up in under 5 minutes.',
+'ctaBtn': 'Start Free Trial',
+'crossTitle': 'Related Articles',
+'cross1': 'Why 93% of Prop Firm Traders Never Get Paid \u2014 The 5 Risk Mistakes',
+'cross2': 'Revenge Trading: The #1 Prop Firm Account Killer (And How to Stop It)',
+'footBlog': 'Blog',
+'footTrial': 'Free Trial',
+'footCopy': '\u00a9 2026 x-trade.ai \u2014 All rights reserved.'
+},
+fr: {
+'navHome': 'Accueil',
+'navBlog': 'Blog',
+'navStart': 'Essai Gratuit',
+'breadcrumb': '<a href="/">Accueil</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; Comparatif des r\u00e8gles de drawdown en prop firm',
+'metaTag': 'Comparatif',
+'metaDate': '29 mars 2026',
+'metaRead': '14 min de lecture',
+'title': 'Comparatif des R\u00e8gles de Drawdown en Prop Firm : Topstep vs Apex vs Bulenox (2026)',
+'takeawaysTitle': 'Points Cl\u00e9s',
+'tk1': 'Bulenox Option 1 utilise un drawdown trailing tick-by-tick \u2014 le type le plus dangereux \u2014 tandis que Topstep et Apex 4.0 utilisent un trailing EOD, bien plus respirable.',
+'tk2': 'Seul Bulenox autorise le holding overnight et le week-end sur les comptes funded. Topstep, Apex, Tradeify et TPT exigent tous des positions flat \u00e0 la cl\u00f4ture.',
+'tk3': 'Topstep est la seule grande firme sans daily loss limit, mais cette libert\u00e9 peut \u00eatre un pi\u00e8ge si vous ne fixez pas la v\u00f4tre.',
+'tk4': 'Les r\u00e8gles de consistency vont de 35% (Tradeify) \u00e0 50% (Topstep, Apex, TPT) \u2014 cela d\u00e9termine combien de votre profit total peut provenir d\'une seule journ\u00e9e.',
+'intro': '<strong>93% des traders prop firm ne re\u00e7oivent jamais de payout</strong> (FPFX Tech). La raison num\u00e9ro un n\'est ni une mauvaise strat\u00e9gie, ni de mauvaises entr\u00e9es, ni un mauvais timing. Ce sont les <strong>violations de drawdown</strong>. La plupart des traders ne comprennent pas pleinement les r\u00e8gles de drawdown de la firme avec laquelle ils tradent jusqu\'\u00e0 ce qu\'il soit trop tard \u2014 et \u00e0 ce moment-l\u00e0, le compte est perdu et les frais de challenge sont gaspill\u00e9s.',
+'intro2': 'Ce guide fournit une comparaison compl\u00e8te c\u00f4te \u00e0 c\u00f4te des r\u00e8gles de drawdown, daily loss limits, exigences de consistency et pi\u00e8ges cach\u00e9s pour les six types de comptes prop firm futures les plus populaires en 2026 \u2014 tous bas\u00e9s sur des comptes de 50K$. Que vous choisissiez votre premi\u00e8re firme ou d\u00e9cidiez o\u00f9 migrer, cette analyse vous aidera \u00e0 \u00e9viter les mauvaises surprises.',
+'lastUpdated': 'Derni\u00e8re mise \u00e0 jour : mars 2026',
+'h2table': 'Le Comparatif Complet des Comptes 50K$',
+'tableIntro': 'Voici chaque r\u00e8gle qui compte pour la pr\u00e9servation du capital sur un compte de 50K$. Portez une attention particuli\u00e8re \u00e0 la colonne type de drawdown \u2014 c\'est le facteur le plus d\u00e9terminant pour savoir \u00e0 quel point une firme est r\u00e9ellement indulgente.',
+'thRule': 'R\u00e8gle',
+'thTopstep': 'Topstep',
+'thApex': 'Apex 4.0',
+'thBul1': 'Bulenox Opt1',
+'thBul2': 'Bulenox Opt2',
+'thTradeify': 'Tradeify',
+'thTPT': 'TPT',
+'rowDD': '<strong>Drawdown Max</strong>',
+'rowType': '<strong>Type de DD</strong>',
+'rowLock': '<strong>Verrouille au BE ?</strong>',
+'rowDaily': '<strong>Daily Loss Limit</strong>',
+'rowContracts': '<strong>Contrats Max</strong>',
+'rowTarget': '<strong>Objectif de Profit</strong>',
+'rowConsist': '<strong>R\u00e8gle de Consistency</strong>',
+'rowOvernight': '<strong>Overnight</strong>',
+'rowNews': '<strong>News Trading</strong>',
+'rowMinDays': '<strong>Jours Min</strong>',
+'tableNote': '<strong>Comment lire ce tableau :</strong> Les valeurs vertes sont favorables au trader. Les valeurs jaunes comportent des conditions. Les valeurs rouges repr\u00e9sentent un risque significatif pour votre compte. Le tiret (\u2014) signifie que la r\u00e8gle n\'existe pas ou n\'a aucune restriction.',
+'h2types': 'Comprendre les Trois Types de Drawdown',
+'typeIntro': 'Le type de drawdown est plus important que le montant du drawdown. Un drawdown trailing tick-by-tick de 2\u202f500$ peut \u00eatre plus difficile \u00e0 survivre qu\'un drawdown trailing EOD de 2\u202f000$. Voici pourquoi chaque type se comporte diff\u00e9remment en pratique.',
+'h3eod': 'Drawdown Trailing EOD (Topstep, Bulenox Opt2, Tradeify)',
+'eodP1': 'Le drawdown trailing end-of-day ne se met \u00e0 jour qu\'\u00e0 la cl\u00f4ture de session. Si votre compte de 50K$ atteint 52\u202f000$ en \u00e9quit\u00e9 pendant la session mais cl\u00f4ture \u00e0 50\u202f800$, le plancher de drawdown ne monte que de 800$ (de 48\u202f000$ \u00e0 48\u202f800$). Cela vous donne une <strong>flexibilit\u00e9 intraday consid\u00e9rable</strong> \u2014 vous pouvez traverser des drawdowns temporaires sans que le plancher ne vous poursuive tick par tick.',
+'eodP2': 'C\'est le mod\u00e8le de drawdown le plus indulgent pour les traders intraday actifs. Il r\u00e9compense les traders qui cl\u00f4turent leurs positions avant la fin de session et ne gardent pas de positions overnight (ce que la plupart de ces firmes interdisent de toute fa\u00e7on).',
+'h3tick': 'Drawdown Trailing Tick-by-Tick (Bulenox Opt1)',
+'tickP1': 'C\'est le type de drawdown le plus dangereux de l\'industrie. Le plancher de drawdown monte en temps r\u00e9el avec chaque tick de profit latent. Si votre compte touche 52\u202f000$ ne serait-ce qu\'une seule seconde, votre plancher passe d\u00e9finitivement \u00e0 49\u202f500$ \u2014 ind\u00e9pendamment de l\u00e0 o\u00f9 vous cl\u00f4turez la journ\u00e9e.',
+'tickP2': 'L\'impact pratique est brutal : <strong>vous ne pouvez jamais laisser courir un trade gagnant sans relever d\u00e9finitivement votre plancher de risque</strong>. Un gros gain latent suivi d\'un pullback partiel peut violer votre drawdown m\u00eame si vous cl\u00f4turez le trade en profit. De nombreux traders sont \u00e9limin\u00e9s par cette m\u00e9canique sans comprendre ce qui s\'est pass\u00e9.',
+'h3intraday': 'Drawdown Intraday (TPT PRO)',
+'intradayP1': 'TPT utilise un trailing EOD pendant la phase d\'\u00e9valuation mais passe \u00e0 un drawdown intraday sur les comptes PRO (funded). Cela signifie que votre \u00e9quit\u00e9 en temps r\u00e9el est surveill\u00e9e, et toute baisse sous le plancher de drawdown d\u00e9clenche une violation imm\u00e9diate. Le changement de r\u00e8gles entre l\'\u00e9valuation et le funded prend beaucoup de traders au d\u00e9pourvu \u2014 ils passent l\'\u00e9valuation confortablement puis violent le drawdown en quelques jours sur le compte funded parce que les m\u00e9caniques ont fondamentalement chang\u00e9.',
+'h2traps': 'Pi\u00e8ges Cach\u00e9s : Ce Que les Pages Marketing Ne Vous Disent Pas',
+'trapsIntro': 'Chaque prop firm a des r\u00e8gles techniquement publiques mais enterr\u00e9es dans les conditions g\u00e9n\u00e9rales ou les pages FAQ. Ce sont les pi\u00e8ges qui font exploser les comptes apr\u00e8s que les frais de challenge ont d\u00e9j\u00e0 \u00e9t\u00e9 pay\u00e9s.',
+'trapTopstep': 'Topstep',
+'trapTopstepP1': 'Topstep n\'a pas de daily loss limit, ce qui semble \u00eatre de la libert\u00e9. En pratique, cela signifie qu\'une seule mauvaise journ\u00e9e peut consommer l\'int\u00e9gralit\u00e9 de votre drawdown de 2\u202f000$. Sans plafond journalier auto-impos\u00e9, une session \u00e9motionnelle efface tout. De plus, la r\u00e8gle de consistency \u00e0 50% signifie qu\'aucune journ\u00e9e ne peut repr\u00e9senter plus de la moiti\u00e9 de vos profits totaux au moment du payout \u2014 donc cette journ\u00e9e exceptionnelle \u00e0 2\u202f500$ de profit peut ne pas vous qualifier si vos autres journ\u00e9es sont maigres.',
+'trapApex': 'Apex 4.0',
+'trapApexP1': 'Le drawdown trailing d\'Apex est calcul\u00e9 en intraday pendant l\'\u00e9valuation, pas uniquement en EOD. La daily loss limit de 1\u202f000$ est calcul\u00e9e en fin de journ\u00e9e, mais le drawdown trailing suit la session enti\u00e8re. Cette approche hybride d\u00e9route beaucoup de traders qui supposent que toutes les limites utilisent la m\u00eame m\u00e9thode de calcul. \u00c0 noter \u00e9galement : le minimum de 5 jours concerne la qualification au payout, pas le passage de l\'\u00e9valuation \u2014 vous pouvez passer l\'\u00e9valuation rapidement mais devez trader au moins 5 jours avant de demander votre premier retrait.',
+'trapBulenox': 'Bulenox',
+'trapBulenoxP1': 'Le trailing tick-by-tick de l\'Option 1 est le drawdown le plus punitif du trading prop futures. De nombreux traders choisissent l\'Option 1 pour le drawdown plus \u00e9lev\u00e9 de 2\u202f500$ et l\'absence de daily limit, sans r\u00e9aliser que la m\u00e9canique tick-by-tick les \u00e9liminera probablement plus vite qu\'un drawdown inf\u00e9rieur avec un calcul EOD. Le drawdown se verrouille au breakeven une fois le solde \u00e0 52\u202f500$, mais survivre jusque-l\u00e0 avec un trailing tick-by-tick exige une gestion de trades extr\u00eamement disciplin\u00e9e. Le minimum de 10 jours pour le payout signifie aussi que vous \u00eates expos\u00e9 au risque pendant une p\u00e9riode plus longue comparativement \u00e0 des firmes comme Tradeify.',
+'trapTradeify': 'Tradeify',
+'trapTradeifyP1': 'Le drawdown de Tradeify se verrouille au breakeven, mais seulement apr\u00e8s avoir atteint +100$ au-dessus du solde initial \u2014 un d\u00e9tail que beaucoup de traders ratent. Le maximum de 4 contrats est le plus bas de cette liste, ce qui limite les scalpers qui comptent sur des tailles de position plus importantes pour des mouvements rapides. Le minimum d\'1 jour d\'\u00e9valuation semble attractif marketing, mais la r\u00e8gle de consistency \u00e0 35% sur les comptes funded signifie que vous devez quand m\u00eame r\u00e9partir vos profits dans le temps pour recevoir des payouts.',
+'trapTPT': 'TakeProfitTrader (TPT)',
+'trapTPTP1': 'Le plus gros pi\u00e8ge de TPT est le changement de type de drawdown entre l\'\u00e9valuation et les comptes PRO. Vous \u00e9valuez avec un trailing EOD confortable, puis tradez en funded avec un drawdown intraday \u2014 un environnement de risque fondamentalement diff\u00e9rent. Le news trading est interdit sur les comptes PRO, ce qui signifie que toute position d\u00e9tenue pendant une publication \u00e9conomique majeure peut entra\u00eener la r\u00e9siliation du compte, m\u00eame si le trade est gagnant. Combin\u00e9 \u00e0 l\'interdiction du overnight, cela fait de TPT la firme la plus restrictive pour les traders actifs sur les news et le swing.',
+'h2style': 'Quelle Firme Correspond \u00e0 Votre Style de Trading ?',
+'styleIntro': 'Il n\'existe pas de prop firm universellement "meilleure". Le bon choix d\u00e9pend enti\u00e8rement de votre fa\u00e7on de trader. Voici un cadre pour associer votre style au bon ensemble de r\u00e8gles.',
+'styleScalper': '<strong>Si vous \u00eates scalpeur</strong> (entr\u00e9es/sorties rapides, plusieurs trades par jour) : Topstep ou Apex 4.0. Le drawdown trailing EOD vous laisse de la marge pour le bruit intraday, et les limites de contrats plus \u00e9lev\u00e9es (5-6) permettent des tailles de position significatives. \u00c9vitez Bulenox Option 1 \u2014 le trailing tick-by-tick p\u00e9nalisera vos variations de P&L latent.',
+'styleSwing': '<strong>Si vous gardez des trades plusieurs heures ou overnight</strong> : Bulenox est votre seule option r\u00e9aliste parmi ces firmes, car c\'est la seule \u00e0 autoriser les positions overnight sur les comptes funded. Choisissez l\'Option 2 (drawdown EOD) plut\u00f4t que l\'Option 1 (tick-by-tick) sauf si vous avez une discipline exceptionnelle sur les take profit.',
+'styleConservative': '<strong>Si vous \u00eates conservateur et voulez une s\u00e9curit\u00e9 maximale</strong> : La r\u00e8gle de consistency \u00e0 35% de Tradeify est la plus indulgente, et le drawdown se verrouille au breakeven t\u00f4t. Le compromis est un maximum de 4 contrats, ce qui limite le potentiel de profit. Combinez-le avec votre propre daily loss limit de 400-500$ et vous avez un setup tr\u00e8s viable.',
+'styleAggressive': '<strong>Si vous tradez les news</strong> : \u00c9vitez compl\u00e8tement TPT (news interdit sur PRO). Toutes les autres firmes autorisent le news trading, mais rappelez-vous que les \u00e9v\u00e9nements \u00e0 haute volatilit\u00e9 combin\u00e9s au drawdown tick-by-tick (Bulenox Opt1) repr\u00e9sentent un combo \u00e0 risque extr\u00eamement \u00e9lev\u00e9.',
+'h2consistency': 'La R\u00e8gle de Consistency : Le Tueur Silencieux de Comptes',
+'consistP1': 'Les r\u00e8gles de consistency limitent la part de votre profit total pouvant provenir d\'une seule journ\u00e9e de trading. Une r\u00e8gle de consistency \u00e0 50% signifie qu\'aucune journ\u00e9e ne peut repr\u00e9senter plus de la moiti\u00e9 de vos profits cumul\u00e9s lorsque vous demandez un payout. Une r\u00e8gle \u00e0 40% est l\u00e9g\u00e8rement plus souple, et les 35% de Tradeify sont les plus indulgents.',
+'consistP2': 'Voici pourquoi c\'est plus important que la plupart des traders ne le r\u00e9alisent. Imaginez que vous tradez 10 jours sur un compte Topstep 50K$. Vous grappillez 200$ par jour pendant 9 jours (1\u202f800$ au total), puis attrapez un excellent setup le jour 10 pour 1\u202f500$. Votre profit total est de 3\u202f300$ \u2014 au-dessus de l\'objectif de 3\u202f000$. Mais la journ\u00e9e \u00e0 1\u202f500$ repr\u00e9sente 45% des profits totaux. Avec une r\u00e8gle \u00e0 50%, vous passez. Avec une r\u00e8gle \u00e0 40% (Bulenox), vous passez aussi. Mais si cette journ\u00e9e avait \u00e9t\u00e9 de 1\u202f900$, elle repr\u00e9senterait 51% de 3\u202f700$ au total \u2014 et Topstep bloquerait votre payout jusqu\'\u00e0 ce que vous tradiez plus de jours pour diluer ce chiffre.',
+'consistP3': '<strong>La le\u00e7on :</strong> Ne vous contentez pas d\'atteindre l\'objectif de profit. Assurez-vous que la distribution de votre P&L journalier est compatible avec l\'exigence de consistency de la firme. Suivez votre meilleure journ\u00e9e en pourcentage des profits totaux tout au long de l\'\u00e9valuation, pas seulement \u00e0 la fin.',
+'h2protect': 'Comment Vous Prot\u00e9ger Quelle Que Soit la Firme',
+'protectP1': 'Quelle que soit la firme choisie, la protection la plus efficace est de <strong>fixer vos propres limites plus serr\u00e9es que celles de la firme</strong>. Voici les quatre r\u00e8gles que chaque trader prop firm devrait s\'imposer :',
+'rule1': '<strong>Daily loss limit auto-impos\u00e9e :</strong> M\u00eame si la firme n\'en exige pas (Topstep, Bulenox Opt1, TPT), fixez la v\u00f4tre \u00e0 40-50% du drawdown max divis\u00e9 par 5 jours de trading. Pour un drawdown de 2\u202f000$, cela donne 200-250$/jour de perte maximale.',
+'rule2': '<strong>Sizing ajust\u00e9 \u00e0 la volatilit\u00e9 :</strong> Tradez plus petit pendant les conditions \u00e0 ATR \u00e9lev\u00e9. Un lot de NQ pendant un jour \u00e0 250 points d\'ATR porte un risque tr\u00e8s diff\u00e9rent du m\u00eame lot pendant un jour \u00e0 150 points.',
+'rule3': '<strong>Protection des profits :</strong> Une fois \u00e0 50% de l\'objectif de profit, resserrez davantage votre daily loss limit. Ne rendez pas des gains durement acquis \u00e0 cause d\'une session \u00e9motionnelle.',
+'rule4': '<strong>Blocage du revenge trading :</strong> Apr\u00e8s deux trades perdants cons\u00e9cutifs, arr\u00eatez de trader pour la journ\u00e9e ou imposez un cooldown minimum de 15 minutes. Cette seule r\u00e8gle emp\u00eache plus de comptes grill\u00e9s que toute autre. Pour en savoir plus, lisez notre <a href="/blog/revenge-trading-prop-firm">guide sur le revenge trading</a>.',
+'protectP2': 'Ce sont exactement le type de contr\u00f4les que les risk desks institutionnels appliquent automatiquement. Des outils comme <a href="/onboarding?mode=trial">x-trade.ai</a> reproduisent cette infrastructure pour les traders retail funded, en appliquant les r\u00e8gles de mani\u00e8re programmatique pour qu\'aucun contournement \u00e9motionnel ne soit possible.',
+'officialLinks': 'V\u00e9rifiez les r\u00e8gles actuelles sur le site officiel de chaque firme : <a href="https://www.topstep.com" target="_blank" rel="noopener">Topstep</a> &middot; <a href="https://www.apextraderfunding.com" target="_blank" rel="noopener">Apex Trader Funding</a> &middot; <a href="https://www.bulenox.com" target="_blank" rel="noopener">Bulenox</a> &middot; <a href="https://www.tradeify.com" target="_blank" rel="noopener">Tradeify</a> &middot; <a href="https://www.takeprofittrader.com" target="_blank" rel="noopener">TakeProfitTrader</a>',
+'h2faq': 'Questions Fr\u00e9quemment Pos\u00e9es',
+'faq1q': 'Quelle prop firm a les r\u00e8gles de drawdown les plus faciles ?',
+'faq1a': 'Bulenox Option 2 offre le drawdown le plus indulgent \u00e0 2\u202f500$ en trailing EOD avec holding overnight autoris\u00e9. Cependant, le trailing EOD de 2\u202f000$ de Topstep sans daily loss limit est \u00e9galement tr\u00e8s favorable au trader. Le "plus facile" d\u00e9pend de votre style \u2014 les scalpeurs b\u00e9n\u00e9ficient du calcul EOD, tandis que les swing traders ont besoin des permissions overnight. Tenez toujours compte des r\u00e8gles de consistency et du nombre minimum de jours, pas seulement du montant du drawdown.',
+'faq2q': 'Qu\'est-ce qu\'un trailing drawdown en prop firm ?',
+'faq2a': 'Un trailing drawdown est une limite de perte maximale qui monte au fur et \u00e0 mesure que votre compte atteint de nouveaux sommets de profit. Par exemple, sur un compte de 50K$ avec un trailing drawdown de 2\u202f000$, votre plancher commence \u00e0 48\u202f000$. Si votre compte atteint 52\u202f000$, le plancher monte \u00e0 50\u202f000$. La diff\u00e9rence critique est de savoir s\'il trail tick-by-tick (intraday) ou uniquement en fin de journ\u00e9e (EOD). Le trailing tick-by-tick est bien plus dangereux car m\u00eame des profits latents momentan\u00e9s rel\u00e8vent le plancher de mani\u00e8re permanente.',
+'faq3q': 'Quelle est la diff\u00e9rence entre le drawdown EOD et intraday ?',
+'faq3a': 'Le drawdown EOD (End of Day) est calcul\u00e9 uniquement \u00e0 la cl\u00f4ture de session sur la base de votre solde de cl\u00f4ture. Le drawdown intraday suit votre \u00e9quit\u00e9 en temps r\u00e9el, positions ouvertes incluses. L\'EOD est nettement plus indulgent car les drawdowns temporaires pendant une session ne comptent pas \u2014 seul votre solde final compte. Le drawdown intraday peut d\u00e9clencher une violation sur un creux d\'\u00e9quit\u00e9 momentan\u00e9 m\u00eame si vous cl\u00f4turez la journ\u00e9e en profit. TPT passe notamment de l\'EOD (\u00e9valuation) \u00e0 l\'intraday (funded), ce qui prend beaucoup de traders au d\u00e9pourvu.',
+'faq4q': 'Quelles prop firms autorisent les positions overnight et week-end ?',
+'faq4a': 'Parmi les grandes prop firms futures en 2026, Bulenox (Option 1 et Option 2) est la seule firme qui autorise le holding overnight et week-end sur les comptes funded. Topstep, Apex 4.0, Tradeify (pendant l\'\u00e9valuation) et TakeProfitTrader exigent tous que les positions soient cl\u00f4tur\u00e9es avant la fin de session. Si le swing trading ou le holding overnight fait partie de votre strat\u00e9gie, Bulenox est actuellement votre seul choix viable parmi ces firmes.',
+'ctaTitle': 'Ne Laissez Pas les R\u00e8gles de Drawdown Griller Votre Compte',
+'ctaText': 'x-trade.ai applique automatiquement les daily loss limits, le sizing ajust\u00e9 \u00e0 la volatilit\u00e9 et la protection des profits \u2014 adapt\u00e9s aux r\u00e8gles exactes de votre prop firm. Configuration en moins de 5 minutes.',
+'ctaBtn': 'Essai Gratuit',
+'crossTitle': 'Articles Connexes',
+'cross1': 'Pourquoi 93% des Traders Prop Firm Ne Sont Jamais Pay\u00e9s \u2014 Les 5 Erreurs de Risque',
+'cross2': 'Revenge Trading : Le Tueur N\u00b01 des Comptes Prop Firm (Et Comment l\'Arr\u00eater)',
+'footBlog': 'Blog',
+'footTrial': 'Essai Gratuit',
+'footCopy': '\u00a9 2026 x-trade.ai \u2014 Tous droits r\u00e9serv\u00e9s.'
+}
+};
+
+function applyLang() {
+  for (const [id, html] of Object.entries(TR[lang] || TR.en)) {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  }
+  document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+    el.textContent = el.getAttribute('data-' + lang);
+  });
+  document.getElementById('langBtn').textContent = lang === 'en' ? 'FR' : 'EN';
+}
+
+function toggleLang() {
+  lang = lang === 'en' ? 'fr' : 'en';
+  localStorage.setItem('xtrade_lang', lang);
+  applyLang();
+}
+
+document.addEventListener('DOMContentLoaded', applyLang);
+</script>
+
 </body>
 </html>

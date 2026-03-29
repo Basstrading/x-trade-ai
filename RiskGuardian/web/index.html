@@ -353,7 +353,7 @@
     <div class="container">
       <div class="section-header reveal">
         <div class="section-badge">PRICING</div>
-        <h2 id="price-title">Your blown account cost you $2,000.<br/><span class="gradient-text">This costs less than one losing trade.</span></h2>
+        <h2 id="price-title">Your challenge cost you $150. Your blown account cost everything.<br/><span class="gradient-text">This costs less than one challenge.</span></h2>
       </div>
 
       <div class="pricing-grid reveal">
@@ -380,10 +380,11 @@
           <div class="price-tier">Risk Desk</div>
           <div class="price-amount">
             <span class="price-currency">$</span>
-            <span class="price-number">39</span>
+            <span class="price-number">29</span>
             <span class="price-period" id="pro-period">/account/month</span>
           </div>
-          <div class="price-desc" id="pro-desc">One payout covers years of this. Or $29/mo billed annually. Still cheaper than one blown account.</div>
+          <div style="font-size:11px;color:var(--text-2);margin-bottom:8px" id="pro-billing">billed annually</div>
+          <div class="price-desc" id="pro-desc">One payout covers a full year. Less than a single challenge fee.</div>
           <ul class="price-features" id="pro-features">
             <li>1 prop firm account per license</li>
             <li>All 5 prop firms supported</li>
@@ -393,8 +394,8 @@
             <li>Priority rule updates</li>
             <li>Cancel anytime</li>
           </ul>
-          <a href="/onboarding?mode=paid" class="btn-primary btn-full" id="pro-btn">Get Started — $39/mo</a>
-          <div style="text-align:center;margin-top:8px;font-size:11px;color:var(--text-2)" id="pro-annual">or $29/mo billed annually — save 26%</div>
+          <a href="/onboarding?mode=paid" class="btn-primary btn-full" id="pro-btn">Get Started — $29/mo</a>
+          <div style="text-align:center;margin-top:8px;font-size:11px;color:var(--text-2)" id="pro-annual">or $39/mo billed monthly</div>
         </div>
       </div>
     </div>
@@ -499,14 +500,14 @@
       'bx-desc': 'Option 1 (trailing tick-by-tick) or Option 2 (EOD + scaling). Both covered. 40% consistency rule.',
       'tf-desc': 'Growth accounts. EOD trailing that locks at break-even. Funded scaling from 2 contracts up. 35% consistency.',
       'tpt-desc': 'EOD in eval, intraday trailing in PRO. News blackout 1min. 50% consistency. No bots allowed.',
-      'price-title': 'Your blown account cost you $2,000.<br/><span class="gradient-text">This costs less than one losing trade.</span>',
+      'price-title': 'Your challenge cost you $150. Your blown account cost everything.<br/><span class="gradient-text">This costs less than one challenge.</span>',
       'trial-title': 'Free Trial', 'trial-period': '/7 days',
       'trial-desc': 'Full access. No credit card. See if it saves your account.', 'trial-btn': 'Start Free Trial',
       'trial-features': '<li>1 prop firm account</li><li>All risk modules</li><li>Real-time dashboard</li><li>Payout tracking</li><li>Auto-detection (news, tilt, regime)</li>',
-      'pro-badge': 'PER ACCOUNT', 'pro-period': '/account/month',
-      'pro-desc': 'One payout covers years of this. Or $29/mo billed annually. Still cheaper than one blown account.',
-      'pro-btn': 'Get Started \u2014 $39/mo',
-      'pro-annual': 'or $29/mo billed annually \u2014 save 26%',
+      'pro-badge': 'PER ACCOUNT', 'pro-period': '/account/month', 'pro-billing': 'billed annually',
+      'pro-desc': 'One payout covers a full year. Less than a single challenge fee.',
+      'pro-btn': 'Get Started \u2014 $29/mo',
+      'pro-annual': 'or $39/mo billed monthly',
       'pro-features': '<li>1 prop firm account per license</li><li>All 5 prop firms supported</li><li>Admin panel (AUTO/MANUAL controls)</li><li>Full trade history & analytics</li><li>Persistence & payout tracking</li><li>Priority rule updates</li><li>Cancel anytime</li>',
       'cta-title': 'Your next losing streak is coming.<br/><span class="gradient-text">This time, you\'ll survive it.</span>',
       'cta-desc': 'Every prop firm trader who blew an account wishes they had a risk desk. Now you do.', 'cta-btn': 'Start Free Trial',
@@ -544,14 +545,14 @@
       'bx-desc': 'Option 1 (trailing tick-by-tick) ou Option 2 (EOD + scaling). Les deux couverts. Consistance 40%.',
       'tf-desc': 'Comptes Growth. Trailing EOD qui lock au break-even. Scaling funded a partir de 2 contrats. Consistance 35%.',
       'tpt-desc': 'EOD en eval, trailing intraday en PRO. Blackout news 1min. Consistance 50%. Pas de bots.',
-      'price-title': 'Votre compte crame vous a coute $2,000.<br/><span class="gradient-text">Ceci coute moins qu\'un trade perdant.</span>',
+      'price-title': 'Votre challenge vous a coute $150. Votre compte crame vous a tout coute.<br/><span class="gradient-text">Ceci coute moins qu\'un challenge.</span>',
       'trial-title': 'Essai gratuit', 'trial-period': '/7 jours',
       'trial-desc': 'Acces complet. Sans carte bancaire. Voyez si ca sauve votre compte.', 'trial-btn': 'Commencer l\'essai',
       'trial-features': '<li>1 compte prop firm</li><li>Tous les modules risk</li><li>Dashboard temps reel</li><li>Suivi du payout</li><li>Auto-detection (news, tilt, regime)</li>',
-      'pro-badge': 'PAR COMPTE', 'pro-period': '/compte/mois',
-      'pro-desc': 'Un payout couvre des annees. Ou $29/mois en annuel. Moins cher qu\'un compte crame.',
-      'pro-btn': 'Commencer \u2014 $39/mois',
-      'pro-annual': 'ou $29/mois en annuel \u2014 economisez 26%',
+      'pro-badge': 'PAR COMPTE', 'pro-period': '/compte/mois', 'pro-billing': 'facture annuellement',
+      'pro-desc': 'Un payout couvre une annee entiere. Moins cher qu\'un seul challenge.',
+      'pro-btn': 'Commencer \u2014 $29/mois',
+      'pro-annual': 'ou $39/mois en mensuel',
       'pro-features': '<li>1 compte prop firm par licence</li><li>Les 5 prop firms supportees</li><li>Panneau admin (controles AUTO/MANUEL)</li><li>Historique complet & analytics</li><li>Persistence & suivi payout</li><li>Mises a jour prioritaires des regles</li><li>Annulation libre</li>',
       'cta-title': 'Votre prochaine serie de pertes arrive.<br/><span class="gradient-text">Cette fois, vous y survivrez.</span>',
       'cta-desc': 'Chaque trader prop firm qui a crame un compte aurait voulu avoir un risk desk. Maintenant vous l\'avez.', 'cta-btn': 'Commencer l\'essai',

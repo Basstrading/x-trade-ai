@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revenge Trading in Prop Firms: How to Stop It | x-trade.ai</title>
+<meta name="description" content="Revenge trading destroys more prop firm accounts than bad strategy. Learn the 5 warning signs, the psychology behind it, and how automation stops it cold.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://x-trade.ai/blog/revenge-trading-prop-firm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Revenge Trading in Prop Firms: How to Stop It | x-trade.ai">
+<meta property="og:description" content="Revenge trading destroys more prop firm accounts than bad strategy. Learn the 5 warning signs, the psychology behind it, and how automation stops it cold.">
+<meta property="og:url" content="https://x-trade.ai/blog/revenge-trading-prop-firm">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Revenge Trading in Prop Firms: How to Stop It | x-trade.ai">
+<meta name="twitter:description" content="Revenge trading destroys more prop firm accounts than bad strategy. Learn the 5 warning signs, the psychology behind it, and how automation stops it cold.">
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Article",
+  "headline":"Revenge Trading: How to Stop It Before It Stops You",
+  "author":{"@type":"Person","name":"Bass","jobTitle":"Founder, x-trade.ai"},
+  "datePublished":"2026-03-29",
+  "dateModified":"2026-03-29",
+  "publisher":{"@type":"Organization","name":"x-trade.ai","url":"https://x-trade.ai"},
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://x-trade.ai/blog/revenge-trading-prop-firm"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"What is revenge trading?","acceptedAnswer":{"@type":"Answer","text":"Revenge trading is the impulsive act of re-entering the market immediately after a loss, usually with a larger position size, in an attempt to recover lost money quickly. It is driven by emotion rather than analysis and is one of the fastest ways to breach a prop firm drawdown limit."}},
+    {"@type":"Question","name":"How common is revenge trading among prop firm traders?","acceptedAnswer":{"@type":"Answer","text":"Extremely common. Industry data shows that 93% of prop firm traders never receive a payout, and revenge trading is consistently cited as one of the leading causes of account termination. Most traders will revenge trade at some point unless they have automated safeguards in place."}},
+    {"@type":"Question","name":"Can software actually stop revenge trading?","acceptedAnswer":{"@type":"Answer","text":"Yes. Automated risk management software can detect revenge trading patterns in real time and block new trade entries before the trader can act on impulse. Tools like x-trade.ai use consecutive loss counters, rapid-fire trade detection, and dynamic daily limits to prevent revenge trading before it causes damage."}},
+    {"@type":"Question","name":"What triggers revenge trading?","acceptedAnswer":{"@type":"Answer","text":"Revenge trading is triggered by the emotional pain of a loss activating the brain's amygdala (fight-or-flight response). Loss aversion, where losses feel 2.5x more painful than equivalent gains, and sunk cost fallacy, the urge to recover money already lost, compound the impulse. Stress, fatigue, and proximity to drawdown limits make it worse."}}
+  ]
+}
+</script>
+<style>
+:root{--bg:#07090f;--bg2:#0f1420;--cyan:#06b6d4;--green:#22d97f;--red:#ef4444;--gold:#f59e0b;--text:#f0f4f8;--dim:#94a3b8;--border:rgba(255,255,255,0.06)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}
+code,pre,.mono{font-family:'JetBrains Mono',monospace}
+a{color:var(--cyan);text-decoration:none;transition:color .2s}
+a:hover{color:var(--green)}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(7,9,15,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-weight:800;font-size:1.15rem;color:var(--text);letter-spacing:-.5px}
+.nav-logo span{color:var(--cyan)}
+.nav-links{display:flex;align-items:center;gap:1.5rem}
+.nav-links a{color:var(--dim);font-size:.875rem;font-weight:500}
+.nav-links a:hover{color:var(--text)}
+.lang-btn{background:transparent;border:1px solid var(--cyan);color:var(--cyan);padding:4px 12px;border-radius:6px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
+.lang-btn:hover{background:var(--cyan);color:var(--bg)}
+
+/* ARTICLE */
+.article-wrap{max-width:760px;margin:0 auto;padding:3rem 1.5rem 4rem}
+.breadcrumb{font-size:.8rem;color:var(--dim);margin-bottom:2rem}
+.breadcrumb a{color:var(--dim)}
+.breadcrumb a:hover{color:var(--cyan)}
+.article-meta{display:flex;align-items:center;gap:.75rem;font-size:.8rem;color:var(--dim);margin-bottom:1.25rem;flex-wrap:wrap}
+.article-meta .tag{background:rgba(6,182,212,.1);color:var(--cyan);padding:2px 10px;border-radius:99px;font-weight:500}
+h1{font-size:2.25rem;font-weight:800;line-height:1.2;letter-spacing:-.5px;margin-bottom:1.5rem}
+h2{font-size:1.5rem;font-weight:700;margin:2.5rem 0 1rem;letter-spacing:-.3px;color:var(--text)}
+h3{font-size:1.15rem;font-weight:600;margin:1.75rem 0 .75rem;color:var(--green)}
+p{margin-bottom:1.25rem;color:var(--dim);font-size:1rem}
+strong{color:var(--text)}
+
+/* KEY TAKEAWAYS */
+.takeaways{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--cyan);border-radius:10px;padding:1.5rem 1.75rem;margin-bottom:2.5rem}
+.takeaways h3{color:var(--cyan);margin:0 0 .75rem;font-size:1rem}
+.takeaways ul{list-style:none;padding:0}
+.takeaways li{position:relative;padding-left:1.5rem;margin-bottom:.5rem;color:var(--dim);font-size:.95rem}
+.takeaways li::before{content:"\2713";position:absolute;left:0;color:var(--green);font-weight:700}
+
+/* ANSWER BOX */
+.answer-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:10px;padding:1.5rem 1.75rem;margin-bottom:2rem}
+.answer-box p{margin:0;color:var(--dim);font-size:1rem;line-height:1.7}
+
+/* STAT BOX */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.5rem 0 2rem}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem;text-align:center}
+.stat-card .num{font-size:2rem;font-weight:800;font-family:'JetBrains Mono',monospace}
+.stat-card .num.red{color:var(--red)}
+.stat-card .num.green{color:var(--green)}
+.stat-card .num.gold{color:var(--gold)}
+.stat-card .label{font-size:.8rem;color:var(--dim);margin-top:.25rem}
+
+/* LISTS */
+.article-wrap ul,.article-wrap ol{margin:0 0 1.25rem 1.25rem;color:var(--dim)}
+.article-wrap li{margin-bottom:.4rem;font-size:1rem}
+
+/* SPIRAL */
+.spiral-box{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.5rem 1.75rem;margin:1.5rem 0 2rem}
+.spiral-box ol{margin:0;padding-left:1.25rem}
+.spiral-box li{color:var(--dim);margin-bottom:.5rem;font-size:.95rem}
+.spiral-box li strong{color:var(--red)}
+
+/* DETECTION BOX */
+.detect-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0 2rem}
+.detect-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem}
+.detect-card .detect-icon{font-size:1.5rem;margin-bottom:.5rem}
+.detect-card h4{font-size:.95rem;font-weight:700;color:var(--cyan);margin-bottom:.5rem}
+.detect-card p{font-size:.875rem;margin:0;color:var(--dim)}
+
+/* FAQ */
+.faq-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1rem}
+.faq-q{font-weight:600;color:var(--text);margin-bottom:.5rem;font-size:1.05rem}
+.faq-a{color:var(--dim);font-size:.95rem}
+
+/* CTA */
+.cta-box{background:linear-gradient(135deg,rgba(6,182,212,.12),rgba(34,217,127,.08));border:1px solid rgba(6,182,212,.25);border-radius:14px;padding:2.5rem;text-align:center;margin:3rem 0 2rem}
+.cta-box h2{margin:0 0 .75rem;font-size:1.5rem}
+.cta-box p{color:var(--dim);margin-bottom:1.5rem}
+.cta-btn{display:inline-block;background:var(--cyan);color:var(--bg);padding:12px 32px;border-radius:8px;font-weight:700;font-size:1rem;transition:all .25s}
+.cta-btn:hover{background:var(--green);color:var(--bg);transform:translateY(-1px)}
+
+/* CROSS LINKS */
+.cross-links{border-top:1px solid var(--border);padding-top:2rem;margin-top:2rem}
+.cross-links h3{font-size:1rem;color:var(--dim);margin-bottom:1rem}
+.cross-link{display:block;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin-bottom:.75rem;color:var(--text);font-weight:500;transition:border-color .2s}
+.cross-link:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;text-align:center;font-size:.8rem;color:var(--dim)}
+.footer a{color:var(--dim)}
+.footer a:hover{color:var(--cyan)}
+.footer-links{display:flex;justify-content:center;gap:1.5rem;margin-bottom:.75rem;flex-wrap:wrap}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+h1{font-size:1.6rem}
+h2{font-size:1.25rem}
+.stat-grid{grid-template-columns:1fr}
+.detect-grid{grid-template-columns:1fr}
+.article-wrap{padding:2rem 1rem 3rem}
+.nav{padding:0 1rem}
+.nav-links{gap:1rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="/" class="nav-logo">x-trade<span>.ai</span></a>
+  <div class="nav-links">
+    <a href="/" id="navHome">Home</a>
+    <a href="/blog" id="navBlog">Blog</a>
+    <a href="/onboarding?mode=trial" id="navStart">Start Free</a>
+    <button class="lang-btn" id="langBtn" onclick="toggleLang()">FR</button>
+  </div>
+</nav>
+
+<!-- ARTICLE -->
+<main class="article-wrap">
+
+  <div class="breadcrumb" id="breadcrumb"><a href="/">Home</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; Revenge Trading: How to Stop It</div>
+
+  <div class="article-meta">
+    <span class="tag" id="metaTag">Trading Psychology</span>
+    <span id="metaDate">March 29, 2026</span>
+    <span>&middot;</span>
+    <span id="metaRead">10 min read</span>
+  </div>
+
+  <h1 id="title">Revenge Trading: How to Stop It Before It Stops You</h1>
+
+  <!-- KEY TAKEAWAYS -->
+  <div class="takeaways">
+    <h3 id="takeawaysTitle">Key Takeaways</h3>
+    <ul>
+      <li id="tk1">Revenge trading is the impulsive act of re-entering the market after a loss to &ldquo;get it back&rdquo; &mdash; and it is a leading cause of prop firm account blow-ups.</li>
+      <li id="tk2">The pattern follows a predictable spiral: loss, frustration, quick re-entry, bigger size, bigger loss, panic, blow-up.</li>
+      <li id="tk3">Willpower alone cannot stop revenge trading because the amygdala hijacks decision-making faster than the rational brain can intervene.</li>
+      <li id="tk4">Automated detection &mdash; consecutive loss counters, rapid-fire trade blocking, and dynamic daily limits &mdash; is the only reliable prevention.</li>
+    </ul>
+  </div>
+
+  <!-- LEAD / ANSWER BOX -->
+  <div class="answer-box">
+    <p id="answerBox"><strong>Revenge trading</strong> is the emotionally-driven act of re-entering the market immediately after a loss, typically with a larger position size, in an attempt to recover the lost money quickly. It bypasses your trading plan, overrides your risk rules, and is one of the fastest ways to breach a prop firm drawdown limit and lose your funded account.</p>
+  </div>
+
+  <!-- INTRO -->
+  <p id="intro">Every prop firm trader has felt it. The sting of a loss that shouldn't have happened. The stop that got clipped by two pips before the market reversed. The overwhelming urge to jump back in <em>right now</em> and take it back. That urge has a name, and it has destroyed more funded accounts than any single strategy flaw ever could.</p>
+
+  <p id="intro2">According to FPFX Tech's analysis of 300,000 prop trading accounts, <strong>93% of traders never receive a payout</strong>. While the causes are varied, revenge trading is consistently identified as one of the leading behavioural drivers of account termination. It's not a strategy problem. It's a brain problem. And you can't solve a brain problem with more discipline.</p>
+
+  <!-- THE PATTERN -->
+  <h2 id="h2pattern">The Revenge Trading Spiral</h2>
+
+  <p id="patternIntro">Revenge trading doesn't happen in isolation. It follows a predictable, escalating pattern that turns a single manageable loss into an account-ending catastrophe. Here's how the spiral unfolds:</p>
+
+  <div class="spiral-box">
+    <ol>
+      <li id="spiral1"><strong>The Initial Loss</strong> &mdash; A normal trade hits your stop loss. The loss is within your risk parameters. Objectively, nothing is wrong.</li>
+      <li id="spiral2"><strong>Frustration Hits</strong> &mdash; Your brain registers the loss as a threat. Cortisol spikes. You feel the urge to act, to fix it, to make it right.</li>
+      <li id="spiral3"><strong>Quick Re-Entry</strong> &mdash; You re-enter the market within minutes, often on the same instrument, without waiting for a proper setup. You tell yourself you see the pattern.</li>
+      <li id="spiral4"><strong>Bigger Size</strong> &mdash; Consciously or not, you increase your position size. You need to recover the first loss AND make a profit, so normal size won't cut it.</li>
+      <li id="spiral5"><strong>Bigger Loss</strong> &mdash; The rushed trade, driven by emotion rather than analysis, goes against you. Now you're down two losses, one of them oversized.</li>
+      <li id="spiral6"><strong>Panic Sets In</strong> &mdash; The rational mind is now fully offline. You're deep in fight-or-flight mode. Every tick against you amplifies the urgency.</li>
+      <li id="spiral7"><strong>The Blow-Up</strong> &mdash; A third or fourth trade, each more desperate than the last, pushes you through your daily limit or your drawdown threshold. The account is breached.</li>
+    </ol>
+  </div>
+
+  <p id="patternOutro">The entire sequence can unfold in under 30 minutes. Three weeks of disciplined trading, gone in half an hour. If this sounds familiar, you're not weak &mdash; you're human. But being human isn't an excuse when the drawdown counter doesn't care about your feelings.</p>
+
+  <!-- THE STATS -->
+  <h2 id="h2stats">The Numbers Don't Lie</h2>
+
+  <p id="statsIntro">The scale of the problem is staggering. The prop firm industry's failure statistics paint a picture that every trader needs to see before placing another revenge trade:</p>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="num red" id="stat1num">93%</div>
+      <div class="label" id="stat1label">Never receive a payout</div>
+    </div>
+    <div class="stat-card">
+      <div class="num gold" id="stat2num">#1</div>
+      <div class="label" id="stat2label">Behavioural cause of blown accounts</div>
+    </div>
+    <div class="stat-card">
+      <div class="num green" id="stat3num">2.5x</div>
+      <div class="label" id="stat3label">Losses hurt more than gains feel good</div>
+    </div>
+  </div>
+
+  <p id="statsPara">FPFX Tech's study across 300,000 accounts and 10 prop firms confirms that the vast majority of failures are not caused by poor market analysis. They're caused by behavioural breakdowns &mdash; revenge trading chief among them. When you combine the 93% failure rate with the neurological reality that losses feel 2.5 times more painful than equivalent gains (Kahneman & Tversky), you begin to understand why this problem is so pervasive and so destructive.</p>
+
+  <!-- 5 SIGNS -->
+  <h2 id="h2signs">5 Signs You're Revenge Trading</h2>
+
+  <p id="signsIntro">Revenge trading rarely announces itself. It disguises itself as conviction, as opportunity, as "just one more trade." Here are five warning signs that you've crossed the line from trading to revenge:</p>
+
+  <ol>
+    <li id="sign1"><strong>You enter within minutes of a loss</strong> &mdash; Your trading plan calls for patience between setups, but after a loss you're back in the market within 2-5 minutes. The setup you "see" didn't exist 10 minutes ago.</li>
+    <li id="sign2"><strong>You increase your position size after a losing trade</strong> &mdash; Instead of maintaining or reducing risk, you double down. The mental math is simple: bigger size = faster recovery. The actual math tells a different story.</li>
+    <li id="sign3"><strong>You trade the same instrument that just stopped you out</strong> &mdash; You're no longer reading the market. You're trying to beat the market. You've made it personal, and markets don't care about personal.</li>
+    <li id="sign4"><strong>You feel physical tension &mdash; tight jaw, clenched fists, rapid heartbeat</strong> &mdash; These are physiological markers of an amygdala hijack. Your body is in fight-or-flight mode. This is not the state in which good trading decisions are made.</li>
+    <li id="sign5"><strong>Your internal monologue shifts from analysis to emotion</strong> &mdash; Instead of "the setup meets my criteria," you're thinking "I need to get that back" or "the market owes me." The moment the word "owe" appears in your head, step away.</li>
+  </ol>
+
+  <p id="signsOutro">If you recognise even two of these five signs in your recent trading sessions, you have a revenge trading problem. The good news: acknowledging it is the first step. The bad news: acknowledgement alone won't fix it.</p>
+
+  <!-- THE PSYCHOLOGY -->
+  <h2 id="h2psych">The Psychology: Why Your Brain Betrays You</h2>
+
+  <p id="psychIntro">Revenge trading isn't a character flaw. It's a neurological response that evolved to keep you alive &mdash; and that now sabotages your trading account. Three psychological mechanisms drive it:</p>
+
+  <h3 id="h3amygdala">The Amygdala Hijack</h3>
+
+  <p id="amygdalaP1">When you take a loss, your brain's amygdala &mdash; the ancient threat-detection center &mdash; fires before your prefrontal cortex (rational brain) can process the event. The amygdala doesn't distinguish between a sabre-toothed tiger and a -$500 P&L. Both register as threats that demand <strong>immediate action</strong>. This is why you feel the urge to "do something" within seconds of a loss. The amygdala has already hijacked your decision-making apparatus.</p>
+
+  <p id="amygdalaP2">The prefrontal cortex, which handles planning, risk assessment, and rule-following, operates on a slower timescale. By the time it engages, the amygdala has already pushed you to click "Buy" or "Sell." This is the neuroscience behind every "I don't know why I took that trade" moment.</p>
+
+  <h3 id="h3lossaversion">Loss Aversion</h3>
+
+  <p id="lossAversionP1">Kahneman and Tversky's prospect theory demonstrated that the psychological pain of losing $1,000 is roughly <strong>2.5 times stronger</strong> than the pleasure of gaining $1,000. This asymmetry creates a powerful bias toward action after a loss. Your brain perceives inaction (stopping for the day) as <em>accepting</em> the loss, which feels intolerable. Taking another trade, even a bad one, feels like you're at least <em>doing something</em> about the problem.</p>
+
+  <p id="lossAversionP2">This is why the advice to "just walk away" so often fails. Walking away doesn't feel neutral. It feels like surrender. And your brain is wired to fight, not surrender.</p>
+
+  <h3 id="h3sunkcost">The Sunk Cost Fallacy</h3>
+
+  <p id="sunkCostP1">After two or three consecutive losses, a new cognitive trap activates: the sunk cost fallacy. You've already lost $800 today. Your brain reasons that if you stop now, that $800 is gone for good. But if you take one more trade and it works, you can recover some or all of it. The $800 already lost becomes a reason to keep trading, when logically it should be irrelevant to your next decision.</p>
+
+  <p id="sunkCostP2">Professional poker players call this being "on tilt." Professional traders call it revenge trading. The mechanism is identical: past losses distort present decision-making because the brain cannot accept that sunk costs are truly sunk.</p>
+
+  <!-- WHY WILLPOWER FAILS -->
+  <h2 id="h2willpower">Why Willpower Fails</h2>
+
+  <p id="willpowerP1">If you've ever told yourself "I'll just be more disciplined next time," you've already identified the core problem with willpower-based solutions: <strong>you cannot discipline yourself in the moment of emotional hijack</strong>. The amygdala fires in milliseconds. Willpower is a prefrontal cortex function that requires calm, deliberate processing. It's like bringing a knife to a gunfight &mdash; the wrong tool for the wrong timescale.</p>
+
+  <p id="willpowerP2">Research in self-regulation consistently shows that willpower is a depletable resource. After a losing trade, your cognitive resources are already diminished by stress, frustration, and threat response. Asking a depleted brain to override its strongest survival instinct is not a strategy. It's a hope. And hope is not a risk management plan.</p>
+
+  <p id="willpowerP3">This is precisely why institutional trading desks don't rely on willpower. They use <strong>systems</strong>. Automated hard limits that cannot be overridden by the person trading. The rule isn't "try to stop after three losses." The rule is "the system blocks all new entries after three losses." No discretion. No override. No opportunity for the amygdala to win.</p>
+
+  <!-- HOW X-TRADE DETECTS IT -->
+  <h2 id="h2detect">How x-trade.ai Detects &amp; Stops Revenge Trading</h2>
+
+  <p id="detectIntro">x-trade.ai doesn't ask you to be disciplined. It enforces discipline at the infrastructure level, the same way institutional risk desks operate. Here are the four mechanisms that detect and block revenge trading before it can damage your account:</p>
+
+  <div class="detect-grid">
+    <div class="detect-card">
+      <div class="detect-icon">&#9889;</div>
+      <h4 id="detect1title">Rapid-Fire Trade Detection</h4>
+      <p id="detect1desc">3 trades within a 5-minute window with 2 or more losses triggers an automatic block on new entries. The system recognises the behavioural fingerprint of revenge trading and stops it cold.</p>
+    </div>
+    <div class="detect-card">
+      <div class="detect-icon">&#9208;</div>
+      <h4 id="detect2title">Consecutive Loss Counter</h4>
+      <p id="detect2desc">After 3 consecutive losing trades, the system enforces a mandatory pause. No new positions can be opened until the cooldown period expires, giving your prefrontal cortex time to re-engage.</p>
+    </div>
+    <div class="detect-card">
+      <div class="detect-icon">&#128201;</div>
+      <h4 id="detect3title">Dynamic Daily Limit Shrinkage</h4>
+      <p id="detect3desc">As your daily loss accumulates, the remaining risk budget shrinks dynamically. Less room to lose means less room to revenge trade. The system progressively tightens the leash as losses mount.</p>
+    </div>
+    <div class="detect-card">
+      <div class="detect-icon">&#128274;</div>
+      <h4 id="detect4title">Profit Protection Lock</h4>
+      <p id="detect4desc">Once you've built profits, the system locks in a portion by reducing your maximum daily drawdown. You physically cannot give back your gains in a revenge spiral because the limit won't allow it.</p>
+    </div>
+  </div>
+
+  <p id="detectOutro">These four layers work together. Even if one doesn't trigger, another will. The result: revenge trading becomes structurally impossible, not just discouraged. You don't need willpower when the infrastructure won't let the damage occur. This is the same principle behind institutional risk desks &mdash; the trader doesn't control the limits, the limits control the trader. For a deeper look at how these limits interact with prop firm drawdown rules, read our <a href="/blog/prop-firm-drawdown-rules-compared">drawdown rules comparison</a>.</p>
+
+  <!-- FAQ -->
+  <h2 id="h2faq">Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq1q">What is revenge trading?</div>
+    <div class="faq-a" id="faq1a">Revenge trading is the impulsive act of re-entering the market immediately after a loss, usually with a larger position size, in an attempt to recover lost money quickly. It is driven by emotion rather than analysis and is one of the fastest ways to breach a prop firm drawdown limit. The term comes from the trader's desire to "get revenge" on the market for taking their money.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq2q">How common is revenge trading among prop firm traders?</div>
+    <div class="faq-a" id="faq2a">Extremely common. Industry data shows that 93% of prop firm traders never receive a payout (FPFX Tech, 300,000 accounts across 10 firms), and revenge trading is consistently cited as one of the leading behavioural causes of account termination. Most traders will revenge trade at some point in their careers unless they have automated safeguards preventing it.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq3q">Can software actually stop revenge trading?</div>
+    <div class="faq-a" id="faq3a">Yes. Automated risk management software can detect revenge trading patterns in real time &mdash; rapid-fire entries after losses, increasing position sizes, consecutive losses &mdash; and block new trade entries before the trader can act on impulse. This is the same approach institutional desks use. Tools like x-trade.ai employ consecutive loss counters, rapid-fire trade detection, dynamic daily limits, and profit protection to prevent revenge trading before it causes damage.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq4q">What triggers revenge trading?</div>
+    <div class="faq-a" id="faq4a">Revenge trading is triggered by the emotional pain of a loss activating the brain's amygdala (fight-or-flight response). Loss aversion &mdash; where losses feel 2.5x more painful than equivalent gains &mdash; and sunk cost fallacy &mdash; the urge to recover money already lost &mdash; compound the impulse. External factors like stress, fatigue, trading close to drawdown limits, and end-of-day pressure to "finish green" make it significantly worse.</div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-box">
+    <h2 id="ctaTitle">Stop Revenge Trading. Permanently.</h2>
+    <p id="ctaText">x-trade.ai detects revenge trading patterns in real time and blocks them before they can damage your account. Consecutive loss counters, rapid-fire detection, dynamic daily limits, and profit protection &mdash; all automated. Set up in under 5 minutes.</p>
+    <a href="/onboarding?mode=trial" class="cta-btn" id="ctaBtn">Start Free Trial</a>
+  </div>
+
+  <!-- UPDATED -->
+  <p style="text-align:center;font-size:.8rem;color:var(--dim);margin-top:2rem" id="lastUpdated">Last updated: March 2026</p>
+
+  <!-- CROSS LINKS -->
+  <div class="cross-links">
+    <h3 id="crossTitle">Related Articles</h3>
+    <a href="/blog/why-prop-firm-traders-fail" class="cross-link" id="cross1">Why 93% of Prop Firm Traders Never Get Paid &mdash; The 5 Risk Mistakes</a>
+    <a href="/blog/prop-firm-drawdown-rules-compared" class="cross-link" id="cross2">Prop Firm Drawdown Rules Compared &mdash; FTMO, MyFundedFX, The5ers &amp; More</a>
+    <a href="/blog/pass-prop-firm-evaluation" class="cross-link" id="cross3">How to Pass a Prop Firm Evaluation &mdash; The Complete Risk Guide</a>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="https://basstrading.fr" target="_blank" rel="noopener">basstrading.fr</a>
+    <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a>
+    <a href="/blog" id="footBlog">Blog</a>
+    <a href="/onboarding?mode=trial" id="footTrial">Free Trial</a>
+  </div>
+  <p id="footCopy">&copy; 2026 x-trade.ai &mdash; All rights reserved.</p>
+</footer>
+
+<script>
+let lang = localStorage.getItem('xtrade_lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en');
+
+const TR = {
+en: {
+'navHome': 'Home',
+'navBlog': 'Blog',
+'navStart': 'Start Free',
+'breadcrumb': '<a href="/">Home</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; Revenge Trading: How to Stop It',
+'metaTag': 'Trading Psychology',
+'metaDate': 'March 29, 2026',
+'metaRead': '10 min read',
+'title': 'Revenge Trading: How to Stop It Before It Stops You',
+'takeawaysTitle': 'Key Takeaways',
+'tk1': 'Revenge trading is the impulsive act of re-entering the market after a loss to \u201cget it back\u201d \u2014 and it is a leading cause of prop firm account blow-ups.',
+'tk2': 'The pattern follows a predictable spiral: loss, frustration, quick re-entry, bigger size, bigger loss, panic, blow-up.',
+'tk3': 'Willpower alone cannot stop revenge trading because the amygdala hijacks decision-making faster than the rational brain can intervene.',
+'tk4': 'Automated detection \u2014 consecutive loss counters, rapid-fire trade blocking, and dynamic daily limits \u2014 is the only reliable prevention.',
+'answerBox': '<strong>Revenge trading</strong> is the emotionally-driven act of re-entering the market immediately after a loss, typically with a larger position size, in an attempt to recover the lost money quickly. It bypasses your trading plan, overrides your risk rules, and is one of the fastest ways to breach a prop firm drawdown limit and lose your funded account.',
+'intro': 'Every prop firm trader has felt it. The sting of a loss that shouldn\'t have happened. The stop that got clipped by two pips before the market reversed. The overwhelming urge to jump back in <em>right now</em> and take it back. That urge has a name, and it has destroyed more funded accounts than any single strategy flaw ever could.',
+'intro2': 'According to FPFX Tech\'s analysis of 300,000 prop trading accounts, <strong>93% of traders never receive a payout</strong>. While the causes are varied, revenge trading is consistently identified as one of the leading behavioural drivers of account termination. It\'s not a strategy problem. It\'s a brain problem. And you can\'t solve a brain problem with more discipline.',
+'h2pattern': 'The Revenge Trading Spiral',
+'patternIntro': 'Revenge trading doesn\'t happen in isolation. It follows a predictable, escalating pattern that turns a single manageable loss into an account-ending catastrophe. Here\'s how the spiral unfolds:',
+'spiral1': '<strong>The Initial Loss</strong> \u2014 A normal trade hits your stop loss. The loss is within your risk parameters. Objectively, nothing is wrong.',
+'spiral2': '<strong>Frustration Hits</strong> \u2014 Your brain registers the loss as a threat. Cortisol spikes. You feel the urge to act, to fix it, to make it right.',
+'spiral3': '<strong>Quick Re-Entry</strong> \u2014 You re-enter the market within minutes, often on the same instrument, without waiting for a proper setup. You tell yourself you see the pattern.',
+'spiral4': '<strong>Bigger Size</strong> \u2014 Consciously or not, you increase your position size. You need to recover the first loss AND make a profit, so normal size won\'t cut it.',
+'spiral5': '<strong>Bigger Loss</strong> \u2014 The rushed trade, driven by emotion rather than analysis, goes against you. Now you\'re down two losses, one of them oversized.',
+'spiral6': '<strong>Panic Sets In</strong> \u2014 The rational mind is now fully offline. You\'re deep in fight-or-flight mode. Every tick against you amplifies the urgency.',
+'spiral7': '<strong>The Blow-Up</strong> \u2014 A third or fourth trade, each more desperate than the last, pushes you through your daily limit or your drawdown threshold. The account is breached.',
+'patternOutro': 'The entire sequence can unfold in under 30 minutes. Three weeks of disciplined trading, gone in half an hour. If this sounds familiar, you\'re not weak \u2014 you\'re human. But being human isn\'t an excuse when the drawdown counter doesn\'t care about your feelings.',
+'h2stats': 'The Numbers Don\'t Lie',
+'statsIntro': 'The scale of the problem is staggering. The prop firm industry\'s failure statistics paint a picture that every trader needs to see before placing another revenge trade:',
+'stat1label': 'Never receive a payout',
+'stat2label': 'Behavioural cause of blown accounts',
+'stat3label': 'Losses hurt more than gains feel good',
+'statsPara': 'FPFX Tech\'s study across 300,000 accounts and 10 prop firms confirms that the vast majority of failures are not caused by poor market analysis. They\'re caused by behavioural breakdowns \u2014 revenge trading chief among them. When you combine the 93% failure rate with the neurological reality that losses feel 2.5 times more painful than equivalent gains (Kahneman & Tversky), you begin to understand why this problem is so pervasive and so destructive.',
+'h2signs': '5 Signs You\'re Revenge Trading',
+'signsIntro': 'Revenge trading rarely announces itself. It disguises itself as conviction, as opportunity, as \u201cjust one more trade.\u201d Here are five warning signs that you\'ve crossed the line from trading to revenge:',
+'sign1': '<strong>You enter within minutes of a loss</strong> \u2014 Your trading plan calls for patience between setups, but after a loss you\'re back in the market within 2-5 minutes. The setup you \u201csee\u201d didn\'t exist 10 minutes ago.',
+'sign2': '<strong>You increase your position size after a losing trade</strong> \u2014 Instead of maintaining or reducing risk, you double down. The mental math is simple: bigger size = faster recovery. The actual math tells a different story.',
+'sign3': '<strong>You trade the same instrument that just stopped you out</strong> \u2014 You\'re no longer reading the market. You\'re trying to beat the market. You\'ve made it personal, and markets don\'t care about personal.',
+'sign4': '<strong>You feel physical tension \u2014 tight jaw, clenched fists, rapid heartbeat</strong> \u2014 These are physiological markers of an amygdala hijack. Your body is in fight-or-flight mode. This is not the state in which good trading decisions are made.',
+'sign5': '<strong>Your internal monologue shifts from analysis to emotion</strong> \u2014 Instead of \u201cthe setup meets my criteria,\u201d you\'re thinking \u201cI need to get that back\u201d or \u201cthe market owes me.\u201d The moment the word \u201cowe\u201d appears in your head, step away.',
+'signsOutro': 'If you recognise even two of these five signs in your recent trading sessions, you have a revenge trading problem. The good news: acknowledging it is the first step. The bad news: acknowledgement alone won\'t fix it.',
+'h2psych': 'The Psychology: Why Your Brain Betrays You',
+'psychIntro': 'Revenge trading isn\'t a character flaw. It\'s a neurological response that evolved to keep you alive \u2014 and that now sabotages your trading account. Three psychological mechanisms drive it:',
+'h3amygdala': 'The Amygdala Hijack',
+'amygdalaP1': 'When you take a loss, your brain\'s amygdala \u2014 the ancient threat-detection center \u2014 fires before your prefrontal cortex (rational brain) can process the event. The amygdala doesn\'t distinguish between a sabre-toothed tiger and a -$500 P&L. Both register as threats that demand <strong>immediate action</strong>. This is why you feel the urge to \u201cdo something\u201d within seconds of a loss. The amygdala has already hijacked your decision-making apparatus.',
+'amygdalaP2': 'The prefrontal cortex, which handles planning, risk assessment, and rule-following, operates on a slower timescale. By the time it engages, the amygdala has already pushed you to click \u201cBuy\u201d or \u201cSell.\u201d This is the neuroscience behind every \u201cI don\'t know why I took that trade\u201d moment.',
+'h3lossaversion': 'Loss Aversion',
+'lossAversionP1': 'Kahneman and Tversky\'s prospect theory demonstrated that the psychological pain of losing $1,000 is roughly <strong>2.5 times stronger</strong> than the pleasure of gaining $1,000. This asymmetry creates a powerful bias toward action after a loss. Your brain perceives inaction (stopping for the day) as <em>accepting</em> the loss, which feels intolerable. Taking another trade, even a bad one, feels like you\'re at least <em>doing something</em> about the problem.',
+'lossAversionP2': 'This is why the advice to \u201cjust walk away\u201d so often fails. Walking away doesn\'t feel neutral. It feels like surrender. And your brain is wired to fight, not surrender.',
+'h3sunkcost': 'The Sunk Cost Fallacy',
+'sunkCostP1': 'After two or three consecutive losses, a new cognitive trap activates: the sunk cost fallacy. You\'ve already lost $800 today. Your brain reasons that if you stop now, that $800 is gone for good. But if you take one more trade and it works, you can recover some or all of it. The $800 already lost becomes a reason to keep trading, when logically it should be irrelevant to your next decision.',
+'sunkCostP2': 'Professional poker players call this being \u201con tilt.\u201d Professional traders call it revenge trading. The mechanism is identical: past losses distort present decision-making because the brain cannot accept that sunk costs are truly sunk.',
+'h2willpower': 'Why Willpower Fails',
+'willpowerP1': 'If you\'ve ever told yourself \u201cI\'ll just be more disciplined next time,\u201d you\'ve already identified the core problem with willpower-based solutions: <strong>you cannot discipline yourself in the moment of emotional hijack</strong>. The amygdala fires in milliseconds. Willpower is a prefrontal cortex function that requires calm, deliberate processing. It\'s like bringing a knife to a gunfight \u2014 the wrong tool for the wrong timescale.',
+'willpowerP2': 'Research in self-regulation consistently shows that willpower is a depletable resource. After a losing trade, your cognitive resources are already diminished by stress, frustration, and threat response. Asking a depleted brain to override its strongest survival instinct is not a strategy. It\'s a hope. And hope is not a risk management plan.',
+'willpowerP3': 'This is precisely why institutional trading desks don\'t rely on willpower. They use <strong>systems</strong>. Automated hard limits that cannot be overridden by the person trading. The rule isn\'t \u201ctry to stop after three losses.\u201d The rule is \u201cthe system blocks all new entries after three losses.\u201d No discretion. No override. No opportunity for the amygdala to win.',
+'h2detect': 'How x-trade.ai Detects & Stops Revenge Trading',
+'detectIntro': 'x-trade.ai doesn\'t ask you to be disciplined. It enforces discipline at the infrastructure level, the same way institutional risk desks operate. Here are the four mechanisms that detect and block revenge trading before it can damage your account:',
+'detect1title': 'Rapid-Fire Trade Detection',
+'detect1desc': '3 trades within a 5-minute window with 2 or more losses triggers an automatic block on new entries. The system recognises the behavioural fingerprint of revenge trading and stops it cold.',
+'detect2title': 'Consecutive Loss Counter',
+'detect2desc': 'After 3 consecutive losing trades, the system enforces a mandatory pause. No new positions can be opened until the cooldown period expires, giving your prefrontal cortex time to re-engage.',
+'detect3title': 'Dynamic Daily Limit Shrinkage',
+'detect3desc': 'As your daily loss accumulates, the remaining risk budget shrinks dynamically. Less room to lose means less room to revenge trade. The system progressively tightens the leash as losses mount.',
+'detect4title': 'Profit Protection Lock',
+'detect4desc': 'Once you\'ve built profits, the system locks in a portion by reducing your maximum daily drawdown. You physically cannot give back your gains in a revenge spiral because the limit won\'t allow it.',
+'detectOutro': 'These four layers work together. Even if one doesn\'t trigger, another will. The result: revenge trading becomes structurally impossible, not just discouraged. You don\'t need willpower when the infrastructure won\'t let the damage occur. This is the same principle behind institutional risk desks \u2014 the trader doesn\'t control the limits, the limits control the trader. For a deeper look at how these limits interact with prop firm drawdown rules, read our <a href="/blog/prop-firm-drawdown-rules-compared">drawdown rules comparison</a>.',
+'h2faq': 'Frequently Asked Questions',
+'faq1q': 'What is revenge trading?',
+'faq1a': 'Revenge trading is the impulsive act of re-entering the market immediately after a loss, usually with a larger position size, in an attempt to recover lost money quickly. It is driven by emotion rather than analysis and is one of the fastest ways to breach a prop firm drawdown limit. The term comes from the trader\'s desire to \u201cget revenge\u201d on the market for taking their money.',
+'faq2q': 'How common is revenge trading among prop firm traders?',
+'faq2a': 'Extremely common. Industry data shows that 93% of prop firm traders never receive a payout (FPFX Tech, 300,000 accounts across 10 firms), and revenge trading is consistently cited as one of the leading behavioural causes of account termination. Most traders will revenge trade at some point in their careers unless they have automated safeguards preventing it.',
+'faq3q': 'Can software actually stop revenge trading?',
+'faq3a': 'Yes. Automated risk management software can detect revenge trading patterns in real time \u2014 rapid-fire entries after losses, increasing position sizes, consecutive losses \u2014 and block new trade entries before the trader can act on impulse. This is the same approach institutional desks use. Tools like x-trade.ai employ consecutive loss counters, rapid-fire trade detection, dynamic daily limits, and profit protection to prevent revenge trading before it causes damage.',
+'faq4q': 'What triggers revenge trading?',
+'faq4a': 'Revenge trading is triggered by the emotional pain of a loss activating the brain\'s amygdala (fight-or-flight response). Loss aversion \u2014 where losses feel 2.5x more painful than equivalent gains \u2014 and sunk cost fallacy \u2014 the urge to recover money already lost \u2014 compound the impulse. External factors like stress, fatigue, trading close to drawdown limits, and end-of-day pressure to \u201cfinish green\u201d make it significantly worse.',
+'ctaTitle': 'Stop Revenge Trading. Permanently.',
+'ctaText': 'x-trade.ai detects revenge trading patterns in real time and blocks them before they can damage your account. Consecutive loss counters, rapid-fire detection, dynamic daily limits, and profit protection \u2014 all automated. Set up in under 5 minutes.',
+'ctaBtn': 'Start Free Trial',
+'lastUpdated': 'Last updated: March 2026',
+'crossTitle': 'Related Articles',
+'cross1': 'Why 93% of Prop Firm Traders Never Get Paid \u2014 The 5 Risk Mistakes',
+'cross2': 'Prop Firm Drawdown Rules Compared \u2014 FTMO, MyFundedFX, The5ers & More',
+'cross3': 'How to Pass a Prop Firm Evaluation \u2014 The Complete Risk Guide',
+'footBlog': 'Blog',
+'footTrial': 'Free Trial',
+'footCopy': '\u00a9 2026 x-trade.ai \u2014 All rights reserved.'
+},
+fr: {
+'navHome': 'Accueil',
+'navBlog': 'Blog',
+'navStart': 'Essai Gratuit',
+'breadcrumb': '<a href="/">Accueil</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; Revenge Trading : Comment l\'arr\u00eater',
+'metaTag': 'Psychologie du Trading',
+'metaDate': '29 mars 2026',
+'metaRead': '10 min de lecture',
+'title': 'Revenge Trading : Comment l\'Arr\u00eater Avant Qu\'il Ne Vous Arr\u00eate',
+'takeawaysTitle': 'Points Cl\u00e9s',
+'tk1': 'Le revenge trading est l\'acte impulsif de r\u00e9entrer sur le march\u00e9 apr\u00e8s une perte pour \u00ab\u00a0se refaire\u00a0\u00bb \u2014 et c\'est l\'une des principales causes de destruction de comptes prop firm.',
+'tk2': 'Le sch\u00e9ma suit une spirale pr\u00e9visible : perte, frustration, r\u00e9entr\u00e9e rapide, taille plus grande, perte plus grande, panique, explosion du compte.',
+'tk3': 'La volont\u00e9 seule ne peut pas arr\u00eater le revenge trading car l\'amygdale d\u00e9tourne la prise de d\u00e9cision plus vite que le cerveau rationnel ne peut intervenir.',
+'tk4': 'La d\u00e9tection automatis\u00e9e \u2014 compteurs de pertes cons\u00e9cutives, blocage des trades rapides et limites journali\u00e8res dynamiques \u2014 est la seule pr\u00e9vention fiable.',
+'answerBox': '<strong>Le revenge trading</strong> est l\'acte motiv\u00e9 par l\'\u00e9motion de r\u00e9entrer sur le march\u00e9 imm\u00e9diatement apr\u00e8s une perte, g\u00e9n\u00e9ralement avec une taille de position plus grande, pour tenter de r\u00e9cup\u00e9rer l\'argent perdu rapidement. Il contourne votre plan de trading, outrepasse vos r\u00e8gles de risque, et constitue l\'un des moyens les plus rapides de violer une limite de drawdown en prop firm et de perdre votre compte funded.',
+'intro': 'Chaque trader prop firm l\'a ressenti. La piq\u00fbre d\'une perte qui n\'aurait pas d\u00fb arriver. Le stop touch\u00e9 \u00e0 deux pips pr\u00e8s avant que le march\u00e9 ne se retourne. L\'envie irr\u00e9sistible de revenir <em>tout de suite</em> et de reprendre ce qui vous appartient. Cette pulsion a un nom, et elle a d\u00e9truit plus de comptes funded que n\'importe quel d\u00e9faut de strat\u00e9gie.',
+'intro2': 'Selon l\'analyse de FPFX Tech portant sur 300\u202f000 comptes de prop trading, <strong>93% des traders ne re\u00e7oivent jamais de payout</strong>. Si les causes sont vari\u00e9es, le revenge trading est syst\u00e9matiquement identifi\u00e9 comme l\'un des principaux moteurs comportementaux de r\u00e9siliation de compte. Ce n\'est pas un probl\u00e8me de strat\u00e9gie. C\'est un probl\u00e8me de cerveau. Et on ne r\u00e9sout pas un probl\u00e8me de cerveau avec plus de discipline.',
+'h2pattern': 'La Spirale du Revenge Trading',
+'patternIntro': 'Le revenge trading ne survient pas de mani\u00e8re isol\u00e9e. Il suit un sch\u00e9ma pr\u00e9visible et escaladant qui transforme une seule perte g\u00e9rable en une catastrophe fatale pour le compte. Voici comment la spirale se d\u00e9roule :',
+'spiral1': '<strong>La Perte Initiale</strong> \u2014 Un trade normal touche votre stop loss. La perte est dans vos param\u00e8tres de risque. Objectivement, rien d\'anormal.',
+'spiral2': '<strong>La Frustration Frappe</strong> \u2014 Votre cerveau enregistre la perte comme une menace. Le cortisol explose. Vous ressentez l\'urgence d\'agir, de r\u00e9parer, de corriger.',
+'spiral3': '<strong>R\u00e9entr\u00e9e Rapide</strong> \u2014 Vous r\u00e9entrez sur le march\u00e9 en quelques minutes, souvent sur le m\u00eame instrument, sans attendre un setup valide. Vous vous dites que vous voyez le pattern.',
+'spiral4': '<strong>Taille Plus Grande</strong> \u2014 Consciemment ou non, vous augmentez votre taille de position. Vous devez r\u00e9cup\u00e9rer la premi\u00e8re perte ET faire un profit, donc la taille normale ne suffit pas.',
+'spiral5': '<strong>Perte Plus Grande</strong> \u2014 Le trade pr\u00e9cipit\u00e9, guid\u00e9 par l\'\u00e9motion plut\u00f4t que l\'analyse, va contre vous. Vous \u00eates maintenant en perte sur deux trades, dont un surdimensionn\u00e9.',
+'spiral6': '<strong>La Panique S\'installe</strong> \u2014 Le cerveau rationnel est d\u00e9sormais compl\u00e8tement hors ligne. Vous \u00eates en mode fight-or-flight. Chaque tick contre vous amplifie l\'urgence.',
+'spiral7': '<strong>L\'Explosion</strong> \u2014 Un troisi\u00e8me ou quatri\u00e8me trade, chacun plus d\u00e9sesp\u00e9r\u00e9 que le pr\u00e9c\u00e9dent, vous fait franchir votre limite journali\u00e8re ou votre seuil de drawdown. Le compte est viol\u00e9.',
+'patternOutro': 'La s\u00e9quence enti\u00e8re peut se d\u00e9rouler en moins de 30 minutes. Trois semaines de trading disciplin\u00e9, an\u00e9anties en une demi-heure. Si cela vous semble familier, vous n\'\u00eates pas faible \u2014 vous \u00eates humain. Mais \u00eatre humain n\'est pas une excuse quand le compteur de drawdown n\'a que faire de vos sentiments.',
+'h2stats': 'Les Chiffres Ne Mentent Pas',
+'statsIntro': 'L\'ampleur du probl\u00e8me est vertigineuse. Les statistiques d\'\u00e9chec de l\'industrie des prop firms dressent un tableau que chaque trader doit voir avant de placer un autre revenge trade :',
+'stat1label': 'Ne re\u00e7oivent jamais de payout',
+'stat2label': 'Cause comportementale de comptes grill\u00e9s',
+'stat3label': 'Les pertes font plus mal que les gains ne font plaisir',
+'statsPara': 'L\'\u00e9tude de FPFX Tech sur 300\u202f000 comptes et 10 prop firms confirme que la grande majorit\u00e9 des \u00e9checs ne sont pas caus\u00e9s par une mauvaise analyse de march\u00e9. Ils sont caus\u00e9s par des d\u00e9faillances comportementales \u2014 le revenge trading en t\u00eate de liste. Quand on combine le taux d\'\u00e9chec de 93% avec la r\u00e9alit\u00e9 neurologique que les pertes sont 2,5 fois plus douloureuses que les gains \u00e9quivalents (Kahneman & Tversky), on commence \u00e0 comprendre pourquoi ce probl\u00e8me est aussi r\u00e9pandu et aussi destructeur.',
+'h2signs': '5 Signes Que Vous Faites du Revenge Trading',
+'signsIntro': 'Le revenge trading s\'annonce rarement. Il se d\u00e9guise en conviction, en opportunit\u00e9, en \u00ab\u00a0juste un dernier trade\u00a0\u00bb. Voici cinq signaux d\'alerte indiquant que vous avez franchi la ligne entre trader et se venger :',
+'sign1': '<strong>Vous entrez en position quelques minutes apr\u00e8s une perte</strong> \u2014 Votre plan de trading exige de la patience entre les setups, mais apr\u00e8s une perte vous \u00eates de retour sur le march\u00e9 en 2 \u00e0 5 minutes. Le setup que vous \u00ab\u00a0voyez\u00a0\u00bb n\'existait pas il y a 10 minutes.',
+'sign2': '<strong>Vous augmentez votre taille de position apr\u00e8s un trade perdant</strong> \u2014 Au lieu de maintenir ou r\u00e9duire le risque, vous doublez la mise. Le calcul mental est simple : plus grosse taille = r\u00e9cup\u00e9ration plus rapide. Le calcul r\u00e9el raconte une tout autre histoire.',
+'sign3': '<strong>Vous tradez le m\u00eame instrument qui vient de vous stopper</strong> \u2014 Vous ne lisez plus le march\u00e9. Vous essayez de battre le march\u00e9. Vous en avez fait une affaire personnelle, et les march\u00e9s se moquent du personnel.',
+'sign4': '<strong>Vous ressentez une tension physique \u2014 m\u00e2choire serr\u00e9e, poings ferm\u00e9s, rythme cardiaque acc\u00e9l\u00e9r\u00e9</strong> \u2014 Ce sont des marqueurs physiologiques d\'un d\u00e9tournement par l\'amygdale. Votre corps est en mode fight-or-flight. Ce n\'est pas l\'\u00e9tat dans lequel les bonnes d\u00e9cisions de trading sont prises.',
+'sign5': '<strong>Votre monologue int\u00e9rieur passe de l\'analyse \u00e0 l\'\u00e9motion</strong> \u2014 Au lieu de \u00ab\u00a0le setup remplit mes crit\u00e8res\u00a0\u00bb, vous pensez \u00ab\u00a0il faut que je r\u00e9cup\u00e8re \u00e7a\u00a0\u00bb ou \u00ab\u00a0le march\u00e9 me doit\u00a0\u00bb. D\u00e8s que le mot \u00ab\u00a0devoir\u00a0\u00bb appara\u00eet dans votre t\u00eate, \u00e9loignez-vous.',
+'signsOutro': 'Si vous reconnaissez ne serait-ce que deux de ces cinq signes dans vos sessions de trading r\u00e9centes, vous avez un probl\u00e8me de revenge trading. La bonne nouvelle : le reconna\u00eetre est la premi\u00e8re \u00e9tape. La mauvaise nouvelle : la reconnaissance seule ne le r\u00e9glera pas.',
+'h2psych': 'La Psychologie : Pourquoi Votre Cerveau Vous Trahit',
+'psychIntro': 'Le revenge trading n\'est pas un d\u00e9faut de caract\u00e8re. C\'est une r\u00e9ponse neurologique qui a \u00e9volu\u00e9 pour vous maintenir en vie \u2014 et qui sabote d\u00e9sormais votre compte de trading. Trois m\u00e9canismes psychologiques le sous-tendent :',
+'h3amygdala': 'Le D\u00e9tournement par l\'Amygdale',
+'amygdalaP1': 'Lorsque vous prenez une perte, l\'amygdale de votre cerveau \u2014 le centre ancestral de d\u00e9tection des menaces \u2014 s\'active avant que votre cortex pr\u00e9frontal (cerveau rationnel) ne puisse traiter l\'\u00e9v\u00e9nement. L\'amygdale ne distingue pas entre un tigre \u00e0 dents de sabre et un P&L \u00e0 -500$. Les deux sont enregistr\u00e9s comme des menaces exigeant une <strong>action imm\u00e9diate</strong>. C\'est pourquoi vous ressentez l\'urgence de \u00ab\u00a0faire quelque chose\u00a0\u00bb dans les secondes suivant une perte. L\'amygdale a d\u00e9j\u00e0 d\u00e9tourn\u00e9 votre appareil d\u00e9cisionnel.',
+'amygdalaP2': 'Le cortex pr\u00e9frontal, qui g\u00e8re la planification, l\'\u00e9valuation des risques et le respect des r\u00e8gles, fonctionne sur une \u00e9chelle de temps plus lente. Le temps qu\'il s\'active, l\'amygdale vous a d\u00e9j\u00e0 pouss\u00e9 \u00e0 cliquer sur \u00ab\u00a0Acheter\u00a0\u00bb ou \u00ab\u00a0Vendre\u00a0\u00bb. C\'est la neuroscience derri\u00e8re chaque moment \u00ab\u00a0je ne sais pas pourquoi j\'ai pris ce trade\u00a0\u00bb.',
+'h3lossaversion': 'L\'Aversion \u00e0 la Perte',
+'lossAversionP1': 'La th\u00e9orie des perspectives de Kahneman et Tversky a d\u00e9montr\u00e9 que la douleur psychologique de perdre 1\u202f000$ est environ <strong>2,5 fois plus forte</strong> que le plaisir de gagner 1\u202f000$. Cette asym\u00e9trie cr\u00e9e un biais puissant vers l\'action apr\u00e8s une perte. Votre cerveau per\u00e7oit l\'inaction (s\'arr\u00eater pour la journ\u00e9e) comme <em>accepter</em> la perte, ce qui semble intol\u00e9rable. Prendre un autre trade, m\u00eame mauvais, donne au moins l\'impression de <em>faire quelque chose</em> face au probl\u00e8me.',
+'lossAversionP2': 'C\'est pourquoi le conseil de \u00ab\u00a0simplement s\'\u00e9loigner\u00a0\u00bb \u00e9choue si souvent. S\'\u00e9loigner ne semble pas neutre. Cela ressemble \u00e0 une capitulation. Et votre cerveau est programm\u00e9 pour se battre, pas pour capituler.',
+'h3sunkcost': 'Le Biais des Co\u00fbts Irr\u00e9cup\u00e9rables',
+'sunkCostP1': 'Apr\u00e8s deux ou trois pertes cons\u00e9cutives, un nouveau pi\u00e8ge cognitif s\'active : le biais des co\u00fbts irr\u00e9cup\u00e9rables (sunk cost fallacy). Vous avez d\u00e9j\u00e0 perdu 800$ aujourd\'hui. Votre cerveau raisonne que si vous vous arr\u00eatez maintenant, ces 800$ sont perdus d\u00e9finitivement. Mais si vous prenez un trade de plus et qu\'il fonctionne, vous pouvez r\u00e9cup\u00e9rer une partie ou la totalit\u00e9. Les 800$ d\u00e9j\u00e0 perdus deviennent une raison de continuer \u00e0 trader, alors que logiquement ils devraient \u00eatre sans rapport avec votre prochaine d\u00e9cision.',
+'sunkCostP2': 'Les joueurs de poker professionnels appellent cela \u00eatre \u00ab\u00a0on tilt\u00a0\u00bb. Les traders professionnels appellent cela le revenge trading. Le m\u00e9canisme est identique : les pertes pass\u00e9es d\u00e9forment la prise de d\u00e9cision pr\u00e9sente parce que le cerveau ne peut pas accepter que les co\u00fbts irr\u00e9cup\u00e9rables sont v\u00e9ritablement irr\u00e9cup\u00e9rables.',
+'h2willpower': 'Pourquoi la Volont\u00e9 \u00c9choue',
+'willpowerP1': 'Si vous vous \u00eates d\u00e9j\u00e0 dit \u00ab\u00a0je serai simplement plus disciplin\u00e9 la prochaine fois\u00a0\u00bb, vous avez d\u00e9j\u00e0 identifi\u00e9 le probl\u00e8me fondamental des solutions bas\u00e9es sur la volont\u00e9 : <strong>vous ne pouvez pas vous discipliner au moment du d\u00e9tournement \u00e9motionnel</strong>. L\'amygdale s\'active en millisecondes. La volont\u00e9 est une fonction du cortex pr\u00e9frontal qui n\u00e9cessite un traitement calme et d\u00e9lib\u00e9r\u00e9. C\'est comme apporter un couteau \u00e0 une fusillade \u2014 le mauvais outil pour la mauvaise \u00e9chelle de temps.',
+'willpowerP2': 'La recherche en autor\u00e9gulation montre syst\u00e9matiquement que la volont\u00e9 est une ressource \u00e9puisable. Apr\u00e8s un trade perdant, vos ressources cognitives sont d\u00e9j\u00e0 diminu\u00e9es par le stress, la frustration et la r\u00e9ponse aux menaces. Demander \u00e0 un cerveau \u00e9puis\u00e9 de surpasser son instinct de survie le plus puissant n\'est pas une strat\u00e9gie. C\'est un espoir. Et l\'espoir n\'est pas un plan de gestion du risque.',
+'willpowerP3': 'C\'est pr\u00e9cis\u00e9ment pourquoi les desks de trading institutionnels ne comptent pas sur la volont\u00e9. Ils utilisent des <strong>syst\u00e8mes</strong>. Des limites strictes automatis\u00e9es qui ne peuvent pas \u00eatre conttourn\u00e9es par la personne qui trade. La r\u00e8gle n\'est pas \u00ab\u00a0essayer de s\'arr\u00eater apr\u00e8s trois pertes\u00a0\u00bb. La r\u00e8gle est \u00ab\u00a0le syst\u00e8me bloque toutes les nouvelles entr\u00e9es apr\u00e8s trois pertes\u00a0\u00bb. Aucune discr\u00e9tion. Aucun contournement. Aucune opportunit\u00e9 pour l\'amygdale de gagner.',
+'h2detect': 'Comment x-trade.ai D\u00e9tecte et Arr\u00eate le Revenge Trading',
+'detectIntro': 'x-trade.ai ne vous demande pas d\'\u00eatre disciplin\u00e9. Il impose la discipline au niveau de l\'infrastructure, exactement comme les risk desks institutionnels op\u00e8rent. Voici les quatre m\u00e9canismes qui d\u00e9tectent et bloquent le revenge trading avant qu\'il ne puisse endommager votre compte :',
+'detect1title': 'D\u00e9tection des Trades Rapides',
+'detect1desc': '3 trades dans une fen\u00eatre de 5 minutes avec 2 pertes ou plus d\u00e9clenche un blocage automatique des nouvelles entr\u00e9es. Le syst\u00e8me reconna\u00eet l\'empreinte comportementale du revenge trading et l\'arr\u00eate net.',
+'detect2title': 'Compteur de Pertes Cons\u00e9cutives',
+'detect2desc': 'Apr\u00e8s 3 trades perdants cons\u00e9cutifs, le syst\u00e8me impose une pause obligatoire. Aucune nouvelle position ne peut \u00eatre ouverte jusqu\'\u00e0 l\'expiration du cooldown, laissant \u00e0 votre cortex pr\u00e9frontal le temps de reprendre le contr\u00f4le.',
+'detect3title': 'R\u00e9duction Dynamique de la Limite Journali\u00e8re',
+'detect3desc': '\u00c0 mesure que votre perte journali\u00e8re s\'accumule, le budget de risque restant se r\u00e9duit dynamiquement. Moins de marge pour perdre signifie moins de marge pour le revenge trading. Le syst\u00e8me resserre progressivement la laisse quand les pertes s\'accumulent.',
+'detect4title': 'Verrouillage de Protection des Profits',
+'detect4desc': 'Une fois que vous avez accumul\u00e9 des profits, le syst\u00e8me en verrouille une partie en r\u00e9duisant votre drawdown journalier maximum. Vous ne pouvez physiquement pas rendre vos gains dans une spirale de revenge trading car la limite ne le permet pas.',
+'detectOutro': 'Ces quatre couches fonctionnent ensemble. M\u00eame si l\'une ne se d\u00e9clenche pas, une autre le fera. Le r\u00e9sultat : le revenge trading devient structurellement impossible, pas simplement d\u00e9courag\u00e9. Vous n\'avez pas besoin de volont\u00e9 quand l\'infrastructure ne permet pas aux d\u00e9g\u00e2ts de se produire. C\'est le m\u00eame principe que les risk desks institutionnels \u2014 le trader ne contr\u00f4le pas les limites, les limites contr\u00f4lent le trader. Pour un aper\u00e7u plus d\u00e9taill\u00e9 de l\'interaction de ces limites avec les r\u00e8gles de drawdown des prop firms, lisez notre <a href="/blog/prop-firm-drawdown-rules-compared">comparatif des r\u00e8gles de drawdown</a>.',
+'h2faq': 'Questions Fr\u00e9quemment Pos\u00e9es',
+'faq1q': 'Qu\'est-ce que le revenge trading ?',
+'faq1a': 'Le revenge trading est l\'acte impulsif de r\u00e9entrer sur le march\u00e9 imm\u00e9diatement apr\u00e8s une perte, g\u00e9n\u00e9ralement avec une taille de position plus grande, pour tenter de r\u00e9cup\u00e9rer l\'argent perdu rapidement. Il est motiv\u00e9 par l\'\u00e9motion plut\u00f4t que par l\'analyse et constitue l\'un des moyens les plus rapides de violer une limite de drawdown en prop firm. Le terme vient du d\u00e9sir du trader de \u00ab\u00a0se venger\u00a0\u00bb du march\u00e9 pour lui avoir pris son argent.',
+'faq2q': '\u00c0 quel point le revenge trading est-il fr\u00e9quent chez les traders prop firm ?',
+'faq2a': 'Extr\u00eamement fr\u00e9quent. Les donn\u00e9es de l\'industrie montrent que 93% des traders prop firm ne re\u00e7oivent jamais de payout (FPFX Tech, 300\u202f000 comptes dans 10 firmes), et le revenge trading est syst\u00e9matiquement cit\u00e9 comme l\'une des principales causes comportementales de r\u00e9siliation de compte. La plupart des traders feront du revenge trading \u00e0 un moment de leur carri\u00e8re, \u00e0 moins de disposer de garde-fous automatis\u00e9s pour l\'emp\u00eacher.',
+'faq3q': 'Un logiciel peut-il vraiment arr\u00eater le revenge trading ?',
+'faq3a': 'Oui. Un logiciel automatis\u00e9 de gestion du risque peut d\u00e9tecter les patterns de revenge trading en temps r\u00e9el \u2014 entr\u00e9es rapides apr\u00e8s des pertes, augmentation des tailles de position, pertes cons\u00e9cutives \u2014 et bloquer les nouvelles entr\u00e9es avant que le trader ne puisse agir par impulsion. C\'est la m\u00eame approche utilis\u00e9e par les desks institutionnels. Des outils comme x-trade.ai utilisent des compteurs de pertes cons\u00e9cutives, la d\u00e9tection de trades rapides, des limites journali\u00e8res dynamiques et la protection des profits pour emp\u00eacher le revenge trading avant qu\'il ne cause des d\u00e9g\u00e2ts.',
+'faq4q': 'Qu\'est-ce qui d\u00e9clenche le revenge trading ?',
+'faq4a': 'Le revenge trading est d\u00e9clench\u00e9 par la douleur \u00e9motionnelle d\'une perte activant l\'amygdale du cerveau (r\u00e9ponse fight-or-flight). L\'aversion \u00e0 la perte \u2014 o\u00f9 les pertes font 2,5 fois plus mal que les gains \u00e9quivalents ne font plaisir \u2014 et le biais des co\u00fbts irr\u00e9cup\u00e9rables \u2014 l\'envie de r\u00e9cup\u00e9rer l\'argent d\u00e9j\u00e0 perdu \u2014 aggravent l\'impulsion. Des facteurs externes comme le stress, la fatigue, trader pr\u00e8s des limites de drawdown et la pression de fin de journ\u00e9e pour \u00ab\u00a0finir dans le vert\u00a0\u00bb empirent significativement la situation.',
+'ctaTitle': 'Arr\u00eatez le Revenge Trading. D\u00e9finitivement.',
+'ctaText': 'x-trade.ai d\u00e9tecte les patterns de revenge trading en temps r\u00e9el et les bloque avant qu\'ils ne puissent endommager votre compte. Compteurs de pertes cons\u00e9cutives, d\u00e9tection des trades rapides, limites journali\u00e8res dynamiques et protection des profits \u2014 tout automatis\u00e9. Configuration en moins de 5 minutes.',
+'ctaBtn': 'Commencer l\'Essai Gratuit',
+'lastUpdated': 'Derni\u00e8re mise \u00e0 jour : Mars 2026',
+'crossTitle': 'Articles Associ\u00e9s',
+'cross1': 'Pourquoi 93% des Traders Prop Firm Ne Sont Jamais Pay\u00e9s \u2014 Les 5 Erreurs de Risque',
+'cross2': 'Comparaison des R\u00e8gles de Drawdown en Prop Firm \u2014 FTMO, MyFundedFX, The5ers et Plus',
+'cross3': 'Comment R\u00e9ussir une \u00c9valuation Prop Firm \u2014 Le Guide Complet du Risque',
+'footBlog': 'Blog',
+'footTrial': 'Essai Gratuit',
+'footCopy': '\u00a9 2026 x-trade.ai \u2014 Tous droits r\u00e9serv\u00e9s.'
+}
+};
+
+function applyLang() {
+  for (const [id, html] of Object.entries(TR[lang] || TR.en)) {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  }
+  document.getElementById('langBtn').textContent = lang === 'en' ? 'FR' : 'EN';
+  document.documentElement.lang = lang;
+}
+
+function toggleLang() {
+  lang = lang === 'en' ? 'fr' : 'en';
+  localStorage.setItem('xtrade_lang', lang);
+  applyLang();
+}
+
+document.addEventListener('DOMContentLoaded', applyLang);
+</script>
+</body>
+</html>
