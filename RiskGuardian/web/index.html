@@ -3,11 +3,40 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>x-trade.ai — Your Risk Desk. Your Payout.</title>
-  <meta name="description" content="Institutional risk management for prop firm traders. Automated position sizing, drawdown protection, and payout tracking. Topstep, Apex, Bulenox, Tradeify, TakeProfitTrader." />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+
+  <!-- SEO Primary -->
+  <title>Prop Firm Risk Management Tool for Futures Traders | x-trade.ai</title>
+  <meta name="description" content="Stop blowing funded accounts. x-trade.ai is the institutional-grade risk desk that protects your prop firm drawdown. Position sizing, daily loss limit & payout tracking for Topstep, Apex, Bulenox. $29/mo." />
+  <meta name="keywords" content="prop firm risk management, trading risk desk, prop firm payout, drawdown protection, prop firm tools, position sizing, Topstep risk management, Apex trader funding, Bulenox drawdown, futures prop firm" />
+  <link rel="canonical" href="https://x-trade.ai/" />
+
+  <!-- Hreflang -->
+  <link rel="alternate" hreflang="en" href="https://x-trade.ai/" />
+  <link rel="alternate" hreflang="fr" href="https://x-trade.ai/?lang=fr" />
+  <link rel="alternate" hreflang="x-default" href="https://x-trade.ai/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="x-trade.ai" />
+  <meta property="og:title" content="Prop Firm Risk Management Tool — Protect Your Drawdown, Reach Payout" />
+  <meta property="og:description" content="Institutional-grade risk desk for prop firm futures traders. Automated position sizing, drawdown protection, and payout tracking for Topstep, Apex, Bulenox & more." />
+  <meta property="og:url" content="https://x-trade.ai/" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="fr_FR" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Prop Firm Risk Management Tool — Protect Your Drawdown, Reach Payout" />
+  <meta name="twitter:description" content="Automated risk desk for prop firm futures traders. Position sizing, drawdown protection & payout tracking." />
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- CSS -->
+  <link rel="preload" href="/landing/style.css" as="style" />
   <link rel="stylesheet" href="/landing/style.css" />
   <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
   <link rel="manifest" href="/landing/manifest.json" />
@@ -389,13 +418,17 @@
       <div class="footer-inner">
         <div class="footer-brand">
           <span class="logo-icon">&#9632;</span> x-trade<span class="accent">.ai</span>
-          <p id="footer-desc">Institutional risk management for prop firm traders.</p>
+          <p id="footer-desc">Institutional prop firm risk management for futures traders.</p>
         </div>
         <div class="footer-links">
           <a href="#how">How It Works</a>
           <a href="#features">Features</a>
           <a href="#firms">Prop Firms</a>
           <a href="#pricing">Pricing</a>
+        </div>
+        <div class="footer-links">
+          <a href="https://basstrading.fr" target="_blank" rel="noopener">Bass Trading</a>
+          <a href="https://hubtrading.fr" target="_blank" rel="noopener">HubTrading</a>
         </div>
       </div>
       <div class="footer-bottom">
@@ -411,6 +444,21 @@
   </div>
 
   <script src="/landing/app.js"></script>
+
+  <!-- Schema.org Structured Data -->
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[
+    {"@type":"SoftwareApplication","name":"x-trade.ai","url":"https://x-trade.ai/","applicationCategory":"FinanceApplication","operatingSystem":"Web","description":"Institutional-grade prop firm risk management tool for futures traders. Automated position sizing, drawdown protection, and payout tracking for Topstep, Apex, Bulenox, Tradeify, and TakeProfitTrader.","offers":[{"@type":"Offer","name":"Free Trial","price":"0","priceCurrency":"USD","description":"7-day free trial with full access"},{"@type":"Offer","name":"Risk Desk","price":"29","priceCurrency":"USD","description":"$29/month per prop firm account"}],"featureList":["Dynamic daily loss limit","Auto position sizing (Kelly + ATR)","ATR-based stop loss","Payout tracker","Tilt detection","News protection (FOMC, NFP, CPI)","Consistency rule monitoring","Circuit breakers (4 levels)","Trade persistence"]},
+    {"@type":"Organization","name":"x-trade.ai","url":"https://x-trade.ai/","description":"Prop firm risk management for futures traders","sameAs":["https://basstrading.fr","https://hubtrading.fr"]},
+    {"@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"What prop firms does x-trade.ai support?","acceptedAnswer":{"@type":"Answer","text":"x-trade.ai supports Topstep, Apex Trader Funding (4.0), Bulenox (Option 1 and 2), Tradeify, and TakeProfitTrader. All drawdown rules, consistency requirements, and position limits are pre-loaded."}},
+      {"@type":"Question","name":"How does x-trade.ai protect my prop firm drawdown?","acceptedAnswer":{"@type":"Answer","text":"x-trade.ai creates a dynamic daily loss limit that shrinks as your drawdown gets used. It calculates position size using Kelly Criterion and ATR volatility, includes circuit breakers at 4 levels, and locks in profits so you never give back a winning day."}},
+      {"@type":"Question","name":"How much does x-trade.ai cost?","acceptedAnswer":{"@type":"Answer","text":"Free 7-day trial with full access, no credit card required. Then $29 per account per month. Cancel anytime."}},
+      {"@type":"Question","name":"Does x-trade.ai execute trades?","acceptedAnswer":{"@type":"Answer","text":"No. x-trade.ai is a risk management desk only. The trader executes manually. The desk calculates position size, stop distance, and monitors drawdown in real-time."}}
+    ]}
+  ]}
+  </script>
+
   <script>
   // ── FR/EN Translation ──
   let lang = localStorage.getItem('xtrade_lang') || 'en';
