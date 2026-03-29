@@ -601,20 +601,66 @@ async function connectBroker() {
         return;
     }
 
-    // Afficher les comptes trouves
+    // Afficher les comptes avec checkbox pour choisir lesquels proteger
+    state.brokerConnected = true;
+    state.brokerAccounts = data.accounts;
+    state.selectedAccounts = [];
+
     const el = document.getElementById('accountsList');
-    el.innerHTML = '<div style="text-align:center;margin-bottom:12px;color:var(--green);font-size:14px;font-weight:600">' +
-        data.accounts.length + ' compte(s) trouve(s)</div>';
-    el.innerHTML += data.accounts.map(a =>
-        '<div class="option" style="max-width:450px;margin:0 auto 8px">' +
-        '<div class="option-icon" style="font-size:12px">' + (a.id+'').slice(-4) + '</div>' +
-        '<div class="option-text"><h3>' + a.name + '</h3><p>ID: ' + a.id + '</p></div></div>'
+    el.innerHTML = '<div style="text-align:center;margin-bottom:16px;color:var(--green);font-size:14px;font-weight:700">' +
+        data.accounts.length + ' compte(s) trouve(s)</div>' +
+        '<div style="text-align:center;color:var(--text2);font-size:12px;margin-bottom:16px">Selectionnez les comptes a proteger avec le Risk Desk :</div>';
+
+    el.innerHTML += data.accounts.map((a, i) =>
+        '<div class="option" id="acc-' + i + '" onclick="toggleAccount(' + i + ')" style="max-width:500px;margin:0 auto 8px">' +
+        '<div class="option-icon" style="font-size:11px;background:rgba(255,255,255,0.05);color:var(--text2)" id="acc-icon-' + i + '">' + (a.id+'').slice(-4) + '</div>' +
+        '<div class="option-text" style="flex:1"><h3>' + a.name + '</h3>' +
+        '<p>ID: ' + a.id + ' — Balance: $' + (a.balance||0).toLocaleString(undefined,{minimumFractionDigits:2}) + '</p></div>' +
+        '<div id="acc-check-' + i + '" style="font-size:20px;color:var(--text2)">○</div>' +
+        '</div>'
     ).join('');
 
-    state.brokerConnected = true;
+    el.innerHTML += '<div style="text-align:center;margin-top:20px">' +
+        '<div class="option" onclick="finishOnboarding()" style="max-width:500px;margin:0 auto;justify-content:center;border-color:rgba(0,255,136,0.3)">' +
+        '<div class="option-icon" style="background:rgba(0,255,136,0.1);color:var(--green)">GO</div>' +
+        '<div class="option-text"><h3>Continuer</h3><p id="selectedCount">Selectionnez au moins 1 compte</p></div>' +
+        '</div></div>';
+}
 
-    // Aller a done apres 2s
-    setTimeout(showDone, 2000);
+function toggleAccount(idx) {
+    const pos = state.selectedAccounts.indexOf(idx);
+    if (pos >= 0) {
+        state.selectedAccounts.splice(pos, 1);
+        document.getElementById('acc-' + idx).style.borderColor = 'var(--border)';
+        document.getElementById('acc-icon-' + idx).style.background = 'rgba(255,255,255,0.05)';
+        document.getElementById('acc-icon-' + idx).style.color = 'var(--text2)';
+        document.getElementById('acc-check-' + idx).innerHTML = '○';
+        document.getElementById('acc-check-' + idx).style.color = 'var(--text2)';
+    } else {
+        state.selectedAccounts.push(idx);
+        document.getElementById('acc-' + idx).style.borderColor = 'rgba(0,255,136,0.4)';
+        document.getElementById('acc-icon-' + idx).style.background = 'rgba(0,255,136,0.1)';
+        document.getElementById('acc-icon-' + idx).style.color = 'var(--green)';
+        document.getElementById('acc-check-' + idx).innerHTML = '●';
+        document.getElementById('acc-check-' + idx).style.color = 'var(--green)';
+    }
+    const n = state.selectedAccounts.length;
+    document.getElementById('selectedCount').textContent = n > 0
+        ? n + ' compte(s) protege(s) par le Risk Desk'
+        : 'Selectionnez au moins 1 compte';
+}
+
+async function finishOnboarding() {
+    if (state.selectedAccounts.length === 0) {
+        showMsg('msg5', 'Selectionnez au moins un compte', 'error');
+        return;
+    }
+    // Sauvegarder les comptes selectionnes
+    const selected = state.selectedAccounts.map(i => state.brokerAccounts[i]);
+    // Stocker en localStorage pour le dashboard
+    localStorage.setItem('xtrade_accounts', JSON.stringify(selected));
+    localStorage.setItem('xtrade_broker_user', state.email);
+    showDone();
 }
 
 function skipBroker() {
@@ -626,10 +672,15 @@ function skipBroker() {
 function showDone() {
     const firmName = firms[state.firm]?.name || state.firm;
     const planLabel = firms[state.firm]?.plans[state.plan]?.label || state.plan;
-    const broker = state.brokerConnected ? 'Broker connecte' : 'Broker non connecte (configurable plus tard)';
-    document.getElementById('doneSummary').innerHTML =
-        `${firmName} ${planLabel} — ${state.instrument}<br>` +
-        `<span style="color:var(--text2);font-size:13px">${broker}</span>`;
+    let summary = `${firmName} ${planLabel} — ${state.instrument}<br>`;
+    if (state.selectedAccounts && state.selectedAccounts.length > 0) {
+        const names = state.selectedAccounts.map(i => state.brokerAccounts[i]?.name || '?');
+        summary += `<span style="color:var(--green);font-size:13px">${names.length} compte(s) protege(s)</span><br>`;
+        summary += names.map(n => `<span style="color:var(--text2);font-size:11px">${n}</span>`).join('<br>');
+    } else {
+        summary += `<span style="color:var(--text2);font-size:13px">Broker non connecte</span>`;
+    }
+    document.getElementById('doneSummary').innerHTML = summary;
     goTo(6);
 }
 
