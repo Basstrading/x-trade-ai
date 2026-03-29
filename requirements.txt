@@ -1,0 +1,10 @@
+projectx-api>=0.1.0
+fastapi
+uvicorn[standard]
+websockets
+python-dotenv
+loguru
+anthropic
+pandas
+numpy
+aiohttp

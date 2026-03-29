@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  risk-desk:
+    build: .
+    ports:
+      - "8001:8001"
+    env_file:
+      - .env
+    volumes:
+      # Persistence des donnees entre restarts
+      - ./data/risk_desk:/app/data/risk_desk
+      - ./data/trades_history.json:/app/data/trades_history.json
+      - ./logs:/app/logs
+    restart: unless-stopped

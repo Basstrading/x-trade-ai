@@ -1,0 +1,75 @@
+{
+  "strategy": "MM20+NEWS",
+  "instrument": "MNQ",
+  "account": "topstep_50k",
+  "version": "MM20-Pullback-h1d75-NewsNFPCPI",
+  "mode": "LIVE",
+  "mm20_params": {
+    "tp_points": 300,
+    "trail_bars": 20,
+    "max_sl_pts": 200,
+    "max_trades_day": 4,
+    "sma_period": 20,
+    "pullback_bars": 10,
+    "pullback_dist": 15,
+    "h1_sma_dist": 75,
+    "daily_loss_stop": 3,
+    "daily_loss_usd": 1000,
+    "contracts": 4,
+    "point_value": 2.0,
+    "hours_paris": {
+      "normal": {"start": "16:00", "close": "20:39"},
+      "dst_gap": {"start": "15:00", "close": "19:39"}
+    }
+  },
+  "news_params": {
+    "lookback_min": 30,
+    "min_move_pts": 20,
+    "entry_before_min": 2,
+    "sl_pts": 100,
+    "tp_pts": 150,
+    "max_hold_min": 60,
+    "events": "NFP + CPI (no FOMC)",
+    "calendar_file": "data/news_calendar_nfp_cpi.csv"
+  },
+  "topstep_50k": {
+    "daily_loss_limit": -1000,
+    "max_loss_account": -2000,
+    "profit_target": 3000,
+    "max_contracts": 5
+  },
+  "dst_schedule": {
+    "note": "Basculement automatique via is_dst_gap() dans opr_engine",
+    "dst_gap_2026": "2026-03-08 to 2026-03-29 (US DST actif, EU pas encore)"
+  },
+  "backtest_5y": {
+    "data_range": "2021-03-11 to 2026-03-10",
+    "mm20": {
+      "trades": 1330,
+      "win_rate": 67.4,
+      "pnl_total": 464478,
+      "profit_factor": 3.72,
+      "sharpe_ratio": 7.24,
+      "max_drawdown": 3824,
+      "months_positive": "61/61"
+    },
+    "news": {
+      "trades": 42,
+      "win_rate": 64.3,
+      "pnl_total": 8010,
+      "profit_factor": 3.35,
+      "sharpe_ratio": 6.68,
+      "max_drawdown": 914
+    },
+    "combined": {
+      "trades": 1446,
+      "pnl_total": 477582,
+      "avg_monthly": 7829
+    },
+    "note": "4 MNQ ($8/pt)"
+  },
+  "deployed": "2026-03-11",
+  "account_id": 53077478,
+  "account_name": "50KTC-V2-137511-53077478",
+  "copy_accounts": []
+}

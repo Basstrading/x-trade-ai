@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>x-trade.ai — Configuration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #07090f;
+            --bg-card: #0f1420;
+            --bg-hover: #161c2d;
+            --green: #00ff88;
+            --red: #ff3d5a;
+            --accent: #00e0ff;
+            --gold: #ffcc44;
+            --text1: #e2eaf5;
+            --text2: #6b7f99;
+            --border: rgba(0,224,255,0.08);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text1);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px 20px;
+        }
+        .logo { font-size: 22px; font-weight: 800; color: var(--accent); letter-spacing: 2px; }
+        .logo span { color: var(--text1); }
+
+        /* ── Steps indicator ── */
+        .steps-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .step-dot {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; font-weight: 700;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            color: var(--text2);
+            transition: all 0.3s;
+        }
+        .step-dot.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg);
+        }
+        .step-dot.done {
+            background: var(--green);
+            border-color: var(--green);
+            color: var(--bg);
+        }
+        .step-line {
+            width: 60px; height: 2px;
+            background: var(--border);
+        }
+        .step-line.done { background: var(--green); }
+
+        /* ── Container ── */
+        .container {
+            width: 100%;
+            max-width: 700px;
+            padding: 0 20px;
+        }
+
+        .question {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        /* ── Option cards (gros boutons) ── */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 24px;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+        .option:hover {
+            background: var(--bg-hover);
+            border-color: rgba(0,224,255,0.25);
+            transform: translateY(-1px);
+        }
+        .option.selected {
+            border-color: var(--accent);
+            background: rgba(0,224,255,0.05);
+            box-shadow: 0 0 20px rgba(0,224,255,0.1);
+        }
+
+        .option-icon {
+            width: 50px; height: 50px;
+            border-radius: 12px;
+            background: rgba(0,224,255,0.08);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; font-weight: 800;
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .option-text h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .option-text p {
+            font-size: 13px;
+            color: var(--text2);
+            line-height: 1.4;
+        }
+
+        /* ── Promo input ── */
+        .promo-section {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+        .promo-section p {
+            color: var(--text2);
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        .promo-row {
+            display: flex;
+            gap: 10px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .promo-input {
+            flex: 1;
+            padding: 14px 18px;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            color: var(--text1);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            text-align: center;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            outline: none;
+        }
+        .promo-input:focus { border-color: var(--accent); }
+        .promo-input::placeholder {
+            color: var(--text2);
+            letter-spacing: 1px;
+            text-transform: none;
+        }
+        .promo-btn {
+            padding: 14px 24px;
+            background: rgba(0,224,255,0.1);
+            border: 2px solid rgba(0,224,255,0.3);
+            border-radius: 10px;
+            color: var(--accent);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .promo-btn:hover { background: rgba(0,224,255,0.2); }
+
+        /* ── Email input ── */
+        .email-section {
+            max-width: 400px;
+            margin: 0 auto 30px;
+        }
+        .email-input {
+            width: 100%;
+            padding: 16px 20px;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            color: var(--text1);
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+        }
+        .email-input:focus { border-color: var(--accent); }
+
+        /* ── Done screen ── */
+        .done-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .done-icon {
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            background: var(--green);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 48px;
+            margin: 0 auto 24px;
+            box-shadow: 0 0 60px rgba(0,255,136,0.3);
+        }
+        .done-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+        .done-sub {
+            color: var(--text2);
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        .done-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 18px 40px;
+            background: var(--green);
+            color: var(--bg);
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        .done-btn:hover { transform: scale(1.03); }
+
+        /* ── Hidden pages ── */
+        .page { display: none; }
+        .page.active { display: block; }
+
+        /* ── Messages ── */
+        .msg {
+            text-align: center;
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 16px;
+            font-size: 14px;
+        }
+        .msg.error { background: rgba(255,61,90,0.1); color: var(--red); border: 1px solid rgba(255,61,90,0.2); }
+        .msg.success { background: rgba(0,255,136,0.1); color: var(--green); border: 1px solid rgba(0,255,136,0.2); }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="logo"><span>x-trade</span>.ai</div>
+</div>
+
+<!-- Steps indicator -->
+<div class="steps-bar">
+    <div class="step-dot active" id="sd1">1</div>
+    <div class="step-line" id="sl1"></div>
+    <div class="step-dot" id="sd2">2</div>
+    <div class="step-line" id="sl2"></div>
+    <div class="step-dot" id="sd3">3</div>
+    <div class="step-line" id="sl3"></div>
+    <div class="step-dot" id="sd4">4</div>
+</div>
+
+<div class="container">
+
+    <!-- PAGE 1 : Email + Activation -->
+    <div class="page active" id="page1">
+        <div class="question">Votre email</div>
+        <div class="email-section">
+            <input type="email" class="email-input" id="emailInput" placeholder="email@exemple.com" autofocus>
+        </div>
+
+        <div class="question" style="font-size:18px; margin-top:20px">Comment souhaitez-vous activer ?</div>
+        <div class="options">
+            <div class="option" onclick="selectMode('trial')">
+                <div class="option-icon">7j</div>
+                <div class="option-text">
+                    <h3>Essai gratuit</h3>
+                    <p>7 jours, acces complet, sans carte bancaire</p>
+                </div>
+            </div>
+            <div class="option" onclick="selectMode('paid')">
+                <div class="option-icon">$29</div>
+                <div class="option-text">
+                    <h3>S'abonner — $29/mois</h3>
+                    <p>Par compte prop firm. Annulation libre a tout moment.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="promo-section">
+            <p>Vous avez un code promo ?</p>
+            <div class="promo-row">
+                <input type="text" class="promo-input" id="promoInput" placeholder="Entrez votre code">
+                <button class="promo-btn" onclick="selectMode('promo')">Activer</button>
+            </div>
+        </div>
+        <div class="msg" id="msg1" style="display:none"></div>
+    </div>
+
+    <!-- PAGE 2 : Prop Firm -->
+    <div class="page" id="page2">
+        <div class="question">Quelle prop firm ?</div>
+        <div class="options" id="firmOptions"></div>
+    </div>
+
+    <!-- PAGE 3 : Plan -->
+    <div class="page" id="page3">
+        <div class="question">Quel compte ?</div>
+        <div class="options" id="planOptions"></div>
+    </div>
+
+    <!-- PAGE 4 : Instrument -->
+    <div class="page" id="page4">
+        <div class="question">Quel instrument tradez-vous ?</div>
+        <div class="options" id="instrOptions"></div>
+    </div>
+
+    <!-- PAGE 5 : Done -->
+    <div class="page" id="page5">
+        <div class="done-screen">
+            <div class="done-icon">&#10003;</div>
+            <div class="done-title">C'est pret !</div>
+            <div class="done-sub" id="doneSummary">Votre Risk Desk est configure.</div>
+            <a class="done-btn" id="doneBtn" href="/risk-desk">
+                Ouvrir mon Risk Desk
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+const API = window.location.origin;
+const params = new URLSearchParams(window.location.search);
+
+let state = {
+    mode: params.get('mode') || '',
+    email: '',
+    firm: '',
+    plan: '',
+    instrument: '',
+    licenseKey: '',
+};
+
+const firms = {
+    topstep: { name: 'TopstepX', icon: 'TS', plans: {
+        '50k': { label: '50K', desc: 'Drawdown $2,000 — 5 contrats max' },
+        '100k': { label: '100K', desc: 'Drawdown $3,000 — 10 contrats max' },
+        '150k': { label: '150K', desc: 'Drawdown $4,500 — 15 contrats max' },
+    }},
+    apex: { name: 'Apex (4.0)', icon: 'AX', plans: {
+        '25k': { label: '25K', desc: 'Drawdown $1,000 — 4 contrats max' },
+        '50k': { label: '50K', desc: 'Drawdown $2,000 — 6 contrats max' },
+        '100k': { label: '100K', desc: 'Drawdown $3,000 — 8 contrats max' },
+        '150k': { label: '150K', desc: 'Drawdown $4,000 — 12 contrats max' },
+    }},
+    bulenox: { name: 'Bulenox', icon: 'BX', plans: {
+        '50k_opt1': { label: '50K Option 1', desc: 'Trailing tick-by-tick — Pas de daily limit' },
+        '50k_opt2': { label: '50K Option 2', desc: 'EOD — Daily limit + scaling progressif' },
+        '100k_opt1': { label: '100K Option 1', desc: 'Trailing — 12 contrats' },
+        '100k_opt2': { label: '100K Option 2', desc: 'EOD — Scaling progressif' },
+    }},
+    tradeify: { name: 'Tradeify', icon: 'TF', plans: {
+        '50k': { label: '50K Growth', desc: 'Drawdown $2,000 — 4 contrats max' },
+        '100k': { label: '100K Growth', desc: 'Drawdown $3,500 — 8 contrats max' },
+        '150k': { label: '150K Growth', desc: 'Drawdown $5,000 — 12 contrats max' },
+    }},
+    tpt: { name: 'TakeProfitTrader', icon: 'TPT', plans: {
+        '50k': { label: '50K', desc: 'Drawdown $2,000 — 6 contrats' },
+        '100k': { label: '100K', desc: 'Drawdown $4,000 — 12 contrats' },
+        '150k': { label: '150K', desc: 'Drawdown $4,500 — 15 contrats' },
+    }},
+};
+
+const instruments = [
+    { sym: 'MNQ', name: 'Micro Nasdaq', desc: '$2 par point — Le plus populaire' },
+    { sym: 'NQ', name: 'E-mini Nasdaq', desc: '$20 par point' },
+    { sym: 'MES', name: 'Micro S&P 500', desc: '$5 par point' },
+    { sym: 'ES', name: 'E-mini S&P 500', desc: '$50 par point' },
+    { sym: 'CL', name: 'Petrole (Crude Oil)', desc: '$1,000 par point' },
+    { sym: 'GC', name: 'Or (Gold)', desc: '$100 par point' },
+    { sym: 'YM', name: 'E-mini Dow', desc: '$5 par point' },
+];
+
+// ── Navigation ──
+
+function goTo(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page' + page).classList.add('active');
+    for (let i = 1; i <= 4; i++) {
+        const dot = document.getElementById('sd' + i);
+        const line = document.getElementById('sl' + (i-1));
+        if (i < page) {
+            dot.className = 'step-dot done';
+            if (line) line.className = 'step-line done';
+        } else if (i === page) {
+            dot.className = 'step-dot active';
+        } else {
+            dot.className = 'step-dot';
+        }
+    }
+}
+
+// ── Page 1 : Mode selection ──
+
+async function selectMode(mode) {
+    state.email = document.getElementById('emailInput').value.trim();
+    if (!state.email || !state.email.includes('@')) {
+        showMsg('msg1', 'Entrez votre email pour continuer', 'error');
+        document.getElementById('emailInput').focus();
+        return;
+    }
+    state.mode = mode;
+
+    if (mode === 'promo') {
+        const code = document.getElementById('promoInput').value.trim();
+        if (!code) {
+            showMsg('msg1', 'Entrez votre code promo', 'error');
+            return;
+        }
+        // On activera le promo apres le choix firm/plan
+        state.promoCode = code;
+    }
+
+    if (mode === 'paid') {
+        // On redirigera vers Stripe apres le choix firm/plan
+    }
+
+    buildFirmOptions();
+    goTo(2);
+}
+
+// ── Page 2 : Firms ──
+
+function buildFirmOptions() {
+    const el = document.getElementById('firmOptions');
+    el.innerHTML = '';
+    for (const [key, info] of Object.entries(firms)) {
+        el.innerHTML += `
+            <div class="option" onclick="selectFirm('${key}')">
+                <div class="option-icon">${info.icon}</div>
+                <div class="option-text">
+                    <h3>${info.name}</h3>
+                </div>
+            </div>`;
+    }
+}
+
+function selectFirm(firm) {
+    state.firm = firm;
+    buildPlanOptions(firm);
+    goTo(3);
+}
+
+// ── Page 3 : Plans ──
+
+function buildPlanOptions(firm) {
+    const el = document.getElementById('planOptions');
+    el.innerHTML = '';
+    const plans = firms[firm].plans;
+    for (const [key, info] of Object.entries(plans)) {
+        el.innerHTML += `
+            <div class="option" onclick="selectPlan('${key}')">
+                <div class="option-icon">${info.label.replace(/[^0-9K]/g, '').substring(0,3)}</div>
+                <div class="option-text">
+                    <h3>${info.label}</h3>
+                    <p>${info.desc}</p>
+                </div>
+            </div>`;
+    }
+}
+
+function selectPlan(plan) {
+    state.plan = plan;
+    buildInstrOptions();
+    goTo(4);
+}
+
+// ── Page 4 : Instruments ──
+
+function buildInstrOptions() {
+    const el = document.getElementById('instrOptions');
+    el.innerHTML = '';
+    for (const i of instruments) {
+        el.innerHTML += `
+            <div class="option" onclick="selectInstrument('${i.sym}')">
+                <div class="option-icon">${i.sym}</div>
+                <div class="option-text">
+                    <h3>${i.name}</h3>
+                    <p>${i.desc}</p>
+                </div>
+            </div>`;
+    }
+}
+
+async function selectInstrument(sym) {
+    state.instrument = sym;
+
+    // Activation selon le mode
+    if (state.mode === 'trial') {
+        const res = await fetch(`${API}/api/license/trial?trader_id=${encodeURIComponent(state.email.split('@')[0])}&email=${encodeURIComponent(state.email)}&firm=${state.firm}&plan=${state.plan}`, { method: 'POST' });
+        const data = await res.json();
+        if (data.error) {
+            showMsg('msg1', data.error, 'error');
+            goTo(1);
+            return;
+        }
+        state.licenseKey = data.key;
+    } else if (state.mode === 'promo') {
+        const res = await fetch(`${API}/api/license/activate-promo?code=${encodeURIComponent(state.promoCode)}&trader_id=${encodeURIComponent(state.email.split('@')[0])}&email=${encodeURIComponent(state.email)}&firm=${state.firm}&plan=${state.plan}`, { method: 'POST' });
+        const data = await res.json();
+        if (data.error) {
+            showMsg('msg1', data.error, 'error');
+            goTo(1);
+            return;
+        }
+        state.licenseKey = data.key;
+    } else if (state.mode === 'paid') {
+        const res = await fetch(`${API}/api/stripe/create-checkout?email=${encodeURIComponent(state.email)}&firm=${state.firm}&plan=${state.plan}`, { method: 'POST' });
+        const data = await res.json();
+        if (data.checkout_url) {
+            window.location.href = data.checkout_url;
+            return;
+        }
+        // Stripe pas configure → trial fallback
+        const trial = await fetch(`${API}/api/license/trial?trader_id=${encodeURIComponent(state.email.split('@')[0])}&email=${encodeURIComponent(state.email)}&firm=${state.firm}&plan=${state.plan}`, { method: 'POST' });
+        const tdata = await trial.json();
+        state.licenseKey = tdata.key || '';
+    }
+
+    // Configure le desk
+    await fetch(`${API}/api/risk-desk/framework`);
+
+    showDone();
+}
+
+// ── Page 5 : Done ──
+
+function showDone() {
+    const firmName = firms[state.firm]?.name || state.firm;
+    const planLabel = firms[state.firm]?.plans[state.plan]?.label || state.plan;
+    document.getElementById('doneSummary').innerHTML =
+        `${firmName} ${planLabel} — ${state.instrument}<br>` +
+        `<span style="color:var(--text2);font-size:13px">Votre Risk Desk est actif et vous protege.</span>`;
+    goTo(5);
+}
+
+// ── Utils ──
+
+function showMsg(id, text, type) {
+    const el = document.getElementById(id);
+    el.textContent = text;
+    el.className = 'msg ' + type;
+    el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 5000);
+}
+</script>
+</body>
+</html>

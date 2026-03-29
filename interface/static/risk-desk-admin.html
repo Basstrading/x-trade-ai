@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Desk — Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #07090f;
+            --bg-panel: #0b0e17;
+            --bg-card: #0f1420;
+            --green: #00ff88;
+            --red: #ff3d5a;
+            --gold: #ffcc44;
+            --accent: #00e0ff;
+            --violet: #9b6dff;
+            --text1: #e2eaf5;
+            --text2: #5d7490;
+            --border: rgba(0,224,255,0.08);
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-title: 'Syne', sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-mono);
+            background: var(--bg);
+            color: var(--text1);
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-panel);
+        }
+        .header-title {
+            font-family: var(--font-title);
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: 3px;
+        }
+        .header-sub {
+            font-size: 10px;
+            color: var(--text2);
+        }
+        .header-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .status-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+        }
+        .status-dot.green { background: var(--green); box-shadow: 0 0 8px var(--green); }
+        .status-dot.red { background: var(--red); box-shadow: 0 0 8px var(--red); }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            padding: 20px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ── Cards ── */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .card-title {
+            font-family: var(--font-title);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+        .card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* ── Toggle AUTO/MANUEL ── */
+        .param-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+        .param-row:last-child { border-bottom: none; }
+
+        .param-info {
+            flex: 1;
+        }
+        .param-name {
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+        .param-reason {
+            font-size: 9px;
+            color: var(--text2);
+        }
+        .param-values {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .param-current {
+            font-size: 16px;
+            font-weight: 700;
+            min-width: 60px;
+            text-align: right;
+        }
+
+        /* Toggle switch */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .toggle-label {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text2);
+        }
+        .toggle-label.active { color: var(--accent); font-weight: 600; }
+        .toggle {
+            width: 40px;
+            height: 20px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .toggle.auto { background: rgba(0,224,255,0.2); }
+        .toggle.manual { background: rgba(155,109,255,0.2); }
+        .toggle-knob {
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            transition: left 0.3s;
+        }
+        .toggle.auto .toggle-knob { left: 2px; }
+        .toggle.manual .toggle-knob { left: 22px; }
+
+        /* Manual input */
+        .manual-input {
+            width: 70px;
+            background: rgba(155,109,255,0.1);
+            border: 1px solid rgba(155,109,255,0.3);
+            border-radius: 6px;
+            color: var(--violet);
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 4px 8px;
+            text-align: center;
+            outline: none;
+        }
+        .manual-input:focus {
+            border-color: var(--violet);
+            box-shadow: 0 0 10px rgba(155,109,255,0.2);
+        }
+        .manual-input.hidden { display: none; }
+
+        /* ── Action buttons ── */
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-family: var(--font-title);
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: all 0.2s;
+        }
+        .btn-red {
+            background: rgba(255,61,90,0.15);
+            color: var(--red);
+            border: 1px solid rgba(255,61,90,0.3);
+        }
+        .btn-red:hover { background: rgba(255,61,90,0.25); }
+        .btn-green {
+            background: rgba(0,255,136,0.1);
+            color: var(--green);
+            border: 1px solid rgba(0,255,136,0.2);
+        }
+        .btn-green:hover { background: rgba(0,255,136,0.2); }
+        .btn-gold {
+            background: rgba(255,204,68,0.1);
+            color: var(--gold);
+            border: 1px solid rgba(255,204,68,0.2);
+        }
+        .btn-gold:hover { background: rgba(255,204,68,0.2); }
+
+        /* ── Detectors ── */
+        .detector-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            font-size: 12px;
+        }
+        .detector-badge {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+        .badge-green { background: rgba(0,255,136,0.1); color: var(--green); }
+        .badge-red { background: rgba(255,61,90,0.1); color: var(--red); }
+        .badge-gold { background: rgba(255,204,68,0.1); color: var(--gold); }
+        .badge-blue { background: rgba(0,224,255,0.1); color: var(--accent); }
+
+        /* ── Framework preview ── */
+        .fw-preview {
+            display: flex;
+            gap: 16px;
+            padding: 16px;
+            background: rgba(0,224,255,0.03);
+            border: 1px solid rgba(0,224,255,0.1);
+            border-radius: 10px;
+            margin-top: 12px;
+        }
+        .fw-item {
+            text-align: center;
+            flex: 1;
+        }
+        .fw-item-label {
+            font-size: 9px;
+            color: var(--text2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .fw-item-value {
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        /* ── Trades log ── */
+        .trade-log {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .trade-entry {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 11px;
+            border-bottom: 1px solid rgba(255,255,255,0.02);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            <div class="header-title">RISK DESK ADMIN</div>
+            <div class="header-sub" id="headerInfo">--</div>
+        </div>
+        <div class="header-status">
+            <div class="status-dot" id="statusDot"></div>
+            <span id="statusLabel" style="font-size:11px">--</span>
+        </div>
+    </div>
+
+    <div class="layout">
+        <!-- Framework actuel (ce que le trader voit) -->
+        <div class="card full-width">
+            <div class="card-title">Framework actuel — ce que le trader voit</div>
+            <div class="fw-preview" id="fwPreview">
+                <div class="fw-item">
+                    <div class="fw-item-label">Statut</div>
+                    <div class="fw-item-value" id="fwAllowed">--</div>
+                </div>
+                <div class="fw-item">
+                    <div class="fw-item-label">Taille</div>
+                    <div class="fw-item-value" id="fwContracts">--</div>
+                </div>
+                <div class="fw-item">
+                    <div class="fw-item-label">Stop</div>
+                    <div class="fw-item-value" id="fwStop">--</div>
+                </div>
+                <div class="fw-item">
+                    <div class="fw-item-label">Perte max</div>
+                    <div class="fw-item-value" id="fwMaxLoss">--</div>
+                </div>
+                <div class="fw-item">
+                    <div class="fw-item-label">Budget</div>
+                    <div class="fw-item-value" id="fwBudget">--</div>
+                </div>
+                <div class="fw-item">
+                    <div class="fw-item-label">Trades</div>
+                    <div class="fw-item-value" id="fwTrades">--</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Parametres AUTO/MANUEL -->
+        <div class="card">
+            <div class="card-title">Parametres ajustables</div>
+
+            <div class="param-row" id="row-position_size_mult">
+                <div class="param-info">
+                    <div class="param-name">Taille de position</div>
+                    <div class="param-reason" id="reason-position_size_mult">--</div>
+                </div>
+                <div class="param-values">
+                    <div class="param-current" id="val-position_size_mult">--</div>
+                    <input class="manual-input hidden" id="input-position_size_mult" type="number" step="0.1" min="0" max="2">
+                    <div class="toggle-container">
+                        <span class="toggle-label" id="lbl-auto-position_size_mult">A</span>
+                        <div class="toggle auto" id="toggle-position_size_mult" onclick="toggleParam('position_size_mult')">
+                            <div class="toggle-knob"></div>
+                        </div>
+                        <span class="toggle-label" id="lbl-manual-position_size_mult">M</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="param-row" id="row-atr_stop_mult">
+                <div class="param-info">
+                    <div class="param-name">Multiplicateur stop ATR</div>
+                    <div class="param-reason" id="reason-atr_stop_mult">--</div>
+                </div>
+                <div class="param-values">
+                    <div class="param-current" id="val-atr_stop_mult">--</div>
+                    <input class="manual-input hidden" id="input-atr_stop_mult" type="number" step="0.25" min="0.5" max="5">
+                    <div class="toggle-container">
+                        <span class="toggle-label" id="lbl-auto-atr_stop_mult">A</span>
+                        <div class="toggle auto" id="toggle-atr_stop_mult" onclick="toggleParam('atr_stop_mult')">
+                            <div class="toggle-knob"></div>
+                        </div>
+                        <span class="toggle-label" id="lbl-manual-atr_stop_mult">M</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="param-row" id="row-max_trades">
+                <div class="param-info">
+                    <div class="param-name">Trades max / jour</div>
+                    <div class="param-reason" id="reason-max_trades">--</div>
+                </div>
+                <div class="param-values">
+                    <div class="param-current" id="val-max_trades">--</div>
+                    <input class="manual-input hidden" id="input-max_trades" type="number" step="1" min="1" max="20">
+                    <div class="toggle-container">
+                        <span class="toggle-label" id="lbl-auto-max_trades">A</span>
+                        <div class="toggle auto" id="toggle-max_trades" onclick="toggleParam('max_trades')">
+                            <div class="toggle-knob"></div>
+                        </div>
+                        <span class="toggle-label" id="lbl-manual-max_trades">M</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="param-row" id="row-cb_strictness">
+                <div class="param-info">
+                    <div class="param-name">Circuit breakers</div>
+                    <div class="param-reason" id="reason-cb_strictness">--</div>
+                </div>
+                <div class="param-values">
+                    <div class="param-current" id="val-cb_strictness">--</div>
+                    <input class="manual-input hidden" id="input-cb_strictness" type="number" step="0.1" min="0.3" max="1.5">
+                    <div class="toggle-container">
+                        <span class="toggle-label" id="lbl-auto-cb_strictness">A</span>
+                        <div class="toggle auto" id="toggle-cb_strictness" onclick="toggleParam('cb_strictness')">
+                            <div class="toggle-knob"></div>
+                        </div>
+                        <span class="toggle-label" id="lbl-manual-cb_strictness">M</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detecteurs automatiques -->
+        <div class="card">
+            <div class="card-title">Detecteurs automatiques</div>
+
+            <div class="detector-row">
+                <span>News du jour</span>
+                <span class="detector-badge" id="detNews">--</span>
+            </div>
+            <div class="detector-row">
+                <span>Regime de marche</span>
+                <span class="detector-badge" id="detRegime">--</span>
+            </div>
+            <div class="detector-row">
+                <span>Choppiness Index</span>
+                <span id="detChop" style="color:var(--text2); font-size:11px">--</span>
+            </div>
+            <div class="detector-row">
+                <span>Tilt trader</span>
+                <span class="detector-badge" id="detTilt">--</span>
+            </div>
+            <div class="detector-row">
+                <span>Volatilite</span>
+                <span class="detector-badge" id="detVol">--</span>
+            </div>
+            <div class="detector-row">
+                <span>Session</span>
+                <span id="detSession" style="color:var(--text2); font-size:11px">--</span>
+            </div>
+        </div>
+
+        <!-- Actions admin -->
+        <div class="card">
+            <div class="card-title">Actions risk manager</div>
+
+            <div class="actions">
+                <button class="btn btn-red" id="btnBlock" onclick="blockTrader()">Bloquer trader</button>
+                <button class="btn btn-green" id="btnUnblock" onclick="unblockTrader()">Debloquer</button>
+            </div>
+
+            <div style="margin-top:16px">
+                <div style="font-size:10px; color:var(--text2); margin-bottom:8px; text-transform:uppercase; letter-spacing:1px">Reduction globale</div>
+                <div style="display:flex; gap:6px">
+                    <button class="btn btn-gold" style="flex:1" onclick="setReduction(0.75)">75%</button>
+                    <button class="btn btn-gold" style="flex:1" onclick="setReduction(0.50)">50%</button>
+                    <button class="btn btn-gold" style="flex:1" onclick="setReduction(0.25)">25%</button>
+                    <button class="btn btn-green" style="flex:1" onclick="clearReduction()">100%</button>
+                </div>
+            </div>
+
+            <div class="actions" style="margin-top:12px">
+                <button class="btn btn-red" onclick="killSwitch()">KILL SWITCH</button>
+            </div>
+        </div>
+
+        <!-- Profil -->
+        <div class="card">
+            <div class="card-title">Profil verrouille</div>
+            <div id="profileInfo" style="font-size:11px; color:var(--text2)">--</div>
+        </div>
+
+        <!-- Trades du jour -->
+        <div class="card full-width">
+            <div class="card-title">Trades du jour</div>
+            <div class="trade-log" id="tradeLog">
+                <div style="color:var(--text2); font-size:11px">Aucun trade</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API = window.location.origin;
+        const paramNames = ['position_size_mult', 'atr_stop_mult', 'max_trades', 'cb_strictness'];
+
+        // Recupere la cle admin depuis l'URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const ADMIN_KEY = urlParams.get('admin_key') || '';
+
+        function adminFetch(url, opts = {}) {
+            opts.headers = opts.headers || {};
+            opts.headers['X-Admin-Key'] = ADMIN_KEY;
+            return fetch(url, opts);
+        }
+
+        // ── Toggle AUTO/MANUEL ──
+        async function toggleParam(name) {
+            const toggle = document.getElementById('toggle-' + name);
+            const input = document.getElementById('input-' + name);
+            const isAuto = toggle.classList.contains('auto');
+
+            if (isAuto) {
+                // Passe en MANUEL → demande une valeur
+                const currentVal = parseFloat(document.getElementById('val-' + name).textContent);
+                input.value = currentVal;
+                input.classList.remove('hidden');
+                toggle.classList.remove('auto');
+                toggle.classList.add('manual');
+                document.getElementById('lbl-auto-' + name).classList.remove('active');
+                document.getElementById('lbl-manual-' + name).classList.add('active');
+
+                // Envoie quand l'input change
+                input.onchange = () => sendManual(name, parseFloat(input.value || 0));
+                sendManual(name, currentVal);
+            } else {
+                // Repasse en AUTO
+                input.classList.add('hidden');
+                toggle.classList.remove('manual');
+                toggle.classList.add('auto');
+                document.getElementById('lbl-manual-' + name).classList.remove('active');
+                document.getElementById('lbl-auto-' + name).classList.add('active');
+                await adminFetch(`${API}/api/risk-desk/param/${name}/auto`, { method: 'POST' });
+            }
+        }
+
+        async function sendManual(name, value) {
+            await adminFetch(`${API}/api/risk-desk/param/${name}/manual?value=${value}`, { method: 'POST' });
+        }
+
+        // ── Actions admin ──
+        async function blockTrader() {
+            const reason = prompt('Raison du blocage:', 'Bloque par le risk manager');
+            if (reason !== null) {
+                await adminFetch(`${API}/api/risk-desk/block?reason=${encodeURIComponent(reason)}`, { method: 'POST' });
+            }
+        }
+
+        async function unblockTrader() {
+            await adminFetch(`${API}/api/risk-desk/unblock`, { method: 'POST' });
+        }
+
+        async function setReduction(mult) {
+            const reason = prompt('Raison:', mult < 1 ? 'Reduction de taille' : '');
+            await adminFetch(`${API}/api/risk-desk/global-reduction?mult=${mult}&reason=${encodeURIComponent(reason || '')}`, { method: 'POST' });
+        }
+
+        async function clearReduction() {
+            await adminFetch(`${API}/api/risk-desk/clear-reduction`, { method: 'POST' });
+        }
+
+        async function killSwitch() {
+            if (confirm('KILL SWITCH — Fermer TOUTES les positions ?')) {
+                await adminFetch(`${API}/api/risk-desk/kill`, { method: 'POST' });
+            }
+        }
+
+        // ── Update loop ──
+        async function update() {
+            try {
+                const [fwRes, adminRes, scRes] = await Promise.all([
+                    fetch(`${API}/api/risk-desk/framework`),
+                    adminFetch(`${API}/api/risk-desk/admin`),
+                    adminFetch(`${API}/api/risk-desk/session-config`),
+                ]);
+                const fw = await fwRes.json();
+                const admin = await adminRes.json();
+                const sc = await scRes.json();
+                if (!fw.error) renderFramework(fw);
+                if (!admin.error) renderAdmin(admin);
+                if (!sc.error) renderSessionConfig(sc);
+            } catch(e) { console.error(e); }
+        }
+
+        function renderFramework(fw) {
+            // Status
+            const dot = document.getElementById('statusDot');
+            const label = document.getElementById('statusLabel');
+            if (fw.allowed) {
+                dot.className = 'status-dot green';
+                label.textContent = 'TRADER ACTIF';
+                label.style.color = 'var(--green)';
+            } else {
+                dot.className = 'status-dot red';
+                label.textContent = 'BLOQUE';
+                label.style.color = 'var(--red)';
+            }
+
+            // Framework preview
+            const fwAllowed = document.getElementById('fwAllowed');
+            fwAllowed.textContent = fw.allowed ? 'GO' : 'STOP';
+            fwAllowed.style.color = fw.allowed ? 'var(--green)' : 'var(--red)';
+
+            document.getElementById('fwContracts').textContent = fw.contracts + ' ' + fw.instrument;
+            document.getElementById('fwStop').textContent = fw.stop_distance_pts + ' pts';
+            document.getElementById('fwMaxLoss').textContent = '$' + fw.max_loss_per_trade;
+            document.getElementById('fwBudget').textContent = '$' + fw.risk_budget_remaining;
+            document.getElementById('fwTrades').textContent = fw.trades_remaining;
+
+            // Detectors from framework
+            document.getElementById('detVol').textContent = fw.vol_regime.toUpperCase();
+            document.getElementById('detVol').className = 'detector-badge ' +
+                (fw.vol_regime === 'extreme' ? 'badge-red' :
+                 fw.vol_regime === 'high' ? 'badge-gold' : 'badge-green');
+            document.getElementById('detSession').textContent = fw.session;
+        }
+
+        function renderAdmin(admin) {
+            // Header info
+            if (admin.profile) {
+                document.getElementById('headerInfo').textContent =
+                    `${admin.profile.firm} ${admin.profile.plan} | ${admin.profile.instrument} | $${admin.profile.account_size?.toLocaleString()}`;
+            }
+
+            // Profile
+            if (admin.profile) {
+                const p = admin.profile;
+                document.getElementById('profileInfo').innerHTML = [
+                    `Firm: ${p.firm} — ${p.plan}`,
+                    `Compte: $${p.account_size?.toLocaleString()}`,
+                    `Instrument: ${p.instrument}`,
+                    `Daily limit firm: $${p.daily_limit_firm}`,
+                    `Daily limit agent: $${p.daily_limit_agent}`,
+                    `Max DD: $${p.max_drawdown} (${p.trailing_drawdown ? 'trailing' : 'fixe'})`,
+                    `Max trades: ${p.max_trades_day}`,
+                    `Overnight: ${p.overnight_allowed ? 'OK' : 'INTERDIT'}`,
+                    `Consistance: ${p.consistency_rule ? 'ACTIVE' : 'OFF'}`,
+                ].join('<br>');
+            }
+
+            // Trades
+            if (admin.trades_today && admin.trades_today.length > 0) {
+                const log = document.getElementById('tradeLog');
+                log.innerHTML = admin.trades_today.map(t => {
+                    const color = t.pnl >= 0 ? 'var(--green)' : 'var(--red)';
+                    return `<div class="trade-entry">
+                        <span>${t.direction?.toUpperCase() || '--'} ${t.contracts || 1}ct</span>
+                        <span>${t.entry} → ${t.exit}</span>
+                        <span style="color:${color}; font-weight:600">$${t.pnl}</span>
+                        <span style="color:var(--text2)">${t.circuit_after}</span>
+                    </div>`;
+                }).join('');
+            }
+        }
+
+        function renderSessionConfig(sc) {
+            if (!sc.params) return;
+
+            // Params
+            for (const name of paramNames) {
+                const p = sc.params[name];
+                if (!p) continue;
+
+                const valEl = document.getElementById('val-' + name);
+                const reasonEl = document.getElementById('reason-' + name);
+                const toggleEl = document.getElementById('toggle-' + name);
+                const inputEl = document.getElementById('input-' + name);
+                const lblAuto = document.getElementById('lbl-auto-' + name);
+                const lblManual = document.getElementById('lbl-manual-' + name);
+
+                // Valeur affichee
+                valEl.textContent = typeof p.value === 'number' && p.value % 1 !== 0
+                    ? p.value.toFixed(2) : p.value;
+                valEl.style.color = p.mode === 'auto' ? 'var(--accent)' : 'var(--violet)';
+
+                // Raison
+                reasonEl.textContent = p.mode === 'auto'
+                    ? `AUTO: ${p.auto_reason}`
+                    : `MANUEL: ${p.manual_value}`;
+
+                // Toggle state (ne pas overrider si l'user est en train de changer)
+                if (p.mode === 'auto') {
+                    toggleEl.classList.add('auto');
+                    toggleEl.classList.remove('manual');
+                    inputEl.classList.add('hidden');
+                    lblAuto.classList.add('active');
+                    lblManual.classList.remove('active');
+                } else {
+                    toggleEl.classList.remove('auto');
+                    toggleEl.classList.add('manual');
+                    inputEl.classList.remove('hidden');
+                    inputEl.value = p.manual_value;
+                    lblManual.classList.add('active');
+                    lblAuto.classList.remove('active');
+                }
+            }
+
+            // Detectors
+            if (sc.detectors) {
+                const d = sc.detectors;
+
+                const newsEl = document.getElementById('detNews');
+                if (d.news?.is_high_impact) {
+                    newsEl.textContent = d.news.events?.slice(0,2).join(', ') || 'HIGH IMPACT';
+                    newsEl.className = 'detector-badge badge-red';
+                } else {
+                    newsEl.textContent = 'AUCUNE';
+                    newsEl.className = 'detector-badge badge-green';
+                }
+
+                const regimeEl = document.getElementById('detRegime');
+                regimeEl.textContent = d.market_regime?.toUpperCase() || '--';
+                regimeEl.className = 'detector-badge ' +
+                    (d.market_regime === 'choppy' ? 'badge-red' :
+                     d.market_regime === 'range' ? 'badge-gold' :
+                     d.market_regime === 'trend' ? 'badge-green' : 'badge-blue');
+
+                document.getElementById('detChop').textContent = d.choppiness || '--';
+
+                const tiltEl = document.getElementById('detTilt');
+                if (d.tilt_detected) {
+                    tiltEl.textContent = 'TILT';
+                    tiltEl.className = 'detector-badge badge-red';
+                } else {
+                    tiltEl.textContent = 'OK';
+                    tiltEl.className = 'detector-badge badge-green';
+                }
+            }
+        }
+
+        // Poll
+        update();
+        setInterval(update, 1500);
+    </script>
+</body>
+</html>

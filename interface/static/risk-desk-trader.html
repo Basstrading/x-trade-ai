@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Desk — Trader View</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #07090f;
+            --bg-card: #0f1420;
+            --green: #00ff88;
+            --red: #ff3d5a;
+            --gold: #ffcc44;
+            --accent: #00e0ff;
+            --text1: #e2eaf5;
+            --text2: #5d7490;
+            --border: rgba(0,224,255,0.08);
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-title: 'Syne', sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-mono);
+            background: var(--bg);
+            color: var(--text1);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            padding: 20px;
+        }
+
+        /* ── Feu vert/rouge principal ── */
+        .signal-box {
+            text-align: center;
+            padding: 40px 20px;
+            border-radius: 16px;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            margin-bottom: 16px;
+            transition: all 0.3s;
+        }
+        .signal-box.allowed {
+            border-color: rgba(0,255,136,0.3);
+            box-shadow: 0 0 40px rgba(0,255,136,0.05);
+        }
+        .signal-box.blocked {
+            border-color: rgba(255,61,90,0.3);
+            box-shadow: 0 0 40px rgba(255,61,90,0.05);
+        }
+
+        .signal-dot {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            transition: all 0.3s;
+        }
+        .signal-dot.green {
+            background: var(--green);
+            box-shadow: 0 0 60px rgba(0,255,136,0.4);
+        }
+        .signal-dot.red {
+            background: var(--red);
+            box-shadow: 0 0 60px rgba(255,61,90,0.4);
+            animation: pulse-red 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-red {
+            0%,100% { box-shadow: 0 0 60px rgba(255,61,90,0.4); }
+            50% { box-shadow: 0 0 80px rgba(255,61,90,0.6); }
+        }
+
+        .signal-label {
+            font-family: var(--font-title);
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 4px;
+        }
+        .signal-label.green { color: var(--green); }
+        .signal-label.red { color: var(--red); }
+
+        .blocked-reason {
+            color: var(--red);
+            font-size: 12px;
+            margin-top: 8px;
+            opacity: 0.8;
+        }
+
+        /* ── Parametres du trade ── */
+        .trade-params {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .param-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+        .param-label {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text2);
+            margin-bottom: 8px;
+        }
+        .param-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .param-unit {
+            font-size: 11px;
+            color: var(--text2);
+            margin-top: 2px;
+        }
+
+        /* ── Budget bar ── */
+        .budget-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .budget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .budget-label {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text2);
+        }
+        .budget-value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .budget-bar-bg {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .budget-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s, background 0.3s;
+        }
+
+        /* ── Stats row ── */
+        .stats-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .stat {
+            flex: 1;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+        }
+        .stat-label {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text2);
+            margin-bottom: 4px;
+        }
+        .stat-value {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* ── Warnings ── */
+        .warnings {
+            margin-bottom: 16px;
+        }
+        .warning-item {
+            background: rgba(255,204,68,0.05);
+            border: 1px solid rgba(255,204,68,0.15);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 11px;
+            color: var(--gold);
+            margin-bottom: 6px;
+        }
+
+        /* ── Circuit indicator ── */
+        .circuit-bar {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+        }
+        .circuit-segment {
+            flex: 1;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255,255,255,0.05);
+            transition: background 0.3s;
+        }
+        .circuit-segment.active-green { background: var(--green); box-shadow: 0 0 8px rgba(0,255,136,0.3); }
+        .circuit-segment.active-yellow { background: var(--gold); box-shadow: 0 0 8px rgba(255,204,68,0.3); }
+        .circuit-segment.active-orange { background: #ff8800; box-shadow: 0 0 8px rgba(255,136,0,0.3); }
+        .circuit-segment.active-red { background: var(--red); box-shadow: 0 0 8px rgba(255,61,90,0.3); }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center;
+            font-size: 9px;
+            color: var(--text2);
+            padding: 10px;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Feu vert/rouge -->
+        <div class="signal-box" id="signalBox">
+            <div class="signal-dot" id="signalDot"></div>
+            <div class="signal-label" id="signalLabel">--</div>
+            <div class="blocked-reason" id="blockedReason"></div>
+        </div>
+
+        <!-- Circuit breaker bar -->
+        <div class="circuit-bar" id="circuitBar">
+            <div class="circuit-segment" id="cb-green"></div>
+            <div class="circuit-segment" id="cb-yellow"></div>
+            <div class="circuit-segment" id="cb-orange"></div>
+            <div class="circuit-segment" id="cb-red"></div>
+        </div>
+
+        <!-- Parametres du trade -->
+        <div class="trade-params">
+            <div class="param-card">
+                <div class="param-label">Taille</div>
+                <div class="param-value" id="contracts">--</div>
+                <div class="param-unit" id="instrument">--</div>
+            </div>
+            <div class="param-card">
+                <div class="param-label">Stop</div>
+                <div class="param-value" id="stopPts">--</div>
+                <div class="param-unit">pts</div>
+            </div>
+            <div class="param-card">
+                <div class="param-label">Perte max</div>
+                <div class="param-value" id="maxLoss">--</div>
+                <div class="param-unit">par trade</div>
+            </div>
+            <div class="param-card">
+                <div class="param-label">Trades restants</div>
+                <div class="param-value" id="tradesRemaining">--</div>
+                <div class="param-unit" id="tradesToday">0 / 0</div>
+            </div>
+        </div>
+
+        <!-- Budget risque -->
+        <div class="budget-section">
+            <div class="budget-header">
+                <span class="budget-label">Budget risque restant</span>
+                <span class="budget-value" id="budgetValue">--</span>
+            </div>
+            <div class="budget-bar-bg">
+                <div class="budget-bar-fill" id="budgetBar"></div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row">
+            <div class="stat">
+                <div class="stat-label">P&L Jour</div>
+                <div class="stat-value" id="dailyPnl">$0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Balance</div>
+                <div class="stat-value" id="balance">--</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Vol</div>
+                <div class="stat-value" id="volRegime">--</div>
+            </div>
+        </div>
+
+        <!-- Warnings -->
+        <div class="warnings" id="warnings"></div>
+
+        <div class="footer">RISK DESK — NON NEGOCIABLE</div>
+    </div>
+
+    <script>
+        const API = window.location.origin;
+
+        async function update() {
+            try {
+                const res = await fetch(`${API}/api/risk-desk/framework`);
+                const fw = await res.json();
+                if (fw.error) return;
+                render(fw);
+            } catch(e) {}
+        }
+
+        function render(fw) {
+            const box = document.getElementById('signalBox');
+            const dot = document.getElementById('signalDot');
+            const label = document.getElementById('signalLabel');
+            const reason = document.getElementById('blockedReason');
+
+            if (fw.allowed) {
+                box.className = 'signal-box allowed';
+                dot.className = 'signal-dot green';
+                label.className = 'signal-label green';
+                label.textContent = 'TRADE';
+                reason.textContent = '';
+            } else {
+                box.className = 'signal-box blocked';
+                dot.className = 'signal-dot red';
+                label.className = 'signal-label red';
+                label.textContent = 'BLOQUE';
+                reason.textContent = fw.blocked_reason;
+            }
+
+            // Params
+            document.getElementById('contracts').textContent = fw.contracts;
+            document.getElementById('instrument').textContent = fw.instrument;
+            document.getElementById('stopPts').textContent = fw.stop_distance_pts;
+            document.getElementById('maxLoss').textContent = '$' + fw.max_loss_per_trade;
+            document.getElementById('tradesRemaining').textContent = fw.trades_remaining;
+            document.getElementById('tradesToday').textContent = fw.trades_today + ' / ' + (fw.trades_today + fw.trades_remaining);
+
+            // Budget
+            const totalBudget = fw.risk_budget_remaining + Math.abs(Math.min(0, fw.daily_pnl));
+            const budgetPct = totalBudget > 0 ? (fw.risk_budget_remaining / totalBudget) * 100 : 0;
+            document.getElementById('budgetValue').textContent = '$' + fw.risk_budget_remaining;
+            const bar = document.getElementById('budgetBar');
+            bar.style.width = budgetPct + '%';
+            bar.style.background = budgetPct > 50 ? 'var(--green)' : budgetPct > 25 ? 'var(--gold)' : 'var(--red)';
+
+            // Stats
+            const pnl = document.getElementById('dailyPnl');
+            pnl.textContent = '$' + fw.daily_pnl;
+            pnl.style.color = fw.daily_pnl >= 0 ? 'var(--green)' : 'var(--red)';
+
+            document.getElementById('balance').textContent = '$' + fw.balance.toLocaleString();
+            document.getElementById('volRegime').textContent = fw.vol_regime.toUpperCase();
+
+            // Circuit breaker
+            const levels = ['green', 'yellow', 'orange', 'red'];
+            const currentIdx = levels.indexOf(fw.circuit_level.toLowerCase());
+            levels.forEach((l, i) => {
+                const el = document.getElementById('cb-' + l);
+                if (i <= currentIdx) {
+                    el.className = 'circuit-segment active-' + l;
+                } else {
+                    el.className = 'circuit-segment';
+                }
+            });
+
+            // Warnings
+            const wDiv = document.getElementById('warnings');
+            wDiv.innerHTML = fw.warnings.map(w => `<div class="warning-item">${w}</div>`).join('');
+        }
+
+        // Poll chaque seconde
+        update();
+        setInterval(update, 1000);
+
+        // WebSocket fallback
+        try {
+            const ws = new WebSocket(`ws://${window.location.host}/ws`);
+            ws.onmessage = (e) => {
+                const msg = JSON.parse(e.data);
+                if (msg.type === 'risk_desk') render(msg.data);
+            };
+        } catch(e) {}
+    </script>
+</body>
+</html>

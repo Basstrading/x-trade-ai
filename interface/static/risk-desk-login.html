@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Desk — Admin Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #07090f;
+            --bg-card: #0f1420;
+            --accent: #00e0ff;
+            --red: #ff3d5a;
+            --text1: #e2eaf5;
+            --text2: #5d7490;
+            --border: rgba(0,224,255,0.08);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg);
+            color: var(--text1);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            width: 360px;
+            text-align: center;
+        }
+        .title {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+        }
+        .sub {
+            font-size: 11px;
+            color: var(--text2);
+            margin-bottom: 30px;
+        }
+        input {
+            width: 100%;
+            padding: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text1);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            text-align: center;
+            letter-spacing: 2px;
+            outline: none;
+            margin-bottom: 16px;
+        }
+        input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(0,224,255,0.1);
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: rgba(0,224,255,0.1);
+            border: 1px solid rgba(0,224,255,0.3);
+            border-radius: 8px;
+            color: var(--accent);
+            font-family: 'Syne', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        button:hover {
+            background: rgba(0,224,255,0.2);
+        }
+        .error {
+            color: var(--red);
+            font-size: 11px;
+            margin-top: 12px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <div class="title">RISK DESK</div>
+        <div class="sub">Acces administrateur</div>
+        <input type="password" id="key" placeholder="Cle admin" autofocus
+               onkeydown="if(event.key==='Enter')login()">
+        <button onclick="login()">Acceder</button>
+        <div class="error" id="error">Cle invalide</div>
+    </div>
+    <script>
+        function login() {
+            const key = document.getElementById('key').value;
+            if (key) {
+                window.location.href = '/risk-desk/admin?admin_key=' + encodeURIComponent(key);
+            } else {
+                document.getElementById('error').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

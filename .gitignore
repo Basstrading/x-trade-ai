@@ -1,0 +1,37 @@
+# Env & secrets
+.env
+*.env.local
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+
+# Data (persistence locale, pas dans le repo)
+data/risk_desk/
+data/licenses/
+data/trades_history.json
+data/daily_summaries.json
+data/peak_balance.json
+data/mm20_news_state.json
+data/mm20_state.json
+data/opr_state.json
+
+# Logs
+logs/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Skills (installed locally)
+.agents/
+
+# Node
+node_modules/

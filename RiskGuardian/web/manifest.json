@@ -1,0 +1,16 @@
+{
+  "name": "x-trade.ai Dashboard",
+  "short_name": "x-trade.ai",
+  "description": "Real-time trading journal & risk dashboard",
+  "start_url": "dashboard.html",
+  "display": "standalone",
+  "background_color": "#06080f",
+  "theme_color": "#06080f",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%2306080f' width='100' height='100' rx='20'/><text x='50' y='65' text-anchor='middle' font-size='40' font-family='monospace' font-weight='bold' fill='%2300f0ff'>xt</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
