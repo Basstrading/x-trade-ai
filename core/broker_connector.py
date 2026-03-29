@@ -19,9 +19,10 @@ TOPSTEPX_URLS = ConnectionURLS(
 )
 
 
-async def safe_await(result):
-    """Await si c'est une coroutine, sinon retourne tel quel."""
-    if asyncio.iscoroutine(result) or asyncio.isfuture(result):
+async def safe_call(func, *args, **kwargs):
+    """Appelle une methode qui peut etre sync ou async."""
+    result = func(*args, **kwargs)
+    if asyncio.iscoroutine(result):
         return await result
     return result
 
@@ -50,16 +51,16 @@ class BrokerConnector:
 
         try:
             self.client = ProjectXClient(TOPSTEPX_URLS)
-            await safe_await(self.client.login({
+            await safe_call(self.client.login, {
                 "auth_type": "api_key",
                 "userName": username,
                 "apiKey": api_key,
-            }))
+            })
             self.username = username
             self.connected = True
 
             # Liste les comptes
-            raw_accounts = await safe_await(self.client.search_for_account())
+            raw_accounts = await safe_call(self.client.search_for_account)
             self.accounts = []
             for acc in (raw_accounts or []):
                 a = acc if isinstance(acc, dict) else getattr(acc, '__dict__', {})
@@ -83,7 +84,7 @@ class BrokerConnector:
         if not self.connected or not self.client:
             return self.accounts
         try:
-            raw = await safe_await(self.client.search_for_account())
+            raw = await safe_call(self.client.search_for_account)
             self.accounts = []
             for acc in (raw or []):
                 a = acc if isinstance(acc, dict) else getattr(acc, '__dict__', {})
@@ -102,7 +103,7 @@ class BrokerConnector:
         if not self.connected or not self.client:
             return []
         try:
-            raw = await safe_await(self.client.search_for_positions(accountId=account_id))
+            raw = await safe_call(self.client.search_for_positions, accountId=account_id)
             positions = []
             for pos in (raw or []):
                 p = pos if isinstance(pos, dict) else getattr(pos, '__dict__', {})
@@ -130,7 +131,7 @@ class BrokerConnector:
     async def disconnect(self):
         if self.client:
             try:
-                await safe_await(self.client.logout())
+                await safe_call(self.client.logout)
             except Exception:
                 pass
         self.connected = False
