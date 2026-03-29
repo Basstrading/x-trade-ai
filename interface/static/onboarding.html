@@ -656,11 +656,16 @@ async function finishOnboarding() {
         showMsg('msg5', 'Selectionnez au moins un compte', 'error');
         return;
     }
-    // Sauvegarder les comptes selectionnes
+    // Sauvegarder les comptes selectionnes cote serveur
     const selected = state.selectedAccounts.map(i => state.brokerAccounts[i]);
-    // Stocker en localStorage pour le dashboard
+    const ids = selected.map(a => a.id).join(',');
+
+    try {
+        await fetch(`${API}/api/broker/select-accounts?account_ids=${ids}`, { method: 'POST' });
+    } catch(e) { console.error(e); }
+
+    // Aussi en localStorage pour le dashboard
     localStorage.setItem('xtrade_accounts', JSON.stringify(selected));
-    localStorage.setItem('xtrade_broker_user', state.email);
     showDone();
 }
 

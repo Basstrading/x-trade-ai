@@ -1320,22 +1320,40 @@ def _get_broker():
 @app.post("/api/broker/connect")
 async def broker_connect(username: str = "", api_key: str = "",
                          instrument: str = "MNQ"):
-    """Connecte le broker et demarre le flux de marche."""
+    """Connecte le broker et demarre le flux de marche + suivi trades."""
     broker = _get_broker()
     result = await broker.connect(username, api_key)
 
-    if result.get("ok") and _risk_desk:
-        # Brancher le flux de marche sur le Risk Desk
-        broker.set_callbacks(
-            bar_callback=_risk_desk.feed_bar,
-            price_callback=_risk_desk.feed_price,
-        )
-        # Demarrer le market feed en background
-        await broker.start_market_feed(instrument=instrument, interval=30)
+    if result.get("ok"):
+        await _start_broker_services(broker, instrument)
         result["feed"] = "started"
         result["instrument"] = instrument
 
     return result
+
+
+@app.post("/api/broker/select-accounts")
+async def broker_select_accounts(account_ids: str):
+    """Selectionne les comptes a proteger. account_ids = '123,456,789'"""
+    broker = _get_broker()
+    ids = [int(x.strip()) for x in account_ids.split(",") if x.strip()]
+    broker.select_accounts(ids)
+    # Demarrer le trade monitor sur ces comptes
+    await broker.start_trade_monitor(interval=5)
+    return {"ok": True, "selected": ids}
+
+
+async def _start_broker_services(broker, instrument: str = "MNQ"):
+    """Demarre le market feed + trade monitor."""
+    if _risk_desk:
+        broker.set_callbacks(
+            bar_callback=_risk_desk.feed_bar,
+            price_callback=_risk_desk.feed_price,
+            trade_callback=_risk_desk.record_trade,
+        )
+    await broker.start_market_feed(instrument=instrument, interval=30)
+    if broker.selected_account_ids:
+        await broker.start_trade_monitor(interval=5)
 
 
 @app.get("/api/broker/status")

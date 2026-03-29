@@ -113,6 +113,23 @@ async def main():
             f"Risk Desk ONLINE — {firm} {plan} {instrument} "
             f"(trader: {trader_id})"
         )
+
+        # Auto-reconnect broker si credentials sauvegardes
+        try:
+            from core.broker_connector import BrokerConnector
+            from interface.api import _get_broker, _start_broker_services
+            broker = _get_broker()
+            reconnected = await broker.auto_reconnect()
+            if reconnected:
+                await _start_broker_services(broker, instrument)
+                logger.success(
+                    f"Broker auto-reconnecte: {broker.username} — "
+                    f"{len(broker.accounts)} comptes — "
+                    f"{len(broker.selected_account_ids)} proteges"
+                )
+        except Exception as e:
+            logger.info(f"Broker auto-reconnect: {e}")
+
     except Exception as e:
         logger.warning(f"Risk Desk non demarre: {e}")
 
