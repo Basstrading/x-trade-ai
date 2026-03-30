@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Allow: /blog
+Allow: /blog/
+
+Disallow: /api/
+Disallow: /dashboard
+Disallow: /owner
+Disallow: /risk-desk
+Disallow: /risk-desk/admin
+Disallow: /onboarding
+
+Sitemap: https://x-trade.ai/sitemap.xml

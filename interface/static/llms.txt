@@ -1,0 +1,43 @@
+# x-trade.ai
+
+> Automated risk management for futures prop firm traders. Drawdown protection, position sizing, and revenge trade prevention — built for Topstep, Apex, Bulenox, Tradeify, and TPT.
+
+## What x-trade.ai does
+
+x-trade.ai is a risk management platform that enforces institutional-grade trading controls for retail futures traders on prop firm evaluations and funded accounts. It automates daily loss limits, ATR-based position sizing, profit protection locks, and revenge trade detection.
+
+## Key features
+
+- **Drawdown protection**: Enforces daily loss budgets as a percentage of the prop firm's trailing drawdown, not account size
+- **Position sizing**: ATR-based formula that adjusts contracts automatically based on volatility
+- **Revenge trade blocking**: Detects rapid-fire entries after losses and blocks new positions
+- **Profit lock**: Reduces maximum daily drawdown once profits are accumulated
+- **Prop firm compatibility**: Pre-configured rules for Topstep, Apex, Bulenox, Tradeify, TPT
+
+## Blog articles
+
+- [Why 93% of Prop Firm Traders Never Get Paid](https://x-trade.ai/blog/why-prop-firm-traders-fail): The 5 risk mistakes that kill funded accounts — sizing against account instead of drawdown, ignoring volatility, revenge trading, no profit protection, no daily limits.
+- [Prop Firm Drawdown Rules Compared (2026)](https://x-trade.ai/blog/prop-firm-drawdown-rules-compared): Side-by-side comparison of Topstep, Apex, Bulenox, Tradeify, and TPT drawdown rules on $50K accounts. EOD vs tick-by-tick trailing, daily limits, consistency rules, hidden traps.
+- [Revenge Trading: How to Stop It Before It Stops You](https://x-trade.ai/blog/revenge-trading-prop-firm): The psychology behind revenge trading (amygdala hijack, loss aversion, sunk cost fallacy) and automated detection mechanisms that prevent it.
+- [How to Pass Your Prop Firm Evaluation: The Risk-First Approach](https://x-trade.ai/blog/pass-prop-firm-evaluation): Step-by-step math framework — 55% win rate, 1.5:1 R:R, 4% of drawdown per trade, ATR-based stops. Complete Topstep 50K plan with position sizing formula.
+- [Consistency Rule Explained: The Silent Payout Killer](https://x-trade.ai/blog/consistency-rule-prop-firm): What the consistency rule is, how each firm calculates it (35-50%), real math examples, and 5 strategies to stay compliant.
+- [Trailing vs Static vs EOD Drawdown: Complete Visual Guide](https://x-trade.ai/blog/drawdown-trailing-explique): Deep visual walkthrough of the three drawdown types, how each kills accounts, comparison table, and the rule-change trap between eval and funded.
+- [Prop Firm Payout Rules (2026)](https://x-trade.ai/blog/prop-firm-payout-rules): Complete payout comparison — profit splits, minimum days, activation fees, payment methods for Topstep, Apex, Bulenox, Tradeify, TPT.
+- [Overtrading in Prop Firms](https://x-trade.ai/blog/overtrading-prop-firm): Why more trades = less profit, the math showing EV degradation after 5 trades/day, 5 warning signs, and how automated trade counters prevent it.
+- [ATR Position Sizing Formula](https://x-trade.ai/blog/atr-position-sizing-prop-firm): The only position sizing formula prop firm traders need — ATR-based, volatility-adjusted, with examples across MNQ, NQ, MES, ES.
+- [MES vs MNQ for Prop Firm Traders](https://x-trade.ai/blog/mes-vs-mnq-prop-firm): Contract specs, risk math per contract, which instrument for which account size, and the pros/cons of each for funded accounts.
+- [Topstep Drawdown Rules Explained (2026)](https://x-trade.ai/blog/topstep-drawdown-rules): EOD trailing mechanics, the no-daily-limit trap, 50% consistency rule, and the optimal risk framework for the Topstep 50K account.
+- [After You Pass a Prop Firm Challenge](https://x-trade.ai/blog/after-prop-firm-challenge): The funded account survival guide — how rules change post-eval, why 40% breach within 30 days, profit protection strategy, and the long game of multiple payouts.
+- [Prop Firm News Trading Rules (2026)](https://x-trade.ai/blog/news-trading-prop-firm): FOMC/NFP/CPI rules comparison across firms, the 3 tiers of news events, why slippage kills prop accounts, and 3 safe trading strategies around news.
+
+## Ecosystem
+
+x-trade.ai is part of a trading ecosystem:
+- **x-trade.ai** — Automated risk management (drawdown protection, position sizing, revenge trade blocking)
+- **basstrading.fr** — Trading education & formations (courses, strategies, mentoring)
+- **hubtrading.fr** — AI-powered trading tools & community (AI market analysis, trading journal, signals, community feed)
+
+## Contact
+
+- Website: https://x-trade.ai
+- Related sites: https://basstrading.fr, https://hubtrading.fr

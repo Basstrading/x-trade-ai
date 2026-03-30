@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prop Firm Payout Rules: How & When You Actually Get Paid (2026 Guide) | x-trade.ai</title>
+<meta name="description" content="Complete guide to prop firm payout mechanics — profit splits, minimum trading days, withdrawal methods, payout frequency, activation fees, and common traps that delay or block payouts.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://x-trade.ai/blog/prop-firm-payout-rules">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Prop Firm Payout Rules: How & When You Actually Get Paid (2026 Guide) | x-trade.ai">
+<meta property="og:description" content="Complete guide to prop firm payout mechanics — profit splits, minimum trading days, withdrawal methods, activation fees, and the traps that delay payouts.">
+<meta property="og:url" content="https://x-trade.ai/blog/prop-firm-payout-rules">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Prop Firm Payout Rules: How & When You Actually Get Paid (2026 Guide) | x-trade.ai">
+<meta name="twitter:description" content="Complete guide to prop firm payout mechanics — profit splits, minimum trading days, withdrawal methods, activation fees, and the traps that delay payouts.">
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Article",
+  "headline":"Prop Firm Payout Rules: How & When You Actually Get Paid (2026 Guide)",
+  "author":{"@type":"Person","name":"Bass","jobTitle":"Founder, x-trade.ai"},
+  "datePublished":"2026-03-30",
+  "dateModified":"2026-03-30",
+  "publisher":{"@type":"Organization","name":"x-trade.ai","url":"https://x-trade.ai"},
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://x-trade.ai/blog/prop-firm-payout-rules"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"When do I get my first prop firm payout?","acceptedAnswer":{"@type":"Answer","text":"Most prop firms require between 5 and 15 minimum trading days on your funded account before you can request your first payout. After requesting, payment processing takes 1-7 business days depending on the firm and payment method. Topstep pays within 2-3 business days, Apex within 1-3 days, and Bulenox within 3-5 days."}},
+    {"@type":"Question","name":"Can I withdraw all my profits from a prop firm?","acceptedAnswer":{"@type":"Answer","text":"No. Prop firms take a profit split, typically 10-20%. Your first payout is usually capped at a lower amount or a smaller profit split. Most firms also require you to keep a minimum buffer above your starting balance. You cannot withdraw down to zero profit — you need to maintain a cushion to protect the trailing drawdown."}},
+    {"@type":"Question","name":"What happens if I breach my funded account after requesting a payout?","acceptedAnswer":{"@type":"Answer","text":"If you breach the drawdown rules after requesting but before receiving your payout, most firms will cancel the payout and close your account. The payout request does not protect you. This is why reducing position size or stopping trading entirely after submitting a withdrawal request is critical."}},
+    {"@type":"Question","name":"Do I pay taxes on prop firm payouts?","acceptedAnswer":{"@type":"Answer","text":"Yes. In most countries, prop firm payouts are taxable income. In the US, prop firms issue a 1099 for payouts over $600. In France, payouts are declared as BNC (Bénéfices Non Commerciaux). You are treated as an independent contractor, not an employee. Keep records of all payouts, activation fees, and challenge fees — challenge fees and activation fees are typically deductible business expenses."}}
+  ]
+}
+</script>
+<style>
+:root{--bg:#07090f;--bg2:#0f1420;--cyan:#06b6d4;--green:#22d97f;--red:#ef4444;--gold:#f59e0b;--text:#f0f4f8;--dim:#94a3b8;--border:rgba(255,255,255,0.06)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}
+code,pre,.mono{font-family:'JetBrains Mono',monospace}
+a{color:var(--cyan);text-decoration:none;transition:color .2s}
+a:hover{color:var(--green)}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(7,9,15,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-weight:800;font-size:1.15rem;color:var(--text);letter-spacing:-.5px}
+.nav-logo span{color:var(--cyan)}
+.nav-links{display:flex;align-items:center;gap:1.5rem}
+.nav-links a{color:var(--dim);font-size:.875rem;font-weight:500}
+.nav-links a:hover{color:var(--text)}
+.lang-btn{background:transparent;border:1px solid var(--cyan);color:var(--cyan);padding:4px 12px;border-radius:6px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
+.lang-btn:hover{background:var(--cyan);color:var(--bg)}
+
+/* ARTICLE */
+.article-wrap{max-width:760px;margin:0 auto;padding:3rem 1.5rem 4rem}
+.breadcrumb{font-size:.8rem;color:var(--dim);margin-bottom:2rem}
+.breadcrumb a{color:var(--dim)}
+.breadcrumb a:hover{color:var(--cyan)}
+.article-meta{display:flex;align-items:center;gap:.75rem;font-size:.8rem;color:var(--dim);margin-bottom:1.25rem;flex-wrap:wrap}
+.article-meta .tag{background:rgba(6,182,212,.1);color:var(--cyan);padding:2px 10px;border-radius:99px;font-weight:500}
+h1{font-size:2.25rem;font-weight:800;line-height:1.2;letter-spacing:-.5px;margin-bottom:1.5rem}
+h2{font-size:1.5rem;font-weight:700;margin:2.5rem 0 1rem;letter-spacing:-.3px;color:var(--text)}
+h3{font-size:1.15rem;font-weight:600;margin:1.75rem 0 .75rem;color:var(--green)}
+p{margin-bottom:1.25rem;color:var(--dim);font-size:1rem}
+strong{color:var(--text)}
+
+/* KEY TAKEAWAYS */
+.takeaways{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--cyan);border-radius:10px;padding:1.5rem 1.75rem;margin-bottom:2.5rem}
+.takeaways h3{color:var(--cyan);margin:0 0 .75rem;font-size:1rem}
+.takeaways ul{list-style:none;padding:0}
+.takeaways li{position:relative;padding-left:1.5rem;margin-bottom:.5rem;color:var(--dim);font-size:.95rem}
+.takeaways li::before{content:"\2713";position:absolute;left:0;color:var(--green);font-weight:700}
+
+/* ANSWER BOX */
+.answer-box{background:linear-gradient(135deg,rgba(6,182,212,.08),rgba(34,217,127,.05));border:1px solid rgba(6,182,212,.2);border-radius:10px;padding:1.75rem;margin-bottom:2.5rem}
+.answer-box .answer-label{font-size:.75rem;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:1px;margin-bottom:.5rem}
+.answer-box .answer-q{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:.75rem}
+.answer-box .answer-a{color:var(--dim);font-size:.95rem;margin:0}
+
+/* STAT BOX */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.5rem 0 2rem}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem;text-align:center}
+.stat-card .num{font-size:2rem;font-weight:800;font-family:'JetBrains Mono',monospace}
+.stat-card .num.red{color:var(--red)}
+.stat-card .num.green{color:var(--green)}
+.stat-card .num.gold{color:var(--gold)}
+.stat-card .num.cyan{color:var(--cyan)}
+.stat-card .label{font-size:.8rem;color:var(--dim);margin-top:.25rem}
+
+/* LISTS */
+.article-wrap ul,.article-wrap ol{margin:0 0 1.25rem 1.25rem;color:var(--dim)}
+.article-wrap li{margin-bottom:.4rem;font-size:1rem}
+
+/* MATH BOX */
+.math-box{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.5rem 1.75rem;margin:1.5rem 0;font-family:'JetBrains Mono',monospace;font-size:.9rem;color:var(--cyan);line-height:1.9}
+.math-box .math-title{font-family:'Inter',sans-serif;font-weight:700;font-size:1rem;color:var(--text);margin-bottom:.75rem}
+.math-box .math-line{display:flex;justify-content:space-between;align-items:center;padding:.25rem 0;border-bottom:1px solid var(--border)}
+.math-box .math-line:last-child{border-bottom:none}
+.math-box .math-result{color:var(--green);font-weight:700;font-size:1.05rem;border-top:2px solid var(--green);margin-top:.5rem;padding-top:.5rem}
+.math-box .math-label{color:var(--dim);font-size:.85rem}
+.math-box .math-value{color:var(--cyan);font-weight:600}
+.math-box .math-value.green{color:var(--green)}
+.math-box .math-value.red{color:var(--red)}
+
+/* STEP BOX */
+.step-box{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.5rem 1.75rem;margin:1.5rem 0}
+.step-box ol{margin:0;padding-left:1.25rem}
+.step-box li{margin-bottom:.75rem;color:var(--dim);font-size:.95rem;padding-left:.25rem}
+.step-box li strong{color:var(--text)}
+.step-box li code{background:rgba(6,182,212,.1);color:var(--cyan);padding:2px 6px;border-radius:4px;font-size:.85rem}
+
+/* FORMULA BOX */
+.formula-box{background:linear-gradient(135deg,rgba(6,182,212,.08),rgba(34,217,127,.05));border:1px solid rgba(6,182,212,.2);border-radius:10px;padding:1.75rem;margin:1.5rem 0;text-align:center}
+.formula-box .formula{font-family:'JetBrains Mono',monospace;font-size:1.05rem;color:var(--cyan);font-weight:600;margin-bottom:1rem;letter-spacing:.5px}
+.formula-box .formula-example{font-family:'JetBrains Mono',monospace;font-size:.9rem;color:var(--dim);line-height:1.8}
+.formula-box .formula-example strong{color:var(--green)}
+
+/* COMPARISON TABLE */
+.table-wrap{overflow-x:auto;margin:1.5rem 0 2rem;border-radius:10px;border:1px solid var(--border)}
+.comp-table{width:100%;border-collapse:collapse;font-size:.85rem;min-width:700px}
+.comp-table th{background:var(--bg2);color:var(--cyan);font-weight:600;padding:.75rem 1rem;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+.comp-table td{padding:.75rem 1rem;border-bottom:1px solid var(--border);color:var(--dim);vertical-align:top}
+.comp-table tr:last-child td{border-bottom:none}
+.comp-table tr:hover td{background:rgba(6,182,212,.03)}
+.comp-table td:first-child{color:var(--text);font-weight:600;white-space:nowrap}
+
+/* MISTAKE LIST */
+.mistake-list{list-style:none;margin:1.5rem 0;padding:0}
+.mistake-list li{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:8px;padding:1rem 1.25rem;margin-bottom:.75rem;color:var(--dim);font-size:.95rem}
+.mistake-list li strong{color:var(--red)}
+
+/* TIP LIST */
+.tip-list{list-style:none;margin:1.5rem 0;padding:0}
+.tip-list li{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:8px;padding:1rem 1.25rem;margin-bottom:.75rem;color:var(--dim);font-size:.95rem}
+.tip-list li strong{color:var(--green)}
+
+/* FAQ */
+.faq-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1rem}
+.faq-q{font-weight:600;color:var(--text);margin-bottom:.5rem;font-size:1.05rem}
+.faq-a{color:var(--dim);font-size:.95rem}
+
+/* CTA */
+.cta-box{background:linear-gradient(135deg,rgba(6,182,212,.12),rgba(34,217,127,.08));border:1px solid rgba(6,182,212,.25);border-radius:14px;padding:2.5rem;text-align:center;margin:3rem 0 2rem}
+.cta-box h2{margin:0 0 .75rem;font-size:1.5rem}
+.cta-box p{color:var(--dim);margin-bottom:1.5rem}
+.cta-btn{display:inline-block;background:var(--cyan);color:var(--bg);padding:12px 32px;border-radius:8px;font-weight:700;font-size:1rem;transition:all .25s}
+.cta-btn:hover{background:var(--green);color:var(--bg);transform:translateY(-1px)}
+
+/* CROSS LINKS */
+.cross-links{border-top:1px solid var(--border);padding-top:2rem;margin-top:2rem}
+.cross-links h3{font-size:1rem;color:var(--dim);margin-bottom:1rem}
+.cross-link{display:block;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin-bottom:.75rem;color:var(--text);font-weight:500;transition:border-color .2s}
+.cross-link:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;text-align:center;font-size:.8rem;color:var(--dim)}
+.footer a{color:var(--dim)}
+.footer a:hover{color:var(--cyan)}
+.footer-links{display:flex;justify-content:center;gap:1.5rem;margin-bottom:.75rem;flex-wrap:wrap}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+h1{font-size:1.6rem}
+h2{font-size:1.25rem}
+.stat-grid{grid-template-columns:1fr}
+.article-wrap{padding:2rem 1rem 3rem}
+.nav{padding:0 1rem}
+.nav-links{gap:1rem}
+.formula-box .formula{font-size:.85rem}
+.math-box{font-size:.8rem}
+.comp-table{font-size:.75rem}
+.comp-table th,.comp-table td{padding:.5rem .65rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="/" class="nav-logo">x-trade<span>.ai</span></a>
+  <div class="nav-links">
+    <a href="/" id="navHome">Home</a>
+    <a href="/blog" id="navBlog">Blog</a>
+    <a href="/onboarding?mode=trial" id="navStart">Start Free</a>
+    <button class="lang-btn" id="langBtn" onclick="toggleLang()">FR</button>
+  </div>
+</nav>
+
+<!-- ARTICLE -->
+<main class="article-wrap">
+
+  <div class="breadcrumb" id="breadcrumb"><a href="/">Home</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; Prop Firm Payout Rules</div>
+
+  <div class="article-meta">
+    <span class="tag" id="metaTag">Payouts</span>
+    <span id="metaDate">March 30, 2026</span>
+    <span>&middot;</span>
+    <span id="metaRead">16 min read</span>
+  </div>
+
+  <h1 id="title">Prop Firm Payout Rules: How &amp; When You Actually Get Paid (2026 Guide)</h1>
+
+  <!-- KEY TAKEAWAYS -->
+  <div class="takeaways">
+    <h3 id="takeawaysTitle">Key Takeaways</h3>
+    <ul>
+      <li id="tk1">Most prop firms require 5&ndash;15 minimum trading days on your funded account before you can request your first payout &mdash; and many reset that counter after each withdrawal.</li>
+      <li id="tk2">Profit splits range from 80% to 100%, but activation fees ($0&ndash;$800), consistency rules, and minimum withdrawal amounts eat into your real take-home pay significantly.</li>
+      <li id="tk3">The #1 payout killer is breaching your funded account AFTER reaching the profit target &mdash; usually from over-trading or removing your risk controls too early.</li>
+      <li id="tk4">Payment methods vary widely: Topstep uses ACH/wire, Apex and Bulenox use Plane/Rise, and processing times range from 1 to 7 business days.</li>
+    </ul>
+  </div>
+
+  <!-- ANSWER BOX -->
+  <div class="answer-box">
+    <div class="answer-label" id="answerLabel">Featured Answer</div>
+    <div class="answer-q" id="answerQ">How do prop firm payouts work?</div>
+    <p class="answer-a" id="answerA">After passing a prop firm evaluation and receiving a funded account, you must trade for a minimum number of days (typically 5&ndash;15), meet any consistency rules, and accumulate profit above the minimum withdrawal threshold. You then submit a payout request through the firm's dashboard. The firm takes their profit split (usually 10&ndash;20%) and sends you the remainder via ACH, wire transfer, or third-party payment platforms like Plane or Rise. First payouts typically take 3&ndash;7 business days; subsequent payouts are often faster.</p>
+  </div>
+
+  <!-- INTRO -->
+  <p id="intro">You passed the challenge. You got your funded account. Now what? The path to actually getting paid is full of obstacles that nobody explains clearly. Activation fees, consistency rules, minimum trading days, profit splits that change between your first and second withdrawal &mdash; the fine print is designed to slow you down.</p>
+
+  <p id="intro2">This guide breaks down the exact payout mechanics for every major prop firm in 2026. No vague advice. Just the real numbers, the hidden traps, and the strategies to maximize what actually hits your bank account. Whether you trade with <strong>Topstep, Apex, Bulenox, Tradeify, or Take Profit Trader (TPT)</strong>, you'll know exactly what to expect before you place your first funded trade.</p>
+
+  <!-- LE PARCOURS DU PAYOUT -->
+  <h2 id="h2journey">The Payout Journey: From Challenge to Cash</h2>
+
+  <p id="journeyP1">Getting paid from a prop firm is not as simple as "make money, withdraw money." There are five distinct stages between passing your challenge and seeing funds in your bank account, and each one has conditions that can delay or block your payout entirely.</p>
+
+  <div class="step-box">
+    <ol>
+      <li id="journey1"><strong>Pass the Evaluation</strong> &mdash; Hit the profit target without breaching drawdown limits. This is the step everyone focuses on, but it's only the beginning.</li>
+      <li id="journey2"><strong>Activate Your Funded Account</strong> &mdash; Some firms (Apex, Bulenox) charge an activation fee ($85&ndash;$800) before you can start trading live. Others (Topstep) include activation in the challenge fee. This cost is separate from and in addition to the evaluation fee you already paid.</li>
+      <li id="journey3"><strong>Meet Minimum Trading Days</strong> &mdash; You must trade a minimum number of days (5&ndash;15 depending on the firm) before requesting your first payout. A "trading day" means you opened and closed at least one position. Days where you don't trade don't count.</li>
+      <li id="journey4"><strong>Meet Consistency &amp; Profit Requirements</strong> &mdash; Some firms require that no single day accounts for more than 30&ndash;40% of your total profit (consistency rule). You must also have profit above the minimum withdrawal amount ($50&ndash;$250 depending on the firm).</li>
+      <li id="journey5"><strong>Request Payout &amp; Receive Payment</strong> &mdash; Submit a withdrawal request through the firm's portal. Processing takes 1&ndash;7 business days. The firm deducts their profit split and sends the rest to you via your chosen payment method.</li>
+    </ol>
+  </div>
+
+  <p id="journeyP2">The critical thing to understand is that <strong>your funded account can still be breached during any of these stages</strong>. Many traders lose their account between Stage 3 and Stage 5 because they keep trading aggressively instead of protecting their profits. Use <a href="https://x-trade.ai" id="linkXtrade1">x-trade.ai's profit lock feature</a> to automatically reduce your risk once you've hit your payout threshold.</p>
+
+  <!-- COMPARISON TABLE -->
+  <h2 id="h2compare">Payout Rules Compared: Topstep vs Apex vs Bulenox vs Tradeify vs TPT</h2>
+
+  <p id="compareP1">Here's the side-by-side comparison every funded trader needs. These numbers are current as of March 2026 &mdash; always verify with the firm directly, as rules change frequently.</p>
+
+  <div class="table-wrap">
+    <table class="comp-table" id="compTable">
+      <thead>
+        <tr>
+          <th id="thFirm">Firm</th>
+          <th id="thSplit">Profit Split</th>
+          <th id="thDays">Min Trading Days</th>
+          <th id="thFreq">Payout Frequency</th>
+          <th id="thMin">Min Withdrawal</th>
+          <th id="thMethod">Payment Method</th>
+          <th id="thActFee">Activation Fee</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Topstep</td>
+          <td id="tdTopSplit">1st: 100% (up to $10K), then 90/10</td>
+          <td id="tdTopDays">5 days</td>
+          <td id="tdTopFreq">Twice per month</td>
+          <td id="tdTopMin">$50</td>
+          <td id="tdTopMethod">ACH / Wire</td>
+          <td id="tdTopFee">$0 (included)</td>
+        </tr>
+        <tr>
+          <td>Apex</td>
+          <td id="tdApexSplit">1st: 100% (up to $25K), then 90/10</td>
+          <td id="tdApexDays">10 days</td>
+          <td id="tdApexFreq">Twice per month</td>
+          <td id="tdApexMin">$100</td>
+          <td id="tdApexMethod">Plane (Rise)</td>
+          <td id="tdApexFee">$85&ndash;$385</td>
+        </tr>
+        <tr>
+          <td>Bulenox</td>
+          <td id="tdBulSplit">1st&ndash;4th: 80/20, 5th+: 90/10</td>
+          <td id="tdBulDays">15 days</td>
+          <td id="tdBulFreq">Once per month</td>
+          <td id="tdBulMin">$100</td>
+          <td id="tdBulMethod">Plane (Rise)</td>
+          <td id="tdBulFee">$98&ndash;$530</td>
+        </tr>
+        <tr>
+          <td>Tradeify</td>
+          <td id="tdTrdSplit">1st: 100% (up to $15K), then 80/20</td>
+          <td id="tdTrdDays">10 days</td>
+          <td id="tdTrdFreq">Weekly (after 3rd payout)</td>
+          <td id="tdTrdMin">$250</td>
+          <td id="tdTrdMethod">Plane (Rise)</td>
+          <td id="tdTrdFee">$0 (included)</td>
+        </tr>
+        <tr>
+          <td>TPT (Take Profit Trader)</td>
+          <td id="tdTptSplit">1st: 80/20, 2nd+: 90/10</td>
+          <td id="tdTptDays">5 days</td>
+          <td id="tdTptFreq">On demand</td>
+          <td id="tdTptMin">$100</td>
+          <td id="tdTptMethod">ACH / Plane</td>
+          <td id="tdTptFee">$0 (included)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p id="compareP2"><strong>Important caveat:</strong> these profit splits look generous on paper, but the real cost includes the evaluation fee ($49&ndash;$349), the activation fee ($0&ndash;$530), and the monthly data fee. When you factor all costs in, your effective payout rate on your first withdrawal is often lower than the headline number suggests.</p>
+
+  <!-- LES PIEGES CACHES -->
+  <h2 id="h2traps">The Hidden Traps That Block Your Payout</h2>
+
+  <p id="trapsP1">Passing the evaluation is the easy part. The real challenge is navigating the payout rules without tripping one of these five traps that most traders don't discover until it's too late.</p>
+
+  <ul class="mistake-list">
+    <li id="trap1"><strong>Trap #1: Activation fees on top of challenge fees.</strong> You paid $149 for the Apex evaluation. Congratulations, you passed. Now pay another $85&ndash;$385 to activate your funded account. Bulenox charges $98&ndash;$530 depending on account size. These fees are non-refundable. If you breach your funded account on day one, you've lost both the challenge fee AND the activation fee. Budget for this before you start.</li>
+    <li id="trap2"><strong>Trap #2: The consistency rule blocking profitable traders.</strong> Some firms require that no single trading day represents more than 30&ndash;40% of your total accumulated profit. You made $2,000 total, but $900 came from one great Monday? That's 45% &mdash; payout blocked until you dilute that day's percentage by trading more profitable days. This rule exists to prevent "one-hit wonders" but punishes traders who had one legitimately excellent session.</li>
+    <li id="trap3"><strong>Trap #3: Different drawdown rules on funded vs. evaluation.</strong> Some firms (notably TPT) use EOD (end-of-day) trailing drawdown during the evaluation but switch to real-time trailing drawdown on the funded account. That means your funded account is HARDER to keep than the evaluation was to pass. A trade that would have been fine during eval can breach your funded account because the drawdown updates tick-by-tick instead of at session close.</li>
+    <li id="trap4"><strong>Trap #4: Minimum trading days resetting after withdrawal.</strong> You traded 15 days and requested a payout. Great. Now the counter resets to zero. You need another 10&ndash;15 trading days before your next withdrawal. During that time, you're still exposed to drawdown risk. Every additional day you trade is a day you could breach. Factor this into your withdrawal timing strategy.</li>
+    <li id="trap5"><strong>Trap #5: Tax implications nobody mentions.</strong> Prop firm payouts are taxable income. In the US, you'll receive a 1099-NEC for amounts over $600. In France, this falls under BNC (B&eacute;n&eacute;fices Non Commerciaux). The silver lining: your challenge fees, activation fees, data fees, and platform costs are deductible business expenses. Keep every receipt. Consult our <a href="https://hubtrading.fr" target="_blank" rel="noopener" id="linkHub1">AI-powered tools on hubtrading.fr</a> for detailed tax guidance specific to French prop firm traders.</li>
+  </ul>
+
+  <!-- PROFIT SPLIT: CE QUE TU GARDES VRAIMENT -->
+  <h2 id="h2split">Profit Split: What You Actually Keep</h2>
+
+  <p id="splitP1">Prop firms advertise "90% profit split" or even "100% on your first payout" as headline numbers. But what does that look like in real dollars when you account for all the costs? Let's do the math for a $3,000 gross profit on each firm.</p>
+
+  <div class="math-box">
+    <div class="math-title" id="mathTopTitle">Topstep 50K &mdash; $3,000 Profit</div>
+    <div class="math-line">
+      <span class="math-label" id="mathTopGross">Gross profit</span>
+      <span class="math-value">$3,000</span>
+    </div>
+    <div class="math-line">
+      <span class="math-label" id="mathTopSplitLabel">1st payout split (100%)</span>
+      <span class="math-value green">$3,000</span>
+    </div>
+    <div class="math-line">
+      <span class="math-label" id="mathTopChalLabel">Challenge fee (50K)</span>
+      <span class="math-value red">&minus;$149</span>
+    </div>
+    <div class="math-line">
+      <span class="math-label" id="mathTopActLabel">Activation fee</span>
+      <span class="math-value green">$0</span>
+    </div>
+    <div class="math-line math-result">
+      <span class="math-label" id="mathTopNetLabel">Net take-home</span>
+      <span class="math-value green">$2,851</span>
+    </div>
+  </div>
+
+  <div class="math-box">
+    <div class="math-title" id="mathApexTitle">Apex 50K &mdash; $3,000 Profit</div>
+    <div class="math-line">
+      <span class="math-label" id="mathApexGross">Gross profit</span>
+      <span class="math-value">$3,000</span>
+    </div>
+    <div class="math-line">
+      <span class="math-label" id="mathApexSplitLabel">1st payout split (100%)</span>
+      <span class="math-value green">$3,000</span>
+    </div>
+    <div class="math-line">
+      <span class="math-label" id="mathApexChalLabel">Challenge fee (50K)</span>
+      <span class="math-value red">&minus;$167</span>
+    </div>
+    <div class="math-line">
+      <span class="math-label" id="mathApexActLabel">Activation fee (50K)</span>
+      <span class="math-value red">&minus;$85</span>
+    </div>
+    <div class="math-line math-result">
+      <span class="math-label" id="mathApexNetLabel">Net take-home</span>
+      <span class="math-value green">$2,748</span>
+    </div>
+  </div>
+
+  <div class="math-box">
+    <div class="math-title" id="mathBulTitle">Bulenox 50K &mdash; $3,000 Profit</div>
+    <div class="math-line">
+      <span class="math-label" id="mathBulGross">Gross profit</span>
+      <span class="math-value">$3,000</span>
+    </div>
+    <div class="math-line">
+      <span class="math-label" id="mathBulSplitLabel">1st payout split (80%)</span>
+      <span class="math-value green">$2,400</span>
+    </div>
+    <div class="math-line">
+      <span class="math-label" id="mathBulChalLabel">Challenge fee (50K)</span>
+      <span class="math-value red">&minus;$115</span>
+    </div>
+    <div class="math-line">
+      <span class="math-label" id="mathBulActLabel">Activation fee (50K)</span>
+      <span class="math-value red">&minus;$98</span>
+    </div>
+    <div class="math-line math-result">
+      <span class="math-label" id="mathBulNetLabel">Net take-home</span>
+      <span class="math-value green">$2,187</span>
+    </div>
+  </div>
+
+  <p id="splitP2">The difference between the best and worst case here is <strong>$664</strong> &mdash; from $2,851 (Topstep) to $2,187 (Bulenox). That's real money. On subsequent payouts, the splits converge to 80&ndash;90% across all firms, but the activation fee is a one-time cost that disproportionately impacts smaller first payouts.</p>
+
+  <p id="splitP3"><strong>Pro tip:</strong> If you're comparing firms, don't just look at the profit split percentage. Calculate your <em>total cost per dollar earned</em> including challenge fee, activation fee, and monthly data fees. The firm with the highest profit split isn't always the most profitable choice. Master the strategies to maximize your profit before withdrawing with our <a href="https://basstrading.fr" target="_blank" rel="noopener" id="linkBass1">formations on basstrading.fr</a>.</p>
+
+  <!-- COMMENT MAXIMISER TES PAYOUTS -->
+  <h2 id="h2maximize">How to Maximize Your Payouts</h2>
+
+  <p id="maxP1">Getting funded is step one. Extracting the maximum cash from your funded account is a skill in itself. Here are five strategies that separate traders who get one payout from traders who build a consistent income stream.</p>
+
+  <ul class="tip-list">
+    <li id="tip1"><strong>Don't rush to withdraw &mdash; build a buffer first.</strong> If the minimum withdrawal is $100, don't request a payout the second you have $101 in profit. Build a buffer of at least 2&times; your daily risk above the minimum. This protects your trailing drawdown and prevents a single bad day from eating into your withdrawal. A $500 buffer means you can take a $400 loss day and still have your withdrawal intact.</li>
+    <li id="tip2"><strong>Track the consistency rule daily.</strong> If your firm has a consistency rule (no single day &gt; 30&ndash;40% of total profit), monitor this after every session. Use a spreadsheet. Know your numbers before you request a payout, not after the firm rejects it. Plan your trading to spread profits across multiple days.</li>
+    <li id="tip3"><strong>Reduce risk after reaching your target.</strong> Once you've hit enough profit to request a payout, cut your position size by 50&ndash;75%. You're now in "protect mode," not "grow mode." Use <a href="https://x-trade.ai" id="linkXtrade2">x-trade.ai's profit lock feature</a> to automatically reduce your max contracts and tighten your daily loss limit once your balance crosses the payout threshold. The goal is to survive until payout day, not to make more money.</li>
+    <li id="tip4"><strong>Plan for taxes from day one.</strong> Set aside 25&ndash;30% of every payout for taxes. Open a separate savings account specifically for this. When tax season arrives, you won't be scrambling. Your challenge fees, activation fees, and platform subscriptions are deductible &mdash; keep records of everything. The <a href="https://hubtrading.fr" target="_blank" rel="noopener" id="linkHub2">AI &amp; community tools on hubtrading.fr</a> include resources on prop firm tax optimization for French traders.</li>
+    <li id="tip5"><strong>Consider multiple accounts for scaling.</strong> Once you've proven you can consistently get paid from one account, add a second. Running two 50K accounts with the same strategy and risk framework is often more profitable and safer than running one 150K account, because each account has its own drawdown limit. If one account breaches, the other survives. Diversify your income across firms too &mdash; don't put all your eggs in one basket.</li>
+  </ul>
+
+  <!-- L'ERREUR FATALE -->
+  <h2 id="h2fatal">The Fatal Mistake: Over-Trading After Hitting Target</h2>
+
+  <p id="fatalP1">This is the single most common reason funded traders never see their payout. You've been disciplined for 15 days. You've reached the profit target. You're eligible for a withdrawal. And then &mdash; instead of stopping or reducing size &mdash; <strong>you keep trading at full size</strong>.</p>
+
+  <p id="fatalP2">The psychology is predictable. You feel confident. The account is profitable. "One more day of trading won't hurt." But now you're trading with house money psychology, which means you're taking setups you wouldn't normally take, holding losers longer than you should, and sizing up because "I can afford the loss." Within 48 hours, that profitable account is breached.</p>
+
+  <p id="fatalP3">The data from prop firms confirms this. A significant percentage of funded account breaches happen <strong>after</strong> the trader has already reached payout eligibility. They had the money. They just couldn't stop trading.</p>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="num red" id="stat1num">40%+</div>
+      <div class="label" id="stat1label">Funded breaches happen post-target</div>
+    </div>
+    <div class="stat-card">
+      <div class="num gold" id="stat2num">48h</div>
+      <div class="label" id="stat2label">Average time from target to breach</div>
+    </div>
+    <div class="stat-card">
+      <div class="num green" id="stat3num">3&times;</div>
+      <div class="label" id="stat3label">More payouts with a stop-after-target rule</div>
+    </div>
+  </div>
+
+  <p id="fatalP4">The solution is a hard rule: <strong>once you're eligible for payout, you either stop trading entirely or trade at 25% of your normal size</strong>. No exceptions. No "just one more trade." Submit your withdrawal request and step away from the screen. Use the AI on <a href="https://hubtrading.fr" target="_blank" rel="noopener" id="linkHub3">hubtrading.fr</a> to identify only A+ setups and avoid over-trading. Our <a href="https://basstrading.fr" target="_blank" rel="noopener" id="linkBass2">formations on basstrading.fr</a> include an entire module on post-target psychology &mdash; how to manage the emotional shift from "trying to hit target" to "trying to protect profits."</p>
+
+  <p id="fatalP5">Remember: a payout you protect is worth infinitely more than a payout you gamble away. Every funded account you blow after reaching target is money you already had in your hands and chose to throw back on the table.</p>
+
+  <!-- FAQ -->
+  <h2 id="h2faq">Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq1q">When do I get my first prop firm payout?</div>
+    <div class="faq-a" id="faq1a">Most prop firms require between 5 and 15 minimum trading days on your funded account before you can request your first payout. After requesting, payment processing takes 1&ndash;7 business days depending on the firm and payment method. Topstep pays within 2&ndash;3 business days, Apex within 1&ndash;3 days, and Bulenox within 3&ndash;5 days. Factor in an additional 1&ndash;2 days for your bank to process the incoming transfer.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq2q">Can I withdraw all my profits from a prop firm?</div>
+    <div class="faq-a" id="faq2a">No. Prop firms take a profit split, typically 10&ndash;20%. Your first payout is sometimes capped at a specific maximum amount. Most firms also require you to keep a minimum buffer above your starting balance &mdash; you cannot withdraw down to zero profit because you need to maintain a cushion to protect the trailing drawdown. Additionally, some firms cap individual withdrawal amounts and require multiple payouts to extract larger profits.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq3q">What happens if I breach my funded account after requesting a payout?</div>
+    <div class="faq-a" id="faq3a">If you breach the drawdown rules after requesting but before receiving your payout, most firms will cancel the payout and close your account. The payout request does not freeze your account or protect you. This is why reducing position size or stopping trading entirely after submitting a withdrawal request is critical. Some traders make the mistake of continuing to trade aggressively while waiting for their payout to process &mdash; this is one of the fastest ways to lose money you've already earned.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq4q">Do I pay taxes on prop firm payouts?</div>
+    <div class="faq-a" id="faq4a">Yes. In most countries, prop firm payouts are taxable income. In the US, prop firms issue a 1099-NEC for payouts exceeding $600 in a calendar year. In France, payouts are declared as BNC (B&eacute;n&eacute;fices Non Commerciaux). You are treated as an independent contractor, not an employee. The good news: your challenge fees, activation fees, data fees, and software subscriptions (including x-trade.ai) are typically deductible business expenses. Keep meticulous records of all income and expenses.</div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-box">
+    <h2 id="ctaTitle">Protect Your Profits &amp; Secure Your Payout</h2>
+    <p id="ctaText">x-trade.ai automatically locks in your profits once you hit your payout threshold, reduces your position size to protect mode, and blocks revenge trades that could breach your funded account. The same risk controls that helped you pass the evaluation now protect your withdrawal.</p>
+    <a href="/onboarding?mode=trial" class="cta-btn" id="ctaBtn">Start Free Trial</a>
+  </div>
+
+  <!-- UPDATED -->
+  <p style="text-align:center;font-size:.8rem;color:var(--dim);margin-top:2rem" id="lastUpdated">Last updated: March 2026</p>
+
+  <!-- CROSS LINKS -->
+  <div class="cross-links">
+    <h3 id="crossTitle">Related Articles</h3>
+    <a href="/blog/pass-prop-firm-evaluation" class="cross-link" id="cross1">How to Pass Your Prop Firm Evaluation: The Risk-First Approach</a>
+    <a href="/blog/why-prop-firm-traders-fail" class="cross-link" id="cross2">Why 93% of Prop Firm Traders Never Get Paid &mdash; The 5 Risk Mistakes</a>
+    <a href="/blog/prop-firm-drawdown-rules-compared" class="cross-link" id="cross3">Prop Firm Drawdown Rules Compared &mdash; FTMO, MyFundedFX, The5ers &amp; More</a>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="https://basstrading.fr" target="_blank" rel="noopener">basstrading.fr - Formations</a>
+    <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr - IA &amp; Communaut&eacute;</a>
+    <a href="/blog" id="footBlog">Blog</a>
+    <a href="/onboarding?mode=trial" id="footTrial">Free Trial</a>
+  </div>
+  <p id="footCopy">&copy; 2026 x-trade.ai &mdash; All rights reserved.</p>
+</footer>
+
+<script>
+let lang = localStorage.getItem('xtrade_lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en');
+
+const TR = {
+en: {
+'navHome': 'Home',
+'navBlog': 'Blog',
+'navStart': 'Start Free',
+'breadcrumb': '<a href="/">Home</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; Prop Firm Payout Rules',
+'metaTag': 'Payouts',
+'metaDate': 'March 30, 2026',
+'metaRead': '16 min read',
+'title': 'Prop Firm Payout Rules: How & When You Actually Get Paid (2026 Guide)',
+'takeawaysTitle': 'Key Takeaways',
+'tk1': 'Most prop firms require 5\u201315 minimum trading days on your funded account before you can request your first payout \u2014 and many reset that counter after each withdrawal.',
+'tk2': 'Profit splits range from 80% to 100%, but activation fees ($0\u2013$800), consistency rules, and minimum withdrawal amounts eat into your real take-home pay significantly.',
+'tk3': 'The #1 payout killer is breaching your funded account AFTER reaching the profit target \u2014 usually from over-trading or removing your risk controls too early.',
+'tk4': 'Payment methods vary widely: Topstep uses ACH/wire, Apex and Bulenox use Plane/Rise, and processing times range from 1 to 7 business days.',
+'answerLabel': 'Featured Answer',
+'answerQ': 'How do prop firm payouts work?',
+'answerA': 'After passing a prop firm evaluation and receiving a funded account, you must trade for a minimum number of days (typically 5\u201315), meet any consistency rules, and accumulate profit above the minimum withdrawal threshold. You then submit a payout request through the firm\'s dashboard. The firm takes their profit split (usually 10\u201320%) and sends you the remainder via ACH, wire transfer, or third-party payment platforms like Plane or Rise. First payouts typically take 3\u20137 business days; subsequent payouts are often faster.',
+'intro': 'You passed the challenge. You got your funded account. Now what? The path to actually getting paid is full of obstacles that nobody explains clearly. Activation fees, consistency rules, minimum trading days, profit splits that change between your first and second withdrawal \u2014 the fine print is designed to slow you down.',
+'intro2': 'This guide breaks down the exact payout mechanics for every major prop firm in 2026. No vague advice. Just the real numbers, the hidden traps, and the strategies to maximize what actually hits your bank account. Whether you trade with <strong>Topstep, Apex, Bulenox, Tradeify, or Take Profit Trader (TPT)</strong>, you\'ll know exactly what to expect before you place your first funded trade.',
+'h2journey': 'The Payout Journey: From Challenge to Cash',
+'journeyP1': 'Getting paid from a prop firm is not as simple as "make money, withdraw money." There are five distinct stages between passing your challenge and seeing funds in your bank account, and each one has conditions that can delay or block your payout entirely.',
+'journey1': '<strong>Pass the Evaluation</strong> \u2014 Hit the profit target without breaching drawdown limits. This is the step everyone focuses on, but it\'s only the beginning.',
+'journey2': '<strong>Activate Your Funded Account</strong> \u2014 Some firms (Apex, Bulenox) charge an activation fee ($85\u2013$800) before you can start trading live. Others (Topstep) include activation in the challenge fee. This cost is separate from and in addition to the evaluation fee you already paid.',
+'journey3': '<strong>Meet Minimum Trading Days</strong> \u2014 You must trade a minimum number of days (5\u201315 depending on the firm) before requesting your first payout. A "trading day" means you opened and closed at least one position. Days where you don\'t trade don\'t count.',
+'journey4': '<strong>Meet Consistency & Profit Requirements</strong> \u2014 Some firms require that no single day accounts for more than 30\u201340% of your total accumulated profit. You must also have profit above the minimum withdrawal amount ($50\u2013$250 depending on the firm).',
+'journey5': '<strong>Request Payout & Receive Payment</strong> \u2014 Submit a withdrawal request through the firm\'s portal. Processing takes 1\u20137 business days. The firm deducts their profit split and sends the rest to you via your chosen payment method.',
+'journeyP2': 'The critical thing to understand is that <strong>your funded account can still be breached during any of these stages</strong>. Many traders lose their account between Stage 3 and Stage 5 because they keep trading aggressively instead of protecting their profits. Use <a href="https://x-trade.ai">x-trade.ai\'s profit lock feature</a> to automatically reduce your risk once you\'ve hit your payout threshold.',
+'h2compare': 'Payout Rules Compared: Topstep vs Apex vs Bulenox vs Tradeify vs TPT',
+'compareP1': 'Here\'s the side-by-side comparison every funded trader needs. These numbers are current as of March 2026 \u2014 always verify with the firm directly, as rules change frequently.',
+'thFirm': 'Firm',
+'thSplit': 'Profit Split',
+'thDays': 'Min Trading Days',
+'thFreq': 'Payout Frequency',
+'thMin': 'Min Withdrawal',
+'thMethod': 'Payment Method',
+'thActFee': 'Activation Fee',
+'tdTopSplit': '1st: 100% (up to $10K), then 90/10',
+'tdTopDays': '5 days',
+'tdTopFreq': 'Twice per month',
+'tdTopMin': '$50',
+'tdTopMethod': 'ACH / Wire',
+'tdTopFee': '$0 (included)',
+'tdApexSplit': '1st: 100% (up to $25K), then 90/10',
+'tdApexDays': '10 days',
+'tdApexFreq': 'Twice per month',
+'tdApexMin': '$100',
+'tdApexMethod': 'Plane (Rise)',
+'tdApexFee': '$85\u2013$385',
+'tdBulSplit': '1st\u20134th: 80/20, 5th+: 90/10',
+'tdBulDays': '15 days',
+'tdBulFreq': 'Once per month',
+'tdBulMin': '$100',
+'tdBulMethod': 'Plane (Rise)',
+'tdBulFee': '$98\u2013$530',
+'tdTrdSplit': '1st: 100% (up to $15K), then 80/20',
+'tdTrdDays': '10 days',
+'tdTrdFreq': 'Weekly (after 3rd payout)',
+'tdTrdMin': '$250',
+'tdTrdMethod': 'Plane (Rise)',
+'tdTrdFee': '$0 (included)',
+'tdTptSplit': '1st: 80/20, 2nd+: 90/10',
+'tdTptDays': '5 days',
+'tdTptFreq': 'On demand',
+'tdTptMin': '$100',
+'tdTptMethod': 'ACH / Plane',
+'tdTptFee': '$0 (included)',
+'compareP2': '<strong>Important caveat:</strong> these profit splits look generous on paper, but the real cost includes the evaluation fee ($49\u2013$349), the activation fee ($0\u2013$530), and the monthly data fee. When you factor all costs in, your effective payout rate on your first withdrawal is often lower than the headline number suggests.',
+'h2traps': 'The Hidden Traps That Block Your Payout',
+'trapsP1': 'Passing the evaluation is the easy part. The real challenge is navigating the payout rules without tripping one of these five traps that most traders don\'t discover until it\'s too late.',
+'trap1': '<strong>Trap #1: Activation fees on top of challenge fees.</strong> You paid $149 for the Apex evaluation. Congratulations, you passed. Now pay another $85\u2013$385 to activate your funded account. Bulenox charges $98\u2013$530 depending on account size. These fees are non-refundable. If you breach your funded account on day one, you\'ve lost both the challenge fee AND the activation fee. Budget for this before you start.',
+'trap2': '<strong>Trap #2: The consistency rule blocking profitable traders.</strong> Some firms require that no single trading day represents more than 30\u201340% of your total accumulated profit. You made $2,000 total, but $900 came from one great Monday? That\'s 45% \u2014 payout blocked until you dilute that day\'s percentage by trading more profitable days. This rule exists to prevent "one-hit wonders" but punishes traders who had one legitimately excellent session.',
+'trap3': '<strong>Trap #3: Different drawdown rules on funded vs. evaluation.</strong> Some firms (notably TPT) use EOD (end-of-day) trailing drawdown during the evaluation but switch to real-time trailing drawdown on the funded account. That means your funded account is HARDER to keep than the evaluation was to pass. A trade that would have been fine during eval can breach your funded account because the drawdown updates tick-by-tick instead of at session close.',
+'trap4': '<strong>Trap #4: Minimum trading days resetting after withdrawal.</strong> You traded 15 days and requested a payout. Great. Now the counter resets to zero. You need another 10\u201315 trading days before your next withdrawal. During that time, you\'re still exposed to drawdown risk. Every additional day you trade is a day you could breach. Factor this into your withdrawal timing strategy.',
+'trap5': '<strong>Trap #5: Tax implications nobody mentions.</strong> Prop firm payouts are taxable income. In the US, you\'ll receive a 1099-NEC for amounts over $600. In France, this falls under BNC (B\u00e9n\u00e9fices Non Commerciaux). The silver lining: your challenge fees, activation fees, data fees, and platform costs are deductible business expenses. Keep every receipt. Consult our <a href="https://hubtrading.fr" target="_blank" rel="noopener">AI-powered tools on hubtrading.fr</a> for detailed tax guidance specific to French prop firm traders.',
+'h2split': 'Profit Split: What You Actually Keep',
+'splitP1': 'Prop firms advertise "90% profit split" or even "100% on your first payout" as headline numbers. But what does that look like in real dollars when you account for all the costs? Let\'s do the math for a $3,000 gross profit on each firm.',
+'mathTopTitle': 'Topstep 50K \u2014 $3,000 Profit',
+'mathTopGross': 'Gross profit',
+'mathTopSplitLabel': '1st payout split (100%)',
+'mathTopChalLabel': 'Challenge fee (50K)',
+'mathTopActLabel': 'Activation fee',
+'mathTopNetLabel': 'Net take-home',
+'mathApexTitle': 'Apex 50K \u2014 $3,000 Profit',
+'mathApexGross': 'Gross profit',
+'mathApexSplitLabel': '1st payout split (100%)',
+'mathApexChalLabel': 'Challenge fee (50K)',
+'mathApexActLabel': 'Activation fee (50K)',
+'mathApexNetLabel': 'Net take-home',
+'mathBulTitle': 'Bulenox 50K \u2014 $3,000 Profit',
+'mathBulGross': 'Gross profit',
+'mathBulSplitLabel': '1st payout split (80%)',
+'mathBulChalLabel': 'Challenge fee (50K)',
+'mathBulActLabel': 'Activation fee (50K)',
+'mathBulNetLabel': 'Net take-home',
+'splitP2': 'The difference between the best and worst case here is <strong>$664</strong> \u2014 from $2,851 (Topstep) to $2,187 (Bulenox). That\'s real money. On subsequent payouts, the splits converge to 80\u201390% across all firms, but the activation fee is a one-time cost that disproportionately impacts smaller first payouts.',
+'splitP3': '<strong>Pro tip:</strong> If you\'re comparing firms, don\'t just look at the profit split percentage. Calculate your <em>total cost per dollar earned</em> including challenge fee, activation fee, and monthly data fees. The firm with the highest profit split isn\'t always the most profitable choice. Master the strategies to maximize your profit before withdrawing with our <a href="https://basstrading.fr" target="_blank" rel="noopener">formations on basstrading.fr</a>.',
+'h2maximize': 'How to Maximize Your Payouts',
+'maxP1': 'Getting funded is step one. Extracting the maximum cash from your funded account is a skill in itself. Here are five strategies that separate traders who get one payout from traders who build a consistent income stream.',
+'tip1': '<strong>Don\'t rush to withdraw \u2014 build a buffer first.</strong> If the minimum withdrawal is $100, don\'t request a payout the second you have $101 in profit. Build a buffer of at least 2\u00d7 your daily risk above the minimum. This protects your trailing drawdown and prevents a single bad day from eating into your withdrawal. A $500 buffer means you can take a $400 loss day and still have your withdrawal intact.',
+'tip2': '<strong>Track the consistency rule daily.</strong> If your firm has a consistency rule (no single day > 30\u201340% of total profit), monitor this after every session. Use a spreadsheet. Know your numbers before you request a payout, not after the firm rejects it. Plan your trading to spread profits across multiple days.',
+'tip3': '<strong>Reduce risk after reaching your target.</strong> Once you\'ve hit enough profit to request a payout, cut your position size by 50\u201375%. You\'re now in "protect mode," not "grow mode." Use <a href="https://x-trade.ai">x-trade.ai\'s profit lock feature</a> to automatically reduce your max contracts and tighten your daily loss limit once your balance crosses the payout threshold. The goal is to survive until payout day, not to make more money.',
+'tip4': '<strong>Plan for taxes from day one.</strong> Set aside 25\u201330% of every payout for taxes. Open a separate savings account specifically for this. When tax season arrives, you won\'t be scrambling. Your challenge fees, activation fees, and platform subscriptions are deductible \u2014 keep records of everything. The <a href="https://hubtrading.fr" target="_blank" rel="noopener">AI & community tools on hubtrading.fr</a> include resources on prop firm tax optimization for French traders.',
+'tip5': '<strong>Consider multiple accounts for scaling.</strong> Once you\'ve proven you can consistently get paid from one account, add a second. Running two 50K accounts with the same strategy and risk framework is often more profitable and safer than running one 150K account, because each account has its own drawdown limit. If one account breaches, the other survives. Diversify your income across firms too \u2014 don\'t put all your eggs in one basket.',
+'h2fatal': 'The Fatal Mistake: Over-Trading After Hitting Target',
+'fatalP1': 'This is the single most common reason funded traders never see their payout. You\'ve been disciplined for 15 days. You\'ve reached the profit target. You\'re eligible for a withdrawal. And then \u2014 instead of stopping or reducing size \u2014 <strong>you keep trading at full size</strong>.',
+'fatalP2': 'The psychology is predictable. You feel confident. The account is profitable. "One more day of trading won\'t hurt." But now you\'re trading with house money psychology, which means you\'re taking setups you wouldn\'t normally take, holding losers longer than you should, and sizing up because "I can afford the loss." Within 48 hours, that profitable account is breached.',
+'fatalP3': 'The data from prop firms confirms this. A significant percentage of funded account breaches happen <strong>after</strong> the trader has already reached payout eligibility. They had the money. They just couldn\'t stop trading.',
+'stat1label': 'Funded breaches happen post-target',
+'stat2label': 'Average time from target to breach',
+'stat3label': 'More payouts with a stop-after-target rule',
+'fatalP4': 'The solution is a hard rule: <strong>once you\'re eligible for payout, you either stop trading entirely or trade at 25% of your normal size</strong>. No exceptions. No "just one more trade." Submit your withdrawal request and step away from the screen. Use the AI on <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a> to identify only A+ setups and avoid over-trading. Our <a href="https://basstrading.fr" target="_blank" rel="noopener">formations on basstrading.fr</a> include an entire module on post-target psychology \u2014 how to manage the emotional shift from "trying to hit target" to "trying to protect profits."',
+'fatalP5': 'Remember: a payout you protect is worth infinitely more than a payout you gamble away. Every funded account you blow after reaching target is money you already had in your hands and chose to throw back on the table.',
+'h2faq': 'Frequently Asked Questions',
+'faq1q': 'When do I get my first prop firm payout?',
+'faq1a': 'Most prop firms require between 5 and 15 minimum trading days on your funded account before you can request your first payout. After requesting, payment processing takes 1\u20137 business days depending on the firm and payment method. Topstep pays within 2\u20133 business days, Apex within 1\u20133 days, and Bulenox within 3\u20135 days. Factor in an additional 1\u20132 days for your bank to process the incoming transfer.',
+'faq2q': 'Can I withdraw all my profits from a prop firm?',
+'faq2a': 'No. Prop firms take a profit split, typically 10\u201320%. Your first payout is sometimes capped at a specific maximum amount. Most firms also require you to keep a minimum buffer above your starting balance \u2014 you cannot withdraw down to zero profit because you need to maintain a cushion to protect the trailing drawdown. Additionally, some firms cap individual withdrawal amounts and require multiple payouts to extract larger profits.',
+'faq3q': 'What happens if I breach my funded account after requesting a payout?',
+'faq3a': 'If you breach the drawdown rules after requesting but before receiving your payout, most firms will cancel the payout and close your account. The payout request does not freeze your account or protect you. This is why reducing position size or stopping trading entirely after submitting a withdrawal request is critical. Some traders make the mistake of continuing to trade aggressively while waiting for their payout to process \u2014 this is one of the fastest ways to lose money you\'ve already earned.',
+'faq4q': 'Do I pay taxes on prop firm payouts?',
+'faq4a': 'Yes. In most countries, prop firm payouts are taxable income. In the US, prop firms issue a 1099-NEC for payouts exceeding $600 in a calendar year. In France, payouts are declared as BNC (B\u00e9n\u00e9fices Non Commerciaux). You are treated as an independent contractor, not an employee. The good news: your challenge fees, activation fees, data fees, and software subscriptions (including x-trade.ai) are typically deductible business expenses. Keep meticulous records of all income and expenses.',
+'ctaTitle': 'Protect Your Profits & Secure Your Payout',
+'ctaText': 'x-trade.ai automatically locks in your profits once you hit your payout threshold, reduces your position size to protect mode, and blocks revenge trades that could breach your funded account. The same risk controls that helped you pass the evaluation now protect your withdrawal.',
+'ctaBtn': 'Start Free Trial',
+'lastUpdated': 'Last updated: March 2026',
+'crossTitle': 'Related Articles',
+'cross1': 'How to Pass Your Prop Firm Evaluation: The Risk-First Approach',
+'cross2': 'Why 93% of Prop Firm Traders Never Get Paid \u2014 The 5 Risk Mistakes',
+'cross3': 'Prop Firm Drawdown Rules Compared \u2014 FTMO, MyFundedFX, The5ers & More',
+'footBlog': 'Blog',
+'footTrial': 'Free Trial',
+'footCopy': '\u00a9 2026 x-trade.ai \u2014 All rights reserved.',
+'linkXtrade1': 'x-trade.ai\'s profit lock feature',
+'linkXtrade2': 'x-trade.ai\'s profit lock feature',
+'linkBass1': 'basstrading.fr',
+'linkBass2': 'basstrading.fr',
+'linkHub1': 'AI-powered tools on hubtrading.fr',
+'linkHub2': 'AI & community tools on hubtrading.fr',
+'linkHub3': 'hubtrading.fr AI & community'
+},
+fr: {
+'navHome': 'Accueil',
+'navBlog': 'Blog',
+'navStart': 'Essai Gratuit',
+'breadcrumb': '<a href="/">Accueil</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; R\u00e8gles de Payout Prop Firm',
+'metaTag': 'Payouts',
+'metaDate': '30 mars 2026',
+'metaRead': '16 min de lecture',
+'title': 'Prop Firm Payout : Comment Retirer Ses Gains (Guide Complet 2026)',
+'takeawaysTitle': 'Points Cl\u00e9s',
+'tk1': 'La plupart des prop firms exigent 5 \u00e0 15 jours de trading minimum sur votre compte funded avant de pouvoir demander votre premier payout \u2014 et beaucoup remettent ce compteur \u00e0 z\u00e9ro apr\u00e8s chaque retrait.',
+'tk2': 'Les profit splits vont de 80% \u00e0 100%, mais les frais d\'activation (0$\u2013800$), les r\u00e8gles de consistance et les montants minimums de retrait r\u00e9duisent significativement ce que vous touchez r\u00e9ellement.',
+'tk3': 'Le tueur #1 de payout : violer son compte funded APR\u00c8S avoir atteint l\'objectif de profit \u2014 g\u00e9n\u00e9ralement en sur-tradant ou en retirant ses contr\u00f4les de risque trop t\u00f4t.',
+'tk4': 'Les m\u00e9thodes de paiement varient : Topstep utilise ACH/virement, Apex et Bulenox utilisent Plane/Rise, et les d\u00e9lais de traitement vont de 1 \u00e0 7 jours ouvrables.',
+'answerLabel': 'R\u00e9ponse en vedette',
+'answerQ': 'Comment fonctionnent les payouts en prop firm ?',
+'answerA': 'Apr\u00e8s avoir r\u00e9ussi l\'\u00e9valuation et re\u00e7u un compte funded, vous devez trader pendant un nombre minimum de jours (g\u00e9n\u00e9ralement 5 \u00e0 15), respecter les r\u00e8gles de consistance, et accumuler des profits au-dessus du seuil minimum de retrait. Vous soumettez ensuite une demande de payout via le tableau de bord de la firme. La firme pr\u00e9l\u00e8ve son profit split (g\u00e9n\u00e9ralement 10 \u00e0 20%) et vous envoie le reste par ACH, virement bancaire ou plateformes comme Plane ou Rise. Les premiers payouts prennent g\u00e9n\u00e9ralement 3 \u00e0 7 jours ouvrables ; les suivants sont souvent plus rapides.',
+'intro': 'Tu as pass\u00e9 le challenge, tu as ton compte funded... et maintenant ? Le chemin vers le payout est sem\u00e9 d\'emb\u00fbches que personne n\'explique clairement. Frais d\'activation, r\u00e8gles de consistance, jours de trading minimum, profit splits qui changent entre le premier et le deuxi\u00e8me retrait \u2014 les petites lignes sont con\u00e7ues pour te ralentir.',
+'intro2': 'Ce guide d\u00e9cortique les m\u00e9canismes exacts de payout pour chaque grande prop firm en 2026. Pas de conseils vagues. Juste les vrais chiffres, les pi\u00e8ges cach\u00e9s et les strat\u00e9gies pour maximiser ce qui arrive r\u00e9ellement sur ton compte bancaire. Que tu trades chez <strong>Topstep, Apex, Bulenox, Tradeify ou Take Profit Trader (TPT)</strong>, tu sauras exactement \u00e0 quoi t\'attendre avant de placer ton premier trade funded.',
+'h2journey': 'Le Parcours du Payout : Du Challenge au Virement',
+'journeyP1': 'Se faire payer par une prop firm n\'est pas aussi simple que "gagner de l\'argent, retirer de l\'argent." Il y a cinq \u00e9tapes distinctes entre la r\u00e9ussite du challenge et l\'arriv\u00e9e des fonds sur ton compte bancaire, et chacune a des conditions qui peuvent retarder ou bloquer ton payout.',
+'journey1': '<strong>R\u00e9ussir l\'\u00c9valuation</strong> \u2014 Atteindre l\'objectif de profit sans violer les limites de drawdown. C\'est l\'\u00e9tape sur laquelle tout le monde se concentre, mais ce n\'est que le d\u00e9but.',
+'journey2': '<strong>Activer Ton Compte Funded</strong> \u2014 Certaines firmes (Apex, Bulenox) facturent des frais d\'activation (85$\u2013800$) avant de pouvoir trader en live. D\'autres (Topstep) incluent l\'activation dans les frais du challenge. Ce co\u00fbt est s\u00e9par\u00e9 et en plus des frais d\'\u00e9valuation d\u00e9j\u00e0 pay\u00e9s.',
+'journey3': '<strong>Atteindre le Minimum de Jours de Trading</strong> \u2014 Tu dois trader un nombre minimum de jours (5 \u00e0 15 selon la firme) avant de demander ton premier payout. Un "jour de trading" signifie que tu as ouvert et ferm\u00e9 au moins une position. Les jours o\u00f9 tu ne trades pas ne comptent pas.',
+'journey4': '<strong>Respecter les R\u00e8gles de Consistance et de Profit</strong> \u2014 Certaines firmes exigent qu\'aucun jour ne repr\u00e9sente plus de 30 \u00e0 40% de ton profit total accumul\u00e9. Tu dois aussi avoir un profit au-dessus du montant minimum de retrait (50$\u2013250$ selon la firme).',
+'journey5': '<strong>Demander le Payout et Recevoir le Paiement</strong> \u2014 Soumettre une demande de retrait via le portail de la firme. Le traitement prend 1 \u00e0 7 jours ouvrables. La firme d\u00e9duit son profit split et t\'envoie le reste via la m\u00e9thode de paiement choisie.',
+'journeyP2': 'Le point critique \u00e0 comprendre est que <strong>ton compte funded peut toujours \u00eatre viol\u00e9 pendant n\'importe laquelle de ces \u00e9tapes</strong>. Beaucoup de traders perdent leur compte entre l\'\u00e9tape 3 et l\'\u00e9tape 5 parce qu\'ils continuent \u00e0 trader agressivement au lieu de prot\u00e9ger leurs profits. Utilise <a href="https://x-trade.ai">la fonction profit lock de x-trade.ai</a> pour r\u00e9duire automatiquement ton risque une fois que tu as atteint ton seuil de payout.',
+'h2compare': 'Comparaison des R\u00e8gles de Payout : Topstep vs Apex vs Bulenox vs Tradeify vs TPT',
+'compareP1': 'Voici la comparaison c\u00f4te \u00e0 c\u00f4te dont chaque trader funded a besoin. Ces chiffres sont \u00e0 jour en mars 2026 \u2014 v\u00e9rifie toujours directement avec la firme, car les r\u00e8gles changent fr\u00e9quemment.',
+'thFirm': 'Firme',
+'thSplit': 'Profit Split',
+'thDays': 'Jours Min.',
+'thFreq': 'Fr\u00e9quence Payout',
+'thMin': 'Retrait Min.',
+'thMethod': 'M\u00e9thode Paiement',
+'thActFee': 'Frais Activation',
+'tdTopSplit': '1er : 100% (jusqu\'\u00e0 10K$), puis 90/10',
+'tdTopDays': '5 jours',
+'tdTopFreq': 'Deux fois par mois',
+'tdTopMin': '50$',
+'tdTopMethod': 'ACH / Virement',
+'tdTopFee': '0$ (inclus)',
+'tdApexSplit': '1er : 100% (jusqu\'\u00e0 25K$), puis 90/10',
+'tdApexDays': '10 jours',
+'tdApexFreq': 'Deux fois par mois',
+'tdApexMin': '100$',
+'tdApexMethod': 'Plane (Rise)',
+'tdApexFee': '85$\u2013385$',
+'tdBulSplit': '1er\u20134e : 80/20, 5e+ : 90/10',
+'tdBulDays': '15 jours',
+'tdBulFreq': 'Une fois par mois',
+'tdBulMin': '100$',
+'tdBulMethod': 'Plane (Rise)',
+'tdBulFee': '98$\u2013530$',
+'tdTrdSplit': '1er : 100% (jusqu\'\u00e0 15K$), puis 80/20',
+'tdTrdDays': '10 jours',
+'tdTrdFreq': 'Hebdomadaire (apr\u00e8s 3e payout)',
+'tdTrdMin': '250$',
+'tdTrdMethod': 'Plane (Rise)',
+'tdTrdFee': '0$ (inclus)',
+'tdTptSplit': '1er : 80/20, 2e+ : 90/10',
+'tdTptDays': '5 jours',
+'tdTptFreq': 'Sur demande',
+'tdTptMin': '100$',
+'tdTptMethod': 'ACH / Plane',
+'tdTptFee': '0$ (inclus)',
+'compareP2': '<strong>Attention importante :</strong> ces profit splits semblent g\u00e9n\u00e9reux sur le papier, mais le co\u00fbt r\u00e9el inclut les frais d\'\u00e9valuation (49$\u2013349$), les frais d\'activation (0$\u2013530$), et les frais mensuels de donn\u00e9es. Quand tu prends tout en compte, ton taux de payout effectif sur ton premier retrait est souvent inf\u00e9rieur au chiffre affich\u00e9.',
+'h2traps': 'Les Pi\u00e8ges Cach\u00e9s Qui Bloquent Ton Payout',
+'trapsP1': 'R\u00e9ussir l\'\u00e9valuation est la partie facile. Le vrai d\u00e9fi est de naviguer les r\u00e8gles de payout sans tomber dans l\'un de ces cinq pi\u00e8ges que la plupart des traders ne d\u00e9couvrent que trop tard.',
+'trap1': '<strong>Pi\u00e8ge #1 : Les frais d\'activation en plus des frais du challenge.</strong> Tu as pay\u00e9 149$ pour l\'\u00e9valuation Apex. F\u00e9licitations, tu as r\u00e9ussi. Maintenant paie encore 85$\u2013385$ pour activer ton compte funded. Bulenox facture 98$\u2013530$ selon la taille du compte. Ces frais sont non remboursables. Si tu violes ton compte funded le premier jour, tu as perdu les frais du challenge ET les frais d\'activation. Pr\u00e9vois ce budget avant de commencer.',
+'trap2': '<strong>Pi\u00e8ge #2 : La r\u00e8gle de consistance bloque les traders profitables.</strong> Certaines firmes exigent qu\'aucun jour de trading ne repr\u00e9sente plus de 30 \u00e0 40% de ton profit total accumul\u00e9. Tu as fait 2\u202f000$ au total, mais 900$ viennent d\'un super lundi ? C\'est 45% \u2014 payout bloqu\u00e9 jusqu\'\u00e0 ce que tu dilues ce pourcentage en tradant d\'autres jours profitables. Cette r\u00e8gle existe pour emp\u00eacher les "coups de chance" mais p\u00e9nalise les traders qui ont eu une session l\u00e9gitimement excellente.',
+'trap3': '<strong>Pi\u00e8ge #3 : Des r\u00e8gles de drawdown diff\u00e9rentes entre funded et \u00e9valuation.</strong> Certaines firmes (notamment TPT) utilisent le drawdown trailing en fin de journ\u00e9e (EOD) pendant l\'\u00e9valuation mais passent au drawdown trailing en temps r\u00e9el sur le compte funded. Cela signifie que ton compte funded est PLUS DIFFICILE \u00e0 garder que l\'\u00e9valuation ne l\'\u00e9tait \u00e0 passer. Un trade qui aurait \u00e9t\u00e9 ok pendant l\'\u00e9val peut violer ton compte funded parce que le drawdown se met \u00e0 jour tick par tick au lieu de la cl\u00f4ture de session.',
+'trap4': '<strong>Pi\u00e8ge #4 : Les jours de trading minimum se r\u00e9initialisent apr\u00e8s chaque retrait.</strong> Tu as trad\u00e9 15 jours et demand\u00e9 un payout. Super. Maintenant le compteur repart \u00e0 z\u00e9ro. Tu as besoin de 10 \u00e0 15 autres jours de trading avant ton prochain retrait. Pendant ce temps, tu es toujours expos\u00e9 au risque de drawdown. Chaque jour suppl\u00e9mentaire que tu trades est un jour o\u00f9 tu pourrais violer ton compte. Int\u00e8gre cela dans ta strat\u00e9gie de timing des retraits.',
+'trap5': '<strong>Pi\u00e8ge #5 : Les implications fiscales dont personne ne parle.</strong> Les payouts de prop firm sont des revenus imposables. Aux US, tu recevras un 1099-NEC pour les montants sup\u00e9rieurs \u00e0 600$. En France, cela tombe sous les BNC (B\u00e9n\u00e9fices Non Commerciaux). Le c\u00f4t\u00e9 positif : tes frais de challenge, d\'activation, de donn\u00e9es et de plateforme sont des charges d\u00e9ductibles. Garde chaque re\u00e7u. Consulte les <a href="https://hubtrading.fr" target="_blank" rel="noopener">outils IA sur hubtrading.fr</a> pour des conseils fiscaux d\u00e9taill\u00e9s sp\u00e9cifiques aux traders prop firm fran\u00e7ais.',
+'h2split': 'Profit Split : Ce Que Tu Gardes Vraiment',
+'splitP1': 'Les prop firms affichent "90% de profit split" voire "100% sur ton premier payout" comme chiffres d\'accroche. Mais \u00e0 quoi cela ressemble en vrais dollars quand on prend en compte tous les co\u00fbts ? Faisons le calcul pour 3\u202f000$ de profit brut sur chaque firme.',
+'mathTopTitle': 'Topstep 50K \u2014 3\u202f000$ de Profit',
+'mathTopGross': 'Profit brut',
+'mathTopSplitLabel': '1er payout split (100%)',
+'mathTopChalLabel': 'Frais du challenge (50K)',
+'mathTopActLabel': 'Frais d\'activation',
+'mathTopNetLabel': 'Net encaiss\u00e9',
+'mathApexTitle': 'Apex 50K \u2014 3\u202f000$ de Profit',
+'mathApexGross': 'Profit brut',
+'mathApexSplitLabel': '1er payout split (100%)',
+'mathApexChalLabel': 'Frais du challenge (50K)',
+'mathApexActLabel': 'Frais d\'activation (50K)',
+'mathApexNetLabel': 'Net encaiss\u00e9',
+'mathBulTitle': 'Bulenox 50K \u2014 3\u202f000$ de Profit',
+'mathBulGross': 'Profit brut',
+'mathBulSplitLabel': '1er payout split (80%)',
+'mathBulChalLabel': 'Frais du challenge (50K)',
+'mathBulActLabel': 'Frais d\'activation (50K)',
+'mathBulNetLabel': 'Net encaiss\u00e9',
+'splitP2': 'La diff\u00e9rence entre le meilleur et le pire cas ici est de <strong>664$</strong> \u2014 de 2\u202f851$ (Topstep) \u00e0 2\u202f187$ (Bulenox). C\'est de l\'argent r\u00e9el. Sur les payouts suivants, les splits convergent vers 80\u201390% pour toutes les firmes, mais les frais d\'activation sont un co\u00fbt unique qui impacte de mani\u00e8re disproportionn\u00e9e les premiers petits payouts.',
+'splitP3': '<strong>Astuce de pro :</strong> Si tu compares les firmes, ne regarde pas seulement le pourcentage de profit split. Calcule ton <em>co\u00fbt total par dollar gagn\u00e9</em> incluant frais de challenge, frais d\'activation et frais mensuels de donn\u00e9es. La firme avec le plus haut profit split n\'est pas toujours le choix le plus rentable. Ma\u00eetrise les strat\u00e9gies pour maximiser tes profits avant de retirer avec nos <a href="https://basstrading.fr" target="_blank" rel="noopener">formations sur basstrading.fr</a>.',
+'h2maximize': 'Comment Maximiser Tes Payouts',
+'maxP1': '\u00catre funded est l\'\u00e9tape un. Extraire le maximum de cash de ton compte funded est un skill en soi. Voici cinq strat\u00e9gies qui s\u00e9parent les traders qui re\u00e7oivent un payout de ceux qui construisent un revenu r\u00e9gulier.',
+'tip1': '<strong>Ne te pr\u00e9cipite pas pour retirer \u2014 construis un buffer d\'abord.</strong> Si le retrait minimum est de 100$, ne demande pas un payout d\u00e8s que tu as 101$ de profit. Construis un buffer d\'au moins 2\u00d7 ton risque journalier au-dessus du minimum. Cela prot\u00e8ge ton drawdown trailing et emp\u00eache un seul mauvais jour de manger ton retrait. Un buffer de 500$ signifie que tu peux encaisser une perte de 400$ et garder ton retrait intact.',
+'tip2': '<strong>Suis la r\u00e8gle de consistance quotidiennement.</strong> Si ta firme a une r\u00e8gle de consistance (aucun jour > 30\u201340% du profit total), surveille cela apr\u00e8s chaque session. Utilise un tableur. Connais tes chiffres avant de demander un payout, pas apr\u00e8s que la firme te l\'ait refus\u00e9. Planifie ton trading pour r\u00e9partir les profits sur plusieurs jours.',
+'tip3': '<strong>R\u00e9duis le risque apr\u00e8s avoir atteint ton objectif.</strong> Une fois que tu as assez de profit pour demander un payout, r\u00e9duis ta taille de position de 50 \u00e0 75%. Tu es maintenant en "mode protection," pas en "mode croissance." Utilise <a href="https://x-trade.ai">la fonction profit lock de x-trade.ai</a> pour r\u00e9duire automatiquement tes contrats max et resserrer ta limite de perte journali\u00e8re une fois que ton solde d\u00e9passe le seuil de payout. L\'objectif est de survivre jusqu\'au jour du payout, pas de gagner plus.',
+'tip4': '<strong>Pr\u00e9vois les imp\u00f4ts d\u00e8s le jour un.</strong> Mets de c\u00f4t\u00e9 25 \u00e0 30% de chaque payout pour les imp\u00f4ts. Ouvre un compte d\'\u00e9pargne s\u00e9par\u00e9 sp\u00e9cifiquement pour cela. Quand la saison fiscale arrive, tu ne seras pas pris au d\u00e9pourvu. Tes frais de challenge, d\'activation et d\'abonnement plateforme sont d\u00e9ductibles \u2014 garde les justificatifs de tout. Les <a href="https://hubtrading.fr" target="_blank" rel="noopener">outils IA & communaut\u00e9 de hubtrading.fr</a> incluent des ressources sur l\'optimisation fiscale pour les traders prop firm fran\u00e7ais.',
+'tip5': '<strong>Consid\u00e8re plusieurs comptes pour scaler.</strong> Une fois que tu as prouv\u00e9 que tu peux \u00eatre pay\u00e9 r\u00e9guli\u00e8rement sur un compte, ajoutes-en un deuxi\u00e8me. G\u00e9rer deux comptes 50K avec la m\u00eame strat\u00e9gie et le m\u00eame cadre de risque est souvent plus rentable et plus s\u00fbr que de g\u00e9rer un seul compte 150K, parce que chaque compte a sa propre limite de drawdown. Si un compte est viol\u00e9, l\'autre survit. Diversifie aussi tes revenus entre les firmes \u2014 ne mets pas tous tes \u0153ufs dans le m\u00eame panier.',
+'h2fatal': 'L\'Erreur Fatale : Sur-trader Apr\u00e8s le Target',
+'fatalP1': 'C\'est la raison la plus courante pour laquelle les traders funded ne voient jamais leur payout. Tu as \u00e9t\u00e9 disciplin\u00e9 pendant 15 jours. Tu as atteint l\'objectif de profit. Tu es \u00e9ligible au retrait. Et puis \u2014 au lieu d\'arr\u00eater ou de r\u00e9duire ta taille \u2014 <strong>tu continues \u00e0 trader \u00e0 pleine taille</strong>.',
+'fatalP2': 'La psychologie est pr\u00e9visible. Tu te sens confiant. Le compte est profitable. "Encore un jour de trading ne fera pas de mal." Mais maintenant tu trades avec la psychologie de l\'argent gratuit, ce qui signifie que tu prends des setups que tu ne prendrais pas normalement, tu gardes des perdants plus longtemps que tu ne devrais, et tu augmentes la taille parce que "je peux me permettre la perte." En 48 heures, ce compte profitable est viol\u00e9.',
+'fatalP3': 'Les donn\u00e9es des prop firms confirment cela. Un pourcentage significatif des violations de comptes funded se produisent <strong>apr\u00e8s</strong> que le trader ait d\u00e9j\u00e0 atteint l\'\u00e9ligibilit\u00e9 au payout. Ils avaient l\'argent. Ils n\'ont simplement pas pu arr\u00eater de trader.',
+'stat1label': 'Violations de funded arrivent apr\u00e8s le target',
+'stat2label': 'D\u00e9lai moyen du target \u00e0 la violation',
+'stat3label': 'Plus de payouts avec une r\u00e8gle stop-apr\u00e8s-target',
+'fatalP4': 'La solution est une r\u00e8gle stricte : <strong>une fois \u00e9ligible au payout, tu arr\u00eates de trader compl\u00e8tement ou tu trades \u00e0 25% de ta taille normale</strong>. Pas d\'exception. Pas de "juste encore un trade." Soumets ta demande de retrait et \u00e9loigne-toi de l\'\u00e9cran. Utilise l\'IA de <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a> pour identifier uniquement les setups A+ et \u00e9viter le sur-trading. Nos <a href="https://basstrading.fr" target="_blank" rel="noopener">formations sur basstrading.fr</a> incluent un module entier sur la psychologie post-target \u2014 comment g\u00e9rer le changement \u00e9motionnel entre "essayer d\'atteindre le target" et "essayer de prot\u00e9ger ses profits."',
+'fatalP5': 'Rappelle-toi : un payout que tu prot\u00e8ges vaut infiniment plus qu\'un payout que tu remets en jeu. Chaque compte funded que tu fais sauter apr\u00e8s avoir atteint le target, c\'est de l\'argent que tu avais d\u00e9j\u00e0 dans les mains et que tu as choisi de remettre sur la table.',
+'h2faq': 'Questions Fr\u00e9quemment Pos\u00e9es',
+'faq1q': 'Quand re\u00e7ois-je mon premier payout de prop firm ?',
+'faq1a': 'La plupart des prop firms exigent entre 5 et 15 jours de trading minimum sur ton compte funded avant de pouvoir demander ton premier payout. Apr\u00e8s la demande, le traitement du paiement prend 1 \u00e0 7 jours ouvrables selon la firme et la m\u00e9thode de paiement. Topstep paie sous 2 \u00e0 3 jours ouvrables, Apex sous 1 \u00e0 3 jours, et Bulenox sous 3 \u00e0 5 jours. Compte un d\u00e9lai suppl\u00e9mentaire de 1 \u00e0 2 jours pour que ta banque traite le virement entrant.',
+'faq2q': 'Puis-je retirer tous mes profits d\'une prop firm ?',
+'faq2a': 'Non. Les prop firms prennent un profit split, g\u00e9n\u00e9ralement 10 \u00e0 20%. Ton premier payout est parfois plafonn\u00e9 \u00e0 un montant maximum sp\u00e9cifique. La plupart des firmes exigent aussi que tu gardes un buffer minimum au-dessus de ton solde de d\u00e9part \u2014 tu ne peux pas retirer jusqu\'\u00e0 z\u00e9ro de profit parce que tu dois maintenir un coussin pour prot\u00e9ger le drawdown trailing. De plus, certaines firmes plafonnent les montants de retrait individuels et n\u00e9cessitent plusieurs payouts pour extraire des profits plus importants.',
+'faq3q': 'Que se passe-t-il si je viole mon compte funded apr\u00e8s avoir demand\u00e9 un payout ?',
+'faq3a': 'Si tu violes les r\u00e8gles de drawdown apr\u00e8s avoir demand\u00e9 mais avant de recevoir ton payout, la plupart des firmes annuleront le payout et fermeront ton compte. La demande de payout ne g\u00e8le pas ton compte et ne te prot\u00e8ge pas. C\'est pourquoi r\u00e9duire ta taille de position ou arr\u00eater de trader compl\u00e8tement apr\u00e8s avoir soumis une demande de retrait est crucial. Certains traders font l\'erreur de continuer \u00e0 trader agressivement en attendant que leur payout soit trait\u00e9 \u2014 c\'est l\'un des moyens les plus rapides de perdre de l\'argent d\u00e9j\u00e0 gagn\u00e9.',
+'faq4q': 'Doit-on payer des imp\u00f4ts sur les payouts de prop firm ?',
+'faq4a': 'Oui. Dans la plupart des pays, les payouts de prop firm sont des revenus imposables. Aux US, les prop firms \u00e9mettent un 1099-NEC pour les payouts d\u00e9passant 600$ dans une ann\u00e9e civile. En France, les payouts sont d\u00e9clar\u00e9s comme BNC (B\u00e9n\u00e9fices Non Commerciaux). Tu es trait\u00e9 comme ind\u00e9pendant, pas comme salari\u00e9. La bonne nouvelle : tes frais de challenge, d\'activation, de donn\u00e9es et d\'abonnement logiciel (y compris x-trade.ai) sont g\u00e9n\u00e9ralement des charges d\u00e9ductibles. Garde des traces m\u00e9ticuleuses de tous tes revenus et d\u00e9penses.',
+'ctaTitle': 'Prot\u00e8ge Tes Profits et S\u00e9curise Ton Payout',
+'ctaText': 'x-trade.ai verrouille automatiquement tes profits une fois que tu atteins ton seuil de payout, r\u00e9duit ta taille de position en mode protection, et bloque le revenge trading qui pourrait violer ton compte funded. Les m\u00eames contr\u00f4les de risque qui t\'ont aid\u00e9 \u00e0 r\u00e9ussir l\'\u00e9valuation prot\u00e8gent maintenant ton retrait.',
+'ctaBtn': 'Commencer l\'Essai Gratuit',
+'lastUpdated': 'Derni\u00e8re mise \u00e0 jour : Mars 2026',
+'crossTitle': 'Articles Associ\u00e9s',
+'cross1': 'Comment R\u00e9ussir Votre \u00c9valuation Prop Firm : L\'Approche Risk-First',
+'cross2': 'Pourquoi 93% des Traders Prop Firm Ne Sont Jamais Pay\u00e9s \u2014 Les 5 Erreurs de Risque',
+'cross3': 'Comparaison des R\u00e8gles de Drawdown en Prop Firm \u2014 FTMO, MyFundedFX, The5ers et Plus',
+'footBlog': 'Blog',
+'footTrial': 'Essai Gratuit',
+'footCopy': '\u00a9 2026 x-trade.ai \u2014 Tous droits r\u00e9serv\u00e9s.',
+'linkXtrade1': 'la fonction profit lock de x-trade.ai',
+'linkXtrade2': 'la fonction profit lock de x-trade.ai',
+'linkBass1': 'basstrading.fr',
+'linkBass2': 'basstrading.fr',
+'linkHub1': 'outils IA sur hubtrading.fr',
+'linkHub2': 'outils IA & communaut\u00e9 de hubtrading.fr',
+'linkHub3': 'IA & communaut\u00e9 hubtrading.fr'
+}
+};
+
+function applyLang() {
+  for (const [id, html] of Object.entries(TR[lang] || TR.en)) {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  }
+  document.getElementById('langBtn').textContent = lang === 'en' ? 'FR' : 'EN';
+  document.documentElement.lang = lang;
+}
+
+function toggleLang() {
+  lang = lang === 'en' ? 'fr' : 'en';
+  localStorage.setItem('xtrade_lang', lang);
+  applyLang();
+}
+
+document.addEventListener('DOMContentLoaded', applyLang);
+</script>
+</body>
+</html>

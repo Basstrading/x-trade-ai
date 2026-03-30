@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prop Firm News Trading Rules: FOMC, NFP & CPI Guide (2026) | x-trade.ai</title>
+<meta name="description" content="Complete guide to prop firm news trading rules for FOMC, NFP & CPI events. Comparison table for Topstep, Apex, Bulenox, Tradeify & TPT. Learn what's allowed and how to survive news volatility.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://x-trade.ai/blog/news-trading-prop-firm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Prop Firm News Trading Rules: FOMC, NFP & CPI Guide (2026) | x-trade.ai">
+<meta property="og:description" content="Can you trade news in a prop firm? Full rules comparison for Topstep, Apex, Bulenox, Tradeify & TPT plus safe strategies for FOMC, NFP and CPI events.">
+<meta property="og:url" content="https://x-trade.ai/blog/news-trading-prop-firm">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Prop Firm News Trading Rules: FOMC, NFP & CPI Guide (2026) | x-trade.ai">
+<meta name="twitter:description" content="Can you trade news in a prop firm? Full rules comparison for Topstep, Apex, Bulenox, Tradeify & TPT plus safe strategies for FOMC, NFP and CPI events.">
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Article",
+  "headline":"Prop Firm News Trading Rules: FOMC, NFP & CPI Guide (2026)",
+  "author":{"@type":"Person","name":"Bass","jobTitle":"Founder, x-trade.ai"},
+  "datePublished":"2026-03-30",
+  "dateModified":"2026-03-30",
+  "publisher":{"@type":"Organization","name":"x-trade.ai","url":"https://x-trade.ai"},
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://x-trade.ai/blog/news-trading-prop-firm"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"Can you trade news events in a prop firm?","acceptedAnswer":{"@type":"Answer","text":"Most prop firms allow news trading during evaluation and on funded accounts. Topstep, Apex, Bulenox, and Tradeify all permit it. The notable exception is TakeProfitTrader (TPT), which bans news trading on PRO (funded) accounts. However, just because it's allowed doesn't mean it's wise — FOMC, NFP and CPI events can produce 100+ point MNQ moves with extreme slippage that destroys drawdown in seconds."}},
+    {"@type":"Question","name":"What is the safest way to trade FOMC in a prop firm?","acceptedAnswer":{"@type":"Answer","text":"The safest approach is to go completely flat 5 minutes before the FOMC announcement and stay flat for at least 5 minutes after. The initial spike is unpredictable and slippage is extreme. If you must trade, wait 15+ minutes for the post-news reaction when spreads normalise and price action becomes more readable. Never trade the initial spike with a prop firm account."}},
+    {"@type":"Question","name":"Which prop firms ban news trading?","acceptedAnswer":{"@type":"Answer","text":"Among the major futures prop firms in 2026, only TakeProfitTrader (TPT) explicitly bans news trading on funded (PRO) accounts. Topstep, Apex 4.0, Bulenox, and Tradeify all allow news trading on both evaluation and funded accounts. However, rules change frequently — always verify on each firm's official website before trading a major event."}},
+    {"@type":"Question","name":"How much can MNQ move during NFP or FOMC?","acceptedAnswer":{"@type":"Answer","text":"Tier 1 events like FOMC rate decisions, NFP, and CPI can produce 50 to 150+ point moves on MNQ (Micro Nasdaq futures) within seconds of the release. The initial spike often occurs in under 2 seconds. Slippage during these events can be 20-40 points beyond your stop loss price, meaning a 20-point stop can fill at 45+ points of loss. This is why news events are the single biggest drawdown threat for prop firm traders."}}
+  ]
+}
+</script>
+<style>
+:root{--bg:#07090f;--bg2:#0f1420;--cyan:#06b6d4;--green:#22d97f;--red:#ef4444;--gold:#f59e0b;--text:#f0f4f8;--dim:#94a3b8;--border:rgba(255,255,255,0.06)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}
+code,pre,.mono{font-family:'JetBrains Mono',monospace}
+a{color:var(--cyan);text-decoration:none;transition:color .2s}
+a:hover{color:var(--green)}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(7,9,15,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-weight:800;font-size:1.15rem;color:var(--text);letter-spacing:-.5px}
+.nav-logo span{color:var(--cyan)}
+.nav-links{display:flex;align-items:center;gap:1.5rem}
+.nav-links a{color:var(--dim);font-size:.875rem;font-weight:500}
+.nav-links a:hover{color:var(--text)}
+.lang-btn{background:transparent;border:1px solid var(--cyan);color:var(--cyan);padding:4px 12px;border-radius:6px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
+.lang-btn:hover{background:var(--cyan);color:var(--bg)}
+
+/* ARTICLE */
+.article-wrap{max-width:760px;margin:0 auto;padding:3rem 1.5rem 4rem}
+.breadcrumb{font-size:.8rem;color:var(--dim);margin-bottom:2rem}
+.breadcrumb a{color:var(--dim)}
+.breadcrumb a:hover{color:var(--cyan)}
+.article-meta{display:flex;align-items:center;gap:.75rem;font-size:.8rem;color:var(--dim);margin-bottom:1.25rem;flex-wrap:wrap}
+.article-meta .tag{background:rgba(6,182,212,.1);color:var(--cyan);padding:2px 10px;border-radius:99px;font-weight:500}
+h1{font-size:2.25rem;font-weight:800;line-height:1.2;letter-spacing:-.5px;margin-bottom:1.5rem}
+h2{font-size:1.5rem;font-weight:700;margin:2.5rem 0 1rem;letter-spacing:-.3px;color:var(--text)}
+h3{font-size:1.15rem;font-weight:600;margin:1.75rem 0 .75rem;color:var(--green)}
+p{margin-bottom:1.25rem;color:var(--dim);font-size:1rem}
+strong{color:var(--text)}
+
+/* KEY TAKEAWAYS */
+.takeaways{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--cyan);border-radius:10px;padding:1.5rem 1.75rem;margin-bottom:2.5rem}
+.takeaways h3{color:var(--cyan);margin:0 0 .75rem;font-size:1rem}
+.takeaways ul{list-style:none;padding:0}
+.takeaways li{position:relative;padding-left:1.5rem;margin-bottom:.5rem;color:var(--dim);font-size:.95rem}
+.takeaways li::before{content:"\2713";position:absolute;left:0;color:var(--green);font-weight:700}
+
+/* ANSWER BOX */
+.answer-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:10px;padding:1.5rem 1.75rem;margin-bottom:2.5rem}
+.answer-box h3{color:var(--green);margin:0 0 .75rem;font-size:1rem}
+.answer-box p{margin-bottom:.5rem;font-size:.95rem}
+.answer-box p:last-child{margin-bottom:0}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;margin:1.5rem 0 2rem;border-radius:10px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:.82rem;min-width:700px}
+th{text-align:left;padding:10px 12px;background:var(--bg2);color:var(--cyan);font-size:.7rem;text-transform:uppercase;letter-spacing:.8px;border-bottom:2px solid var(--border);white-space:nowrap;position:sticky;top:0}
+td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--dim);white-space:nowrap}
+td strong{color:var(--text)}
+tr:hover td{background:rgba(6,182,212,.03)}
+.warn{color:var(--red);font-weight:600}
+.ok{color:var(--green)}
+.note{color:var(--gold);font-style:italic}
+th:first-child,td:first-child{position:sticky;left:0;background:var(--bg);z-index:2}
+tr:hover td:first-child{background:rgba(6,182,212,.03)}
+
+/* LISTS */
+.article-wrap ul,.article-wrap ol{margin:0 0 1.25rem 1.25rem;color:var(--dim)}
+.article-wrap li{margin-bottom:.4rem;font-size:1rem}
+
+/* FAQ */
+.faq-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1rem}
+.faq-q{font-weight:600;color:var(--text);margin-bottom:.5rem;font-size:1.05rem}
+.faq-a{color:var(--dim);font-size:.95rem}
+
+/* CTA */
+.cta-box{background:linear-gradient(135deg,rgba(6,182,212,.12),rgba(34,217,127,.08));border:1px solid rgba(6,182,212,.25);border-radius:14px;padding:2.5rem;text-align:center;margin:3rem 0 2rem}
+.cta-box h2{margin:0 0 .75rem;font-size:1.5rem}
+.cta-box p{color:var(--dim);margin-bottom:1.5rem}
+.cta-btn{display:inline-block;background:var(--cyan);color:var(--bg);padding:12px 32px;border-radius:8px;font-weight:700;font-size:1rem;transition:all .25s}
+.cta-btn:hover{background:var(--green);color:var(--bg);transform:translateY(-1px)}
+
+/* CROSS LINKS */
+.cross-links{border-top:1px solid var(--border);padding-top:2rem;margin-top:2rem}
+.cross-links h3{font-size:1rem;color:var(--dim);margin-bottom:1rem}
+.cross-link{display:block;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin-bottom:.75rem;color:var(--text);font-weight:500;transition:border-color .2s}
+.cross-link:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* TRAP / DANGER BOXES */
+.trap-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1.25rem}
+.trap-box h3{color:var(--red);margin:0 0 .5rem;font-size:1rem}
+.trap-box p{margin-bottom:.5rem;font-size:.95rem}
+.trap-box p:last-child{margin-bottom:0}
+
+/* TIER BOX */
+.tier-box{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1.25rem}
+.tier-box h3{margin:0 0 .5rem;font-size:1rem}
+.tier-box p{margin-bottom:.5rem;font-size:.95rem}
+.tier-box p:last-child{margin-bottom:0}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;text-align:center;font-size:.8rem;color:var(--dim)}
+.footer a{color:var(--dim)}
+.footer a:hover{color:var(--cyan)}
+.footer-links{display:flex;justify-content:center;gap:1.5rem;margin-bottom:.75rem;flex-wrap:wrap}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+h1{font-size:1.6rem}
+h2{font-size:1.25rem}
+.article-wrap{padding:2rem 1rem 3rem}
+.nav{padding:0 1rem}
+.nav-links{gap:1rem}
+table{font-size:.72rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="/" class="nav-logo">x-trade<span>.ai</span></a>
+  <div class="nav-links">
+    <a href="/" id="navHome">Home</a>
+    <a href="/blog" id="navBlog">Blog</a>
+    <a href="/onboarding?mode=trial" id="navStart">Start Free</a>
+    <button class="lang-btn" id="langBtn" onclick="toggleLang()">FR</button>
+  </div>
+</nav>
+
+<!-- ARTICLE -->
+<main class="article-wrap">
+
+  <div class="breadcrumb" id="breadcrumb"><a href="/">Home</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; Prop Firm News Trading Rules</div>
+
+  <div class="article-meta">
+    <span class="tag" id="metaTag">News Trading</span>
+    <span id="metaDate">March 30, 2026</span>
+    <span>&middot;</span>
+    <span id="metaRead">12 min read</span>
+  </div>
+
+  <h1 id="title">Prop Firm News Trading Rules: FOMC, NFP &amp; CPI Guide (2026)</h1>
+
+  <!-- KEY TAKEAWAYS -->
+  <div class="takeaways">
+    <h3 id="takeawaysTitle">Key Takeaways</h3>
+    <ul>
+      <li id="tk1">Most prop firms allow news trading on both evaluation and funded accounts &mdash; TPT is the major exception, banning it on PRO accounts.</li>
+      <li id="tk2">FOMC, NFP, and CPI events can produce 50-150+ point MNQ moves in seconds &mdash; your standard 20-point stop is meaningless during these releases.</li>
+      <li id="tk3">Slippage during Tier 1 news events can double or triple your intended risk &mdash; a 20-point stop regularly fills at 40-50 points of loss.</li>
+      <li id="tk4">The safest approach is going flat 5 minutes before Tier 1 events and only trading the post-news reaction 15+ minutes after the release.</li>
+    </ul>
+  </div>
+
+  <!-- ANSWER BOX -->
+  <div class="answer-box">
+    <h3 id="answerTitle">Can you trade news events in a prop firm?</h3>
+    <p id="answerP1"><strong>Yes, most prop firms allow news trading</strong> during both evaluation and funded phases. Topstep, Apex, Bulenox, and Tradeify all permit it. The notable exception is <strong>TakeProfitTrader (TPT)</strong>, which bans news trading on funded (PRO) accounts.</p>
+    <p id="answerP2">But the real question is not whether you <em>can</em> &mdash; it's whether you <strong>should</strong>. A single FOMC trade gone wrong can consume 50% or more of your drawdown in seconds. The rules allow it. Your drawdown may not survive it.</p>
+  </div>
+
+  <!-- INTRO -->
+  <p id="intro"><strong>FOMC days can produce 100+ point moves on MNQ in seconds.</strong> Your 20-point ATR stop is meaningless. The spread triples, the order book evaporates, and your stop-loss fills 25 points past your intended price. Here's what every prop firm allows, what they don't, and how to survive news events without blowing your drawdown.</p>
+
+  <p id="intro2">This guide covers the specific news trading rules for every major futures prop firm in 2026, a framework for categorising news events by risk level, the mechanics of why news trading kills prop firm accounts, and three safe strategies for handling high-impact economic releases.</p>
+
+  <p id="lastUpdated" style="font-size:.85rem;color:var(--gold);font-weight:500;">Last updated: March 2026</p>
+
+  <!-- NEWS TRADING RULES TABLE -->
+  <h2 id="h2table">News Trading Rules Comparison</h2>
+
+  <p id="tableIntro">Below is a side-by-side breakdown of news trading rules across the five most popular futures prop firms. Pay close attention to the difference between evaluation and funded account rules &mdash; several firms change their policies once you're live.</p>
+
+  <div class="table-wrap">
+    <table id="compTable">
+      <thead>
+        <tr>
+          <th id="thRule">Rule</th>
+          <th id="thTopstep">Topstep</th>
+          <th id="thApex">Apex 4.0</th>
+          <th id="thBulenox">Bulenox</th>
+          <th id="thTradeify">Tradeify</th>
+          <th id="thTPT">TPT</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td id="rowNewsEval"><strong>News Trading (Eval)</strong></td>
+          <td class="ok">Allowed</td>
+          <td class="ok">Allowed</td>
+          <td class="ok">Allowed</td>
+          <td class="ok">Allowed</td>
+          <td class="ok">Allowed</td>
+        </tr>
+        <tr>
+          <td id="rowNewsFunded"><strong>News Trading (Funded)</strong></td>
+          <td class="ok">Allowed</td>
+          <td class="ok">Allowed</td>
+          <td class="ok">Allowed</td>
+          <td class="ok">Allowed</td>
+          <td class="warn">BANNED</td>
+        </tr>
+        <tr>
+          <td id="rowBlackout"><strong>Blackout Period</strong></td>
+          <td>&mdash;</td>
+          <td>&mdash;</td>
+          <td>&mdash;</td>
+          <td>&mdash;</td>
+          <td class="warn">2 min before / after</td>
+        </tr>
+        <tr>
+          <td id="rowBanned"><strong>Specific Banned Events</strong></td>
+          <td>&mdash;</td>
+          <td>&mdash;</td>
+          <td>&mdash;</td>
+          <td>&mdash;</td>
+          <td class="warn">All red-flag events</td>
+        </tr>
+        <tr>
+          <td id="rowPenalty"><strong>Penalty for Violation</strong></td>
+          <td>&mdash;</td>
+          <td>&mdash;</td>
+          <td>&mdash;</td>
+          <td>&mdash;</td>
+          <td class="warn">Account termination</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p id="tableNote"><strong>How to read this table:</strong> Green means no restrictions. Red means explicit ban or severe penalty. The dash (&mdash;) means the firm has no specific rule or restriction for that category. Always verify current rules on each firm's official website as policies change frequently.</p>
+
+  <!-- THE 3 TIERS OF NEWS EVENTS -->
+  <h2 id="h2tiers">The 3 Tiers of News Events</h2>
+
+  <p id="tiersIntro">Not all news events are created equal. The key to surviving news in a prop firm is understanding which events are genuinely dangerous and which ones are manageable. Here's a framework based on typical MNQ (Micro Nasdaq) price impact.</p>
+
+  <div class="tier-box" style="border-left:3px solid var(--red);">
+    <h3 id="tier1Title" style="color:var(--red);">Tier 1: Account Killers &mdash; FOMC, NFP, CPI</h3>
+    <p id="tier1P1"><strong>Expected MNQ move: 50&ndash;150+ points in seconds.</strong> These events produce extreme slippage, evaporated liquidity, and violent two-way price action. FOMC rate decisions (especially with a surprise), Non-Farm Payrolls, and CPI prints are the three most dangerous releases for prop firm accounts. The initial spike happens in under 2 seconds &mdash; no human can react fast enough to manage risk in real time.</p>
+    <p id="tier1P2"><strong>Verdict:</strong> Only Tier 1 is truly dangerous for your drawdown. If you only avoid these three events, you eliminate 80% of your news-related blowup risk.</p>
+  </div>
+
+  <div class="tier-box" style="border-left:3px solid var(--gold);">
+    <h3 id="tier2Title" style="color:var(--gold);">Tier 2: High Volatility &mdash; PPI, Retail Sales, ISM</h3>
+    <p id="tier2P1"><strong>Expected MNQ move: 20&ndash;50 points.</strong> Producer Price Index, Retail Sales, ISM Manufacturing/Services &mdash; these events produce significant moves but with more manageable slippage. Spreads widen but the order book doesn't fully evaporate. Experienced traders can manage risk through these releases with proper position sizing.</p>
+    <p id="tier2P2"><strong>Verdict:</strong> Tradeable with reduced size and wider stops, but not recommended for traders with less than 50% of their drawdown remaining.</p>
+  </div>
+
+  <div class="tier-box" style="border-left:3px solid var(--dim);">
+    <h3 id="tier3Title" style="color:var(--dim);">Tier 3: Low Impact &mdash; Housing, Durable Goods, Jobless Claims</h3>
+    <p id="tier3P1"><strong>Expected MNQ move: 5&ndash;20 points.</strong> Housing starts, durable goods orders, weekly jobless claims (unless a major surprise), consumer sentiment &mdash; these events produce minor moves that are well within normal ATR ranges. Slippage is minimal and the order book stays relatively intact.</p>
+    <p id="tier3P2"><strong>Verdict:</strong> Generally safe to trade through with standard position sizing. No special precautions needed unless the number deviates significantly from consensus.</p>
+  </div>
+
+  <!-- WHY NEWS TRADING KILLS PROP FIRM ACCOUNTS -->
+  <h2 id="h2kills">Why News Trading Kills Prop Firm Accounts</h2>
+
+  <p id="killsIntro">Even when news trading is allowed, there are four mechanical reasons why it destroys prop firm accounts disproportionately compared to personal accounts.</p>
+
+  <div class="trap-box">
+    <h3 id="kill1Title">1. Slippage Destroys Your Risk Math</h3>
+    <p id="kill1P1">During a Tier 1 event, your 20-point stop loss does not get filled at 20 points. It gets filled wherever the next available price is &mdash; which can be 40, 50, or even 60 points away. On one MNQ contract, that's the difference between a $40 loss (planned) and a $100+ loss (actual). <strong>On 3 contracts, a single slipped stop can cost you $300+ instead of $120</strong> &mdash; potentially 15% of a $2,000 drawdown from one trade.</p>
+  </div>
+
+  <div class="trap-box">
+    <h3 id="kill2Title">2. Volatility Triples Your Effective Exposure</h3>
+    <p id="kill2P1">Your position size is calibrated to normal market conditions &mdash; say 150-point daily ATR on MNQ. During FOMC, the ATR can triple to 450+ points in a single hour. Your "normal" 2-contract position now carries 3x the risk you calculated. Without dynamic position sizing, <strong>you're unknowingly trading 3x your intended risk</strong>.</p>
+  </div>
+
+  <div class="trap-box">
+    <h3 id="kill3Title">3. One Bad Trade Consumes Half Your Drawdown</h3>
+    <p id="kill3P1">On a $50K account with a $2,000 drawdown, a single FOMC trade with 3 MNQ contracts and 45 points of slippage costs you $270. Add the actual loss if the trade goes against you by another 50 points: that's $570 total. <strong>One trade, 28% of your entire drawdown gone.</strong> Two bad news trades in a month and your account is effectively dead even if every other trade is profitable.</p>
+  </div>
+
+  <div class="trap-box">
+    <h3 id="kill4Title">4. Tick-by-Tick Trailing Makes It Worse</h3>
+    <p id="kill4P1">If your firm uses tick-by-tick trailing drawdown (like Bulenox Option 1), the news spike creates a unique danger: the initial move in your favour permanently raises your drawdown floor. When price reverses &mdash; as it often does within minutes of the initial spike &mdash; you're now closer to breach even though you were momentarily profitable. <strong>The unrealised P&L spike from a news event can raise your floor by hundreds of dollars in seconds</strong>, leaving you with almost no room for the inevitable pullback.</p>
+  </div>
+
+  <!-- THE SAFE APPROACH -->
+  <h2 id="h2safe">The Safe Approach: 3 Strategies for News Days</h2>
+
+  <p id="safeIntro">You don't have to avoid the market entirely on news days. But you do need a specific protocol. Here are three approaches ranked from safest to most aggressive.</p>
+
+  <h3 id="safe1Title">Strategy 1: Go Flat (Safest)</h3>
+  <p id="safe1P1"><strong>Close all positions 5 minutes before any Tier 1 event. Do not re-enter for 5 minutes after.</strong> This is the institutional approach &mdash; most professional trading desks either flatten or dramatically reduce exposure before FOMC, NFP, and CPI. You cannot get stopped out of a position you don't have. Your drawdown is preserved with zero risk.</p>
+  <p id="safe1P2">This strategy "costs" you the occasional news trade that would have been profitable. But the math overwhelmingly favours it: you're giving up a coin-flip opportunity (the initial spike) to preserve 100% of your drawdown for the high-probability setups that follow.</p>
+
+  <h3 id="safe2Title">Strategy 2: Half Size + 2x Wider Stops</h3>
+  <p id="safe2P1"><strong>If you insist on holding through news, cut your position size in half and double your stop-loss width.</strong> This keeps your dollar risk roughly constant while accommodating the wider price swings and slippage. A 1-lot MNQ with a 40-point stop has the same dollar risk as a 2-lot with a 20-point stop &mdash; but the 40-point stop has a much higher chance of surviving the initial spike without getting slipped through.</p>
+  <p id="safe2P2">This approach is only viable for Tier 2 events. For Tier 1 events, even a 40-point stop can get slipped to 70+ points during extreme releases. Use with caution.</p>
+
+  <h3 id="safe3Title">Strategy 3: Trade the Post-News Reaction (Recommended)</h3>
+  <p id="safe3P1"><strong>Wait 15+ minutes after the Tier 1 release, then trade the reaction.</strong> The initial spike is noise &mdash; algos, stop-running, and liquidity vacuums. The real move develops 15 to 45 minutes later as institutional traders digest the data and position accordingly. Spreads normalise, the order book refills, and price action becomes readable again.</p>
+  <p id="safe3P2">This is the sweet spot for prop firm traders: you get the elevated volatility (bigger moves, more opportunity) without the extreme slippage and unpredictability of the initial release. Many of the best MNQ trades of the year happen in the 30 minutes after a major news event &mdash; not during it. Master this approach with our <a href="https://basstrading.fr" target="_blank" rel="noopener">formations on basstrading.fr</a>.</p>
+
+  <!-- HOW X-TRADE.AI HANDLES NEWS -->
+  <h2 id="h2xtrade">How x-trade.ai Handles News Events</h2>
+
+  <p id="xtradeP1">Manual discipline fails when it matters most. You tell yourself you'll flatten before FOMC, then you're in a winning trade at 1:55 PM and convince yourself to hold "just through the announcement." Five seconds later, your drawdown is gone. This is why <a href="/onboarding?mode=trial">x-trade.ai</a> automates news protection.</p>
+
+  <ul>
+    <li id="xtradeF1"><strong>Built-in economic calendar:</strong> Automatically identifies all Tier 1, Tier 2, and Tier 3 events with exact release times synced to your trading session.</li>
+    <li id="xtradeF2"><strong>Auto-reduce position size:</strong> Configurable rules that automatically cut your max contracts before high-impact events &mdash; no manual intervention required.</li>
+    <li id="xtradeF3"><strong>Optional auto-flatten:</strong> Set x-trade.ai to close all positions X minutes before any Tier 1 event. Your drawdown is protected even if you forget or hesitate.</li>
+    <li id="xtradeF4"><strong>Post-news re-entry delay:</strong> Configurable cooldown that prevents re-entry for a set number of minutes after a major release, ensuring you only trade the post-news reaction.</li>
+  </ul>
+
+  <p id="xtradeP2">These are the same controls that institutional desks enforce automatically. The difference is that x-trade.ai is built specifically for prop firm traders &mdash; with drawdown rules, daily loss limits, and consistency requirements baked into every decision.</p>
+
+  <!-- ECOSYSTEM CROSS-LINKS -->
+  <h2 id="h2ecosystem">Go Further: News Trading Mastery</h2>
+
+  <p id="ecoP1">Knowing the rules is step one. Building a profitable news trading strategy is step two. Our ecosystem provides the tools and education to master both.</p>
+
+  <ul>
+    <li id="eco1"><strong>Formations &amp; Cours :</strong> Ma&icirc;trise le trading de news avec nos formations sur <a href="https://basstrading.fr" target="_blank" rel="noopener">basstrading.fr</a> &mdash; from reading the economic calendar to building post-news entry models for MNQ and MES futures.</li>
+    <li id="eco2"><strong>IA &amp; Communaut&eacute; :</strong> L'IA de <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a> analyse l'impact des news sur les niveaux gamma et options &mdash; providing real-time key levels that shift after each major release.</li>
+  </ul>
+
+  <!-- EXTERNAL LINKS -->
+  <p id="officialLinks" style="font-size:.9rem;">Verify current news trading rules on each firm's official site: <a href="https://www.topstep.com" target="_blank" rel="noopener">Topstep</a> &middot; <a href="https://www.apextraderfunding.com" target="_blank" rel="noopener">Apex Trader Funding</a> &middot; <a href="https://www.bulenox.com" target="_blank" rel="noopener">Bulenox</a> &middot; <a href="https://www.tradeify.com" target="_blank" rel="noopener">Tradeify</a> &middot; <a href="https://www.takeprofittrader.com" target="_blank" rel="noopener">TakeProfitTrader</a></p>
+
+  <!-- FAQ -->
+  <h2 id="h2faq">Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq1q">Can you trade news events in a prop firm?</div>
+    <div class="faq-a" id="faq1a">Most prop firms allow news trading during evaluation and on funded accounts. Topstep, Apex, Bulenox, and Tradeify all permit it. The notable exception is TakeProfitTrader (TPT), which bans news trading on PRO (funded) accounts. However, just because it's allowed doesn't mean it's wise &mdash; FOMC, NFP, and CPI events can produce 100+ point MNQ moves with extreme slippage that destroys drawdown in seconds.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq2q">What is the safest way to trade FOMC in a prop firm?</div>
+    <div class="faq-a" id="faq2a">The safest approach is to go completely flat 5 minutes before the FOMC announcement and stay flat for at least 5 minutes after. The initial spike is unpredictable and slippage is extreme. If you must trade, wait 15+ minutes for the post-news reaction when spreads normalise and price action becomes more readable. Never trade the initial spike with a prop firm account.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq3q">Which prop firms ban news trading?</div>
+    <div class="faq-a" id="faq3a">Among the major futures prop firms in 2026, only TakeProfitTrader (TPT) explicitly bans news trading on funded (PRO) accounts. Topstep, Apex 4.0, Bulenox, and Tradeify all allow news trading on both evaluation and funded accounts. However, rules change frequently &mdash; always verify on each firm's official website before trading a major event.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq4q">How much can MNQ move during NFP or FOMC?</div>
+    <div class="faq-a" id="faq4a">Tier 1 events like FOMC rate decisions, NFP, and CPI can produce 50 to 150+ point moves on MNQ (Micro Nasdaq futures) within seconds of the release. The initial spike often occurs in under 2 seconds. Slippage during these events can be 20&ndash;40 points beyond your stop-loss price, meaning a 20-point stop can fill at 45+ points of loss. This is why news events are the single biggest drawdown threat for prop firm traders.</div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-box">
+    <h2 id="ctaTitle">Automate Your News Protection</h2>
+    <p id="ctaText">x-trade.ai auto-flattens before FOMC, reduces size before NFP, and enforces post-news cooldowns &mdash; all tailored to your prop firm's exact drawdown rules. Set up in under 5 minutes.</p>
+    <a href="/onboarding?mode=trial" class="cta-btn" id="ctaBtn">Start Free Trial</a>
+  </div>
+
+  <!-- CROSS LINKS -->
+  <div class="cross-links">
+    <h3 id="crossTitle">Related Articles</h3>
+    <a href="/blog/prop-firm-drawdown-rules-compared" class="cross-link" id="cross1">Prop Firm Drawdown Rules Compared: Topstep vs Apex vs Bulenox (2026)</a>
+    <a href="/blog/why-prop-firm-traders-fail" class="cross-link" id="cross2">Why 93% of Prop Firm Traders Never Get Paid &mdash; The 5 Risk Mistakes</a>
+    <a href="/blog/revenge-trading-prop-firm" class="cross-link" id="cross3">Revenge Trading: The #1 Prop Firm Account Killer (And How to Stop It)</a>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="/blog" id="footBlog">Blog</a>
+    <a href="/onboarding?mode=trial" id="footTrial">Free Trial</a>
+    <a href="https://basstrading.fr" target="_blank" rel="noopener">basstrading.fr</a>
+    <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a>
+  </div>
+  <span id="footCopy">&copy; 2026 x-trade.ai &mdash; All rights reserved.</span>
+</footer>
+
+<script>
+let lang = localStorage.getItem('xtrade_lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en');
+
+const TR = {
+en: {
+'navHome': 'Home',
+'navBlog': 'Blog',
+'navStart': 'Start Free',
+'breadcrumb': '<a href="/">Home</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; Prop Firm News Trading Rules',
+'metaTag': 'News Trading',
+'metaDate': 'March 30, 2026',
+'metaRead': '12 min read',
+'title': 'Prop Firm News Trading Rules: FOMC, NFP & CPI Guide (2026)',
+'takeawaysTitle': 'Key Takeaways',
+'tk1': 'Most prop firms allow news trading on both evaluation and funded accounts \u2014 TPT is the major exception, banning it on PRO accounts.',
+'tk2': 'FOMC, NFP, and CPI events can produce 50-150+ point MNQ moves in seconds \u2014 your standard 20-point stop is meaningless during these releases.',
+'tk3': 'Slippage during Tier 1 news events can double or triple your intended risk \u2014 a 20-point stop regularly fills at 40-50 points of loss.',
+'tk4': 'The safest approach is going flat 5 minutes before Tier 1 events and only trading the post-news reaction 15+ minutes after the release.',
+'answerTitle': 'Can you trade news events in a prop firm?',
+'answerP1': '<strong>Yes, most prop firms allow news trading</strong> during both evaluation and funded phases. Topstep, Apex, Bulenox, and Tradeify all permit it. The notable exception is <strong>TakeProfitTrader (TPT)</strong>, which bans news trading on funded (PRO) accounts.',
+'answerP2': 'But the real question is not whether you <em>can</em> \u2014 it\'s whether you <strong>should</strong>. A single FOMC trade gone wrong can consume 50% or more of your drawdown in seconds. The rules allow it. Your drawdown may not survive it.',
+'intro': '<strong>FOMC days can produce 100+ point moves on MNQ in seconds.</strong> Your 20-point ATR stop is meaningless. The spread triples, the order book evaporates, and your stop-loss fills 25 points past your intended price. Here\'s what every prop firm allows, what they don\'t, and how to survive news events without blowing your drawdown.',
+'intro2': 'This guide covers the specific news trading rules for every major futures prop firm in 2026, a framework for categorising news events by risk level, the mechanics of why news trading kills prop firm accounts, and three safe strategies for handling high-impact economic releases.',
+'lastUpdated': 'Last updated: March 2026',
+'h2table': 'News Trading Rules Comparison',
+'tableIntro': 'Below is a side-by-side breakdown of news trading rules across the five most popular futures prop firms. Pay close attention to the difference between evaluation and funded account rules \u2014 several firms change their policies once you\'re live.',
+'thRule': 'Rule',
+'thTopstep': 'Topstep',
+'thApex': 'Apex 4.0',
+'thBulenox': 'Bulenox',
+'thTradeify': 'Tradeify',
+'thTPT': 'TPT',
+'rowNewsEval': '<strong>News Trading (Eval)</strong>',
+'rowNewsFunded': '<strong>News Trading (Funded)</strong>',
+'rowBlackout': '<strong>Blackout Period</strong>',
+'rowBanned': '<strong>Specific Banned Events</strong>',
+'rowPenalty': '<strong>Penalty for Violation</strong>',
+'tableNote': '<strong>How to read this table:</strong> Green means no restrictions. Red means explicit ban or severe penalty. The dash (\u2014) means the firm has no specific rule or restriction for that category. Always verify current rules on each firm\'s official website as policies change frequently.',
+'h2tiers': 'The 3 Tiers of News Events',
+'tiersIntro': 'Not all news events are created equal. The key to surviving news in a prop firm is understanding which events are genuinely dangerous and which ones are manageable. Here\'s a framework based on typical MNQ (Micro Nasdaq) price impact.',
+'tier1Title': 'Tier 1: Account Killers \u2014 FOMC, NFP, CPI',
+'tier1P1': '<strong>Expected MNQ move: 50\u2013150+ points in seconds.</strong> These events produce extreme slippage, evaporated liquidity, and violent two-way price action. FOMC rate decisions (especially with a surprise), Non-Farm Payrolls, and CPI prints are the three most dangerous releases for prop firm accounts. The initial spike happens in under 2 seconds \u2014 no human can react fast enough to manage risk in real time.',
+'tier1P2': '<strong>Verdict:</strong> Only Tier 1 is truly dangerous for your drawdown. If you only avoid these three events, you eliminate 80% of your news-related blowup risk.',
+'tier2Title': 'Tier 2: High Volatility \u2014 PPI, Retail Sales, ISM',
+'tier2P1': '<strong>Expected MNQ move: 20\u201350 points.</strong> Producer Price Index, Retail Sales, ISM Manufacturing/Services \u2014 these events produce significant moves but with more manageable slippage. Spreads widen but the order book doesn\'t fully evaporate. Experienced traders can manage risk through these releases with proper position sizing.',
+'tier2P2': '<strong>Verdict:</strong> Tradeable with reduced size and wider stops, but not recommended for traders with less than 50% of their drawdown remaining.',
+'tier3Title': 'Tier 3: Low Impact \u2014 Housing, Durable Goods, Jobless Claims',
+'tier3P1': '<strong>Expected MNQ move: 5\u201320 points.</strong> Housing starts, durable goods orders, weekly jobless claims (unless a major surprise), consumer sentiment \u2014 these events produce minor moves that are well within normal ATR ranges. Slippage is minimal and the order book stays relatively intact.',
+'tier3P2': '<strong>Verdict:</strong> Generally safe to trade through with standard position sizing. No special precautions needed unless the number deviates significantly from consensus.',
+'h2kills': 'Why News Trading Kills Prop Firm Accounts',
+'killsIntro': 'Even when news trading is allowed, there are four mechanical reasons why it destroys prop firm accounts disproportionately compared to personal accounts.',
+'kill1Title': '1. Slippage Destroys Your Risk Math',
+'kill1P1': 'During a Tier 1 event, your 20-point stop loss does not get filled at 20 points. It gets filled wherever the next available price is \u2014 which can be 40, 50, or even 60 points away. On one MNQ contract, that\'s the difference between a $40 loss (planned) and a $100+ loss (actual). <strong>On 3 contracts, a single slipped stop can cost you $300+ instead of $120</strong> \u2014 potentially 15% of a $2,000 drawdown from one trade.',
+'kill2Title': '2. Volatility Triples Your Effective Exposure',
+'kill2P1': 'Your position size is calibrated to normal market conditions \u2014 say 150-point daily ATR on MNQ. During FOMC, the ATR can triple to 450+ points in a single hour. Your "normal" 2-contract position now carries 3x the risk you calculated. Without dynamic position sizing, <strong>you\'re unknowingly trading 3x your intended risk</strong>.',
+'kill3Title': '3. One Bad Trade Consumes Half Your Drawdown',
+'kill3P1': 'On a $50K account with a $2,000 drawdown, a single FOMC trade with 3 MNQ contracts and 45 points of slippage costs you $270. Add the actual loss if the trade goes against you by another 50 points: that\'s $570 total. <strong>One trade, 28% of your entire drawdown gone.</strong> Two bad news trades in a month and your account is effectively dead even if every other trade is profitable.',
+'kill4Title': '4. Tick-by-Tick Trailing Makes It Worse',
+'kill4P1': 'If your firm uses tick-by-tick trailing drawdown (like Bulenox Option 1), the news spike creates a unique danger: the initial move in your favour permanently raises your drawdown floor. When price reverses \u2014 as it often does within minutes of the initial spike \u2014 you\'re now closer to breach even though you were momentarily profitable. <strong>The unrealised P&L spike from a news event can raise your floor by hundreds of dollars in seconds</strong>, leaving you with almost no room for the inevitable pullback.',
+'h2safe': 'The Safe Approach: 3 Strategies for News Days',
+'safeIntro': 'You don\'t have to avoid the market entirely on news days. But you do need a specific protocol. Here are three approaches ranked from safest to most aggressive.',
+'safe1Title': 'Strategy 1: Go Flat (Safest)',
+'safe1P1': '<strong>Close all positions 5 minutes before any Tier 1 event. Do not re-enter for 5 minutes after.</strong> This is the institutional approach \u2014 most professional trading desks either flatten or dramatically reduce exposure before FOMC, NFP, and CPI. You cannot get stopped out of a position you don\'t have. Your drawdown is preserved with zero risk.',
+'safe1P2': 'This strategy "costs" you the occasional news trade that would have been profitable. But the math overwhelmingly favours it: you\'re giving up a coin-flip opportunity (the initial spike) to preserve 100% of your drawdown for the high-probability setups that follow.',
+'safe2Title': 'Strategy 2: Half Size + 2x Wider Stops',
+'safe2P1': '<strong>If you insist on holding through news, cut your position size in half and double your stop-loss width.</strong> This keeps your dollar risk roughly constant while accommodating the wider price swings and slippage. A 1-lot MNQ with a 40-point stop has the same dollar risk as a 2-lot with a 20-point stop \u2014 but the 40-point stop has a much higher chance of surviving the initial spike without getting slipped through.',
+'safe2P2': 'This approach is only viable for Tier 2 events. For Tier 1 events, even a 40-point stop can get slipped to 70+ points during extreme releases. Use with caution.',
+'safe3Title': 'Strategy 3: Trade the Post-News Reaction (Recommended)',
+'safe3P1': '<strong>Wait 15+ minutes after the Tier 1 release, then trade the reaction.</strong> The initial spike is noise \u2014 algos, stop-running, and liquidity vacuums. The real move develops 15 to 45 minutes later as institutional traders digest the data and position accordingly. Spreads normalise, the order book refills, and price action becomes readable again.',
+'safe3P2': 'This is the sweet spot for prop firm traders: you get the elevated volatility (bigger moves, more opportunity) without the extreme slippage and unpredictability of the initial release. Many of the best MNQ trades of the year happen in the 30 minutes after a major news event \u2014 not during it. Master this approach with our <a href="https://basstrading.fr" target="_blank" rel="noopener">courses on basstrading.fr</a>.',
+'h2xtrade': 'How x-trade.ai Handles News Events',
+'xtradeP1': 'Manual discipline fails when it matters most. You tell yourself you\'ll flatten before FOMC, then you\'re in a winning trade at 1:55 PM and convince yourself to hold "just through the announcement." Five seconds later, your drawdown is gone. This is why <a href="/onboarding?mode=trial">x-trade.ai</a> automates news protection.',
+'xtradeF1': '<strong>Built-in economic calendar:</strong> Automatically identifies all Tier 1, Tier 2, and Tier 3 events with exact release times synced to your trading session.',
+'xtradeF2': '<strong>Auto-reduce position size:</strong> Configurable rules that automatically cut your max contracts before high-impact events \u2014 no manual intervention required.',
+'xtradeF3': '<strong>Optional auto-flatten:</strong> Set x-trade.ai to close all positions X minutes before any Tier 1 event. Your drawdown is protected even if you forget or hesitate.',
+'xtradeF4': '<strong>Post-news re-entry delay:</strong> Configurable cooldown that prevents re-entry for a set number of minutes after a major release, ensuring you only trade the post-news reaction.',
+'xtradeP2': 'These are the same controls that institutional desks enforce automatically. The difference is that x-trade.ai is built specifically for prop firm traders \u2014 with drawdown rules, daily loss limits, and consistency requirements baked into every decision.',
+'h2ecosystem': 'Go Further: News Trading Mastery',
+'ecoP1': 'Knowing the rules is step one. Building a profitable news trading strategy is step two. Our ecosystem provides the tools and education to master both.',
+'eco1': '<strong>Courses & Training:</strong> Master news trading with our courses on <a href="https://basstrading.fr" target="_blank" rel="noopener">basstrading.fr</a> \u2014 from reading the economic calendar to building post-news entry models for MNQ and MES futures.',
+'eco2': '<strong>AI & Community:</strong> The AI on <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a> analyses the impact of news on gamma and options levels \u2014 providing real-time key levels that shift after each major release.',
+'officialLinks': 'Verify current news trading rules on each firm\'s official site: <a href="https://www.topstep.com" target="_blank" rel="noopener">Topstep</a> &middot; <a href="https://www.apextraderfunding.com" target="_blank" rel="noopener">Apex Trader Funding</a> &middot; <a href="https://www.bulenox.com" target="_blank" rel="noopener">Bulenox</a> &middot; <a href="https://www.tradeify.com" target="_blank" rel="noopener">Tradeify</a> &middot; <a href="https://www.takeprofittrader.com" target="_blank" rel="noopener">TakeProfitTrader</a>',
+'h2faq': 'Frequently Asked Questions',
+'faq1q': 'Can you trade news events in a prop firm?',
+'faq1a': 'Most prop firms allow news trading during evaluation and on funded accounts. Topstep, Apex, Bulenox, and Tradeify all permit it. The notable exception is TakeProfitTrader (TPT), which bans news trading on PRO (funded) accounts. However, just because it\'s allowed doesn\'t mean it\'s wise \u2014 FOMC, NFP, and CPI events can produce 100+ point MNQ moves with extreme slippage that destroys drawdown in seconds.',
+'faq2q': 'What is the safest way to trade FOMC in a prop firm?',
+'faq2a': 'The safest approach is to go completely flat 5 minutes before the FOMC announcement and stay flat for at least 5 minutes after. The initial spike is unpredictable and slippage is extreme. If you must trade, wait 15+ minutes for the post-news reaction when spreads normalise and price action becomes more readable. Never trade the initial spike with a prop firm account.',
+'faq3q': 'Which prop firms ban news trading?',
+'faq3a': 'Among the major futures prop firms in 2026, only TakeProfitTrader (TPT) explicitly bans news trading on funded (PRO) accounts. Topstep, Apex 4.0, Bulenox, and Tradeify all allow news trading on both evaluation and funded accounts. However, rules change frequently \u2014 always verify on each firm\'s official website before trading a major event.',
+'faq4q': 'How much can MNQ move during NFP or FOMC?',
+'faq4a': 'Tier 1 events like FOMC rate decisions, NFP, and CPI can produce 50 to 150+ point moves on MNQ (Micro Nasdaq futures) within seconds of the release. The initial spike often occurs in under 2 seconds. Slippage during these events can be 20\u201340 points beyond your stop-loss price, meaning a 20-point stop can fill at 45+ points of loss. This is why news events are the single biggest drawdown threat for prop firm traders.',
+'ctaTitle': 'Automate Your News Protection',
+'ctaText': 'x-trade.ai auto-flattens before FOMC, reduces size before NFP, and enforces post-news cooldowns \u2014 all tailored to your prop firm\'s exact drawdown rules. Set up in under 5 minutes.',
+'ctaBtn': 'Start Free Trial',
+'crossTitle': 'Related Articles',
+'cross1': 'Prop Firm Drawdown Rules Compared: Topstep vs Apex vs Bulenox (2026)',
+'cross2': 'Why 93% of Prop Firm Traders Never Get Paid \u2014 The 5 Risk Mistakes',
+'cross3': 'Revenge Trading: The #1 Prop Firm Account Killer (And How to Stop It)',
+'footBlog': 'Blog',
+'footTrial': 'Free Trial',
+'footCopy': '\u00a9 2026 x-trade.ai \u2014 All rights reserved.'
+},
+fr: {
+'navHome': 'Accueil',
+'navBlog': 'Blog',
+'navStart': 'Essai Gratuit',
+'breadcrumb': '<a href="/">Accueil</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; Trading de News en Prop Firm',
+'metaTag': 'News Trading',
+'metaDate': '30 mars 2026',
+'metaRead': '12 min de lecture',
+'title': 'Trading de News en Prop Firm : Guide FOMC, NFP et CPI (2026)',
+'takeawaysTitle': 'Points Cl\u00e9s',
+'tk1': 'La plupart des prop firms autorisent le news trading en \u00e9valuation et sur comptes funded \u2014 TPT est l\'exception majeure, l\'interdisant sur les comptes PRO.',
+'tk2': 'Les \u00e9v\u00e9nements FOMC, NFP et CPI peuvent produire des mouvements de 50-150+ points sur MNQ en quelques secondes \u2014 votre stop de 20 points n\'a aucun sens pendant ces publications.',
+'tk3': 'Le slippage lors des news Tier 1 peut doubler ou tripler votre risque pr\u00e9vu \u2014 un stop de 20 points est r\u00e9guli\u00e8rement ex\u00e9cut\u00e9 \u00e0 40-50 points de perte.',
+'tk4': 'L\'approche la plus s\u00fbre est de passer flat 5 minutes avant les \u00e9v\u00e9nements Tier 1 et de ne trader que la r\u00e9action post-news 15+ minutes apr\u00e8s la publication.',
+'answerTitle': 'Peut-on trader les news en prop firm ?',
+'answerP1': '<strong>Oui, la plupart des prop firms autorisent le news trading</strong> en \u00e9valuation comme sur comptes funded. Topstep, Apex, Bulenox et Tradeify le permettent tous. L\'exception notable est <strong>TakeProfitTrader (TPT)</strong>, qui interdit le news trading sur les comptes funded (PRO).',
+'answerP2': 'Mais la vraie question n\'est pas de savoir si vous <em>pouvez</em> \u2014 c\'est de savoir si vous <strong>devriez</strong>. Un seul trade FOMC qui tourne mal peut consommer 50% ou plus de votre drawdown en quelques secondes. Les r\u00e8gles le permettent. Votre drawdown n\'y survivra peut-\u00eatre pas.',
+'intro': '<strong>Les jours de FOMC peuvent produire des mouvements de 100+ points sur MNQ en quelques secondes.</strong> Votre stop ATR de 20 points n\'a aucun sens. Le spread triple, le carnet d\'ordres s\'\u00e9vapore, et votre stop-loss est ex\u00e9cut\u00e9 25 points au-del\u00e0 de votre prix pr\u00e9vu. Voici ce que chaque prop firm autorise, ce qu\'elle interdit, et comment survivre aux \u00e9v\u00e9nements news sans griller votre drawdown.',
+'intro2': 'Ce guide couvre les r\u00e8gles sp\u00e9cifiques de news trading pour chaque grande prop firm futures en 2026, un cadre pour cat\u00e9goriser les \u00e9v\u00e9nements news par niveau de risque, les m\u00e9canismes qui font que le news trading tue les comptes prop firm, et trois strat\u00e9gies s\u00fbres pour g\u00e9rer les publications \u00e9conomiques \u00e0 fort impact.',
+'lastUpdated': 'Derni\u00e8re mise \u00e0 jour : mars 2026',
+'h2table': 'Comparatif des R\u00e8gles de News Trading',
+'tableIntro': 'Voici un comparatif c\u00f4te \u00e0 c\u00f4te des r\u00e8gles de news trading des cinq prop firms futures les plus populaires. Portez une attention particuli\u00e8re \u00e0 la diff\u00e9rence entre les r\u00e8gles d\'\u00e9valuation et de compte funded \u2014 plusieurs firmes changent leurs politiques une fois que vous \u00eates en live.',
+'thRule': 'R\u00e8gle',
+'thTopstep': 'Topstep',
+'thApex': 'Apex 4.0',
+'thBulenox': 'Bulenox',
+'thTradeify': 'Tradeify',
+'thTPT': 'TPT',
+'rowNewsEval': '<strong>News Trading (\u00c9val)</strong>',
+'rowNewsFunded': '<strong>News Trading (Funded)</strong>',
+'rowBlackout': '<strong>P\u00e9riode de Blackout</strong>',
+'rowBanned': '<strong>\u00c9v\u00e9nements Interdits</strong>',
+'rowPenalty': '<strong>P\u00e9nalit\u00e9 en cas de Violation</strong>',
+'tableNote': '<strong>Comment lire ce tableau :</strong> Le vert signifie aucune restriction. Le rouge signifie interdiction explicite ou p\u00e9nalit\u00e9 s\u00e9v\u00e8re. Le tiret (\u2014) signifie que la firme n\'a pas de r\u00e8gle sp\u00e9cifique pour cette cat\u00e9gorie. V\u00e9rifiez toujours les r\u00e8gles actuelles sur le site officiel de chaque firme car les politiques changent fr\u00e9quemment.',
+'h2tiers': 'Les 3 Niveaux d\'\u00c9v\u00e9nements News',
+'tiersIntro': 'Tous les \u00e9v\u00e9nements news ne se valent pas. La cl\u00e9 pour survivre aux news en prop firm est de comprendre quels \u00e9v\u00e9nements sont r\u00e9ellement dangereux et lesquels sont g\u00e9rables. Voici un cadre bas\u00e9 sur l\'impact typique sur le prix du MNQ (Micro Nasdaq).',
+'tier1Title': 'Tier 1 : Tueurs de Comptes \u2014 FOMC, NFP, CPI',
+'tier1P1': '<strong>Mouvement MNQ attendu : 50\u2013150+ points en quelques secondes.</strong> Ces \u00e9v\u00e9nements produisent un slippage extr\u00eame, une liquidit\u00e9 \u00e9vapor\u00e9e et une action des prix violente dans les deux sens. Les d\u00e9cisions de taux FOMC (surtout avec une surprise), les Non-Farm Payrolls et les publications CPI sont les trois publications les plus dangereuses pour les comptes prop firm. Le spike initial se produit en moins de 2 secondes \u2014 aucun humain ne peut r\u00e9agir assez vite pour g\u00e9rer le risque en temps r\u00e9el.',
+'tier1P2': '<strong>Verdict :</strong> Seul le Tier 1 est r\u00e9ellement dangereux pour votre drawdown. Si vous \u00e9vitez uniquement ces trois \u00e9v\u00e9nements, vous \u00e9liminez 80% de votre risque de blowup li\u00e9 aux news.',
+'tier2Title': 'Tier 2 : Haute Volatilit\u00e9 \u2014 PPI, Ventes au D\u00e9tail, ISM',
+'tier2P1': '<strong>Mouvement MNQ attendu : 20\u201350 points.</strong> L\'indice des prix \u00e0 la production (PPI), les ventes au d\u00e9tail, l\'ISM manufacturier/services \u2014 ces \u00e9v\u00e9nements produisent des mouvements significatifs mais avec un slippage plus g\u00e9rable. Les spreads s\'\u00e9largissent mais le carnet d\'ordres ne s\'\u00e9vapore pas compl\u00e8tement. Les traders exp\u00e9riment\u00e9s peuvent g\u00e9rer le risque \u00e0 travers ces publications avec un sizing adapt\u00e9.',
+'tier2P2': '<strong>Verdict :</strong> Tradeable avec taille r\u00e9duite et stops plus larges, mais d\u00e9conseill\u00e9 pour les traders ayant moins de 50% de leur drawdown restant.',
+'tier3Title': 'Tier 3 : Faible Impact \u2014 Logement, Biens Durables, Inscriptions Ch\u00f4mage',
+'tier3P1': '<strong>Mouvement MNQ attendu : 5\u201320 points.</strong> Mises en chantier, commandes de biens durables, inscriptions hebdomadaires au ch\u00f4mage (sauf surprise majeure), confiance des consommateurs \u2014 ces \u00e9v\u00e9nements produisent des mouvements mineurs bien dans les fourchettes ATR normales. Le slippage est minimal et le carnet d\'ordres reste relativement intact.',
+'tier3P2': '<strong>Verdict :</strong> G\u00e9n\u00e9ralement s\u00fbr \u00e0 trader avec un sizing standard. Aucune pr\u00e9caution particuli\u00e8re n\u00e9cessaire sauf si le chiffre d\u00e9vie significativement du consensus.',
+'h2kills': 'Pourquoi le News Trading Tue les Comptes Prop Firm',
+'killsIntro': 'M\u00eame lorsque le news trading est autoris\u00e9, il y a quatre raisons m\u00e9caniques pour lesquelles il d\u00e9truit les comptes prop firm de mani\u00e8re disproportionn\u00e9e par rapport aux comptes personnels.',
+'kill1Title': '1. Le Slippage D\u00e9truit Votre Calcul de Risque',
+'kill1P1': 'Lors d\'un \u00e9v\u00e9nement Tier 1, votre stop-loss de 20 points n\'est pas ex\u00e9cut\u00e9 \u00e0 20 points. Il est ex\u00e9cut\u00e9 au prochain prix disponible \u2014 qui peut \u00eatre \u00e0 40, 50, voire 60 points. Sur un contrat MNQ, c\'est la diff\u00e9rence entre une perte de 40$ (pr\u00e9vue) et une perte de 100$+ (r\u00e9elle). <strong>Sur 3 contrats, un seul stop slipp\u00e9 peut vous co\u00fbter 300$+ au lieu de 120$</strong> \u2014 potentiellement 15% d\'un drawdown de 2\u202f000$ sur un seul trade.',
+'kill2Title': '2. La Volatilit\u00e9 Triple Votre Exposition Effective',
+'kill2P1': 'Votre taille de position est calibr\u00e9e pour des conditions de march\u00e9 normales \u2014 disons un ATR journalier de 150 points sur MNQ. Pendant le FOMC, l\'ATR peut tripler \u00e0 450+ points en une seule heure. Votre position "normale" de 2 contrats porte maintenant 3x le risque que vous avez calcul\u00e9. Sans sizing dynamique, <strong>vous tradez sans le savoir 3x votre risque pr\u00e9vu</strong>.',
+'kill3Title': '3. Un Mauvais Trade Consomme la Moiti\u00e9 de Votre Drawdown',
+'kill3P1': 'Sur un compte de 50K$ avec un drawdown de 2\u202f000$, un seul trade FOMC avec 3 contrats MNQ et 45 points de slippage vous co\u00fbte 270$. Ajoutez la perte r\u00e9elle si le trade va contre vous de 50 points suppl\u00e9mentaires : c\'est 570$ au total. <strong>Un seul trade, 28% de votre drawdown entier parti.</strong> Deux mauvais trades news dans le mois et votre compte est effectivement mort m\u00eame si tous vos autres trades sont profitables.',
+'kill4Title': '4. Le Trailing Tick-by-Tick Aggrave le Probl\u00e8me',
+'kill4P1': 'Si votre firme utilise un drawdown trailing tick-by-tick (comme Bulenox Option 1), le spike des news cr\u00e9e un danger unique : le mouvement initial en votre faveur rel\u00e8ve d\u00e9finitivement votre plancher de drawdown. Quand le prix se retourne \u2014 comme c\'est souvent le cas dans les minutes suivant le spike initial \u2014 vous \u00eates maintenant plus proche du breach m\u00eame si vous \u00e9tiez momentan\u00e9ment en profit. <strong>Le spike de P&L latent d\'un \u00e9v\u00e9nement news peut relever votre plancher de centaines de dollars en quelques secondes</strong>, ne vous laissant presque aucune marge pour le pullback in\u00e9vitable.',
+'h2safe': 'L\'Approche S\u00fbre : 3 Strat\u00e9gies pour les Jours de News',
+'safeIntro': 'Vous n\'avez pas \u00e0 \u00e9viter le march\u00e9 enti\u00e8rement les jours de news. Mais vous avez besoin d\'un protocole sp\u00e9cifique. Voici trois approches class\u00e9es de la plus s\u00fbre \u00e0 la plus agressive.',
+'safe1Title': 'Strat\u00e9gie 1 : Passer Flat (La Plus S\u00fbre)',
+'safe1P1': '<strong>Cl\u00f4turez toutes les positions 5 minutes avant tout \u00e9v\u00e9nement Tier 1. Ne reprenez pas de position pendant 5 minutes apr\u00e8s.</strong> C\'est l\'approche institutionnelle \u2014 la plupart des desks de trading professionnels passent flat ou r\u00e9duisent drastiquement l\'exposition avant le FOMC, le NFP et le CPI. Vous ne pouvez pas \u00eatre stopp\u00e9 sur une position que vous n\'avez pas. Votre drawdown est pr\u00e9serv\u00e9 avec z\u00e9ro risque.',
+'safe1P2': 'Cette strat\u00e9gie vous "co\u00fbte" le trade news occasionnel qui aurait \u00e9t\u00e9 profitable. Mais les math\u00e9matiques la favorisent massivement : vous renoncez \u00e0 une opportunit\u00e9 50/50 (le spike initial) pour pr\u00e9server 100% de votre drawdown pour les setups \u00e0 haute probabilit\u00e9 qui suivent.',
+'safe2Title': 'Strat\u00e9gie 2 : Taille Divis\u00e9e par 2 + Stops 2x Plus Larges',
+'safe2P1': '<strong>Si vous insistez pour rester en position pendant les news, divisez votre taille par deux et doublez la largeur de votre stop-loss.</strong> Cela maintient votre risque en dollars approximativement constant tout en accommodant les swings de prix plus larges et le slippage. Un lot MNQ avec un stop de 40 points a le m\u00eame risque en dollars que 2 lots avec un stop de 20 points \u2014 mais le stop de 40 points a bien plus de chances de survivre au spike initial sans \u00eatre slipp\u00e9.',
+'safe2P2': 'Cette approche n\'est viable que pour les \u00e9v\u00e9nements Tier 2. Pour le Tier 1, m\u00eame un stop de 40 points peut \u00eatre slipp\u00e9 \u00e0 70+ points lors des publications extr\u00eames. \u00c0 utiliser avec pr\u00e9caution.',
+'safe3Title': 'Strat\u00e9gie 3 : Trader la R\u00e9action Post-News (Recommand\u00e9e)',
+'safe3P1': '<strong>Attendez 15+ minutes apr\u00e8s la publication Tier 1, puis tradez la r\u00e9action.</strong> Le spike initial est du bruit \u2014 algos, chasse aux stops et vides de liquidit\u00e9. Le vrai mouvement se d\u00e9veloppe 15 \u00e0 45 minutes plus tard, quand les traders institutionnels dig\u00e8rent les donn\u00e9es et se positionnent en cons\u00e9quence. Les spreads se normalisent, le carnet d\'ordres se remplit, et l\'action des prix redevient lisible.',
+'safe3P2': 'C\'est le sweet spot pour les traders prop firm : vous obtenez la volatilit\u00e9 \u00e9lev\u00e9e (mouvements plus grands, plus d\'opportunit\u00e9s) sans le slippage extr\u00eame et l\'impr\u00e9visibilit\u00e9 de la publication initiale. Beaucoup des meilleurs trades MNQ de l\'ann\u00e9e se produisent dans les 30 minutes apr\u00e8s un \u00e9v\u00e9nement news majeur \u2014 pas pendant. Ma\u00eetrise cette approche avec nos <a href="https://basstrading.fr" target="_blank" rel="noopener">formations sur basstrading.fr</a>.',
+'h2xtrade': 'Comment x-trade.ai G\u00e8re les \u00c9v\u00e9nements News',
+'xtradeP1': 'La discipline manuelle \u00e9choue quand c\'est le plus important. Vous vous dites que vous passerez flat avant le FOMC, puis vous \u00eates dans un trade gagnant \u00e0 13h55 et vous vous convainquez de rester "juste pendant l\'annonce." Cinq secondes plus tard, votre drawdown est parti. C\'est pourquoi <a href="/onboarding?mode=trial">x-trade.ai</a> automatise la protection news.',
+'xtradeF1': '<strong>Calendrier \u00e9conomique int\u00e9gr\u00e9 :</strong> Identifie automatiquement tous les \u00e9v\u00e9nements Tier 1, Tier 2 et Tier 3 avec les heures de publication exactes synchronis\u00e9es avec votre session de trading.',
+'xtradeF2': '<strong>R\u00e9duction automatique de taille :</strong> R\u00e8gles configurables qui r\u00e9duisent automatiquement vos contrats max avant les \u00e9v\u00e9nements \u00e0 fort impact \u2014 aucune intervention manuelle requise.',
+'xtradeF3': '<strong>Auto-flatten optionnel :</strong> Configurez x-trade.ai pour cl\u00f4turer toutes les positions X minutes avant tout \u00e9v\u00e9nement Tier 1. Votre drawdown est prot\u00e9g\u00e9 m\u00eame si vous oubliez ou h\u00e9sitez.',
+'xtradeF4': '<strong>D\u00e9lai de r\u00e9-entr\u00e9e post-news :</strong> Cooldown configurable qui emp\u00eache la r\u00e9-entr\u00e9e pendant un nombre d\u00e9fini de minutes apr\u00e8s une publication majeure, garantissant que vous ne tradez que la r\u00e9action post-news.',
+'xtradeP2': 'Ce sont les m\u00eames contr\u00f4les que les desks institutionnels appliquent automatiquement. La diff\u00e9rence est que x-trade.ai est con\u00e7u sp\u00e9cifiquement pour les traders prop firm \u2014 avec les r\u00e8gles de drawdown, daily loss limits et exigences de consistency int\u00e9gr\u00e9es dans chaque d\u00e9cision.',
+'h2ecosystem': 'Aller Plus Loin : Ma\u00eetrise du News Trading',
+'ecoP1': 'Conna\u00eetre les r\u00e8gles est l\'\u00e9tape un. Construire une strat\u00e9gie de news trading profitable est l\'\u00e9tape deux. Notre \u00e9cosyst\u00e8me fournit les outils et la formation pour ma\u00eetriser les deux.',
+'eco1': '<strong>Formations & Cours :</strong> Ma\u00eetrise le trading de news avec nos formations sur <a href="https://basstrading.fr" target="_blank" rel="noopener">basstrading.fr</a> \u2014 de la lecture du calendrier \u00e9conomique \u00e0 la construction de mod\u00e8les d\'entr\u00e9e post-news pour les futures MNQ et MES.',
+'eco2': '<strong>IA & Communaut\u00e9 :</strong> L\'IA de <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a> analyse l\'impact des news sur les niveaux gamma et options \u2014 fournissant des niveaux cl\u00e9s en temps r\u00e9el qui changent apr\u00e8s chaque publication majeure.',
+'officialLinks': 'V\u00e9rifiez les r\u00e8gles actuelles de news trading sur le site officiel de chaque firme : <a href="https://www.topstep.com" target="_blank" rel="noopener">Topstep</a> &middot; <a href="https://www.apextraderfunding.com" target="_blank" rel="noopener">Apex Trader Funding</a> &middot; <a href="https://www.bulenox.com" target="_blank" rel="noopener">Bulenox</a> &middot; <a href="https://www.tradeify.com" target="_blank" rel="noopener">Tradeify</a> &middot; <a href="https://www.takeprofittrader.com" target="_blank" rel="noopener">TakeProfitTrader</a>',
+'h2faq': 'Questions Fr\u00e9quemment Pos\u00e9es',
+'faq1q': 'Peut-on trader les news en prop firm ?',
+'faq1a': 'La plupart des prop firms autorisent le news trading en \u00e9valuation et sur comptes funded. Topstep, Apex, Bulenox et Tradeify le permettent tous. L\'exception notable est TakeProfitTrader (TPT), qui interdit le news trading sur les comptes funded (PRO). Cependant, ce n\'est pas parce que c\'est autoris\u00e9 que c\'est judicieux \u2014 les \u00e9v\u00e9nements FOMC, NFP et CPI peuvent produire des mouvements de 100+ points sur MNQ avec un slippage extr\u00eame qui d\u00e9truit le drawdown en quelques secondes.',
+'faq2q': 'Quelle est la fa\u00e7on la plus s\u00fbre de trader le FOMC en prop firm ?',
+'faq2a': 'L\'approche la plus s\u00fbre est de passer compl\u00e8tement flat 5 minutes avant l\'annonce FOMC et de rester flat pendant au moins 5 minutes apr\u00e8s. Le spike initial est impr\u00e9visible et le slippage est extr\u00eame. Si vous devez trader, attendez 15+ minutes pour la r\u00e9action post-news quand les spreads se normalisent et l\'action des prix redevient lisible. Ne tradez jamais le spike initial avec un compte prop firm.',
+'faq3q': 'Quelles prop firms interdisent le news trading ?',
+'faq3a': 'Parmi les grandes prop firms futures en 2026, seul TakeProfitTrader (TPT) interdit explicitement le news trading sur les comptes funded (PRO). Topstep, Apex 4.0, Bulenox et Tradeify autorisent tous le news trading en \u00e9valuation et sur comptes funded. Cependant, les r\u00e8gles changent fr\u00e9quemment \u2014 v\u00e9rifiez toujours sur le site officiel de chaque firme avant de trader un \u00e9v\u00e9nement majeur.',
+'faq4q': 'De combien le MNQ peut-il bouger pendant le NFP ou le FOMC ?',
+'faq4a': 'Les \u00e9v\u00e9nements Tier 1 comme les d\u00e9cisions de taux FOMC, le NFP et le CPI peuvent produire des mouvements de 50 \u00e0 150+ points sur le MNQ (Micro Nasdaq futures) en quelques secondes apr\u00e8s la publication. Le spike initial se produit souvent en moins de 2 secondes. Le slippage lors de ces \u00e9v\u00e9nements peut d\u00e9passer de 20\u201340 points votre prix de stop-loss, ce qui signifie qu\'un stop de 20 points peut \u00eatre ex\u00e9cut\u00e9 \u00e0 45+ points de perte. C\'est pourquoi les \u00e9v\u00e9nements news sont la plus grande menace de drawdown pour les traders prop firm.',
+'ctaTitle': 'Automatisez Votre Protection News',
+'ctaText': 'x-trade.ai passe flat automatiquement avant le FOMC, r\u00e9duit la taille avant le NFP et applique des cooldowns post-news \u2014 le tout adapt\u00e9 aux r\u00e8gles exactes de drawdown de votre prop firm. Configuration en moins de 5 minutes.',
+'ctaBtn': 'Essai Gratuit',
+'crossTitle': 'Articles Connexes',
+'cross1': 'Comparatif des R\u00e8gles de Drawdown en Prop Firm : Topstep vs Apex vs Bulenox (2026)',
+'cross2': 'Pourquoi 93% des Traders Prop Firm Ne Sont Jamais Pay\u00e9s \u2014 Les 5 Erreurs de Risque',
+'cross3': 'Revenge Trading : Le Tueur N\u00b01 des Comptes Prop Firm (Et Comment l\'Arr\u00eater)',
+'footBlog': 'Blog',
+'footTrial': 'Essai Gratuit',
+'footCopy': '\u00a9 2026 x-trade.ai \u2014 Tous droits r\u00e9serv\u00e9s.'
+}
+};
+
+function applyLang() {
+  for (const [id, html] of Object.entries(TR[lang] || TR.en)) {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  }
+  document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+    el.textContent = el.getAttribute('data-' + lang);
+  });
+  document.getElementById('langBtn').textContent = lang === 'en' ? 'FR' : 'EN';
+}
+
+function toggleLang() {
+  lang = lang === 'en' ? 'fr' : 'en';
+  localStorage.setItem('xtrade_lang', lang);
+  applyLang();
+}
+
+document.addEventListener('DOMContentLoaded', applyLang);
+</script>
+
+</body>
+</html>

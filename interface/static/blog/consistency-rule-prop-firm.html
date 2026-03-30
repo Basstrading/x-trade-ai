@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consistency Rule Prop Firm Explained: The Silent Payout Killer | x-trade.ai</title>
+<meta name="description" content="The consistency rule blocks more prop firm payouts than drawdown violations. Learn how Topstep, Apex, Bulenox, Tradeify &amp; TPT calculate it, with real math examples and 5 strategies to stay compliant.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://x-trade.ai/blog/consistency-rule-prop-firm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Consistency Rule Prop Firm Explained: The Silent Payout Killer | x-trade.ai">
+<meta property="og:description" content="The consistency rule blocks more payouts than you think. Learn exactly how each prop firm calculates it and 5 strategies to never get caught.">
+<meta property="og:url" content="https://x-trade.ai/blog/consistency-rule-prop-firm">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Consistency Rule Prop Firm Explained: The Silent Payout Killer | x-trade.ai">
+<meta name="twitter:description" content="The consistency rule blocks more payouts than you think. Learn exactly how each prop firm calculates it and 5 strategies to never get caught.">
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Article",
+  "headline":"Prop Firm Consistency Rule Explained: The Silent Payout Killer (And How to Beat It)",
+  "author":{"@type":"Person","name":"Bass","jobTitle":"Founder, x-trade.ai"},
+  "datePublished":"2026-03-30",
+  "dateModified":"2026-03-30",
+  "publisher":{"@type":"Organization","name":"x-trade.ai","url":"https://x-trade.ai"},
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://x-trade.ai/blog/consistency-rule-prop-firm"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"What is the consistency rule in prop firm trading?","acceptedAnswer":{"@type":"Answer","text":"The consistency rule limits how much of your total cumulative profit can come from a single trading day. It is calculated as (Best Day Profit / Total Cumulative Profit) x 100. If the result exceeds the firm's limit (typically 35-50%), your payout request is blocked until you trade more days to dilute the ratio."}},
+    {"@type":"Question","name":"How is the prop firm consistency rule calculated?","acceptedAnswer":{"@type":"Answer","text":"The formula is: (Best Single Day Profit / Total Cumulative Profit) x 100. For example, if your best day made $1,500 and your total profit is $3,300, your consistency ratio is 45.5%. Each firm has a different threshold: Topstep 50%, Apex 50%, Bulenox 40%, Tradeify 35%, and TPT 50%."}},
+    {"@type":"Question","name":"What happens if I violate the consistency rule?","acceptedAnswer":{"@type":"Answer","text":"Violating the consistency rule does not blow your account or trigger an automatic breach. Instead, your payout request is blocked. You must continue trading additional days to earn more profit and dilute your best day's percentage below the firm's threshold. Only then can you successfully withdraw."}},
+    {"@type":"Question","name":"How do I fix a consistency rule violation?","acceptedAnswer":{"@type":"Answer","text":"Keep trading additional days with moderate, consistent profits. Each profitable day dilutes your best day's percentage of total profits. For example, if your best day is $1,500 out of $3,000 total (50%), adding five more days at $200 each brings the total to $4,000 and your ratio drops to 37.5%. Tools like x-trade.ai can monitor your ratio in real time and alert you before you exceed the limit."}}
+  ]
+}
+</script>
+<style>
+:root{--bg:#07090f;--bg2:#0f1420;--cyan:#06b6d4;--green:#22d97f;--red:#ef4444;--gold:#f59e0b;--text:#f0f4f8;--dim:#94a3b8;--border:rgba(255,255,255,0.06)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}
+code,pre,.mono{font-family:'JetBrains Mono',monospace}
+a{color:var(--cyan);text-decoration:none;transition:color .2s}
+a:hover{color:var(--green)}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(7,9,15,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-weight:800;font-size:1.15rem;color:var(--text);letter-spacing:-.5px}
+.nav-logo span{color:var(--cyan)}
+.nav-links{display:flex;align-items:center;gap:1.5rem}
+.nav-links a{color:var(--dim);font-size:.875rem;font-weight:500}
+.nav-links a:hover{color:var(--text)}
+.lang-btn{background:transparent;border:1px solid var(--cyan);color:var(--cyan);padding:4px 12px;border-radius:6px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
+.lang-btn:hover{background:var(--cyan);color:var(--bg)}
+
+/* ARTICLE */
+.article-wrap{max-width:760px;margin:0 auto;padding:3rem 1.5rem 4rem}
+.breadcrumb{font-size:.8rem;color:var(--dim);margin-bottom:2rem}
+.breadcrumb a{color:var(--dim)}
+.breadcrumb a:hover{color:var(--cyan)}
+.article-meta{display:flex;align-items:center;gap:.75rem;font-size:.8rem;color:var(--dim);margin-bottom:1.25rem;flex-wrap:wrap}
+.article-meta .tag{background:rgba(6,182,212,.1);color:var(--cyan);padding:2px 10px;border-radius:99px;font-weight:500}
+h1{font-size:2.25rem;font-weight:800;line-height:1.2;letter-spacing:-.5px;margin-bottom:1.5rem}
+h2{font-size:1.5rem;font-weight:700;margin:2.5rem 0 1rem;letter-spacing:-.3px;color:var(--text)}
+h3{font-size:1.15rem;font-weight:600;margin:1.75rem 0 .75rem;color:var(--green)}
+p{margin-bottom:1.25rem;color:var(--dim);font-size:1rem}
+strong{color:var(--text)}
+
+/* KEY TAKEAWAYS */
+.takeaways{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--cyan);border-radius:10px;padding:1.5rem 1.75rem;margin-bottom:2.5rem}
+.takeaways h3{color:var(--cyan);margin:0 0 .75rem;font-size:1rem}
+.takeaways ul{list-style:none;padding:0}
+.takeaways li{position:relative;padding-left:1.5rem;margin-bottom:.5rem;color:var(--dim);font-size:.95rem}
+.takeaways li::before{content:"\2713";position:absolute;left:0;color:var(--green);font-weight:700}
+
+/* ANSWER BOX */
+.answer-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:10px;padding:1.5rem 1.75rem;margin-bottom:2.5rem}
+.answer-box h3{color:var(--green);margin:0 0 .75rem;font-size:1rem}
+.answer-box p{margin-bottom:.5rem;font-size:.95rem}
+.answer-box p:last-child{margin-bottom:0}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;margin:1.5rem 0 2rem;border-radius:10px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:.82rem;min-width:700px}
+th{text-align:left;padding:10px 12px;background:var(--bg2);color:var(--cyan);font-size:.7rem;text-transform:uppercase;letter-spacing:.8px;border-bottom:2px solid var(--border);white-space:nowrap;position:sticky;top:0}
+td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--dim);white-space:nowrap}
+td strong{color:var(--text)}
+tr:hover td{background:rgba(6,182,212,.03)}
+.warn{color:var(--red);font-weight:600}
+.ok{color:var(--green)}
+.note{color:var(--gold);font-style:italic}
+th:first-child,td:first-child{position:sticky;left:0;background:var(--bg);z-index:2}
+tr:hover td:first-child{background:rgba(6,182,212,.03)}
+
+/* FORMULA */
+.formula-box{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;margin:1.25rem 0 1.5rem;text-align:center}
+.formula-box code{font-size:1.1rem;color:var(--cyan);font-weight:500}
+
+/* LISTS */
+.article-wrap ul,.article-wrap ol{margin:0 0 1.25rem 1.25rem;color:var(--dim)}
+.article-wrap li{margin-bottom:.4rem;font-size:1rem}
+
+/* FAQ */
+.faq-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1rem}
+.faq-q{font-weight:600;color:var(--text);margin-bottom:.5rem;font-size:1.05rem}
+.faq-a{color:var(--dim);font-size:.95rem}
+
+/* CTA */
+.cta-box{background:linear-gradient(135deg,rgba(6,182,212,.12),rgba(34,217,127,.08));border:1px solid rgba(6,182,212,.25);border-radius:14px;padding:2.5rem;text-align:center;margin:3rem 0 2rem}
+.cta-box h2{margin:0 0 .75rem;font-size:1.5rem}
+.cta-box p{color:var(--dim);margin-bottom:1.5rem}
+.cta-btn{display:inline-block;background:var(--cyan);color:var(--bg);padding:12px 32px;border-radius:8px;font-weight:700;font-size:1rem;transition:all .25s}
+.cta-btn:hover{background:var(--green);color:var(--bg);transform:translateY(-1px)}
+
+/* CROSS LINKS */
+.cross-links{border-top:1px solid var(--border);padding-top:2rem;margin-top:2rem}
+.cross-links h3{font-size:1rem;color:var(--dim);margin-bottom:1rem}
+.cross-link{display:block;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin-bottom:.75rem;color:var(--text);font-weight:500;transition:border-color .2s}
+.cross-link:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* TRAP BOX */
+.trap-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1.25rem}
+.trap-box h3{color:var(--red);margin:0 0 .5rem;font-size:1rem}
+.trap-box p{margin-bottom:.5rem;font-size:.95rem}
+.trap-box p:last-child{margin-bottom:0}
+
+/* MATH BOX */
+.math-box{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1.25rem}
+.math-box h3{color:var(--cyan);margin:0 0 .5rem;font-size:1rem}
+.math-box p{margin-bottom:.5rem;font-size:.95rem}
+.math-box p:last-child{margin-bottom:0}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;text-align:center;font-size:.8rem;color:var(--dim)}
+.footer a{color:var(--dim)}
+.footer a:hover{color:var(--cyan)}
+.footer-links{display:flex;justify-content:center;gap:1.5rem;margin-bottom:.75rem;flex-wrap:wrap}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+h1{font-size:1.6rem}
+h2{font-size:1.25rem}
+.article-wrap{padding:2rem 1rem 3rem}
+.nav{padding:0 1rem}
+.nav-links{gap:1rem}
+table{font-size:.72rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="/" class="nav-logo">x-trade<span>.ai</span></a>
+  <div class="nav-links">
+    <a href="/" id="navHome">Home</a>
+    <a href="/blog" id="navBlog">Blog</a>
+    <a href="/onboarding?mode=trial" id="navStart">Start Free</a>
+    <button class="lang-btn" id="langBtn" onclick="toggleLang()">FR</button>
+  </div>
+</nav>
+
+<!-- ARTICLE -->
+<main class="article-wrap">
+
+  <div class="breadcrumb" id="breadcrumb"><a href="/">Home</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; Consistency Rule Prop Firm</div>
+
+  <div class="article-meta">
+    <span class="tag" id="metaTag">Guide</span>
+    <span id="metaDate">March 30, 2026</span>
+    <span>&middot;</span>
+    <span id="metaRead">12 min read</span>
+  </div>
+
+  <h1 id="title">Prop Firm Consistency Rule Explained: The Silent Payout Killer (And How to Beat It)</h1>
+
+  <!-- KEY TAKEAWAYS -->
+  <div class="takeaways">
+    <h3 id="takeawaysTitle">Key Takeaways</h3>
+    <ul>
+      <li id="tk1">The consistency rule limits how much of your total profit can come from a single day &mdash; typically 35% to 50% depending on the firm.</li>
+      <li id="tk2">You can pass the profit target and still get your payout blocked if one trading day represents too large a share of your cumulative gains.</li>
+      <li id="tk3">Tradeify has the strictest consistency rule at 35%, while Topstep, Apex, and TPT allow up to 50% from a single day.</li>
+      <li id="tk4">The fix is simple: track your best-day ratio daily and keep trading additional days to dilute it if needed. x-trade.ai automates this tracking in real time.</li>
+    </ul>
+  </div>
+
+  <!-- ANSWER BOX -->
+  <div class="answer-box">
+    <h3 id="answerTitle">What Is the Consistency Rule?</h3>
+    <p id="answerText">The <strong>consistency rule</strong> in prop firm trading states that no single trading day can represent more than a certain percentage (typically 35&ndash;50%) of your total cumulative profit when you request a payout. It is calculated as: <strong>(Best Day Profit &divide; Total Cumulative Profit) &times; 100</strong>. If the result exceeds the firm's limit, your payout is blocked until you trade more days to bring the ratio down.</p>
+  </div>
+
+  <!-- INTRO -->
+  <p id="intro">You hit the profit target. You traded the minimum number of days. You respected the drawdown. You click "Request Payout" &mdash; and <strong>nothing happens</strong>. The firm tells you that you violated the consistency rule. Your best trading day represents too large a percentage of your total profits. Payout denied.</p>
+
+  <p id="intro2">This scenario happens to thousands of prop firm traders every month. The consistency rule is one of the least understood and most frequently violated rules in the prop firm industry. It doesn't blow your account &mdash; it does something arguably worse: it <strong>locks your profits hostage</strong> until you fix a ratio you didn't even know you were breaking.</p>
+
+  <p id="intro3">This guide explains exactly what the consistency rule is, how each major firm calculates it, why traders violate it without knowing, and five concrete strategies to stay compliant from day one.</p>
+
+  <p id="lastUpdated" style="font-size:.85rem;color:var(--gold);font-weight:500;">Last updated: March 2026</p>
+
+  <!-- WHAT IS THE CONSISTENCY RULE -->
+  <h2 id="h2what">What Is the Consistency Rule?</h2>
+
+  <p id="whatP1">The consistency rule is a payout qualification requirement used by nearly every major futures prop firm. It prevents traders from passing evaluations or requesting payouts based on one or two outlier trading days. The logic from the firm's perspective is simple: they want to fund traders who demonstrate <strong>repeatable, consistent performance</strong>, not traders who got lucky once on a FOMC release.</p>
+
+  <p id="whatP2">The rule is expressed as a percentage. A 50% consistency rule means that no single trading day can account for more than 50% of your total cumulative profit at the time you request a payout. A 40% rule is stricter. A 35% rule is the strictest among major firms.</p>
+
+  <p id="whatP3">The formula is straightforward:</p>
+
+  <div class="formula-box">
+    <code id="formula">(Best Day Profit / Total Cumulative Profit) &times; 100 &le; Limit%</code>
+  </div>
+
+  <p id="whatP4">If your best day made $1,500 and your total cumulative profit is $3,300, your consistency ratio is <strong>$1,500 / $3,300 = 45.5%</strong>. With a 50% rule, you pass. With a 40% rule, you are blocked.</p>
+
+  <p id="whatP5">The critical point that most traders miss: the consistency rule is <strong>not checked during the evaluation</strong> at most firms. It is checked <strong>at payout time</strong>. This means you can complete an entire evaluation without ever tracking this metric, only to discover at the finish line that your profits are too concentrated in one day.</p>
+
+  <!-- COMPARISON TABLE -->
+  <h2 id="h2compare">Consistency Rules by Firm: The Complete Comparison</h2>
+
+  <p id="compareIntro">Each prop firm applies the consistency rule differently. Some check it during evaluation, others only at payout. The percentage limits vary, and the consequences of violation range from a simple payout delay to forced additional trading days. Here is the full breakdown for $50K accounts in 2026.</p>
+
+  <div class="table-wrap">
+    <table id="compTable">
+      <thead>
+        <tr>
+          <th id="thFirm">Firm</th>
+          <th id="thLimit">Limit %</th>
+          <th id="thWhen">When Checked</th>
+          <th id="thPenalty">Penalty for Violation</th>
+          <th id="thNotes">Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Topstep</strong></td>
+          <td id="tdTopLimit">50%</td>
+          <td id="tdTopWhen">Payout request</td>
+          <td id="tdTopPenalty">Payout blocked until ratio drops below 50%</td>
+          <td id="tdTopNotes">Most lenient. Keep trading to dilute.</td>
+        </tr>
+        <tr>
+          <td><strong>Apex 4.0</strong></td>
+          <td id="tdApexLimit">50%</td>
+          <td id="tdApexWhen">Payout request</td>
+          <td id="tdApexPenalty">Payout blocked until ratio drops below 50%</td>
+          <td id="tdApexNotes">5-day min also required for payout.</td>
+        </tr>
+        <tr>
+          <td><strong>Bulenox</strong></td>
+          <td id="tdBulLimit" class="note">40%</td>
+          <td id="tdBulWhen">Payout request</td>
+          <td id="tdBulPenalty">Payout blocked until ratio drops below 40%</td>
+          <td id="tdBulNotes">Stricter. 10-day min for payout.</td>
+        </tr>
+        <tr>
+          <td><strong>Tradeify</strong></td>
+          <td id="tdTradeifyLimit" class="warn">35%</td>
+          <td id="tdTradeifyWhen">Funded account (payout)</td>
+          <td id="tdTradeifyPenalty">Payout blocked until ratio drops below 35%</td>
+          <td id="tdTradeifyNotes">Strictest rule. Requires most even distribution.</td>
+        </tr>
+        <tr>
+          <td><strong>TPT</strong></td>
+          <td id="tdTPTLimit">50%</td>
+          <td id="tdTPTWhen">Evaluation phase</td>
+          <td id="tdTPTPenalty" class="warn">Must continue evaluation until compliant</td>
+          <td id="tdTPTNotes">Checked during eval, not just payout.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p id="tableNote"><strong>Key insight:</strong> Topstep and Apex at 50% are the most forgiving &mdash; you essentially just need two decent days to stay compliant. Tradeify at 35% is the strictest, requiring genuinely distributed profits across multiple sessions. Bulenox at 40% falls in the middle. TPT is unique in checking consistency during the evaluation itself, not just at payout.</p>
+
+  <!-- REAL MATH EXAMPLE -->
+  <h2 id="h2math">Real Math Example: When the Consistency Rule Blocks Your Payout</h2>
+
+  <p id="mathIntro">Let's use a concrete scenario. A trader on a $50K account trades for 10 days. They earn $200 per day for 9 days, then have one exceptional day where they catch a clean NQ breakout for $1,500.</p>
+
+  <p id="mathSetup"><strong>Total profit:</strong> (9 &times; $200) + $1,500 = $1,800 + $1,500 = <strong>$3,300</strong><br><strong>Best single day:</strong> $1,500<br><strong>Consistency ratio:</strong> $1,500 / $3,300 = <strong>45.5%</strong></p>
+
+  <div class="math-box">
+    <h3 id="mathTopstep">Topstep (50% limit)</h3>
+    <p id="mathTopstepP1">45.5% &lt; 50% &mdash; <span class="ok"><strong>PASS.</strong></span> Payout approved. The trader has room to spare.</p>
+  </div>
+
+  <div class="math-box">
+    <h3 id="mathApex">Apex 4.0 (50% limit)</h3>
+    <p id="mathApexP1">45.5% &lt; 50% &mdash; <span class="ok"><strong>PASS.</strong></span> Same as Topstep. Payout approved if 5-day minimum is met.</p>
+  </div>
+
+  <div class="math-box">
+    <h3 id="mathBulenox">Bulenox (40% limit)</h3>
+    <p id="mathBulenoxP1">45.5% &gt; 40% &mdash; <span class="warn"><strong>BLOCKED.</strong></span> The trader must keep trading. If they add 3 more days at $200 each, total becomes $3,900 and the ratio drops to $1,500 / $3,900 = 38.5%. Now it passes.</p>
+  </div>
+
+  <div class="math-box">
+    <h3 id="mathTradeify">Tradeify (35% limit)</h3>
+    <p id="mathTradeifyP1">45.5% &gt; 35% &mdash; <span class="warn"><strong>BLOCKED.</strong></span> This is much harder to fix. The trader needs to bring total profit to at least $1,500 / 0.35 = $4,286. That means earning another $986 across additional days &mdash; roughly 5 more days at $200 each. That's 15 total trading days just to unlock the payout.</p>
+  </div>
+
+  <div class="math-box">
+    <h3 id="mathTPT">TPT (50% limit, checked during eval)</h3>
+    <p id="mathTPTP1">45.5% &lt; 50% &mdash; <span class="ok"><strong>PASS.</strong></span> But since TPT checks during evaluation, the trader would have been monitored from the start. If the $1,500 day had been $2,000, the ratio would be 52.6% and the evaluation itself would not be considered passed until diluted.</p>
+  </div>
+
+  <p id="mathLesson"><strong>The takeaway:</strong> The same trading performance passes at some firms and gets blocked at others. Knowing your firm's specific limit <em>before</em> you start trading is not optional &mdash; it is essential.</p>
+
+  <!-- WHY TRADERS VIOLATE IT -->
+  <h2 id="h2why">Why Traders Violate the Consistency Rule Without Knowing</h2>
+
+  <p id="whyIntro">Most consistency rule violations are not deliberate. They happen because traders don't track the metric in real time. Here are the three most common patterns that trigger violations.</p>
+
+  <div class="trap-box">
+    <h3 id="trap1Title">The One Great FOMC Day</h3>
+    <p id="trap1P1">You've been grinding $150-300/day for a week. Then the Fed announces an unexpected rate decision and you catch a 200-point NQ move for $2,500 in a single session. Your total profit jumps from $1,800 to $4,300 &mdash; well above the target. But that one day now represents 58% of your total profit. At every single firm on this list, your payout is blocked.</p>
+    <p id="trap1P2">The irony: your best trading day becomes the reason you can't get paid.</p>
+  </div>
+
+  <div class="trap-box">
+    <h3 id="trap2Title">Sandbagging Early, Then Sprinting</h3>
+    <p id="trap2P1">Some traders start conservatively with tiny positions, making $50-100/day for the first week while they "feel out" the account. Then they increase size and start making $500-800/day. Even without one huge outlier day, the back-loaded profit distribution can push the best day's ratio above the limit &mdash; especially with Tradeify's 35% rule.</p>
+  </div>
+
+  <div class="trap-box">
+    <h3 id="trap3Title">The Weekend Gap Trade That Hits Big</h3>
+    <p id="trap3P1">On firms that allow overnight holding (Bulenox), a weekend gap trade can produce an outsized gain on Sunday night when futures reopen. A $1,200 gap fill profit on a single position can easily push your consistency ratio over the limit if your other days have been modest. And since it happens outside regular session hours, many traders don't even register it as a "big day" until they check the numbers.</p>
+  </div>
+
+  <!-- 5 STRATEGIES -->
+  <h2 id="h2strategies">5 Strategies to Stay Consistency-Compliant</h2>
+
+  <p id="stratIntro">Staying compliant with the consistency rule is not difficult once you understand the mechanics. These five strategies will keep you on the right side of the limit from day one.</p>
+
+  <h3 id="strat1Title">1. Cap Your Daily Gains at 30% of the Profit Target</h3>
+  <p id="strat1P1">For a $3,000 profit target, cap your daily gains at $900. This is a hard stop &mdash; once you hit $900 in a session, stop trading. This ensures that even if all your other days are zero, one day can never exceed 30% of the target. In practice, with multiple profitable days, your ratio will stay well below any firm's consistency limit.</p>
+  <p id="strat1P2">This doesn't mean you can't have days above $900 &mdash; it means you should <strong>plan for it</strong>. If you do exceed the cap, immediately adjust your strategy for the next sessions to ensure you're distributing profits. Need help identifying the best setups to maintain consistent daily performance? The AI on <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a> analyses the market and highlights high-probability entries across multiple sessions. Learn the strategies behind consistent daily returns with our <a href="https://basstrading.fr" target="_blank" rel="noopener">formations on basstrading.fr</a>.</p>
+
+  <h3 id="strat2Title">2. Spread Risk Evenly Across Sessions</h3>
+  <p id="strat2P1">Don't load up on Monday and then sit out the rest of the week. Trade the same position sizes and the same number of setups every session. If your average is 3 trades per day at 2 contracts, stick to that. Consistency in execution naturally produces consistency in P&L distribution.</p>
+  <p id="strat2P2">This is where disciplined strategy matters more than talent. The AI on <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a> analyses your trading patterns and helps you maintain consistent daily performance. Learn prop-firm-compatible trading strategies with our <a href="https://basstrading.fr" target="_blank" rel="noopener">formations on basstrading.fr</a>.</p>
+
+  <h3 id="strat3Title">3. Track the Ratio Daily</h3>
+  <p id="strat3P1">At the end of every trading session, calculate your consistency ratio: best day / total cumulative profit. Write it down. If it's climbing toward the limit, reduce your size on the next session or take a day off to let future sessions dilute it. The traders who get blocked are the ones who never check until payout time.</p>
+
+  <h3 id="strat4Title">4. If You Have a Big Day, Keep Trading More Days to Dilute</h3>
+  <p id="strat4P1">A big day is not a disaster &mdash; it's a math problem. If your best day is $1,500 and you need it below 40% of total profit, you need at least $3,750 total. That means earning $2,250 across other days. At $200/day, that's roughly 11 more trading days. Plan for it. Don't request payout until the ratio is clearly below the limit.</p>
+  <p id="strat4P2">The worst mistake is requesting payout the day you hit the profit target without checking the ratio. Always calculate first.</p>
+
+  <h3 id="strat5Title">5. Use x-trade.ai's Consistency Guard</h3>
+  <p id="strat5P1">Manual tracking works, but it depends on you remembering to do it every day. <a href="/onboarding?mode=trial">x-trade.ai</a>'s <strong>consistency guard</strong> feature monitors your best-day ratio in real time, automatically. It calculates the ratio after every closed trade and alerts you when you're approaching the limit. If you're at 42% on a Bulenox account with a 40% limit, the system warns you before you take the next trade &mdash; not after.</p>
+  <p id="strat5P2">The consistency guard also projects how many additional trading days you need at your current average daily profit to bring the ratio into compliance. This turns a vague "trade more days" instruction into a concrete plan: "Trade 4 more days at $180+ to unlock payout."</p>
+
+  <!-- AUTOMATION SECTION -->
+  <h2 id="h2auto">How x-trade.ai Automates Consistency Compliance</h2>
+
+  <p id="autoP1">The consistency rule is a purely mathematical problem, which makes it ideal for automation. x-trade.ai's consistency guard integrates directly with your prop firm account and monitors three things in real time:</p>
+
+  <ul>
+    <li id="autoLi1"><strong>Current consistency ratio:</strong> Your best day's profit as a percentage of cumulative profit, updated after every trade.</li>
+    <li id="autoLi2"><strong>Projected ratio at payout:</strong> Based on your average daily P&L, the system forecasts whether you'll be compliant by the time you reach the profit target.</li>
+    <li id="autoLi3"><strong>Days remaining:</strong> The exact number of additional trading days needed at your current pace to bring the ratio below the firm's limit.</li>
+    <li id="autoLi4"><strong>Real-time alerts:</strong> Push notifications when your ratio crosses 80% of the firm's limit, giving you time to adjust before it's too late.</li>
+  </ul>
+
+  <p id="autoP2">The system is pre-configured with the consistency rules for Topstep, Apex, Bulenox, Tradeify, and TPT. You select your firm and account size during setup, and the guard applies the correct limit automatically.</p>
+
+  <p id="autoP3">Besoin d'aide pour identifier les meilleurs setups pendant que x-trade.ai g&egrave;re votre conformit&eacute; ? L'IA de <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a> analyse le march&eacute; et vous fournit des signaux de trading adapt&eacute;s aux r&egrave;gles de consistance. Apprenez les strat&eacute;gies de trading compatibles avec les r&egrave;gles de consistance gr&acirc;ce aux <a href="https://basstrading.fr" target="_blank" rel="noopener">formations sur basstrading.fr</a>.</p>
+
+  <!-- FAQ -->
+  <h2 id="h2faq">Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq1q">What is the consistency rule in prop firm trading?</div>
+    <div class="faq-a" id="faq1a">The consistency rule limits how much of your total cumulative profit can come from a single trading day. It is calculated as (Best Day Profit / Total Cumulative Profit) &times; 100. If the result exceeds the firm's limit (typically 35&ndash;50%), your payout request is blocked until you trade more days to dilute the ratio. The rule exists to ensure that traders demonstrate repeatable performance, not one-off lucky trades.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq2q">How is the prop firm consistency rule calculated?</div>
+    <div class="faq-a" id="faq2a">The formula is: (Best Single Day Profit / Total Cumulative Profit) &times; 100. For example, if your best day made $1,500 and your total profit is $3,300, your consistency ratio is 45.5%. Each firm has a different threshold: Topstep 50%, Apex 50%, Bulenox 40%, Tradeify 35%, and TPT 50%. The ratio is checked at payout time (or during evaluation for TPT).</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq3q">What happens if I violate the consistency rule?</div>
+    <div class="faq-a" id="faq3a">Violating the consistency rule does <strong>not</strong> blow your account or trigger an automatic breach. Instead, your payout request is blocked. You must continue trading additional days to earn more profit and dilute your best day's percentage below the firm's threshold. Only then can you successfully withdraw. Think of it as a payout lock, not an account termination. However, the additional trading days required expose you to drawdown risk.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq4q">How do I fix a consistency rule violation?</div>
+    <div class="faq-a" id="faq4a">Keep trading additional days with moderate, consistent profits. Each profitable day dilutes your best day's percentage of total profits. For example, if your best day is $1,500 out of $3,000 total (50%), adding five more days at $200 each brings the total to $4,000 and your ratio drops to 37.5%. Use x-trade.ai's consistency guard to see exactly how many more days you need. The key is to avoid having another outsized day while you're diluting &mdash; trade smaller if needed.</div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-box">
+    <h2 id="ctaTitle">Stop Guessing Your Consistency Ratio</h2>
+    <p id="ctaText">x-trade.ai monitors your best-day ratio in real time, alerts you before you exceed the limit, and tells you exactly how many days you need to unlock your payout. Works with Topstep, Apex, Bulenox, Tradeify, and TPT.</p>
+    <a href="/onboarding?mode=trial" class="cta-btn" id="ctaBtn">Start Free Trial</a>
+  </div>
+
+  <!-- CROSS LINKS -->
+  <div class="cross-links">
+    <h3 id="crossTitle">Related Articles</h3>
+    <a href="/blog/prop-firm-drawdown-rules-compared" class="cross-link" id="cross1">Prop Firm Drawdown Rules Compared: Topstep vs Apex vs Bulenox (2026)</a>
+    <a href="/blog/why-prop-firm-traders-fail" class="cross-link" id="cross2">Why 93% of Prop Firm Traders Never Get Paid &mdash; The 5 Risk Mistakes</a>
+    <a href="/blog/revenge-trading-prop-firm" class="cross-link" id="cross3">Revenge Trading: The #1 Prop Firm Account Killer (And How to Stop It)</a>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="/blog" id="footBlog">Blog</a>
+    <a href="/onboarding?mode=trial" id="footTrial">Free Trial</a>
+    <a href="https://basstrading.fr" target="_blank" rel="noopener">basstrading.fr - Formations</a>
+    <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr - IA &amp; Communaut&eacute;</a>
+  </div>
+  <span id="footCopy">&copy; 2026 x-trade.ai &mdash; All rights reserved.</span>
+</footer>
+
+<script>
+let lang = localStorage.getItem('xtrade_lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en');
+
+const TR = {
+en: {
+'navHome': 'Home',
+'navBlog': 'Blog',
+'navStart': 'Start Free',
+'breadcrumb': '<a href="/">Home</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; Consistency Rule Prop Firm',
+'metaTag': 'Guide',
+'metaDate': 'March 30, 2026',
+'metaRead': '12 min read',
+'title': 'Prop Firm Consistency Rule Explained: The Silent Payout Killer (And How to Beat It)',
+'takeawaysTitle': 'Key Takeaways',
+'tk1': 'The consistency rule limits how much of your total profit can come from a single day \u2014 typically 35% to 50% depending on the firm.',
+'tk2': 'You can pass the profit target and still get your payout blocked if one trading day represents too large a share of your cumulative gains.',
+'tk3': 'Tradeify has the strictest consistency rule at 35%, while Topstep, Apex, and TPT allow up to 50% from a single day.',
+'tk4': 'The fix is simple: track your best-day ratio daily and keep trading additional days to dilute it if needed. x-trade.ai automates this tracking in real time.',
+'answerTitle': 'What Is the Consistency Rule?',
+'answerText': 'The <strong>consistency rule</strong> in prop firm trading states that no single trading day can represent more than a certain percentage (typically 35\u201350%) of your total cumulative profit when you request a payout. It is calculated as: <strong>(Best Day Profit \u00f7 Total Cumulative Profit) \u00d7 100</strong>. If the result exceeds the firm\'s limit, your payout is blocked until you trade more days to bring the ratio down.',
+'intro': 'You hit the profit target. You traded the minimum number of days. You respected the drawdown. You click "Request Payout" \u2014 and <strong>nothing happens</strong>. The firm tells you that you violated the consistency rule. Your best trading day represents too large a percentage of your total profits. Payout denied.',
+'intro2': 'This scenario happens to thousands of prop firm traders every month. The consistency rule is one of the least understood and most frequently violated rules in the prop firm industry. It doesn\'t blow your account \u2014 it does something arguably worse: it <strong>locks your profits hostage</strong> until you fix a ratio you didn\'t even know you were breaking.',
+'intro3': 'This guide explains exactly what the consistency rule is, how each major firm calculates it, why traders violate it without knowing, and five concrete strategies to stay compliant from day one.',
+'lastUpdated': 'Last updated: March 2026',
+'h2what': 'What Is the Consistency Rule?',
+'whatP1': 'The consistency rule is a payout qualification requirement used by nearly every major futures prop firm. It prevents traders from passing evaluations or requesting payouts based on one or two outlier trading days. The logic from the firm\'s perspective is simple: they want to fund traders who demonstrate <strong>repeatable, consistent performance</strong>, not traders who got lucky once on a FOMC release.',
+'whatP2': 'The rule is expressed as a percentage. A 50% consistency rule means that no single trading day can account for more than 50% of your total cumulative profit at the time you request a payout. A 40% rule is stricter. A 35% rule is the strictest among major firms.',
+'whatP3': 'The formula is straightforward:',
+'formula': '(Best Day Profit / Total Cumulative Profit) \u00d7 100 \u2264 Limit%',
+'whatP4': 'If your best day made $1,500 and your total cumulative profit is $3,300, your consistency ratio is <strong>$1,500 / $3,300 = 45.5%</strong>. With a 50% rule, you pass. With a 40% rule, you are blocked.',
+'whatP5': 'The critical point that most traders miss: the consistency rule is <strong>not checked during the evaluation</strong> at most firms. It is checked <strong>at payout time</strong>. This means you can complete an entire evaluation without ever tracking this metric, only to discover at the finish line that your profits are too concentrated in one day.',
+'h2compare': 'Consistency Rules by Firm: The Complete Comparison',
+'compareIntro': 'Each prop firm applies the consistency rule differently. Some check it during evaluation, others only at payout. The percentage limits vary, and the consequences of violation range from a simple payout delay to forced additional trading days. Here is the full breakdown for $50K accounts in 2026.',
+'thFirm': 'Firm',
+'thLimit': 'Limit %',
+'thWhen': 'When Checked',
+'thPenalty': 'Penalty for Violation',
+'thNotes': 'Notes',
+'tdTopLimit': '50%',
+'tdTopWhen': 'Payout request',
+'tdTopPenalty': 'Payout blocked until ratio drops below 50%',
+'tdTopNotes': 'Most lenient. Keep trading to dilute.',
+'tdApexLimit': '50%',
+'tdApexWhen': 'Payout request',
+'tdApexPenalty': 'Payout blocked until ratio drops below 50%',
+'tdApexNotes': '5-day min also required for payout.',
+'tdBulLimit': '40%',
+'tdBulWhen': 'Payout request',
+'tdBulPenalty': 'Payout blocked until ratio drops below 40%',
+'tdBulNotes': 'Stricter. 10-day min for payout.',
+'tdTradeifyLimit': '35%',
+'tdTradeifyWhen': 'Funded account (payout)',
+'tdTradeifyPenalty': 'Payout blocked until ratio drops below 35%',
+'tdTradeifyNotes': 'Strictest rule. Requires most even distribution.',
+'tdTPTLimit': '50%',
+'tdTPTWhen': 'Evaluation phase',
+'tdTPTPenalty': 'Must continue evaluation until compliant',
+'tdTPTNotes': 'Checked during eval, not just payout.',
+'tableNote': '<strong>Key insight:</strong> Topstep and Apex at 50% are the most forgiving \u2014 you essentially just need two decent days to stay compliant. Tradeify at 35% is the strictest, requiring genuinely distributed profits across multiple sessions. Bulenox at 40% falls in the middle. TPT is unique in checking consistency during the evaluation itself, not just at payout.',
+'h2math': 'Real Math Example: When the Consistency Rule Blocks Your Payout',
+'mathIntro': 'Let\'s use a concrete scenario. A trader on a $50K account trades for 10 days. They earn $200 per day for 9 days, then have one exceptional day where they catch a clean NQ breakout for $1,500.',
+'mathSetup': '<strong>Total profit:</strong> (9 \u00d7 $200) + $1,500 = $1,800 + $1,500 = <strong>$3,300</strong><br><strong>Best single day:</strong> $1,500<br><strong>Consistency ratio:</strong> $1,500 / $3,300 = <strong>45.5%</strong>',
+'mathTopstep': 'Topstep (50% limit)',
+'mathTopstepP1': '45.5% < 50% \u2014 <span class="ok"><strong>PASS.</strong></span> Payout approved. The trader has room to spare.',
+'mathApex': 'Apex 4.0 (50% limit)',
+'mathApexP1': '45.5% < 50% \u2014 <span class="ok"><strong>PASS.</strong></span> Same as Topstep. Payout approved if 5-day minimum is met.',
+'mathBulenox': 'Bulenox (40% limit)',
+'mathBulenoxP1': '45.5% > 40% \u2014 <span class="warn"><strong>BLOCKED.</strong></span> The trader must keep trading. If they add 3 more days at $200 each, total becomes $3,900 and the ratio drops to $1,500 / $3,900 = 38.5%. Now it passes.',
+'mathTradeify': 'Tradeify (35% limit)',
+'mathTradeifyP1': '45.5% > 35% \u2014 <span class="warn"><strong>BLOCKED.</strong></span> This is much harder to fix. The trader needs to bring total profit to at least $1,500 / 0.35 = $4,286. That means earning another $986 across additional days \u2014 roughly 5 more days at $200 each. That\'s 15 total trading days just to unlock the payout.',
+'mathTPT': 'TPT (50% limit, checked during eval)',
+'mathTPTP1': '45.5% < 50% \u2014 <span class="ok"><strong>PASS.</strong></span> But since TPT checks during evaluation, the trader would have been monitored from the start. If the $1,500 day had been $2,000, the ratio would be 52.6% and the evaluation itself would not be considered passed until diluted.',
+'mathLesson': '<strong>The takeaway:</strong> The same trading performance passes at some firms and gets blocked at others. Knowing your firm\'s specific limit <em>before</em> you start trading is not optional \u2014 it is essential.',
+'h2why': 'Why Traders Violate the Consistency Rule Without Knowing',
+'whyIntro': 'Most consistency rule violations are not deliberate. They happen because traders don\'t track the metric in real time. Here are the three most common patterns that trigger violations.',
+'trap1Title': 'The One Great FOMC Day',
+'trap1P1': 'You\'ve been grinding $150-300/day for a week. Then the Fed announces an unexpected rate decision and you catch a 200-point NQ move for $2,500 in a single session. Your total profit jumps from $1,800 to $4,300 \u2014 well above the target. But that one day now represents 58% of your total profit. At every single firm on this list, your payout is blocked.',
+'trap1P2': 'The irony: your best trading day becomes the reason you can\'t get paid.',
+'trap2Title': 'Sandbagging Early, Then Sprinting',
+'trap2P1': 'Some traders start conservatively with tiny positions, making $50-100/day for the first week while they "feel out" the account. Then they increase size and start making $500-800/day. Even without one huge outlier day, the back-loaded profit distribution can push the best day\'s ratio above the limit \u2014 especially with Tradeify\'s 35% rule.',
+'trap3Title': 'The Weekend Gap Trade That Hits Big',
+'trap3P1': 'On firms that allow overnight holding (Bulenox), a weekend gap trade can produce an outsized gain on Sunday night when futures reopen. A $1,200 gap fill profit on a single position can easily push your consistency ratio over the limit if your other days have been modest. And since it happens outside regular session hours, many traders don\'t even register it as a "big day" until they check the numbers.',
+'h2strategies': '5 Strategies to Stay Consistency-Compliant',
+'stratIntro': 'Staying compliant with the consistency rule is not difficult once you understand the mechanics. These five strategies will keep you on the right side of the limit from day one.',
+'strat1Title': '1. Cap Your Daily Gains at 30% of the Profit Target',
+'strat1P1': 'For a $3,000 profit target, cap your daily gains at $900. This is a hard stop \u2014 once you hit $900 in a session, stop trading. This ensures that even if all your other days are zero, one day can never exceed 30% of the target. In practice, with multiple profitable days, your ratio will stay well below any firm\'s consistency limit.',
+'strat1P2': 'This doesn\'t mean you can\'t have days above $900 \u2014 it means you should <strong>plan for it</strong>. If you do exceed the cap, immediately adjust your strategy for the next sessions to ensure you\'re distributing profits. Need help identifying the best setups to maintain consistent daily performance? The AI on <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a> analyses the market and highlights high-probability entries across multiple sessions. Learn the strategies behind consistent daily returns with our <a href="https://basstrading.fr" target="_blank" rel="noopener">formations on basstrading.fr</a>.',
+'strat2Title': '2. Spread Risk Evenly Across Sessions',
+'strat2P1': 'Don\'t load up on Monday and then sit out the rest of the week. Trade the same position sizes and the same number of setups every session. If your average is 3 trades per day at 2 contracts, stick to that. Consistency in execution naturally produces consistency in P&L distribution.',
+'strat2P2': 'This is where disciplined strategy matters more than talent. The AI on <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a> analyses your trading patterns and helps you maintain consistent daily performance. Learn prop-firm-compatible trading strategies with our <a href="https://basstrading.fr" target="_blank" rel="noopener">formations on basstrading.fr</a>.',
+'strat3Title': '3. Track the Ratio Daily',
+'strat3P1': 'At the end of every trading session, calculate your consistency ratio: best day / total cumulative profit. Write it down. If it\'s climbing toward the limit, reduce your size on the next session or take a day off to let future sessions dilute it. The traders who get blocked are the ones who never check until payout time.',
+'strat4Title': '4. If You Have a Big Day, Keep Trading More Days to Dilute',
+'strat4P1': 'A big day is not a disaster \u2014 it\'s a math problem. If your best day is $1,500 and you need it below 40% of total profit, you need at least $3,750 total. That means earning $2,250 across other days. At $200/day, that\'s roughly 11 more trading days. Plan for it. Don\'t request payout until the ratio is clearly below the limit.',
+'strat4P2': 'The worst mistake is requesting payout the day you hit the profit target without checking the ratio. Always calculate first.',
+'strat5Title': '5. Use x-trade.ai\'s Consistency Guard',
+'strat5P1': '<a href="/onboarding?mode=trial">x-trade.ai</a>\'s <strong>consistency guard</strong> feature monitors your best-day ratio in real time, automatically. It calculates the ratio after every closed trade and alerts you when you\'re approaching the limit. If you\'re at 42% on a Bulenox account with a 40% limit, the system warns you before you take the next trade \u2014 not after.',
+'strat5P2': 'The consistency guard also projects how many additional trading days you need at your current average daily profit to bring the ratio into compliance. This turns a vague "trade more days" instruction into a concrete plan: "Trade 4 more days at $180+ to unlock payout."',
+'h2auto': 'How x-trade.ai Automates Consistency Compliance',
+'autoP1': 'The consistency rule is a purely mathematical problem, which makes it ideal for automation. x-trade.ai\'s consistency guard integrates directly with your prop firm account and monitors three things in real time:',
+'autoLi1': '<strong>Current consistency ratio:</strong> Your best day\'s profit as a percentage of cumulative profit, updated after every trade.',
+'autoLi2': '<strong>Projected ratio at payout:</strong> Based on your average daily P&L, the system forecasts whether you\'ll be compliant by the time you reach the profit target.',
+'autoLi3': '<strong>Days remaining:</strong> The exact number of additional trading days needed at your current pace to bring the ratio below the firm\'s limit.',
+'autoLi4': '<strong>Real-time alerts:</strong> Push notifications when your ratio crosses 80% of the firm\'s limit, giving you time to adjust before it\'s too late.',
+'autoP2': 'The system is pre-configured with the consistency rules for Topstep, Apex, Bulenox, Tradeify, and TPT. You select your firm and account size during setup, and the guard applies the correct limit automatically.',
+'autoP3': 'Need help identifying the best setups while x-trade.ai manages your compliance? The AI on <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a> analyses the market and provides trading signals tailored to consistency rules. Learn trading strategies compatible with consistency rules with our <a href="https://basstrading.fr" target="_blank" rel="noopener">formations on basstrading.fr</a>.',
+'h2faq': 'Frequently Asked Questions',
+'faq1q': 'What is the consistency rule in prop firm trading?',
+'faq1a': 'The consistency rule limits how much of your total cumulative profit can come from a single trading day. It is calculated as (Best Day Profit / Total Cumulative Profit) \u00d7 100. If the result exceeds the firm\'s limit (typically 35\u201350%), your payout request is blocked until you trade more days to dilute the ratio. The rule exists to ensure that traders demonstrate repeatable performance, not one-off lucky trades.',
+'faq2q': 'How is the prop firm consistency rule calculated?',
+'faq2a': 'The formula is: (Best Single Day Profit / Total Cumulative Profit) \u00d7 100. For example, if your best day made $1,500 and your total profit is $3,300, your consistency ratio is 45.5%. Each firm has a different threshold: Topstep 50%, Apex 50%, Bulenox 40%, Tradeify 35%, and TPT 50%. The ratio is checked at payout time (or during evaluation for TPT).',
+'faq3q': 'What happens if I violate the consistency rule?',
+'faq3a': 'Violating the consistency rule does <strong>not</strong> blow your account or trigger an automatic breach. Instead, your payout request is blocked. You must continue trading additional days to earn more profit and dilute your best day\'s percentage below the firm\'s threshold. Only then can you successfully withdraw. Think of it as a payout lock, not an account termination. However, the additional trading days required expose you to drawdown risk.',
+'faq4q': 'How do I fix a consistency rule violation?',
+'faq4a': 'Keep trading additional days with moderate, consistent profits. Each profitable day dilutes your best day\'s percentage of total profits. For example, if your best day is $1,500 out of $3,000 total (50%), adding five more days at $200 each brings the total to $4,000 and your ratio drops to 37.5%. Use x-trade.ai\'s consistency guard to see exactly how many more days you need. The key is to avoid having another outsized day while you\'re diluting \u2014 trade smaller if needed.',
+'ctaTitle': 'Stop Guessing Your Consistency Ratio',
+'ctaText': 'x-trade.ai monitors your best-day ratio in real time, alerts you before you exceed the limit, and tells you exactly how many days you need to unlock your payout. Works with Topstep, Apex, Bulenox, Tradeify, and TPT.',
+'ctaBtn': 'Start Free Trial',
+'crossTitle': 'Related Articles',
+'cross1': 'Prop Firm Drawdown Rules Compared: Topstep vs Apex vs Bulenox (2026)',
+'cross2': 'Why 93% of Prop Firm Traders Never Get Paid \u2014 The 5 Risk Mistakes',
+'cross3': 'Revenge Trading: The #1 Prop Firm Account Killer (And How to Stop It)',
+'footBlog': 'Blog',
+'footTrial': 'Free Trial',
+'footCopy': '\u00a9 2026 x-trade.ai \u2014 All rights reserved.'
+},
+fr: {
+'navHome': 'Accueil',
+'navBlog': 'Blog',
+'navStart': 'Essai Gratuit',
+'breadcrumb': '<a href="/">Accueil</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; Consistency Rule Prop Firm',
+'metaTag': 'Guide',
+'metaDate': '30 mars 2026',
+'metaRead': '12 min de lecture',
+'title': 'Consistency Rule Prop Firm : D\u00e9finition, Calcul et Strat\u00e9gie pour Ne Pas Se Faire Pi\u00e9ger',
+'takeawaysTitle': 'Points Cl\u00e9s',
+'tk1': 'La r\u00e8gle de consistance limite la part de votre profit total pouvant provenir d\'une seule journ\u00e9e \u2014 g\u00e9n\u00e9ralement entre 35% et 50% selon la firme.',
+'tk2': 'Vous pouvez atteindre l\'objectif de profit et quand m\u00eame voir votre payout bloqu\u00e9 si une journ\u00e9e repr\u00e9sente une part trop importante de vos gains cumul\u00e9s.',
+'tk3': 'Tradeify a la r\u00e8gle de consistance la plus stricte \u00e0 35%, tandis que Topstep, Apex et TPT autorisent jusqu\'\u00e0 50% sur une seule journ\u00e9e.',
+'tk4': 'La solution est simple : suivez votre ratio meilleur-jour chaque jour et continuez \u00e0 trader pour le diluer si n\u00e9cessaire. x-trade.ai automatise ce suivi en temps r\u00e9el.',
+'answerTitle': 'Qu\'est-ce que la R\u00e8gle de Consistance ?',
+'answerText': 'La <strong>r\u00e8gle de consistance</strong> (consistency rule) en prop firm stipule qu\'aucune journ\u00e9e de trading ne peut repr\u00e9senter plus d\'un certain pourcentage (g\u00e9n\u00e9ralement 35\u201350%) de votre profit cumul\u00e9 total lorsque vous demandez un payout. Elle se calcule ainsi : <strong>(Profit du Meilleur Jour \u00f7 Profit Cumul\u00e9 Total) \u00d7 100</strong>. Si le r\u00e9sultat d\u00e9passe la limite de la firme, votre payout est bloqu\u00e9 jusqu\'\u00e0 ce que vous tradiez plus de jours pour faire baisser le ratio.',
+'intro': 'Vous avez atteint l\'objectif de profit. Vous avez trad\u00e9 le nombre minimum de jours. Vous avez respect\u00e9 le drawdown. Vous cliquez sur \u00ab Demander le Payout \u00bb \u2014 et <strong>rien ne se passe</strong>. La firme vous indique que vous avez viol\u00e9 la r\u00e8gle de consistance. Votre meilleure journ\u00e9e repr\u00e9sente un pourcentage trop \u00e9lev\u00e9 de vos profits totaux. Payout refus\u00e9.',
+'intro2': 'Ce sc\u00e9nario arrive \u00e0 des milliers de traders prop firm chaque mois. La r\u00e8gle de consistance est l\'une des r\u00e8gles les moins comprises et les plus fr\u00e9quemment viol\u00e9es de l\'industrie prop firm. Elle ne grille pas votre compte \u2014 elle fait quelque chose d\'encore pire : elle <strong>prend vos profits en otage</strong> jusqu\'\u00e0 ce que vous corrigiez un ratio que vous ne saviez m\u00eame pas enfreindre.',
+'intro3': 'Ce guide explique exactement ce qu\'est la r\u00e8gle de consistance, comment chaque grande firme la calcule, pourquoi les traders la violent sans le savoir, et cinq strat\u00e9gies concr\u00e8tes pour rester conforme d\u00e8s le premier jour.',
+'lastUpdated': 'Derni\u00e8re mise \u00e0 jour : mars 2026',
+'h2what': 'Qu\'est-ce que la R\u00e8gle de Consistance ?',
+'whatP1': 'La r\u00e8gle de consistance est une exigence de qualification au payout utilis\u00e9e par quasiment toutes les grandes prop firms futures. Elle emp\u00eache les traders de passer des \u00e9valuations ou de demander des payouts sur la base d\'une ou deux journ\u00e9es exceptionnelles. La logique du point de vue de la firme est simple : elles veulent financer des traders qui d\u00e9montrent une <strong>performance r\u00e9p\u00e9table et constante</strong>, pas des traders qui ont eu de la chance une fois sur un FOMC.',
+'whatP2': 'La r\u00e8gle s\'exprime en pourcentage. Une r\u00e8gle de consistance \u00e0 50% signifie qu\'aucune journ\u00e9e de trading ne peut repr\u00e9senter plus de 50% de votre profit cumul\u00e9 total au moment o\u00f9 vous demandez un payout. Une r\u00e8gle \u00e0 40% est plus stricte. Une r\u00e8gle \u00e0 35% est la plus stricte parmi les grandes firmes.',
+'whatP3': 'La formule est simple :',
+'formula': '(Profit Meilleur Jour / Profit Cumul\u00e9 Total) \u00d7 100 \u2264 Limite%',
+'whatP4': 'Si votre meilleur jour a g\u00e9n\u00e9r\u00e9 1\u202f500$ et que votre profit cumul\u00e9 total est de 3\u202f300$, votre ratio de consistance est <strong>1\u202f500$ / 3\u202f300$ = 45,5%</strong>. Avec une r\u00e8gle \u00e0 50%, vous passez. Avec une r\u00e8gle \u00e0 40%, vous \u00eates bloqu\u00e9.',
+'whatP5': 'Le point critique que la plupart des traders ratent : la r\u00e8gle de consistance n\'est <strong>pas v\u00e9rifi\u00e9e pendant l\'\u00e9valuation</strong> chez la plupart des firmes. Elle est v\u00e9rifi\u00e9e <strong>au moment du payout</strong>. Cela signifie que vous pouvez compl\u00e9ter une \u00e9valuation enti\u00e8re sans jamais suivre cette m\u00e9trique, pour d\u00e9couvrir \u00e0 la ligne d\'arriv\u00e9e que vos profits sont trop concentr\u00e9s sur une journ\u00e9e.',
+'h2compare': 'R\u00e8gles de Consistance par Firme : Le Comparatif Complet',
+'compareIntro': 'Chaque prop firm applique la r\u00e8gle de consistance diff\u00e9remment. Certaines la v\u00e9rifient pendant l\'\u00e9valuation, d\'autres uniquement au payout. Les limites en pourcentage varient, et les cons\u00e9quences d\'une violation vont d\'un simple d\u00e9lai de payout \u00e0 des jours de trading suppl\u00e9mentaires obligatoires. Voici le comparatif complet pour les comptes 50K$ en 2026.',
+'thFirm': 'Firme',
+'thLimit': 'Limite %',
+'thWhen': 'Quand v\u00e9rifi\u00e9e',
+'thPenalty': 'P\u00e9nalit\u00e9 en cas de violation',
+'thNotes': 'Notes',
+'tdTopLimit': '50%',
+'tdTopWhen': 'Demande de payout',
+'tdTopPenalty': 'Payout bloqu\u00e9 jusqu\'\u00e0 ce que le ratio passe sous 50%',
+'tdTopNotes': 'La plus indulgente. Continuez \u00e0 trader pour diluer.',
+'tdApexLimit': '50%',
+'tdApexWhen': 'Demande de payout',
+'tdApexPenalty': 'Payout bloqu\u00e9 jusqu\'\u00e0 ce que le ratio passe sous 50%',
+'tdApexNotes': 'Minimum de 5 jours aussi requis pour le payout.',
+'tdBulLimit': '40%',
+'tdBulWhen': 'Demande de payout',
+'tdBulPenalty': 'Payout bloqu\u00e9 jusqu\'\u00e0 ce que le ratio passe sous 40%',
+'tdBulNotes': 'Plus stricte. Minimum 10 jours pour le payout.',
+'tdTradeifyLimit': '35%',
+'tdTradeifyWhen': 'Compte funded (payout)',
+'tdTradeifyPenalty': 'Payout bloqu\u00e9 jusqu\'\u00e0 ce que le ratio passe sous 35%',
+'tdTradeifyNotes': 'R\u00e8gle la plus stricte. Exige la distribution la plus r\u00e9guli\u00e8re.',
+'tdTPTLimit': '50%',
+'tdTPTWhen': 'Phase d\'\u00e9valuation',
+'tdTPTPenalty': 'Doit continuer l\'\u00e9valuation jusqu\'\u00e0 conformit\u00e9',
+'tdTPTNotes': 'V\u00e9rifi\u00e9e pendant l\'\u00e9valuation, pas seulement au payout.',
+'tableNote': '<strong>Point cl\u00e9 :</strong> Topstep et Apex \u00e0 50% sont les plus indulgentes \u2014 vous avez essentiellement besoin de deux bonnes journ\u00e9es pour rester conforme. Tradeify \u00e0 35% est la plus stricte, exigeant des profits v\u00e9ritablement r\u00e9partis sur plusieurs sessions. Bulenox \u00e0 40% se situe au milieu. TPT est unique en v\u00e9rifiant la consistance pendant l\'\u00e9valuation elle-m\u00eame, pas seulement au payout.',
+'h2math': 'Exemple Concret : Quand la R\u00e8gle de Consistance Bloque Votre Payout',
+'mathIntro': 'Prenons un sc\u00e9nario concret. Un trader sur un compte 50K$ trade pendant 10 jours. Il gagne 200$ par jour pendant 9 jours, puis a une journ\u00e9e exceptionnelle o\u00f9 il attrape un breakout propre sur le NQ pour 1\u202f500$.',
+'mathSetup': '<strong>Profit total :</strong> (9 \u00d7 200$) + 1\u202f500$ = 1\u202f800$ + 1\u202f500$ = <strong>3\u202f300$</strong><br><strong>Meilleur jour :</strong> 1\u202f500$<br><strong>Ratio de consistance :</strong> 1\u202f500$ / 3\u202f300$ = <strong>45,5%</strong>',
+'mathTopstep': 'Topstep (limite 50%)',
+'mathTopstepP1': '45,5% < 50% \u2014 <span class="ok"><strong>PASS\u00c9.</strong></span> Payout approuv\u00e9. Le trader a de la marge.',
+'mathApex': 'Apex 4.0 (limite 50%)',
+'mathApexP1': '45,5% < 50% \u2014 <span class="ok"><strong>PASS\u00c9.</strong></span> Identique \u00e0 Topstep. Payout approuv\u00e9 si le minimum de 5 jours est atteint.',
+'mathBulenox': 'Bulenox (limite 40%)',
+'mathBulenoxP1': '45,5% > 40% \u2014 <span class="warn"><strong>BLOQU\u00c9.</strong></span> Le trader doit continuer \u00e0 trader. S\'il ajoute 3 jours suppl\u00e9mentaires \u00e0 200$ chacun, le total passe \u00e0 3\u202f900$ et le ratio descend \u00e0 1\u202f500$ / 3\u202f900$ = 38,5%. Maintenant \u00e7a passe.',
+'mathTradeify': 'Tradeify (limite 35%)',
+'mathTradeifyP1': '45,5% > 35% \u2014 <span class="warn"><strong>BLOQU\u00c9.</strong></span> C\'est beaucoup plus difficile \u00e0 corriger. Le trader doit porter le profit total \u00e0 au moins 1\u202f500$ / 0,35 = 4\u202f286$. Cela signifie gagner encore 986$ sur des jours suppl\u00e9mentaires \u2014 environ 5 jours de plus \u00e0 200$ chacun. Soit 15 jours de trading au total juste pour d\u00e9bloquer le payout.',
+'mathTPT': 'TPT (limite 50%, v\u00e9rifi\u00e9e pendant l\'\u00e9valuation)',
+'mathTPTP1': '45,5% < 50% \u2014 <span class="ok"><strong>PASS\u00c9.</strong></span> Mais puisque TPT v\u00e9rifie pendant l\'\u00e9valuation, le trader aurait \u00e9t\u00e9 surveill\u00e9 d\u00e8s le d\u00e9part. Si la journ\u00e9e \u00e0 1\u202f500$ avait \u00e9t\u00e9 de 2\u202f000$, le ratio serait de 52,6% et l\'\u00e9valuation elle-m\u00eame ne serait pas consid\u00e9r\u00e9e comme r\u00e9ussie tant que le ratio n\'est pas dilu\u00e9.',
+'mathLesson': '<strong>La conclusion :</strong> La m\u00eame performance de trading passe chez certaines firmes et se fait bloquer chez d\'autres. Conna\u00eetre la limite sp\u00e9cifique de votre firme <em>avant</em> de commencer \u00e0 trader n\'est pas optionnel \u2014 c\'est essentiel.',
+'h2why': 'Pourquoi les Traders Violent la R\u00e8gle de Consistance Sans le Savoir',
+'whyIntro': 'La plupart des violations de la r\u00e8gle de consistance ne sont pas d\u00e9lib\u00e9r\u00e9es. Elles surviennent parce que les traders ne suivent pas cette m\u00e9trique en temps r\u00e9el. Voici les trois sch\u00e9mas les plus courants qui d\u00e9clenchent des violations.',
+'trap1Title': 'La Journ\u00e9e FOMC Exceptionnelle',
+'trap1P1': 'Vous avez grind\u00e9 150-300$/jour pendant une semaine. Puis la Fed annonce une d\u00e9cision de taux inattendue et vous attrapez un mouvement de 200 points sur le NQ pour 2\u202f500$ en une seule session. Votre profit total passe de 1\u202f800$ \u00e0 4\u202f300$ \u2014 bien au-dessus de l\'objectif. Mais cette seule journ\u00e9e repr\u00e9sente maintenant 58% de votre profit total. Chez chacune des firmes de cette liste, votre payout est bloqu\u00e9.',
+'trap1P2': 'L\'ironie : votre meilleure journ\u00e9e de trading devient la raison pour laquelle vous ne pouvez pas \u00eatre pay\u00e9.',
+'trap2Title': 'D\u00e9marrer Doucement Puis Acc\u00e9l\u00e9rer',
+'trap2P1': 'Certains traders commencent prudemment avec de petites positions, gagnant 50-100$/jour la premi\u00e8re semaine pendant qu\'ils "testent" le compte. Puis ils augmentent la taille et commencent \u00e0 gagner 500-800$/jour. M\u00eame sans une journ\u00e9e aberrante, la distribution de profits en fin de p\u00e9riode peut pousser le ratio du meilleur jour au-dessus de la limite \u2014 surtout avec la r\u00e8gle \u00e0 35% de Tradeify.',
+'trap3Title': 'Le Trade de Gap Weekend Qui Explose',
+'trap3P1': 'Chez les firmes qui autorisent le holding overnight (Bulenox), un trade de gap weekend peut produire un gain d\u00e9mesur\u00e9 le dimanche soir \u00e0 la r\u00e9ouverture des futures. Un profit de 1\u202f200$ sur un fill de gap en une seule position peut facilement pousser votre ratio de consistance au-dessus de la limite si vos autres journ\u00e9es ont \u00e9t\u00e9 modestes. Et comme cela se passe en dehors des heures de session r\u00e9guli\u00e8res, beaucoup de traders ne le consid\u00e8rent m\u00eame pas comme un "gros jour" jusqu\'\u00e0 ce qu\'ils v\u00e9rifient les chiffres.',
+'h2strategies': '5 Strat\u00e9gies pour Rester Conforme \u00e0 la R\u00e8gle de Consistance',
+'stratIntro': 'Rester conforme \u00e0 la r\u00e8gle de consistance n\'est pas difficile une fois que vous comprenez les m\u00e9caniques. Ces cinq strat\u00e9gies vous garderont du bon c\u00f4t\u00e9 de la limite d\u00e8s le premier jour.',
+'strat1Title': '1. Plafonnez Vos Gains Journaliers \u00e0 30% de l\'Objectif',
+'strat1P1': 'Pour un objectif de 3\u202f000$, plafonnez vos gains journaliers \u00e0 900$. C\'est un stop dur \u2014 une fois que vous atteignez 900$ dans une session, arr\u00eatez de trader. Cela garantit que m\u00eame si tous vos autres jours sont \u00e0 z\u00e9ro, une journ\u00e9e ne d\u00e9passera jamais 30% de l\'objectif. En pratique, avec plusieurs jours profitables, votre ratio restera bien en dessous de la limite de consistance de toute firme.',
+'strat1P2': 'Cela ne signifie pas que vous ne pouvez pas avoir des jours au-dessus de 900$ \u2014 cela signifie que vous devez <strong>planifier en cons\u00e9quence</strong>. Si vous d\u00e9passez le plafond, ajustez imm\u00e9diatement votre strat\u00e9gie pour les sessions suivantes afin de distribuer les profits. Besoin d\'aide pour identifier les meilleurs setups pour une performance journali\u00e8re r\u00e9guli\u00e8re ? L\'IA de <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a> analyse le march\u00e9 et met en \u00e9vidence les entr\u00e9es \u00e0 haute probabilit\u00e9 sur plusieurs sessions. Apprenez les strat\u00e9gies de rendements r\u00e9guliers avec nos <a href="https://basstrading.fr" target="_blank" rel="noopener">formations sur basstrading.fr</a>.',
+'strat2Title': '2. R\u00e9partissez le Risque \u00c9galement Entre les Sessions',
+'strat2P1': 'Ne chargez pas tout le lundi pour rester inactif le reste de la semaine. Tradez les m\u00eames tailles de positions et le m\u00eame nombre de setups \u00e0 chaque session. Si votre moyenne est de 3 trades par jour \u00e0 2 contrats, tenez-vous-y. La consistance dans l\'ex\u00e9cution produit naturellement de la consistance dans la distribution du P&L.',
+'strat2P2': 'C\'est l\u00e0 que la discipline strat\u00e9gique compte plus que le talent. L\'IA de <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a> analyse vos patterns de trading et vous aide \u00e0 maintenir une performance journali\u00e8re r\u00e9guli\u00e8re. Apprenez les strat\u00e9gies compatibles prop firm avec nos <a href="https://basstrading.fr" target="_blank" rel="noopener">formations sur basstrading.fr</a>.',
+'strat3Title': '3. Suivez le Ratio Chaque Jour',
+'strat3P1': '\u00c0 la fin de chaque session de trading, calculez votre ratio de consistance : meilleur jour / profit cumul\u00e9 total. Notez-le. S\'il grimpe vers la limite, r\u00e9duisez votre taille la session suivante ou prenez un jour de pause pour laisser les sessions futures le diluer. Les traders qui se font bloquer sont ceux qui ne v\u00e9rifient jamais avant le moment du payout.',
+'strat4Title': '4. Si Vous Avez un Gros Jour, Continuez \u00e0 Trader pour Diluer',
+'strat4P1': 'Un gros jour n\'est pas un d\u00e9sastre \u2014 c\'est un probl\u00e8me de math. Si votre meilleur jour est de 1\u202f500$ et que vous devez le garder sous 40% du profit total, il vous faut au moins 3\u202f750$ au total. Cela signifie gagner 2\u202f250$ sur les autres jours. \u00c0 200$/jour, cela repr\u00e9sente environ 11 jours de trading suppl\u00e9mentaires. Planifiez. Ne demandez pas le payout tant que le ratio n\'est pas clairement sous la limite.',
+'strat4P2': 'La pire erreur est de demander le payout le jour o\u00f9 vous atteignez l\'objectif de profit sans v\u00e9rifier le ratio. Calculez toujours d\'abord.',
+'strat5Title': '5. Utilisez le Consistency Guard de x-trade.ai',
+'strat5P1': 'Le <strong>consistency guard</strong> de <a href="/onboarding?mode=trial">x-trade.ai</a> surveille votre ratio meilleur-jour en temps r\u00e9el, automatiquement. Il calcule le ratio apr\u00e8s chaque trade cl\u00f4tur\u00e9 et vous alerte lorsque vous approchez de la limite. Si vous \u00eates \u00e0 42% sur un compte Bulenox avec une limite de 40%, le syst\u00e8me vous pr\u00e9vient avant que vous preniez le prochain trade \u2014 pas apr\u00e8s.',
+'strat5P2': 'Le consistency guard projette \u00e9galement le nombre de jours de trading suppl\u00e9mentaires n\u00e9cessaires \u00e0 votre rythme moyen de profit journalier pour ramener le ratio en conformit\u00e9. Cela transforme une instruction vague de "trader plus de jours" en un plan concret : "Tradez 4 jours de plus \u00e0 180$+ pour d\u00e9bloquer le payout."',
+'h2auto': 'Comment x-trade.ai Automatise la Conformit\u00e9 de Consistance',
+'autoP1': 'La r\u00e8gle de consistance est un probl\u00e8me purement math\u00e9matique, ce qui la rend id\u00e9ale pour l\'automatisation. Le consistency guard de x-trade.ai s\'int\u00e8gre directement avec votre compte prop firm et surveille trois choses en temps r\u00e9el :',
+'autoLi1': '<strong>Ratio de consistance actuel :</strong> Le profit de votre meilleur jour en pourcentage du profit cumul\u00e9, mis \u00e0 jour apr\u00e8s chaque trade.',
+'autoLi2': '<strong>Ratio projet\u00e9 au payout :</strong> Bas\u00e9 sur votre P&L journalier moyen, le syst\u00e8me pr\u00e9voit si vous serez conforme au moment d\'atteindre l\'objectif de profit.',
+'autoLi3': '<strong>Jours restants :</strong> Le nombre exact de jours de trading suppl\u00e9mentaires n\u00e9cessaires \u00e0 votre rythme actuel pour ramener le ratio sous la limite de la firme.',
+'autoLi4': '<strong>Alertes en temps r\u00e9el :</strong> Notifications push lorsque votre ratio d\u00e9passe 80% de la limite de la firme, vous laissant le temps d\'ajuster avant qu\'il ne soit trop tard.',
+'autoP2': 'Le syst\u00e8me est pr\u00e9-configur\u00e9 avec les r\u00e8gles de consistance de Topstep, Apex, Bulenox, Tradeify et TPT. Vous s\u00e9lectionnez votre firme et la taille du compte lors de la configuration, et le guard applique la bonne limite automatiquement.',
+'autoP3': 'Besoin d\'aide pour identifier les meilleurs setups pendant que x-trade.ai g\u00e8re votre conformit\u00e9 ? L\'IA de <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a> analyse le march\u00e9 et vous fournit des signaux de trading adapt\u00e9s aux r\u00e8gles de consistance. Apprenez les strat\u00e9gies de trading compatibles avec les r\u00e8gles de consistance gr\u00e2ce aux <a href="https://basstrading.fr" target="_blank" rel="noopener">formations sur basstrading.fr</a>.',
+'h2faq': 'Questions Fr\u00e9quemment Pos\u00e9es',
+'faq1q': 'Qu\'est-ce que la r\u00e8gle de consistance en prop firm ?',
+'faq1a': 'La r\u00e8gle de consistance limite la part de votre profit cumul\u00e9 total pouvant provenir d\'une seule journ\u00e9e de trading. Elle se calcule ainsi : (Profit du Meilleur Jour / Profit Cumul\u00e9 Total) \u00d7 100. Si le r\u00e9sultat d\u00e9passe la limite de la firme (g\u00e9n\u00e9ralement 35\u201350%), votre demande de payout est bloqu\u00e9e jusqu\'\u00e0 ce que vous tradiez plus de jours pour diluer le ratio. La r\u00e8gle existe pour s\'assurer que les traders d\u00e9montrent une performance r\u00e9p\u00e9table, pas des coups de chance uniques.',
+'faq2q': 'Comment la r\u00e8gle de consistance est-elle calcul\u00e9e ?',
+'faq2a': 'La formule est : (Profit du Meilleur Jour / Profit Cumul\u00e9 Total) \u00d7 100. Par exemple, si votre meilleur jour a g\u00e9n\u00e9r\u00e9 1\u202f500$ et que votre profit total est de 3\u202f300$, votre ratio de consistance est de 45,5%. Chaque firme a un seuil diff\u00e9rent : Topstep 50%, Apex 50%, Bulenox 40%, Tradeify 35% et TPT 50%. Le ratio est v\u00e9rifi\u00e9 au moment du payout (ou pendant l\'\u00e9valuation pour TPT).',
+'faq3q': 'Que se passe-t-il si je viole la r\u00e8gle de consistance ?',
+'faq3a': 'Violer la r\u00e8gle de consistance ne <strong>grille pas</strong> votre compte et ne d\u00e9clenche pas de violation automatique. \u00c0 la place, votre demande de payout est bloqu\u00e9e. Vous devez continuer \u00e0 trader des jours suppl\u00e9mentaires pour gagner plus de profit et diluer le pourcentage de votre meilleur jour en dessous du seuil de la firme. Ce n\'est qu\'alors que vous pouvez retirer avec succ\u00e8s. Consid\u00e9rez cela comme un verrou de payout, pas une terminaison de compte. Cependant, les jours de trading suppl\u00e9mentaires requis vous exposent au risque de drawdown.',
+'faq4q': 'Comment corriger une violation de la r\u00e8gle de consistance ?',
+'faq4a': 'Continuez \u00e0 trader des jours suppl\u00e9mentaires avec des profits mod\u00e9r\u00e9s et r\u00e9guliers. Chaque jour profitable dilue le pourcentage de votre meilleur jour par rapport au profit total. Par exemple, si votre meilleur jour est de 1\u202f500$ sur un total de 3\u202f000$ (50%), ajouter cinq jours suppl\u00e9mentaires \u00e0 200$ chacun porte le total \u00e0 4\u202f000$ et votre ratio descend \u00e0 37,5%. Utilisez le consistency guard de x-trade.ai pour voir exactement combien de jours suppl\u00e9mentaires il vous faut. La cl\u00e9 est d\'\u00e9viter une autre journ\u00e9e surdimensionn\u00e9e pendant que vous diluez \u2014 tradez plus petit si n\u00e9cessaire.',
+'ctaTitle': 'Arr\u00eatez de Deviner Votre Ratio de Consistance',
+'ctaText': 'x-trade.ai surveille votre ratio meilleur-jour en temps r\u00e9el, vous alerte avant que vous d\u00e9passiez la limite, et vous dit exactement combien de jours il vous faut pour d\u00e9bloquer votre payout. Compatible avec Topstep, Apex, Bulenox, Tradeify et TPT.',
+'ctaBtn': 'Essai Gratuit',
+'crossTitle': 'Articles Connexes',
+'cross1': 'Comparatif des R\u00e8gles de Drawdown en Prop Firm : Topstep vs Apex vs Bulenox (2026)',
+'cross2': 'Pourquoi 93% des Traders Prop Firm Ne Sont Jamais Pay\u00e9s \u2014 Les 5 Erreurs de Risque',
+'cross3': 'Revenge Trading : Le Tueur N\u00b01 des Comptes Prop Firm (Et Comment l\'Arr\u00eater)',
+'footBlog': 'Blog',
+'footTrial': 'Essai Gratuit',
+'footCopy': '\u00a9 2026 x-trade.ai \u2014 Tous droits r\u00e9serv\u00e9s.'
+}
+};
+
+function applyLang() {
+  for (const [id, html] of Object.entries(TR[lang] || TR.en)) {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  }
+  document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+    el.textContent = el.getAttribute('data-' + lang);
+  });
+  document.getElementById('langBtn').textContent = lang === 'en' ? 'FR' : 'EN';
+}
+
+function toggleLang() {
+  lang = lang === 'en' ? 'fr' : 'en';
+  localStorage.setItem('xtrade_lang', lang);
+  applyLang();
+}
+
+document.addEventListener('DOMContentLoaded', applyLang);
+</script>
+
+</body>
+</html>

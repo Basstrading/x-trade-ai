@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topstep Drawdown Rules Explained: EOD Trailing, No Daily Limit & The Traps (2026) | x-trade.ai</title>
+<meta name="description" content="Complete breakdown of Topstep drawdown rules in 2026: EOD trailing mechanics, no daily loss limit trap, 50% consistency rule, profit target math, and optimal risk framework for 50K/100K/150K accounts.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://x-trade.ai/blog/topstep-drawdown-rules">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Topstep Drawdown Rules Explained: EOD Trailing, No Daily Limit & The Traps (2026) | x-trade.ai">
+<meta property="og:description" content="How Topstep's EOD trailing drawdown really works, why no daily limit is a trap, and the optimal risk framework for every account size.">
+<meta property="og:url" content="https://x-trade.ai/blog/topstep-drawdown-rules">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Topstep Drawdown Rules Explained: EOD Trailing, No Daily Limit & The Traps (2026) | x-trade.ai">
+<meta name="twitter:description" content="How Topstep's EOD trailing drawdown really works, why no daily limit is a trap, and the optimal risk framework for every account size.">
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Article",
+  "headline":"Topstep Drawdown Rules Explained: EOD Trailing, No Daily Limit & The Traps (2026)",
+  "author":{"@type":"Person","name":"Bass","jobTitle":"Founder, x-trade.ai"},
+  "datePublished":"2026-03-30",
+  "dateModified":"2026-03-30",
+  "publisher":{"@type":"Organization","name":"x-trade.ai","url":"https://x-trade.ai"},
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://x-trade.ai/blog/topstep-drawdown-rules"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"How does Topstep's drawdown work?","acceptedAnswer":{"@type":"Answer","text":"Topstep uses an End-of-Day (EOD) trailing drawdown. Your drawdown floor only updates at session close based on your closing balance, not during the session. On a $50K account, the floor starts at $48,000 ($2,000 below starting balance). If you close the day at $50,800, the floor moves up to $48,800. Intraday equity highs do NOT affect your floor — only the closing balance matters."}},
+    {"@type":"Question","name":"Does Topstep have a daily loss limit?","acceptedAnswer":{"@type":"Answer","text":"No. Topstep has zero daily loss limit on any account size. This means you can lose your entire trailing drawdown ($2,000 on a 50K account) in a single session without triggering a daily limit violation — the only limit is the overall trailing drawdown floor. This freedom is dangerous without self-imposed discipline; you should set your own daily loss cap at 20% of your total drawdown."}},
+    {"@type":"Question","name":"What is Topstep's 50% consistency rule?","acceptedAnswer":{"@type":"Answer","text":"At payout time, no single trading day can account for more than 50% of your total cumulative profits. For example, if your total profit is $4,000, no single day can have generated more than $2,000 of that. If one day exceeds 50%, your payout is blocked until you trade additional days to dilute that percentage below 50%."}},
+    {"@type":"Question","name":"Can I hold positions overnight on Topstep?","acceptedAnswer":{"@type":"Answer","text":"No. Topstep requires all positions to be closed before the daily session close (4:00 PM CT for CME futures). Holding positions through the session close will result in an automatic violation. This applies to both the evaluation (Trading Combine) and funded (Express Funded Account) phases."}}
+  ]
+}
+</script>
+<style>
+:root{--bg:#07090f;--bg2:#0f1420;--cyan:#06b6d4;--green:#22d97f;--red:#ef4444;--gold:#f59e0b;--text:#f0f4f8;--dim:#94a3b8;--border:rgba(255,255,255,0.06)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}
+code,pre,.mono{font-family:'JetBrains Mono',monospace}
+a{color:var(--cyan);text-decoration:none;transition:color .2s}
+a:hover{color:var(--green)}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(7,9,15,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-weight:800;font-size:1.15rem;color:var(--text);letter-spacing:-.5px}
+.nav-logo span{color:var(--cyan)}
+.nav-links{display:flex;align-items:center;gap:1.5rem}
+.nav-links a{color:var(--dim);font-size:.875rem;font-weight:500}
+.nav-links a:hover{color:var(--text)}
+.lang-btn{background:transparent;border:1px solid var(--cyan);color:var(--cyan);padding:4px 12px;border-radius:6px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
+.lang-btn:hover{background:var(--cyan);color:var(--bg)}
+
+/* ARTICLE */
+.article-wrap{max-width:760px;margin:0 auto;padding:3rem 1.5rem 4rem}
+.breadcrumb{font-size:.8rem;color:var(--dim);margin-bottom:2rem}
+.breadcrumb a{color:var(--dim)}
+.breadcrumb a:hover{color:var(--cyan)}
+.article-meta{display:flex;align-items:center;gap:.75rem;font-size:.8rem;color:var(--dim);margin-bottom:1.25rem;flex-wrap:wrap}
+.article-meta .tag{background:rgba(6,182,212,.1);color:var(--cyan);padding:2px 10px;border-radius:99px;font-weight:500}
+h1{font-size:2.25rem;font-weight:800;line-height:1.2;letter-spacing:-.5px;margin-bottom:1.5rem}
+h2{font-size:1.5rem;font-weight:700;margin:2.5rem 0 1rem;letter-spacing:-.3px;color:var(--text)}
+h3{font-size:1.15rem;font-weight:600;margin:1.75rem 0 .75rem;color:var(--green)}
+p{margin-bottom:1.25rem;color:var(--dim);font-size:1rem}
+strong{color:var(--text)}
+
+/* KEY TAKEAWAYS */
+.takeaways{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--cyan);border-radius:10px;padding:1.5rem 1.75rem;margin-bottom:2.5rem}
+.takeaways h3{color:var(--cyan);margin:0 0 .75rem;font-size:1rem}
+.takeaways ul{list-style:none;padding:0}
+.takeaways li{position:relative;padding-left:1.5rem;margin-bottom:.5rem;color:var(--dim);font-size:.95rem}
+.takeaways li::before{content:"\2713";position:absolute;left:0;color:var(--green);font-weight:700}
+
+/* ANSWER BOX */
+.answer-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:10px;padding:1.5rem 1.75rem;margin-bottom:2.5rem}
+.answer-box h3{color:var(--green);margin:0 0 .75rem;font-size:1rem}
+.answer-box p{margin-bottom:.5rem;font-size:.95rem}
+.answer-box p:last-child{margin-bottom:0}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;margin:1.5rem 0 2rem;border-radius:10px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:.82rem;min-width:700px}
+th{text-align:left;padding:10px 12px;background:var(--bg2);color:var(--cyan);font-size:.7rem;text-transform:uppercase;letter-spacing:.8px;border-bottom:2px solid var(--border);white-space:nowrap;position:sticky;top:0}
+td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--dim);white-space:nowrap}
+td strong{color:var(--text)}
+tr:hover td{background:rgba(6,182,212,.03)}
+.warn{color:var(--red);font-weight:600}
+.ok{color:var(--green)}
+.note{color:var(--gold);font-style:italic}
+th:first-child,td:first-child{position:sticky;left:0;background:var(--bg);z-index:2}
+tr:hover td:first-child{background:rgba(6,182,212,.03)}
+
+/* LISTS */
+.article-wrap ul,.article-wrap ol{margin:0 0 1.25rem 1.25rem;color:var(--dim)}
+.article-wrap li{margin-bottom:.4rem;font-size:1rem}
+
+/* MATH EXAMPLE */
+.math-box{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1.25rem;font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--dim);line-height:1.9}
+.math-box strong{color:var(--text)}
+.math-box .floor{color:var(--cyan);font-weight:600}
+.math-box .danger{color:var(--red);font-weight:600}
+
+/* FAQ */
+.faq-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1rem}
+.faq-q{font-weight:600;color:var(--text);margin-bottom:.5rem;font-size:1.05rem}
+.faq-a{color:var(--dim);font-size:.95rem}
+
+/* CTA */
+.cta-box{background:linear-gradient(135deg,rgba(6,182,212,.12),rgba(34,217,127,.08));border:1px solid rgba(6,182,212,.25);border-radius:14px;padding:2.5rem;text-align:center;margin:3rem 0 2rem}
+.cta-box h2{margin:0 0 .75rem;font-size:1.5rem}
+.cta-box p{color:var(--dim);margin-bottom:1.5rem}
+.cta-btn{display:inline-block;background:var(--cyan);color:var(--bg);padding:12px 32px;border-radius:8px;font-weight:700;font-size:1rem;transition:all .25s}
+.cta-btn:hover{background:var(--green);color:var(--bg);transform:translateY(-1px)}
+
+/* CROSS LINKS */
+.cross-links{border-top:1px solid var(--border);padding-top:2rem;margin-top:2rem}
+.cross-links h3{font-size:1rem;color:var(--dim);margin-bottom:1rem}
+.cross-link{display:block;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin-bottom:.75rem;color:var(--text);font-weight:500;transition:border-color .2s}
+.cross-link:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* HIDDEN TRAPS */
+.trap-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1.25rem}
+.trap-box h3{color:var(--red);margin:0 0 .5rem;font-size:1rem}
+.trap-box p{margin-bottom:.5rem;font-size:.95rem}
+.trap-box p:last-child{margin-bottom:0}
+
+/* ECOSYSTEM BOX */
+.eco-box{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1rem}
+.eco-box h3{color:var(--cyan);margin:0 0 .5rem;font-size:1rem}
+.eco-box p{margin-bottom:.5rem;font-size:.95rem}
+.eco-box p:last-child{margin-bottom:0}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;text-align:center;font-size:.8rem;color:var(--dim)}
+.footer a{color:var(--dim)}
+.footer a:hover{color:var(--cyan)}
+.footer-links{display:flex;justify-content:center;gap:1.5rem;margin-bottom:.75rem;flex-wrap:wrap}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+h1{font-size:1.6rem}
+h2{font-size:1.25rem}
+.article-wrap{padding:2rem 1rem 3rem}
+.nav{padding:0 1rem}
+.nav-links{gap:1rem}
+table{font-size:.72rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="/" class="nav-logo">x-trade<span>.ai</span></a>
+  <div class="nav-links">
+    <a href="/" id="navHome">Home</a>
+    <a href="/blog" id="navBlog">Blog</a>
+    <a href="/onboarding?mode=trial" id="navStart">Start Free</a>
+    <button class="lang-btn" id="langBtn" onclick="toggleLang()">FR</button>
+  </div>
+</nav>
+
+<!-- ARTICLE -->
+<main class="article-wrap">
+
+  <div class="breadcrumb" id="breadcrumb"><a href="/">Home</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; Topstep Drawdown Rules</div>
+
+  <div class="article-meta">
+    <span class="tag" id="metaTag">Topstep</span>
+    <span id="metaDate">March 30, 2026</span>
+    <span>&middot;</span>
+    <span id="metaRead">16 min read</span>
+  </div>
+
+  <h1 id="title">Topstep Drawdown Rules Explained: EOD Trailing, No Daily Limit &amp; The Traps (2026)</h1>
+
+  <!-- KEY TAKEAWAYS -->
+  <div class="takeaways">
+    <h3 id="takeawaysTitle">Key Takeaways</h3>
+    <ul>
+      <li id="tk1">Topstep uses EOD trailing drawdown &mdash; your floor only updates at session close, not intraday. This is significantly more forgiving than tick-by-tick trailing.</li>
+      <li id="tk2">There is zero daily loss limit on any Topstep account. You can lose your entire $2,000 drawdown (50K) in a single session &mdash; the #1 reason traders blow Topstep accounts.</li>
+      <li id="tk3">The 50% consistency rule blocks payouts if any single day exceeds half your total profits. You must distribute your gains across multiple trading days.</li>
+      <li id="tk4">Optimal risk per trade on the $50K account is $80 (4% of drawdown), with a self-imposed daily limit of $400 and a maximum of 5 trades per day.</li>
+    </ul>
+  </div>
+
+  <!-- ANSWER BOX -->
+  <div class="answer-box">
+    <h3 id="answerTitle">How does Topstep's drawdown work?</h3>
+    <p id="answerP1">Topstep uses an <strong>End-of-Day (EOD) trailing drawdown</strong>. On a $50K account, your drawdown floor starts at <strong>$48,000</strong> ($2,000 below starting balance). The floor only moves up at session close &mdash; if your closing balance reaches a new high, the floor trails up by that same amount. Intraday equity highs do NOT raise your floor.</p>
+    <p id="answerP2">Example: You close at $51,200 (new high). Floor moves from $48,000 to $49,200. Next day your equity hits $53,000 intraday but you close at $51,000 &mdash; floor stays at $49,200 because your close was not a new high. This is the key mechanic that makes Topstep's drawdown survivable.</p>
+  </div>
+
+  <!-- INTRO -->
+  <p id="intro"><strong>Topstep is the most popular futures prop firm in the world.</strong> But its drawdown rules have subtleties that catch traders off guard &mdash; especially the combination of EOD trailing + zero daily loss limit + 50% consistency rule. Understanding exactly how these three mechanics interact is the difference between passing and blowing your account.</p>
+
+  <p id="intro2">This guide breaks down every Topstep drawdown rule with real math, step-by-step examples, and the risk framework you need to survive. Whether you're trading the $50K, $100K, or $150K account, the principles are the same &mdash; only the numbers change.</p>
+
+  <p id="lastUpdated" style="font-size:.85rem;color:var(--gold);font-weight:500;">Last updated: March 2026</p>
+
+  <!-- TOPSTEP ACCOUNT PLANS TABLE -->
+  <h2 id="h2plans">Topstep Account Plans: $50K, $100K &amp; $150K</h2>
+
+  <p id="plansIntro">Topstep offers three account sizes. The drawdown mechanics are identical across all three &mdash; only the dollar amounts scale. Here is every specification that matters for risk management.</p>
+
+  <div class="table-wrap">
+    <table id="plansTable">
+      <thead>
+        <tr>
+          <th id="thSpec">Specification</th>
+          <th id="th50k">$50K Account</th>
+          <th id="th100k">$100K Account</th>
+          <th id="th150k">$150K Account</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td id="rowPlanDD"><strong>Max Drawdown</strong></td>
+          <td>$2,000</td>
+          <td>$3,000</td>
+          <td>$4,500</td>
+        </tr>
+        <tr>
+          <td id="rowPlanDDType"><strong>DD Type</strong></td>
+          <td class="ok">EOD Trailing</td>
+          <td class="ok">EOD Trailing</td>
+          <td class="ok">EOD Trailing</td>
+        </tr>
+        <tr>
+          <td id="rowPlanContracts"><strong>Max Contracts</strong></td>
+          <td>5</td>
+          <td>7</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td id="rowPlanTarget"><strong>Profit Target</strong></td>
+          <td>$3,000</td>
+          <td>$6,000</td>
+          <td>$9,000</td>
+        </tr>
+        <tr>
+          <td id="rowPlanDaily"><strong>Daily Loss Limit</strong></td>
+          <td class="warn">NONE</td>
+          <td class="warn">NONE</td>
+          <td class="warn">NONE</td>
+        </tr>
+        <tr>
+          <td id="rowPlanConsist"><strong>Consistency Rule</strong></td>
+          <td>50%</td>
+          <td>50%</td>
+          <td>50%</td>
+        </tr>
+        <tr>
+          <td id="rowPlanFee"><strong>Monthly Fee</strong></td>
+          <td>$49/mo</td>
+          <td>$99/mo</td>
+          <td>$149/mo</td>
+        </tr>
+        <tr>
+          <td id="rowPlanOvernight"><strong>Overnight Holding</strong></td>
+          <td class="warn">No</td>
+          <td class="warn">No</td>
+          <td class="warn">No</td>
+        </tr>
+        <tr>
+          <td id="rowPlanMinDays"><strong>Min Trading Days</strong></td>
+          <td>&mdash;</td>
+          <td>&mdash;</td>
+          <td>&mdash;</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p id="planNote"><strong>Key observation:</strong> The drawdown-to-target ratio is identical across all accounts &mdash; roughly 1.5x. You need to earn 1.5x your maximum drawdown to pass. This ratio determines the difficulty: it means you must consistently produce 1.5R returns without ever hitting your loss floor, which requires at least a 60% win rate at 1:1 risk-reward, or a lower win rate with higher R-multiples.</p>
+
+  <!-- HOW EOD TRAILING WORKS -->
+  <h2 id="h2eod">How EOD Trailing Drawdown Works on Topstep</h2>
+
+  <p id="eodIntro">The EOD trailing drawdown is Topstep's most important rule &mdash; and the most misunderstood. Here is exactly how it works, step by step, over a 5-day example on the $50K account.</p>
+
+  <h3 id="h3eodMech">The Mechanic</h3>
+  <p id="eodMechP1">At the end of each trading session, Topstep checks your <strong>closing balance</strong> (not intraday high). If your closing balance is a new all-time high, the drawdown floor moves up by the difference. If your closing balance is below or equal to the previous high close, the floor does <strong>not</strong> move.</p>
+
+  <h3 id="h3eodExample">5-Day Example ($50K Account, $2,000 Drawdown)</h3>
+
+  <div class="math-box" id="eodMath">
+    <strong>Starting balance: $50,000 | Starting floor: $48,000</strong><br><br>
+    <strong>Day 1:</strong> Close at $50,400 (new high)<br>
+    &rarr; Floor moves to <span class="floor">$48,400</span> | Cushion: $2,000<br><br>
+    <strong>Day 2:</strong> Intraday high $52,000, but close at $50,800 (new high)<br>
+    &rarr; Floor moves to <span class="floor">$48,800</span> (NOT $50,000!) | Cushion: $2,000<br><br>
+    <strong>Day 3:</strong> Close at $50,200 (below previous high of $50,800)<br>
+    &rarr; Floor <span class="floor">stays at $48,800</span> | Cushion: $1,400<br><br>
+    <strong>Day 4:</strong> Close at $51,500 (new high)<br>
+    &rarr; Floor moves to <span class="floor">$49,500</span> | Cushion: $2,000<br><br>
+    <strong>Day 5:</strong> Intraday high $53,200, close at $51,100 (below previous high)<br>
+    &rarr; Floor <span class="floor">stays at $49,500</span> | Cushion: $1,600
+  </div>
+
+  <p id="eodInsight"><strong>The critical insight:</strong> On Day 2, your account touched $52,000 intraday &mdash; but because you closed at $50,800, the floor only moved to $48,800. On a tick-by-tick system (like Bulenox Option 1), that same intraday high would have pushed your floor to $50,000 &mdash; a full $1,200 higher. This is why EOD trailing is dramatically more survivable for active intraday traders.</p>
+
+  <p id="eodInsight2">On Day 5, despite an intraday high of $53,200, the floor didn't move at all because the close ($51,100) was below the previous high close ($51,500). With tick-by-tick trailing, the floor would have jumped to $51,200 &mdash; leaving you just $100 from breach at close. EOD trailing saved $1,700 of breathing room in this single scenario.</p>
+
+  <!-- NO DAILY LIMIT TRAP -->
+  <h2 id="h2daily">The No-Daily-Limit Trap</h2>
+
+  <div class="trap-box">
+    <h3 id="dailyTrapTitle">WARNING: No Safety Net</h3>
+    <p id="dailyTrapP1">Topstep has <strong>zero daily loss limit</strong> on any account size. This sounds like freedom. It is a trap.</p>
+    <p id="dailyTrapP2">Without a daily loss limit, there is nothing stopping you from losing your <strong>entire $2,000 drawdown in a single session</strong>. One bad session. One revenge trade spiral. One news event that moves against your full position. Account gone.</p>
+  </div>
+
+  <p id="dailyP1">This is the #1 reason traders blow Topstep accounts. Firms like Apex ($1,000 daily limit) and Tradeify ($1,250 daily limit) force you to stop trading after a certain loss. Topstep does not. The discipline must come entirely from you.</p>
+
+  <p id="dailyP2">On a $50K account with a $2,000 drawdown, a single 50-point adverse move on 2 MNQ contracts equals $500 in losses &mdash; that's 25% of your entire drawdown gone in one trade. Two such trades and you've lost half your cushion. Three and you're one bad trade from elimination.</p>
+
+  <p id="dailyP3"><strong>The fix is simple but non-negotiable:</strong> Set your own daily loss limit at <strong>20% of your total drawdown</strong>. For the $50K account, that's $400/day. For the $100K, it's $600/day. For the $150K, it's $900/day. Once you hit that limit, you stop trading. No exceptions. Tools like <a href="/onboarding?mode=trial">x-trade.ai</a> can enforce this automatically so your emotions never override the rule.</p>
+
+  <!-- 50% CONSISTENCY RULE -->
+  <h2 id="h2consist">The 50% Consistency Rule</h2>
+
+  <p id="consistP1">Topstep's consistency rule states that <strong>no single trading day can account for more than 50% of your total cumulative profits</strong> at the time you request a payout. This rule exists to prevent traders from passing the evaluation on a single lucky day.</p>
+
+  <h3 id="h3consistExample">Example: How Consistency Blocks Your Payout</h3>
+
+  <div class="math-box" id="consistMath">
+    <strong>10 trading days on $50K account (target: $3,000)</strong><br><br>
+    Days 1-9: Average $200/day = $1,800 total<br>
+    Day 10: One great trade = $2,000<br><br>
+    Total profit: $3,800 (above $3,000 target)<br>
+    Best day: $2,000 / $3,800 = <span class="danger">52.6% &rarr; PAYOUT BLOCKED</span><br><br>
+    <strong>You must trade more days to dilute.</strong><br>
+    If you add Day 11: +$200 &rarr; Total $4,000<br>
+    Best day: $2,000 / $4,000 = 50.0% &rarr; <span class="floor">STILL BLOCKED (must be UNDER 50%)</span><br><br>
+    Day 12: +$200 &rarr; Total $4,200<br>
+    Best day: $2,000 / $4,200 = <span class="floor">47.6% &rarr; PAYOUT APPROVED</span>
+  </div>
+
+  <p id="consistP2">The trap is subtle: you can pass the profit target and still not qualify for a payout. Many traders hit $3,000 in total profit with one large day and assume they're done. They're not. The consistency rule forces you to keep trading &mdash; and every additional day carries the risk of giving back profits or breaching the drawdown.</p>
+
+  <p id="consistP3"><strong>The optimal approach:</strong> Target $300-400/day across 8-12 trading days instead of hunting for one big day. This keeps any single day well below 50% of total and reduces the risk of consistency violations. A steady grind of $350/day reaches the $3,000 target in about 9 days, with each day representing only ~11% of total profits &mdash; far from the 50% limit.</p>
+
+  <!-- PROFIT TARGET TRAP -->
+  <h2 id="h2target">The Profit Target Trap</h2>
+
+  <p id="targetP1">The $3,000 profit target on the $50K account seems low. It's only 6% of the account size. But let's do the real math on what it takes to get there.</p>
+
+  <div class="math-box" id="targetMath">
+    <strong>Realistic profit target math ($50K account):</strong><br><br>
+    Risk per trade: $80 (4% of $2,000 drawdown)<br>
+    Average win at 1.5R: $120<br>
+    Average loss at 1R: $80<br>
+    Win rate needed: 60%<br><br>
+    Per 10 trades: 6 wins x $120 = $720, 4 losses x $80 = $320<br>
+    Net per 10 trades: $400<br>
+    Trades to reach $3,000: ~75 trades<br>
+    At 5 trades/day: <strong>~15 trading days</strong><br><br>
+    At 50% win rate with 2R winners:<br>
+    Per 10 trades: 5 wins x $160 = $800, 5 losses x $80 = $400<br>
+    Net per 10 trades: $400<br>
+    Trades to reach $3,000: ~75 trades<br>
+    At 5 trades/day: <strong>~15 trading days</strong>
+  </div>
+
+  <p id="targetP2">With disciplined $80 risk per trade, it takes roughly <strong>75 winning-equivalent trades across 15 trading days</strong>. Traders who try to rush this &mdash; risking $200+ per trade to reach the target faster &mdash; dramatically increase their probability of drawdown breach. At $200/trade risk, just 10 consecutive losses wipes out the entire $2,000 drawdown. At $80/trade risk, you can absorb 25 consecutive losses before breach.</p>
+
+  <p id="targetP3"><strong>The lesson:</strong> Don't fight the math. The $3,000 target with $2,000 drawdown is designed to take 2-4 weeks of disciplined trading. Any attempt to compress this timeline requires taking outsized risk, which is exactly how most traders fail.</p>
+
+  <!-- OPTIMAL RISK FRAMEWORK -->
+  <h2 id="h2risk">Optimal Risk Framework for Topstep $50K</h2>
+
+  <p id="riskIntro">Based on the drawdown mechanics, consistency rule, and profit target math, here is the complete risk framework for the Topstep $50K account. These same ratios apply proportionally to the $100K and $150K accounts.</p>
+
+  <div class="table-wrap">
+    <table id="riskTable">
+      <thead>
+        <tr>
+          <th id="thParam">Parameter</th>
+          <th id="thValue">Value</th>
+          <th id="thWhy">Why</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td id="rowRiskDaily"><strong>Daily Loss Budget</strong></td>
+          <td>$400</td>
+          <td id="rowRiskDailyWhy">20% of $2,000 drawdown = 5 days of survival at max loss</td>
+        </tr>
+        <tr>
+          <td id="rowRiskTrade"><strong>Risk per Trade</strong></td>
+          <td>$80</td>
+          <td id="rowRiskTradeWhy">4% of drawdown = 25 consecutive losses before breach</td>
+        </tr>
+        <tr>
+          <td id="rowRiskMax"><strong>Max Trades/Day</strong></td>
+          <td>5</td>
+          <td id="rowRiskMaxWhy">$80 x 5 = $400 (matches daily budget if all lose)</td>
+        </tr>
+        <tr>
+          <td id="rowRiskStop"><strong>Stop Loss</strong></td>
+          <td>ATR-based, max 25 pts MNQ</td>
+          <td id="rowRiskStopWhy">25 pts x $2/pt x 2 contracts = $100 max (with slippage buffer)</td>
+        </tr>
+        <tr>
+          <td id="rowRiskTarget2"><strong>Daily Profit Target</strong></td>
+          <td>$300-400</td>
+          <td id="rowRiskTarget2Why">Keeps each day under 15% of total, avoids consistency trap</td>
+        </tr>
+        <tr>
+          <td id="rowRiskTimeline"><strong>Target Timeline</strong></td>
+          <td>~20 trading days</td>
+          <td id="rowRiskTimelineWhy">Conservative pace reduces variance and drawdown risk</td>
+        </tr>
+        <tr>
+          <td id="rowRiskContracts"><strong>Contracts</strong></td>
+          <td>1-2 MNQ</td>
+          <td id="rowRiskContractsWhy">Stay well below 5-contract max to maintain stop distance</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p id="riskP1">This framework is intentionally conservative. The goal is not to pass the evaluation as fast as possible &mdash; it's to pass the evaluation <strong>at all</strong>. At 4% risk per trade, you can absorb 25 consecutive losers before breach. At 10% risk per trade, that drops to just 10. The survival math overwhelmingly favours patience.</p>
+
+  <p id="riskP2">Use <a href="/onboarding?mode=trial">x-trade.ai</a> to enforce this entire framework automatically: daily loss limits, per-trade risk caps, maximum trade counts, and ATR-based stop calculations. The system blocks trades that violate any parameter &mdash; removing emotion from the equation entirely.</p>
+
+  <!-- ECOSYSTEM CROSS-LINKS -->
+  <h2 id="h2ecosystem">Level Up Your Topstep Trading</h2>
+
+  <div class="eco-box">
+    <h3 id="ecoLearnTitle">Learn Topstep Strategies</h3>
+    <p id="ecoLearnP1">Master the specific setups and risk management techniques that work within Topstep's rule structure. <a href="https://basstrading.fr" target="_blank" rel="noopener">basstrading.fr</a> offers dedicated formations on passing Topstep evaluations, managing EOD trailing drawdown, and building consistency-rule-proof trading plans. From beginner to funded trader &mdash; learn the methods that actually work.</p>
+  </div>
+
+  <div class="eco-box">
+    <h3 id="ecoAITitle">AI-Powered Market Analysis</h3>
+    <p id="ecoAIP1">Knowing the rules is half the battle &mdash; you also need edge on entries and exits. <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a> provides AI-driven analysis of key market levels, real-time signals, and a community of active Topstep traders sharing setups. The AI identifies high-probability zones on NQ, ES, and MNQ so you can focus on execution rather than analysis.</p>
+  </div>
+
+  <!-- OFFICIAL LINK -->
+  <p id="officialLinks" style="font-size:.9rem;">Verify current rules on Topstep's official site: <a href="https://www.topstep.com" target="_blank" rel="noopener">topstep.com</a></p>
+
+  <!-- FAQ -->
+  <h2 id="h2faq">Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq1q">How does Topstep's drawdown work?</div>
+    <div class="faq-a" id="faq1a">Topstep uses an End-of-Day (EOD) trailing drawdown. Your drawdown floor only updates at session close based on your closing balance, not during the session. On a $50K account, the floor starts at $48,000 ($2,000 below starting balance). If you close the day at $50,800, the floor moves up to $48,800. Intraday equity highs do NOT affect your floor &mdash; only the closing balance matters. This makes Topstep's drawdown significantly more forgiving than tick-by-tick systems.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq2q">Does Topstep have a daily loss limit?</div>
+    <div class="faq-a" id="faq2a">No. Topstep has zero daily loss limit on any account size ($50K, $100K, or $150K). This means you can lose your entire trailing drawdown in a single session without triggering a daily limit violation &mdash; the only limit is the overall trailing drawdown floor. This freedom is dangerous without self-imposed discipline. We recommend setting your own daily loss cap at 20% of your total drawdown ($400 on the $50K, $600 on the $100K, $900 on the $150K).</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq3q">What is Topstep's 50% consistency rule?</div>
+    <div class="faq-a" id="faq3a">At payout time, no single trading day can account for more than 50% of your total cumulative profits. For example, if your total profit is $4,000, no single day can have generated more than $2,000 of that. If one day exceeds 50%, your payout is blocked until you trade additional days to dilute that percentage below 50%. The practical implication is that you need to distribute your gains across multiple trading days &mdash; one big day is not enough even if it exceeds the profit target.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq4q">Can I hold positions overnight on Topstep?</div>
+    <div class="faq-a" id="faq4a">No. Topstep requires all positions to be closed before the daily session close (4:00 PM CT for CME futures). Holding positions through the session close will result in an automatic violation. This applies to both the evaluation (Trading Combine) and funded (Express Funded Account) phases. If you need overnight holding capability, consider Bulenox, which is the only major futures prop firm currently allowing overnight positions on funded accounts.</div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-box">
+    <h2 id="ctaTitle">Automate Your Topstep Risk Management</h2>
+    <p id="ctaText">x-trade.ai enforces daily loss limits, per-trade risk caps, trade count maximums, and consistency tracking &mdash; all configured specifically for Topstep's EOD trailing drawdown. No more emotional overrides. Set up in under 5 minutes.</p>
+    <a href="/onboarding?mode=trial" class="cta-btn" id="ctaBtn">Start Free Trial</a>
+  </div>
+
+  <!-- CROSS LINKS -->
+  <div class="cross-links">
+    <h3 id="crossTitle">Related Articles</h3>
+    <a href="/blog/prop-firm-drawdown-rules-compared" class="cross-link" id="cross1">Prop Firm Drawdown Rules Compared: Topstep vs Apex vs Bulenox (2026)</a>
+    <a href="/blog/pass-prop-firm-evaluation" class="cross-link" id="cross2">How to Pass a Prop Firm Evaluation: The Complete Risk Framework</a>
+    <a href="/blog/consistency-rule-prop-firm" class="cross-link" id="cross3">The Consistency Rule Explained: Why Your Best Day Can Block Your Payout</a>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="/blog" id="footBlog">Blog</a>
+    <a href="/onboarding?mode=trial" id="footTrial">Free Trial</a>
+    <a href="https://basstrading.fr" target="_blank" rel="noopener">basstrading.fr</a>
+    <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a>
+  </div>
+  <span id="footCopy">&copy; 2026 x-trade.ai &mdash; All rights reserved.</span>
+</footer>
+
+<script>
+let lang = localStorage.getItem('xtrade_lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en');
+
+const TR = {
+en: {
+'navHome': 'Home',
+'navBlog': 'Blog',
+'navStart': 'Start Free',
+'breadcrumb': '<a href="/">Home</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; Topstep Drawdown Rules',
+'metaTag': 'Topstep',
+'metaDate': 'March 30, 2026',
+'metaRead': '16 min read',
+'title': 'Topstep Drawdown Rules Explained: EOD Trailing, No Daily Limit & The Traps (2026)',
+'takeawaysTitle': 'Key Takeaways',
+'tk1': 'Topstep uses EOD trailing drawdown \u2014 your floor only updates at session close, not intraday. This is significantly more forgiving than tick-by-tick trailing.',
+'tk2': 'There is zero daily loss limit on any Topstep account. You can lose your entire $2,000 drawdown (50K) in a single session \u2014 the #1 reason traders blow Topstep accounts.',
+'tk3': 'The 50% consistency rule blocks payouts if any single day exceeds half your total profits. You must distribute your gains across multiple trading days.',
+'tk4': 'Optimal risk per trade on the $50K account is $80 (4% of drawdown), with a self-imposed daily limit of $400 and a maximum of 5 trades per day.',
+'answerTitle': 'How does Topstep\'s drawdown work?',
+'answerP1': 'Topstep uses an <strong>End-of-Day (EOD) trailing drawdown</strong>. On a $50K account, your drawdown floor starts at <strong>$48,000</strong> ($2,000 below starting balance). The floor only moves up at session close \u2014 if your closing balance reaches a new high, the floor trails up by that same amount. Intraday equity highs do NOT raise your floor.',
+'answerP2': 'Example: You close at $51,200 (new high). Floor moves from $48,000 to $49,200. Next day your equity hits $53,000 intraday but you close at $51,000 \u2014 floor stays at $49,200 because your close was not a new high. This is the key mechanic that makes Topstep\'s drawdown survivable.',
+'intro': '<strong>Topstep is the most popular futures prop firm in the world.</strong> But its drawdown rules have subtleties that catch traders off guard \u2014 especially the combination of EOD trailing + zero daily loss limit + 50% consistency rule. Understanding exactly how these three mechanics interact is the difference between passing and blowing your account.',
+'intro2': 'This guide breaks down every Topstep drawdown rule with real math, step-by-step examples, and the risk framework you need to survive. Whether you\'re trading the $50K, $100K, or $150K account, the principles are the same \u2014 only the numbers change.',
+'lastUpdated': 'Last updated: March 2026',
+'h2plans': 'Topstep Account Plans: $50K, $100K & $150K',
+'plansIntro': 'Topstep offers three account sizes. The drawdown mechanics are identical across all three \u2014 only the dollar amounts scale. Here is every specification that matters for risk management.',
+'thSpec': 'Specification',
+'th50k': '$50K Account',
+'th100k': '$100K Account',
+'th150k': '$150K Account',
+'rowPlanDD': '<strong>Max Drawdown</strong>',
+'rowPlanDDType': '<strong>DD Type</strong>',
+'rowPlanContracts': '<strong>Max Contracts</strong>',
+'rowPlanTarget': '<strong>Profit Target</strong>',
+'rowPlanDaily': '<strong>Daily Loss Limit</strong>',
+'rowPlanConsist': '<strong>Consistency Rule</strong>',
+'rowPlanFee': '<strong>Monthly Fee</strong>',
+'rowPlanOvernight': '<strong>Overnight Holding</strong>',
+'rowPlanMinDays': '<strong>Min Trading Days</strong>',
+'planNote': '<strong>Key observation:</strong> The drawdown-to-target ratio is identical across all accounts \u2014 roughly 1.5x. You need to earn 1.5x your maximum drawdown to pass. This ratio determines the difficulty: it means you must consistently produce 1.5R returns without ever hitting your loss floor, which requires at least a 60% win rate at 1:1 risk-reward, or a lower win rate with higher R-multiples.',
+'h2eod': 'How EOD Trailing Drawdown Works on Topstep',
+'eodIntro': 'The EOD trailing drawdown is Topstep\'s most important rule \u2014 and the most misunderstood. Here is exactly how it works, step by step, over a 5-day example on the $50K account.',
+'h3eodMech': 'The Mechanic',
+'eodMechP1': 'At the end of each trading session, Topstep checks your <strong>closing balance</strong> (not intraday high). If your closing balance is a new all-time high, the drawdown floor moves up by the difference. If your closing balance is below or equal to the previous high close, the floor does <strong>not</strong> move.',
+'h3eodExample': '5-Day Example ($50K Account, $2,000 Drawdown)',
+'eodMath': '<strong>Starting balance: $50,000 | Starting floor: $48,000</strong><br><br><strong>Day 1:</strong> Close at $50,400 (new high)<br>&rarr; Floor moves to <span class="floor">$48,400</span> | Cushion: $2,000<br><br><strong>Day 2:</strong> Intraday high $52,000, but close at $50,800 (new high)<br>&rarr; Floor moves to <span class="floor">$48,800</span> (NOT $50,000!) | Cushion: $2,000<br><br><strong>Day 3:</strong> Close at $50,200 (below previous high of $50,800)<br>&rarr; Floor <span class="floor">stays at $48,800</span> | Cushion: $1,400<br><br><strong>Day 4:</strong> Close at $51,500 (new high)<br>&rarr; Floor moves to <span class="floor">$49,500</span> | Cushion: $2,000<br><br><strong>Day 5:</strong> Intraday high $53,200, close at $51,100 (below previous high)<br>&rarr; Floor <span class="floor">stays at $49,500</span> | Cushion: $1,600',
+'eodInsight': '<strong>The critical insight:</strong> On Day 2, your account touched $52,000 intraday \u2014 but because you closed at $50,800, the floor only moved to $48,800. On a tick-by-tick system (like Bulenox Option 1), that same intraday high would have pushed your floor to $50,000 \u2014 a full $1,200 higher. This is why EOD trailing is dramatically more survivable for active intraday traders.',
+'eodInsight2': 'On Day 5, despite an intraday high of $53,200, the floor didn\'t move at all because the close ($51,100) was below the previous high close ($51,500). With tick-by-tick trailing, the floor would have jumped to $51,200 \u2014 leaving you just $100 from breach at close. EOD trailing saved $1,700 of breathing room in this single scenario.',
+'h2daily': 'The No-Daily-Limit Trap',
+'dailyTrapTitle': 'WARNING: No Safety Net',
+'dailyTrapP1': 'Topstep has <strong>zero daily loss limit</strong> on any account size. This sounds like freedom. It is a trap.',
+'dailyTrapP2': 'Without a daily loss limit, there is nothing stopping you from losing your <strong>entire $2,000 drawdown in a single session</strong>. One bad session. One revenge trade spiral. One news event that moves against your full position. Account gone.',
+'dailyP1': 'This is the #1 reason traders blow Topstep accounts. Firms like Apex ($1,000 daily limit) and Tradeify ($1,250 daily limit) force you to stop trading after a certain loss. Topstep does not. The discipline must come entirely from you.',
+'dailyP2': 'On a $50K account with a $2,000 drawdown, a single 50-point adverse move on 2 MNQ contracts equals $500 in losses \u2014 that\'s 25% of your entire drawdown gone in one trade. Two such trades and you\'ve lost half your cushion. Three and you\'re one bad trade from elimination.',
+'dailyP3': '<strong>The fix is simple but non-negotiable:</strong> Set your own daily loss limit at <strong>20% of your total drawdown</strong>. For the $50K account, that\'s $400/day. For the $100K, it\'s $600/day. For the $150K, it\'s $900/day. Once you hit that limit, you stop trading. No exceptions. Tools like <a href="/onboarding?mode=trial">x-trade.ai</a> can enforce this automatically so your emotions never override the rule.',
+'h2consist': 'The 50% Consistency Rule',
+'consistP1': 'Topstep\'s consistency rule states that <strong>no single trading day can account for more than 50% of your total cumulative profits</strong> at the time you request a payout. This rule exists to prevent traders from passing the evaluation on a single lucky day.',
+'h3consistExample': 'Example: How Consistency Blocks Your Payout',
+'consistMath': '<strong>10 trading days on $50K account (target: $3,000)</strong><br><br>Days 1-9: Average $200/day = $1,800 total<br>Day 10: One great trade = $2,000<br><br>Total profit: $3,800 (above $3,000 target)<br>Best day: $2,000 / $3,800 = <span class="danger">52.6% &rarr; PAYOUT BLOCKED</span><br><br><strong>You must trade more days to dilute.</strong><br>If you add Day 11: +$200 &rarr; Total $4,000<br>Best day: $2,000 / $4,000 = 50.0% &rarr; <span class="floor">STILL BLOCKED (must be UNDER 50%)</span><br><br>Day 12: +$200 &rarr; Total $4,200<br>Best day: $2,000 / $4,200 = <span class="floor">47.6% &rarr; PAYOUT APPROVED</span>',
+'consistP2': 'The trap is subtle: you can pass the profit target and still not qualify for a payout. Many traders hit $3,000 in total profit with one large day and assume they\'re done. They\'re not. The consistency rule forces you to keep trading \u2014 and every additional day carries the risk of giving back profits or breaching the drawdown.',
+'consistP3': '<strong>The optimal approach:</strong> Target $300-400/day across 8-12 trading days instead of hunting for one big day. This keeps any single day well below 50% of total and reduces the risk of consistency violations. A steady grind of $350/day reaches the $3,000 target in about 9 days, with each day representing only ~11% of total profits \u2014 far from the 50% limit.',
+'h2target': 'The Profit Target Trap',
+'targetP1': 'The $3,000 profit target on the $50K account seems low. It\'s only 6% of the account size. But let\'s do the real math on what it takes to get there.',
+'targetMath': '<strong>Realistic profit target math ($50K account):</strong><br><br>Risk per trade: $80 (4% of $2,000 drawdown)<br>Average win at 1.5R: $120<br>Average loss at 1R: $80<br>Win rate needed: 60%<br><br>Per 10 trades: 6 wins x $120 = $720, 4 losses x $80 = $320<br>Net per 10 trades: $400<br>Trades to reach $3,000: ~75 trades<br>At 5 trades/day: <strong>~15 trading days</strong><br><br>At 50% win rate with 2R winners:<br>Per 10 trades: 5 wins x $160 = $800, 5 losses x $80 = $400<br>Net per 10 trades: $400<br>Trades to reach $3,000: ~75 trades<br>At 5 trades/day: <strong>~15 trading days</strong>',
+'targetP2': 'With disciplined $80 risk per trade, it takes roughly <strong>75 winning-equivalent trades across 15 trading days</strong>. Traders who try to rush this \u2014 risking $200+ per trade to reach the target faster \u2014 dramatically increase their probability of drawdown breach. At $200/trade risk, just 10 consecutive losses wipes out the entire $2,000 drawdown. At $80/trade risk, you can absorb 25 consecutive losses before breach.',
+'targetP3': '<strong>The lesson:</strong> Don\'t fight the math. The $3,000 target with $2,000 drawdown is designed to take 2-4 weeks of disciplined trading. Any attempt to compress this timeline requires taking outsized risk, which is exactly how most traders fail.',
+'h2risk': 'Optimal Risk Framework for Topstep $50K',
+'riskIntro': 'Based on the drawdown mechanics, consistency rule, and profit target math, here is the complete risk framework for the Topstep $50K account. These same ratios apply proportionally to the $100K and $150K accounts.',
+'thParam': 'Parameter',
+'thValue': 'Value',
+'thWhy': 'Why',
+'rowRiskDaily': '<strong>Daily Loss Budget</strong>',
+'rowRiskDailyWhy': '20% of $2,000 drawdown = 5 days of survival at max loss',
+'rowRiskTrade': '<strong>Risk per Trade</strong>',
+'rowRiskTradeWhy': '4% of drawdown = 25 consecutive losses before breach',
+'rowRiskMax': '<strong>Max Trades/Day</strong>',
+'rowRiskMaxWhy': '$80 x 5 = $400 (matches daily budget if all lose)',
+'rowRiskStop': '<strong>Stop Loss</strong>',
+'rowRiskStopWhy': '25 pts x $2/pt x 2 contracts = $100 max (with slippage buffer)',
+'rowRiskTarget2': '<strong>Daily Profit Target</strong>',
+'rowRiskTarget2Why': 'Keeps each day under 15% of total, avoids consistency trap',
+'rowRiskTimeline': '<strong>Target Timeline</strong>',
+'rowRiskTimelineWhy': 'Conservative pace reduces variance and drawdown risk',
+'rowRiskContracts': '<strong>Contracts</strong>',
+'rowRiskContractsWhy': 'Stay well below 5-contract max to maintain stop distance',
+'riskP1': 'This framework is intentionally conservative. The goal is not to pass the evaluation as fast as possible \u2014 it\'s to pass the evaluation <strong>at all</strong>. At 4% risk per trade, you can absorb 25 consecutive losers before breach. At 10% risk per trade, that drops to just 10. The survival math overwhelmingly favours patience.',
+'riskP2': 'Use <a href="/onboarding?mode=trial">x-trade.ai</a> to enforce this entire framework automatically: daily loss limits, per-trade risk caps, maximum trade counts, and ATR-based stop calculations. The system blocks trades that violate any parameter \u2014 removing emotion from the equation entirely.',
+'h2ecosystem': 'Level Up Your Topstep Trading',
+'ecoLearnTitle': 'Learn Topstep Strategies',
+'ecoLearnP1': 'Master the specific setups and risk management techniques that work within Topstep\'s rule structure. <a href="https://basstrading.fr" target="_blank" rel="noopener">basstrading.fr</a> offers dedicated formations on passing Topstep evaluations, managing EOD trailing drawdown, and building consistency-rule-proof trading plans. From beginner to funded trader \u2014 learn the methods that actually work.',
+'ecoAITitle': 'AI-Powered Market Analysis',
+'ecoAIP1': 'Knowing the rules is half the battle \u2014 you also need edge on entries and exits. <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a> provides AI-driven analysis of key market levels, real-time signals, and a community of active Topstep traders sharing setups. The AI identifies high-probability zones on NQ, ES, and MNQ so you can focus on execution rather than analysis.',
+'officialLinks': 'Verify current rules on Topstep\'s official site: <a href="https://www.topstep.com" target="_blank" rel="noopener">topstep.com</a>',
+'h2faq': 'Frequently Asked Questions',
+'faq1q': 'How does Topstep\'s drawdown work?',
+'faq1a': 'Topstep uses an End-of-Day (EOD) trailing drawdown. Your drawdown floor only updates at session close based on your closing balance, not during the session. On a $50K account, the floor starts at $48,000 ($2,000 below starting balance). If you close the day at $50,800, the floor moves up to $48,800. Intraday equity highs do NOT affect your floor \u2014 only the closing balance matters. This makes Topstep\'s drawdown significantly more forgiving than tick-by-tick systems.',
+'faq2q': 'Does Topstep have a daily loss limit?',
+'faq2a': 'No. Topstep has zero daily loss limit on any account size ($50K, $100K, or $150K). This means you can lose your entire trailing drawdown in a single session without triggering a daily limit violation \u2014 the only limit is the overall trailing drawdown floor. This freedom is dangerous without self-imposed discipline. We recommend setting your own daily loss cap at 20% of your total drawdown ($400 on the $50K, $600 on the $100K, $900 on the $150K).',
+'faq3q': 'What is Topstep\'s 50% consistency rule?',
+'faq3a': 'At payout time, no single trading day can account for more than 50% of your total cumulative profits. For example, if your total profit is $4,000, no single day can have generated more than $2,000 of that. If one day exceeds 50%, your payout is blocked until you trade additional days to dilute that percentage below 50%. The practical implication is that you need to distribute your gains across multiple trading days \u2014 one big day is not enough even if it exceeds the profit target.',
+'faq4q': 'Can I hold positions overnight on Topstep?',
+'faq4a': 'No. Topstep requires all positions to be closed before the daily session close (4:00 PM CT for CME futures). Holding positions through the session close will result in an automatic violation. This applies to both the evaluation (Trading Combine) and funded (Express Funded Account) phases. If you need overnight holding capability, consider Bulenox, which is the only major futures prop firm currently allowing overnight positions on funded accounts.',
+'ctaTitle': 'Automate Your Topstep Risk Management',
+'ctaText': 'x-trade.ai enforces daily loss limits, per-trade risk caps, trade count maximums, and consistency tracking \u2014 all configured specifically for Topstep\'s EOD trailing drawdown. No more emotional overrides. Set up in under 5 minutes.',
+'ctaBtn': 'Start Free Trial',
+'crossTitle': 'Related Articles',
+'cross1': 'Prop Firm Drawdown Rules Compared: Topstep vs Apex vs Bulenox (2026)',
+'cross2': 'How to Pass a Prop Firm Evaluation: The Complete Risk Framework',
+'cross3': 'The Consistency Rule Explained: Why Your Best Day Can Block Your Payout',
+'footBlog': 'Blog',
+'footTrial': 'Free Trial',
+'footCopy': '\u00a9 2026 x-trade.ai \u2014 All rights reserved.'
+},
+fr: {
+'navHome': 'Accueil',
+'navBlog': 'Blog',
+'navStart': 'Essai Gratuit',
+'breadcrumb': '<a href="/">Accueil</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; R\u00e8gles de Drawdown Topstep',
+'metaTag': 'Topstep',
+'metaDate': '30 mars 2026',
+'metaRead': '16 min de lecture',
+'title': 'R\u00e8gles de Drawdown Topstep : EOD Trailing, Pas de Daily Limit et Les Pi\u00e8ges (2026)',
+'takeawaysTitle': 'Points Cl\u00e9s',
+'tk1': 'Topstep utilise un drawdown trailing EOD \u2014 votre plancher ne se met \u00e0 jour qu\'\u00e0 la cl\u00f4ture de session, pas en intraday. C\'est nettement plus indulgent que le trailing tick-by-tick.',
+'tk2': 'Il n\'y a aucune daily loss limit sur aucun compte Topstep. Vous pouvez perdre l\'int\u00e9gralit\u00e9 de votre drawdown de 2\u202f000$ (50K) en une seule session \u2014 la raison n\u00b01 pour laquelle les traders grillent leurs comptes Topstep.',
+'tk3': 'La r\u00e8gle de consistency \u00e0 50% bloque les payouts si une seule journ\u00e9e d\u00e9passe la moiti\u00e9 de vos profits totaux. Vous devez r\u00e9partir vos gains sur plusieurs jours de trading.',
+'tk4': 'Le risque optimal par trade sur le compte 50K$ est de 80$ (4% du drawdown), avec une limite journali\u00e8re auto-impos\u00e9e de 400$ et un maximum de 5 trades par jour.',
+'answerTitle': 'Comment fonctionne le drawdown de Topstep ?',
+'answerP1': 'Topstep utilise un <strong>drawdown trailing End-of-Day (EOD)</strong>. Sur un compte de 50K$, votre plancher de drawdown d\u00e9marre \u00e0 <strong>48\u202f000$</strong> (2\u202f000$ en dessous du solde initial). Le plancher ne monte qu\'\u00e0 la cl\u00f4ture de session \u2014 si votre solde de cl\u00f4ture atteint un nouveau plus haut, le plancher remonte du m\u00eame montant. Les pics d\'\u00e9quit\u00e9 intraday ne font PAS monter votre plancher.',
+'answerP2': 'Exemple : Vous cl\u00f4turez \u00e0 51\u202f200$ (nouveau plus haut). Le plancher passe de 48\u202f000$ \u00e0 49\u202f200$. Le lendemain, votre \u00e9quit\u00e9 touche 53\u202f000$ en intraday mais vous cl\u00f4turez \u00e0 51\u202f000$ \u2014 le plancher reste \u00e0 49\u202f200$ car votre cl\u00f4ture n\'est pas un nouveau plus haut. C\'est la m\u00e9canique cl\u00e9 qui rend le drawdown de Topstep survivable.',
+'intro': '<strong>Topstep est la prop firm futures la plus populaire au monde.</strong> Mais ses r\u00e8gles de drawdown ont des subtilit\u00e9s qui prennent les traders au d\u00e9pourvu \u2014 en particulier la combinaison trailing EOD + z\u00e9ro daily loss limit + r\u00e8gle de consistency \u00e0 50%. Comprendre exactement comment ces trois m\u00e9caniques interagissent fait la diff\u00e9rence entre r\u00e9ussir et griller votre compte.',
+'intro2': 'Ce guide d\u00e9cortique chaque r\u00e8gle de drawdown Topstep avec des calculs r\u00e9els, des exemples pas \u00e0 pas et le framework de risque dont vous avez besoin pour survivre. Que vous tradiez le compte 50K$, 100K$ ou 150K$, les principes sont les m\u00eames \u2014 seuls les chiffres changent.',
+'lastUpdated': 'Derni\u00e8re mise \u00e0 jour : mars 2026',
+'h2plans': 'Plans de Comptes Topstep : 50K$, 100K$ et 150K$',
+'plansIntro': 'Topstep propose trois tailles de compte. Les m\u00e9caniques de drawdown sont identiques sur les trois \u2014 seuls les montants en dollars changent. Voici chaque sp\u00e9cification qui compte pour la gestion du risque.',
+'thSpec': 'Sp\u00e9cification',
+'th50k': 'Compte 50K$',
+'th100k': 'Compte 100K$',
+'th150k': 'Compte 150K$',
+'rowPlanDD': '<strong>Drawdown Max</strong>',
+'rowPlanDDType': '<strong>Type de DD</strong>',
+'rowPlanContracts': '<strong>Contrats Max</strong>',
+'rowPlanTarget': '<strong>Objectif de Profit</strong>',
+'rowPlanDaily': '<strong>Daily Loss Limit</strong>',
+'rowPlanConsist': '<strong>R\u00e8gle de Consistency</strong>',
+'rowPlanFee': '<strong>Frais Mensuels</strong>',
+'rowPlanOvernight': '<strong>Holding Overnight</strong>',
+'rowPlanMinDays': '<strong>Jours Min de Trading</strong>',
+'planNote': '<strong>Observation cl\u00e9 :</strong> Le ratio drawdown/objectif est identique sur tous les comptes \u2014 environ 1,5x. Vous devez gagner 1,5 fois votre drawdown maximum pour r\u00e9ussir. Ce ratio d\u00e9termine la difficult\u00e9 : il faut produire r\u00e9guli\u00e8rement des rendements de 1,5R sans jamais toucher votre plancher de perte, ce qui n\u00e9cessite au minimum un taux de r\u00e9ussite de 60% en risk-reward 1:1, ou un taux plus bas avec des multiples de R plus \u00e9lev\u00e9s.',
+'h2eod': 'Comment Fonctionne le Drawdown Trailing EOD sur Topstep',
+'eodIntro': 'Le drawdown trailing EOD est la r\u00e8gle la plus importante de Topstep \u2014 et la plus mal comprise. Voici exactement comment il fonctionne, \u00e9tape par \u00e9tape, sur un exemple de 5 jours avec le compte 50K$.',
+'h3eodMech': 'La M\u00e9canique',
+'eodMechP1': '\u00c0 la fin de chaque session de trading, Topstep v\u00e9rifie votre <strong>solde de cl\u00f4ture</strong> (pas le plus haut intraday). Si votre solde de cl\u00f4ture est un nouveau plus haut historique, le plancher de drawdown monte de la diff\u00e9rence. Si votre solde de cl\u00f4ture est inf\u00e9rieur ou \u00e9gal au plus haut de cl\u00f4ture pr\u00e9c\u00e9dent, le plancher ne <strong>bouge pas</strong>.',
+'h3eodExample': 'Exemple sur 5 Jours (Compte 50K$, Drawdown 2\u202f000$)',
+'eodMath': '<strong>Solde initial : 50\u202f000$ | Plancher initial : 48\u202f000$</strong><br><br><strong>Jour 1 :</strong> Cl\u00f4ture \u00e0 50\u202f400$ (nouveau plus haut)<br>&rarr; Plancher monte \u00e0 <span class="floor">48\u202f400$</span> | Marge : 2\u202f000$<br><br><strong>Jour 2 :</strong> Plus haut intraday 52\u202f000$, mais cl\u00f4ture \u00e0 50\u202f800$ (nouveau plus haut)<br>&rarr; Plancher monte \u00e0 <span class="floor">48\u202f800$</span> (PAS 50\u202f000$ !) | Marge : 2\u202f000$<br><br><strong>Jour 3 :</strong> Cl\u00f4ture \u00e0 50\u202f200$ (sous le plus haut pr\u00e9c\u00e9dent de 50\u202f800$)<br>&rarr; Plancher <span class="floor">reste \u00e0 48\u202f800$</span> | Marge : 1\u202f400$<br><br><strong>Jour 4 :</strong> Cl\u00f4ture \u00e0 51\u202f500$ (nouveau plus haut)<br>&rarr; Plancher monte \u00e0 <span class="floor">49\u202f500$</span> | Marge : 2\u202f000$<br><br><strong>Jour 5 :</strong> Plus haut intraday 53\u202f200$, cl\u00f4ture \u00e0 51\u202f100$ (sous le plus haut pr\u00e9c\u00e9dent)<br>&rarr; Plancher <span class="floor">reste \u00e0 49\u202f500$</span> | Marge : 1\u202f600$',
+'eodInsight': '<strong>L\'insight critique :</strong> Au Jour 2, votre compte a touch\u00e9 52\u202f000$ en intraday \u2014 mais comme vous avez cl\u00f4tur\u00e9 \u00e0 50\u202f800$, le plancher n\'a mont\u00e9 qu\'\u00e0 48\u202f800$. Sur un syst\u00e8me tick-by-tick (comme Bulenox Option 1), ce m\u00eame plus haut intraday aurait pouss\u00e9 votre plancher \u00e0 50\u202f000$ \u2014 soit 1\u202f200$ de plus. C\'est pourquoi le trailing EOD est radicalement plus survivable pour les traders intraday actifs.',
+'eodInsight2': 'Au Jour 5, malgr\u00e9 un plus haut intraday de 53\u202f200$, le plancher n\'a pas boug\u00e9 du tout car la cl\u00f4ture (51\u202f100$) \u00e9tait sous le plus haut de cl\u00f4ture pr\u00e9c\u00e9dent (51\u202f500$). Avec un trailing tick-by-tick, le plancher aurait bond\u00e9 \u00e0 51\u202f200$ \u2014 vous laissant \u00e0 seulement 100$ d\'une violation \u00e0 la cl\u00f4ture. Le trailing EOD a sauv\u00e9 1\u202f700$ de marge de man\u0153uvre dans ce seul sc\u00e9nario.',
+'h2daily': 'Le Pi\u00e8ge du Z\u00e9ro Daily Limit',
+'dailyTrapTitle': 'ATTENTION : Aucun Filet de S\u00e9curit\u00e9',
+'dailyTrapP1': 'Topstep n\'a <strong>aucune daily loss limit</strong> sur aucune taille de compte. \u00c7a semble \u00eatre de la libert\u00e9. C\'est un pi\u00e8ge.',
+'dailyTrapP2': 'Sans daily loss limit, rien ne vous emp\u00eache de perdre <strong>l\'int\u00e9gralit\u00e9 de votre drawdown de 2\u202f000$ en une seule session</strong>. Une mauvaise session. Une spirale de revenge trading. Un \u00e9v\u00e9nement news qui va contre votre position compl\u00e8te. Compte termin\u00e9.',
+'dailyP1': 'C\'est la raison n\u00b01 pour laquelle les traders grillent leurs comptes Topstep. Des firmes comme Apex (daily limit de 1\u202f000$) et Tradeify (daily limit de 1\u202f250$) vous forcent \u00e0 arr\u00eater de trader apr\u00e8s une certaine perte. Topstep ne le fait pas. La discipline doit venir enti\u00e8rement de vous.',
+'dailyP2': 'Sur un compte 50K$ avec un drawdown de 2\u202f000$, un seul mouvement adverse de 50 points sur 2 contrats MNQ \u00e9quivaut \u00e0 500$ de pertes \u2014 soit 25% de votre drawdown total sur un seul trade. Deux trades de ce type et vous avez perdu la moiti\u00e9 de votre marge. Trois et vous \u00eates \u00e0 un mauvais trade de l\'\u00e9limination.',
+'dailyP3': '<strong>La solution est simple mais non n\u00e9gociable :</strong> Fixez votre propre daily loss limit \u00e0 <strong>20% de votre drawdown total</strong>. Pour le compte 50K$, c\'est 400$/jour. Pour le 100K$, 600$/jour. Pour le 150K$, 900$/jour. Une fois cette limite atteinte, vous arr\u00eatez de trader. Sans exception. Des outils comme <a href="/onboarding?mode=trial">x-trade.ai</a> peuvent appliquer cela automatiquement pour que vos \u00e9motions ne contournent jamais la r\u00e8gle.',
+'h2consist': 'La R\u00e8gle de Consistency \u00e0 50%',
+'consistP1': 'La r\u00e8gle de consistency de Topstep stipule qu\'<strong>aucune journ\u00e9e de trading ne peut repr\u00e9senter plus de 50% de vos profits cumul\u00e9s totaux</strong> au moment o\u00f9 vous demandez un payout. Cette r\u00e8gle existe pour emp\u00eacher les traders de passer l\'\u00e9valuation sur une seule journ\u00e9e chanceuse.',
+'h3consistExample': 'Exemple : Comment la Consistency Bloque Votre Payout',
+'consistMath': '<strong>10 jours de trading sur compte 50K$ (objectif : 3\u202f000$)</strong><br><br>Jours 1-9 : Moyenne 200$/jour = 1\u202f800$ au total<br>Jour 10 : Un excellent trade = 2\u202f000$<br><br>Profit total : 3\u202f800$ (au-dessus de l\'objectif de 3\u202f000$)<br>Meilleure journ\u00e9e : 2\u202f000$ / 3\u202f800$ = <span class="danger">52,6% &rarr; PAYOUT BLOQU\u00c9</span><br><br><strong>Vous devez trader plus de jours pour diluer.</strong><br>Si vous ajoutez Jour 11 : +200$ &rarr; Total 4\u202f000$<br>Meilleure journ\u00e9e : 2\u202f000$ / 4\u202f000$ = 50,0% &rarr; <span class="floor">TOUJOURS BLOQU\u00c9 (doit \u00eatre EN DESSOUS de 50%)</span><br><br>Jour 12 : +200$ &rarr; Total 4\u202f200$<br>Meilleure journ\u00e9e : 2\u202f000$ / 4\u202f200$ = <span class="floor">47,6% &rarr; PAYOUT APPROUV\u00c9</span>',
+'consistP2': 'Le pi\u00e8ge est subtil : vous pouvez atteindre l\'objectif de profit et quand m\u00eame ne pas \u00eatre \u00e9ligible au payout. De nombreux traders atteignent 3\u202f000$ de profit total avec une grosse journ\u00e9e et pensent avoir termin\u00e9. Ce n\'est pas le cas. La r\u00e8gle de consistency vous oblige \u00e0 continuer \u00e0 trader \u2014 et chaque jour suppl\u00e9mentaire comporte le risque de rendre des profits ou de violer le drawdown.',
+'consistP3': '<strong>L\'approche optimale :</strong> Visez 300-400$/jour sur 8-12 jours de trading au lieu de chasser une grosse journ\u00e9e. Cela maintient chaque journ\u00e9e bien en dessous de 50% du total et r\u00e9duit le risque de violations de consistency. Un grind r\u00e9gulier de 350$/jour atteint l\'objectif de 3\u202f000$ en environ 9 jours, chaque journ\u00e9e ne repr\u00e9sentant qu\'environ 11% des profits totaux \u2014 loin de la limite de 50%.',
+'h2target': 'Le Pi\u00e8ge de l\'Objectif de Profit',
+'targetP1': 'L\'objectif de profit de 3\u202f000$ sur le compte 50K$ semble bas. Ce n\'est que 6% de la taille du compte. Mais faisons les vrais calculs sur ce qu\'il faut pour y arriver.',
+'targetMath': '<strong>Math r\u00e9aliste de l\'objectif de profit (compte 50K$) :</strong><br><br>Risque par trade : 80$ (4% du drawdown de 2\u202f000$)<br>Gain moyen \u00e0 1,5R : 120$<br>Perte moyenne \u00e0 1R : 80$<br>Taux de r\u00e9ussite n\u00e9cessaire : 60%<br><br>Par 10 trades : 6 gagnants x 120$ = 720$, 4 perdants x 80$ = 320$<br>Net par 10 trades : 400$<br>Trades pour atteindre 3\u202f000$ : ~75 trades<br>\u00c0 5 trades/jour : <strong>~15 jours de trading</strong><br><br>\u00c0 50% de taux de r\u00e9ussite avec des gagnants \u00e0 2R :<br>Par 10 trades : 5 gagnants x 160$ = 800$, 5 perdants x 80$ = 400$<br>Net par 10 trades : 400$<br>Trades pour atteindre 3\u202f000$ : ~75 trades<br>\u00c0 5 trades/jour : <strong>~15 jours de trading</strong>',
+'targetP2': 'Avec un risque disciplin\u00e9 de 80$ par trade, il faut environ <strong>75 trades \u00e9quivalent-gagnants sur 15 jours de trading</strong>. Les traders qui essaient de pr\u00e9cipiter cela \u2014 en risquant 200$+ par trade pour atteindre l\'objectif plus vite \u2014 augmentent dramatiquement leur probabilit\u00e9 de violation du drawdown. \u00c0 200$/trade de risque, seulement 10 pertes cons\u00e9cutives \u00e9puisent l\'int\u00e9gralit\u00e9 du drawdown de 2\u202f000$. \u00c0 80$/trade de risque, vous pouvez absorber 25 pertes cons\u00e9cutives avant la violation.',
+'targetP3': '<strong>La le\u00e7on :</strong> Ne combattez pas les math\u00e9matiques. L\'objectif de 3\u202f000$ avec un drawdown de 2\u202f000$ est con\u00e7u pour prendre 2-4 semaines de trading disciplin\u00e9. Toute tentative de compresser ce calendrier exige de prendre des risques d\u00e9mesur\u00e9s, ce qui est exactement la fa\u00e7on dont la plupart des traders \u00e9chouent.',
+'h2risk': 'Framework de Risque Optimal pour Topstep 50K$',
+'riskIntro': 'Sur la base des m\u00e9caniques de drawdown, de la r\u00e8gle de consistency et des calculs d\'objectif de profit, voici le framework de risque complet pour le compte Topstep 50K$. Ces m\u00eames ratios s\'appliquent proportionnellement aux comptes 100K$ et 150K$.',
+'thParam': 'Param\u00e8tre',
+'thValue': 'Valeur',
+'thWhy': 'Pourquoi',
+'rowRiskDaily': '<strong>Budget Perte Journalier</strong>',
+'rowRiskDailyWhy': '20% du drawdown de 2\u202f000$ = 5 jours de survie \u00e0 perte maximale',
+'rowRiskTrade': '<strong>Risque par Trade</strong>',
+'rowRiskTradeWhy': '4% du drawdown = 25 pertes cons\u00e9cutives avant violation',
+'rowRiskMax': '<strong>Max Trades/Jour</strong>',
+'rowRiskMaxWhy': '80$ x 5 = 400$ (correspond au budget journalier si tous perdent)',
+'rowRiskStop': '<strong>Stop Loss</strong>',
+'rowRiskStopWhy': '25 pts x 2$/pt x 2 contrats = 100$ max (avec marge de slippage)',
+'rowRiskTarget2': '<strong>Objectif Profit Journalier</strong>',
+'rowRiskTarget2Why': 'Maintient chaque jour sous 15% du total, \u00e9vite le pi\u00e8ge de consistency',
+'rowRiskTimeline': '<strong>Timeline Objectif</strong>',
+'rowRiskTimelineWhy': 'Un rythme conservateur r\u00e9duit la variance et le risque de drawdown',
+'rowRiskContracts': '<strong>Contrats</strong>',
+'rowRiskContractsWhy': 'Restez bien en dessous du max de 5 contrats pour maintenir la distance de stop',
+'riskP1': 'Ce framework est volontairement conservateur. L\'objectif n\'est pas de passer l\'\u00e9valuation le plus vite possible \u2014 c\'est de passer l\'\u00e9valuation <strong>tout court</strong>. \u00c0 4% de risque par trade, vous pouvez absorber 25 perdants cons\u00e9cutifs avant violation. \u00c0 10% de risque par trade, \u00e7a tombe \u00e0 seulement 10. Les math\u00e9matiques de survie favorisent massivement la patience.',
+'riskP2': 'Utilisez <a href="/onboarding?mode=trial">x-trade.ai</a> pour appliquer l\'int\u00e9gralit\u00e9 de ce framework automatiquement : daily loss limits, plafonds de risque par trade, nombre maximum de trades et calculs de stop bas\u00e9s sur l\'ATR. Le syst\u00e8me bloque les trades qui violent n\'importe quel param\u00e8tre \u2014 supprimant l\'\u00e9motion de l\'\u00e9quation enti\u00e8rement.',
+'h2ecosystem': 'Passez au Niveau Sup\u00e9rieur sur Topstep',
+'ecoLearnTitle': 'Apprenez les Strat\u00e9gies Topstep',
+'ecoLearnP1': 'Ma\u00eetrisez les setups sp\u00e9cifiques et les techniques de gestion du risque qui fonctionnent dans le cadre des r\u00e8gles de Topstep. <a href="https://basstrading.fr" target="_blank" rel="noopener">basstrading.fr</a> propose des formations d\u00e9di\u00e9es au passage des \u00e9valuations Topstep, \u00e0 la gestion du drawdown trailing EOD et \u00e0 la construction de plans de trading compatible avec la r\u00e8gle de consistency. Du d\u00e9butant au trader funded \u2014 apprenez les m\u00e9thodes qui marchent vraiment.',
+'ecoAITitle': 'Analyse de March\u00e9 Pilot\u00e9e par l\'IA',
+'ecoAIP1': 'Conna\u00eetre les r\u00e8gles, c\'est la moiti\u00e9 de la bataille \u2014 vous avez aussi besoin d\'un avantage sur les entr\u00e9es et les sorties. <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a> fournit une analyse pilot\u00e9e par l\'IA des niveaux cl\u00e9s du march\u00e9, des signaux en temps r\u00e9el et une communaut\u00e9 de traders Topstep actifs partageant leurs setups. L\'IA identifie les zones \u00e0 haute probabilit\u00e9 sur NQ, ES et MNQ pour que vous puissiez vous concentrer sur l\'ex\u00e9cution plut\u00f4t que sur l\'analyse.',
+'officialLinks': 'V\u00e9rifiez les r\u00e8gles actuelles sur le site officiel de Topstep : <a href="https://www.topstep.com" target="_blank" rel="noopener">topstep.com</a>',
+'h2faq': 'Questions Fr\u00e9quemment Pos\u00e9es',
+'faq1q': 'Comment fonctionne le drawdown de Topstep ?',
+'faq1a': 'Topstep utilise un drawdown trailing End-of-Day (EOD). Votre plancher de drawdown ne se met \u00e0 jour qu\'\u00e0 la cl\u00f4ture de session sur la base de votre solde de cl\u00f4ture, pas pendant la session. Sur un compte de 50K$, le plancher d\u00e9marre \u00e0 48\u202f000$ (2\u202f000$ en dessous du solde initial). Si vous cl\u00f4turez \u00e0 50\u202f800$, le plancher monte \u00e0 48\u202f800$. Les pics d\'\u00e9quit\u00e9 intraday n\'affectent PAS votre plancher \u2014 seul le solde de cl\u00f4ture compte. Cela rend le drawdown de Topstep nettement plus indulgent que les syst\u00e8mes tick-by-tick.',
+'faq2q': 'Est-ce que Topstep a une daily loss limit ?',
+'faq2a': 'Non. Topstep n\'a aucune daily loss limit sur aucune taille de compte (50K$, 100K$ ou 150K$). Cela signifie que vous pouvez perdre l\'int\u00e9gralit\u00e9 de votre trailing drawdown en une seule session sans d\u00e9clencher de violation de daily limit \u2014 la seule limite est le plancher global du trailing drawdown. Cette libert\u00e9 est dangereuse sans discipline auto-impos\u00e9e. Nous recommandons de fixer votre propre plafond de perte journalier \u00e0 20% de votre drawdown total (400$ sur le 50K$, 600$ sur le 100K$, 900$ sur le 150K$).',
+'faq3q': 'Qu\'est-ce que la r\u00e8gle de consistency \u00e0 50% de Topstep ?',
+'faq3a': 'Au moment du payout, aucune journ\u00e9e de trading ne peut repr\u00e9senter plus de 50% de vos profits cumul\u00e9s totaux. Par exemple, si votre profit total est de 4\u202f000$, aucune journ\u00e9e ne peut avoir g\u00e9n\u00e9r\u00e9 plus de 2\u202f000$ de ce montant. Si une journ\u00e9e d\u00e9passe 50%, votre payout est bloqu\u00e9 jusqu\'\u00e0 ce que vous tradiez des jours suppl\u00e9mentaires pour diluer ce pourcentage en dessous de 50%. L\'implication pratique est que vous devez r\u00e9partir vos gains sur plusieurs jours de trading \u2014 une seule grosse journ\u00e9e ne suffit pas m\u00eame si elle d\u00e9passe l\'objectif de profit.',
+'faq4q': 'Peut-on garder des positions overnight sur Topstep ?',
+'faq4a': 'Non. Topstep exige que toutes les positions soient cl\u00f4tur\u00e9es avant la fin de session journali\u00e8re (16h00 CT pour les futures CME). Garder des positions apr\u00e8s la cl\u00f4ture de session entra\u00eenera une violation automatique. Cela s\'applique \u00e0 la fois \u00e0 la phase d\'\u00e9valuation (Trading Combine) et \u00e0 la phase funded (Express Funded Account). Si vous avez besoin de la capacit\u00e9 de holding overnight, consid\u00e9rez Bulenox, qui est la seule grande prop firm futures autorisant actuellement les positions overnight sur les comptes funded.',
+'ctaTitle': 'Automatisez Votre Gestion du Risque Topstep',
+'ctaText': 'x-trade.ai applique les daily loss limits, les plafonds de risque par trade, les maximums de nombre de trades et le suivi de consistency \u2014 le tout configur\u00e9 sp\u00e9cifiquement pour le drawdown trailing EOD de Topstep. Fini les contournements \u00e9motionnels. Configuration en moins de 5 minutes.',
+'ctaBtn': 'Essai Gratuit',
+'crossTitle': 'Articles Connexes',
+'cross1': 'Comparatif des R\u00e8gles de Drawdown en Prop Firm : Topstep vs Apex vs Bulenox (2026)',
+'cross2': 'Comment R\u00e9ussir une \u00c9valuation Prop Firm : Le Framework de Risque Complet',
+'cross3': 'La R\u00e8gle de Consistency Expliqu\u00e9e : Pourquoi Votre Meilleure Journ\u00e9e Peut Bloquer Votre Payout',
+'footBlog': 'Blog',
+'footTrial': 'Essai Gratuit',
+'footCopy': '\u00a9 2026 x-trade.ai \u2014 Tous droits r\u00e9serv\u00e9s.'
+}
+};
+
+function applyLang() {
+  for (const [id, html] of Object.entries(TR[lang] || TR.en)) {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  }
+  document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+    el.textContent = el.getAttribute('data-' + lang);
+  });
+  document.getElementById('langBtn').textContent = lang === 'en' ? 'FR' : 'EN';
+}
+
+function toggleLang() {
+  lang = lang === 'en' ? 'fr' : 'en';
+  localStorage.setItem('xtrade_lang', lang);
+  applyLang();
+}
+
+document.addEventListener('DOMContentLoaded', applyLang);
+</script>
+
+</body>
+</html>

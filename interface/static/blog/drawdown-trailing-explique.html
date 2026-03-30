@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trailing vs Static vs EOD Drawdown: Complete Visual Guide | x-trade.ai</title>
+<meta name="description" content="Trailing drawdown, static drawdown, EOD drawdown explained visually. Understand the 3 prop firm drawdown types, how they move, and which firms use each one.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://x-trade.ai/blog/drawdown-trailing-explique">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Trailing vs Static vs EOD Drawdown: Complete Visual Guide | x-trade.ai">
+<meta property="og:description" content="Trailing drawdown, static drawdown, EOD drawdown explained visually. Understand the 3 prop firm drawdown types, how they move, and which firms use each one.">
+<meta property="og:url" content="https://x-trade.ai/blog/drawdown-trailing-explique">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Trailing vs Static vs EOD Drawdown: Complete Visual Guide | x-trade.ai">
+<meta name="twitter:description" content="Trailing drawdown, static drawdown, EOD drawdown explained visually. Understand the 3 prop firm drawdown types, how they move, and which firms use each one.">
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Article",
+  "headline":"Trailing vs Static vs EOD Drawdown: The Complete Visual Guide for Prop Firm Traders",
+  "author":{"@type":"Person","name":"Bass","jobTitle":"Founder, x-trade.ai"},
+  "datePublished":"2026-03-30",
+  "dateModified":"2026-03-30",
+  "publisher":{"@type":"Organization","name":"x-trade.ai","url":"https://x-trade.ai"},
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://x-trade.ai/blog/drawdown-trailing-explique"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"What is a trailing drawdown in prop firms?","acceptedAnswer":{"@type":"Answer","text":"A trailing drawdown is a maximum loss limit whose floor rises as your account reaches new highs. Unlike a static drawdown where the floor is fixed, a trailing drawdown follows your profits upward, meaning you can never let your account drop more than a set amount below its highest point. There are two sub-types: EOD trailing (floor updates only at session close) and tick-by-tick trailing (floor updates in real time with every tick of unrealized profit)."}},
+    {"@type":"Question","name":"What is the difference between EOD trailing and tick-by-tick trailing drawdown?","acceptedAnswer":{"@type":"Answer","text":"EOD (End of Day) trailing drawdown only recalculates the floor at the end of each trading session, based on the closing balance. Tick-by-tick trailing drawdown updates the floor in real time with every tick of unrealized profit, even if you never close the trade at that level. Tick-by-tick is significantly more dangerous because a brief spike in unrealized profit permanently raises the floor."}},
+    {"@type":"Question","name":"Which prop firms use trailing drawdown?","acceptedAnswer":{"@type":"Answer","text":"Topstep, Bulenox (Option 2), and Tradeify use EOD trailing drawdown. Bulenox (Option 1) and Apex (during evaluation) use tick-by-tick trailing drawdown. FTMO and MyFundedFX use static drawdown. Many firms switch drawdown types between evaluation and funded phases, so always verify the rules for each phase."}},
+    {"@type":"Question","name":"How do I protect myself from trailing drawdown?","acceptedAnswer":{"@type":"Answer","text":"Four key strategies: (1) Always know which drawdown type your account uses before placing a trade. (2) Set your daily loss limit to no more than 20% of your total drawdown allowance. (3) Use ATR-based stops to avoid oversized losses relative to volatility. (4) Use automated risk management tools like x-trade.ai to lock profits and enforce hard limits that prevent you from giving back gains."}}
+  ]
+}
+</script>
+<style>
+:root{--bg:#07090f;--bg2:#0f1420;--cyan:#06b6d4;--green:#22d97f;--red:#ef4444;--gold:#f59e0b;--text:#f0f4f8;--dim:#94a3b8;--border:rgba(255,255,255,0.06)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}
+code,pre,.mono{font-family:'JetBrains Mono',monospace}
+a{color:var(--cyan);text-decoration:none;transition:color .2s}
+a:hover{color:var(--green)}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(7,9,15,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-weight:800;font-size:1.15rem;color:var(--text);letter-spacing:-.5px}
+.nav-logo span{color:var(--cyan)}
+.nav-links{display:flex;align-items:center;gap:1.5rem}
+.nav-links a{color:var(--dim);font-size:.875rem;font-weight:500}
+.nav-links a:hover{color:var(--text)}
+.lang-btn{background:transparent;border:1px solid var(--cyan);color:var(--cyan);padding:4px 12px;border-radius:6px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
+.lang-btn:hover{background:var(--cyan);color:var(--bg)}
+
+/* ARTICLE */
+.article-wrap{max-width:760px;margin:0 auto;padding:3rem 1.5rem 4rem}
+.breadcrumb{font-size:.8rem;color:var(--dim);margin-bottom:2rem}
+.breadcrumb a{color:var(--dim)}
+.breadcrumb a:hover{color:var(--cyan)}
+.article-meta{display:flex;align-items:center;gap:.75rem;font-size:.8rem;color:var(--dim);margin-bottom:1.25rem;flex-wrap:wrap}
+.article-meta .tag{background:rgba(6,182,212,.1);color:var(--cyan);padding:2px 10px;border-radius:99px;font-weight:500}
+h1{font-size:2.25rem;font-weight:800;line-height:1.2;letter-spacing:-.5px;margin-bottom:1.5rem}
+h2{font-size:1.5rem;font-weight:700;margin:2.5rem 0 1rem;letter-spacing:-.3px;color:var(--text)}
+h3{font-size:1.15rem;font-weight:600;margin:1.75rem 0 .75rem;color:var(--green)}
+p{margin-bottom:1.25rem;color:var(--dim);font-size:1rem}
+strong{color:var(--text)}
+
+/* KEY TAKEAWAYS */
+.takeaways{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--cyan);border-radius:10px;padding:1.5rem 1.75rem;margin-bottom:2.5rem}
+.takeaways h3{color:var(--cyan);margin:0 0 .75rem;font-size:1rem}
+.takeaways ul{list-style:none;padding:0}
+.takeaways li{position:relative;padding-left:1.5rem;margin-bottom:.5rem;color:var(--dim);font-size:.95rem}
+.takeaways li::before{content:"\2713";position:absolute;left:0;color:var(--green);font-weight:700}
+
+/* ANSWER BOX */
+.answer-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:10px;padding:1.5rem 1.75rem;margin-bottom:2rem}
+.answer-box p{margin:0;color:var(--dim);font-size:1rem;line-height:1.7}
+
+/* SCENARIO BOX */
+.scenario-box{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.5rem 1.75rem;margin:1.5rem 0 2rem;font-family:'JetBrains Mono',monospace;font-size:.875rem;line-height:1.9;color:var(--dim)}
+.scenario-box .label{color:var(--cyan);font-weight:600}
+.scenario-box .val-green{color:var(--green)}
+.scenario-box .val-red{color:var(--red)}
+.scenario-box .val-gold{color:var(--gold)}
+
+/* COMPARE TABLE */
+.compare-table{width:100%;border-collapse:collapse;margin:1.5rem 0 2rem;font-size:.875rem}
+.compare-table th{background:var(--bg2);color:var(--cyan);font-weight:700;padding:.75rem 1rem;text-align:left;border:1px solid var(--border)}
+.compare-table td{padding:.75rem 1rem;border:1px solid var(--border);color:var(--dim);vertical-align:top}
+.compare-table tr:nth-child(even) td{background:rgba(15,20,32,.5)}
+.compare-table td:first-child{color:var(--text);font-weight:600}
+
+/* STAT BOX */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.5rem 0 2rem}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem;text-align:center}
+.stat-card .num{font-size:2rem;font-weight:800;font-family:'JetBrains Mono',monospace}
+.stat-card .num.red{color:var(--red)}
+.stat-card .num.green{color:var(--green)}
+.stat-card .num.gold{color:var(--gold)}
+.stat-card .label{font-size:.8rem;color:var(--dim);margin-top:.25rem}
+
+/* LISTS */
+.article-wrap ul,.article-wrap ol{margin:0 0 1.25rem 1.25rem;color:var(--dim)}
+.article-wrap li{margin-bottom:.4rem;font-size:1rem}
+
+/* WARNING BOX */
+.warning-box{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-left:3px solid var(--red);border-radius:10px;padding:1.5rem 1.75rem;margin:1.5rem 0 2rem}
+.warning-box h4{color:var(--red);font-size:1rem;margin-bottom:.5rem}
+.warning-box p{margin:0;color:var(--dim);font-size:.95rem}
+
+/* TIP BOX */
+.tip-box{background:rgba(34,217,127,.06);border:1px solid rgba(34,217,127,.2);border-left:3px solid var(--green);border-radius:10px;padding:1.5rem 1.75rem;margin:1.5rem 0 2rem}
+.tip-box h4{color:var(--green);font-size:1rem;margin-bottom:.5rem}
+.tip-box p{margin:0 0 .5rem;color:var(--dim);font-size:.95rem}
+.tip-box p:last-child{margin:0}
+
+/* FAQ */
+.faq-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1rem}
+.faq-q{font-weight:600;color:var(--text);margin-bottom:.5rem;font-size:1.05rem}
+.faq-a{color:var(--dim);font-size:.95rem}
+
+/* CTA */
+.cta-box{background:linear-gradient(135deg,rgba(6,182,212,.12),rgba(34,217,127,.08));border:1px solid rgba(6,182,212,.25);border-radius:14px;padding:2.5rem;text-align:center;margin:3rem 0 2rem}
+.cta-box h2{margin:0 0 .75rem;font-size:1.5rem}
+.cta-box p{color:var(--dim);margin-bottom:1.5rem}
+.cta-btn{display:inline-block;background:var(--cyan);color:var(--bg);padding:12px 32px;border-radius:8px;font-weight:700;font-size:1rem;transition:all .25s}
+.cta-btn:hover{background:var(--green);color:var(--bg);transform:translateY(-1px)}
+
+/* CROSS LINKS */
+.cross-links{border-top:1px solid var(--border);padding-top:2rem;margin-top:2rem}
+.cross-links h3{font-size:1rem;color:var(--dim);margin-bottom:1rem}
+.cross-link{display:block;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin-bottom:.75rem;color:var(--text);font-weight:500;transition:border-color .2s}
+.cross-link:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;text-align:center;font-size:.8rem;color:var(--dim)}
+.footer a{color:var(--dim)}
+.footer a:hover{color:var(--cyan)}
+.footer-links{display:flex;justify-content:center;gap:1.5rem;margin-bottom:.75rem;flex-wrap:wrap}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+h1{font-size:1.6rem}
+h2{font-size:1.25rem}
+.stat-grid{grid-template-columns:1fr}
+.compare-table{font-size:.75rem}
+.compare-table th,.compare-table td{padding:.5rem .6rem}
+.article-wrap{padding:2rem 1rem 3rem}
+.nav{padding:0 1rem}
+.nav-links{gap:1rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="/" class="nav-logo">x-trade<span>.ai</span></a>
+  <div class="nav-links">
+    <a href="/" id="navHome">Home</a>
+    <a href="/blog" id="navBlog">Blog</a>
+    <a href="/onboarding?mode=trial" id="navStart">Start Free</a>
+    <button class="lang-btn" id="langBtn" onclick="toggleLang()">FR</button>
+  </div>
+</nav>
+
+<!-- ARTICLE -->
+<main class="article-wrap">
+
+  <div class="breadcrumb" id="breadcrumb"><a href="/">Home</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; Trailing vs Static vs EOD Drawdown</div>
+
+  <div class="article-meta">
+    <span class="tag" id="metaTag">Risk Management</span>
+    <span id="metaDate">March 30, 2026</span>
+    <span>&middot;</span>
+    <span id="metaRead">8 min read</span>
+  </div>
+
+  <h1 id="title">Trailing vs Static vs EOD Drawdown: The Complete Visual Guide for Prop Firm Traders</h1>
+
+  <!-- KEY TAKEAWAYS -->
+  <div class="takeaways">
+    <h3 id="takeawaysTitle">Key Takeaways</h3>
+    <ul>
+      <li id="tk1">There are 3 drawdown types in prop firms: static (fixed floor), EOD trailing (floor updates at session close), and tick-by-tick trailing (floor updates in real time with every tick).</li>
+      <li id="tk2">Tick-by-tick trailing drawdown is the most dangerous &mdash; a brief spike in unrealized profit permanently raises your floor, even if you never close the trade at that level.</li>
+      <li id="tk3">Many firms switch drawdown types between evaluation and funded phases. The rules that helped you pass the eval may not be the rules that govern your funded account.</li>
+      <li id="tk4">Protecting your drawdown requires knowing your type, setting daily limits at 20% of total drawdown, using ATR-based stops, and locking profits with automated tools like x-trade.ai.</li>
+    </ul>
+  </div>
+
+  <!-- LEAD / ANSWER BOX -->
+  <div class="answer-box">
+    <p id="answerBox"><strong>Trailing drawdown</strong> is a maximum loss limit whose floor rises as your account reaches new highs. Unlike a static drawdown where the floor is permanently fixed, a trailing drawdown follows your profits upward &mdash; meaning you can never let your account drop more than a set amount below its highest recorded value. There are two sub-types: <strong>EOD trailing</strong> (floor recalculates only at session close) and <strong>tick-by-tick trailing</strong> (floor rises in real time with every tick of unrealized profit).</p>
+  </div>
+
+  <!-- INTRO -->
+  <p id="intro">Drawdown is the #1 reason traders lose their funded accounts. Yet most traders don't understand the difference between the three drawdown types &mdash; and that misunderstanding costs them thousands of dollars in blown accounts and re-evaluation fees.</p>
+
+  <p id="intro2">This guide breaks down each drawdown type with concrete examples, a side-by-side comparison table, and the specific firms that use each one. By the end, you'll know exactly how your floor moves, when it updates, and how to protect it.</p>
+
+  <!-- THE 3 TYPES -->
+  <h2 id="h2overview">The 3 Types of Drawdown in Prop Firms</h2>
+
+  <p id="overviewP1">Every prop firm gives you a drawdown allowance &mdash; the maximum amount your account can lose before it gets terminated. But <strong>how</strong> that limit works varies dramatically between firms. The three types are:</p>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="num green" id="stat1num">Static</div>
+      <div class="label" id="stat1label">Fixed floor, never moves up</div>
+    </div>
+    <div class="stat-card">
+      <div class="num gold" id="stat2num">EOD</div>
+      <div class="label" id="stat2label">Floor trails at session close</div>
+    </div>
+    <div class="stat-card">
+      <div class="num red" id="stat3num">Tick</div>
+      <div class="label" id="stat3label">Floor trails every tick in real time</div>
+    </div>
+  </div>
+
+  <p id="overviewP2">The difference between these three types can mean the difference between keeping a funded account and blowing it. Let's examine each one in detail.</p>
+
+  <!-- STATIC DRAWDOWN -->
+  <h2 id="h2static">Static Drawdown (Fixed Floor)</h2>
+
+  <p id="staticP1"><strong>Static drawdown</strong> is the simplest and most forgiving type. The floor is calculated once at the start: your starting balance minus the drawdown allowance. It <strong>never moves up</strong>, no matter how much profit you make.</p>
+
+  <h3 id="h3staticExample">Example: $50K Account, $2,500 Static Drawdown</h3>
+
+  <div class="scenario-box" id="scenarioStatic">
+    <span class="label">Starting balance:</span> $50,000<br>
+    <span class="label">Drawdown allowance:</span> $2,500<br>
+    <span class="label">Floor (breach level):</span> <span class="val-green">$47,500 &mdash; FOREVER</span><br><br>
+    <span class="label">Day 1:</span> You profit $1,200 &rarr; Balance: $51,200 &rarr; Floor: <span class="val-green">$47,500</span><br>
+    <span class="label">Day 5:</span> You profit $3,000 more &rarr; Balance: $54,200 &rarr; Floor: <span class="val-green">$47,500</span><br>
+    <span class="label">Day 10:</span> Bad week, lose $4,000 &rarr; Balance: $50,200 &rarr; Floor: <span class="val-green">$47,500</span><br><br>
+    <span class="val-green">&#10003; You still have $2,700 of room above the floor.</span><br>
+    <span class="label">The floor never moved.</span> Your profits created a permanent cushion.
+  </div>
+
+  <p id="staticP2">Static drawdown is the most forgiving because your profits create an ever-growing buffer. The more you make, the further you are from the floor. Firms like <strong>FTMO</strong> and <strong>MyFundedFX</strong> use static drawdown on their funded accounts. This is why experienced traders prefer static drawdown accounts whenever possible.</p>
+
+  <!-- EOD TRAILING -->
+  <h2 id="h2eod">EOD Trailing Drawdown (End of Day)</h2>
+
+  <p id="eodP1"><strong>EOD trailing drawdown</strong> means the floor only updates at the end of each trading session, based on your <strong>closing balance</strong> (not your intraday high). This is the critical distinction: what happens during the session doesn't directly move the floor &mdash; only where you close matters.</p>
+
+  <h3 id="h3eodExample">Example: $50K Account, $2,000 EOD Trailing Drawdown</h3>
+
+  <div class="scenario-box" id="scenarioEOD">
+    <span class="label">Starting balance:</span> $50,000<br>
+    <span class="label">Trailing drawdown:</span> $2,000<br>
+    <span class="label">Initial floor:</span> $48,000<br><br>
+    <span class="label">Day 1:</span> Close at $50,800<br>
+    &rarr; New floor: $50,800 - $2,000 = <span class="val-gold">$48,800</span> <span class="label">(moved up $800)</span><br><br>
+    <span class="label">Day 2:</span> Intraday high reaches $52,000 &mdash; but you close at $51,200<br>
+    &rarr; New floor: $51,200 - $2,000 = <span class="val-gold">$49,200</span> <span class="label">(NOT $50,000)</span><br>
+    &rarr; <span class="val-green">The intraday spike to $52K did NOT affect the floor.</span><br><br>
+    <span class="label">Day 3:</span> Bad day, close at $50,500 (lower than yesterday)<br>
+    &rarr; Floor stays: <span class="val-gold">$49,200</span> <span class="label">(floor only moves UP, never down)</span><br><br>
+    <span class="label">Day 4:</span> Close at $52,400 (new closing high)<br>
+    &rarr; New floor: $52,400 - $2,000 = <span class="val-gold">$50,400</span>
+  </div>
+
+  <p id="eodP2">The key advantage of EOD trailing is that <strong>intraday volatility doesn't move your floor</strong>. You can have a trade spike $2,000 in unrealized profit, pull back, and close at a modest gain &mdash; and only the modest gain moves the floor. This gives scalpers and intraday traders breathing room.</p>
+
+  <p id="eodP3">Firms using EOD trailing drawdown include <strong>Topstep</strong>, <strong>Bulenox (Option 2)</strong>, and <strong>Tradeify</strong>. If you have a choice between EOD trailing and tick-by-tick trailing, always choose EOD.</p>
+
+  <!-- TICK-BY-TICK -->
+  <h2 id="h2tick">Tick-by-Tick Trailing Drawdown (Real-Time)</h2>
+
+  <p id="tickP1"><strong>Tick-by-tick trailing drawdown</strong> is the most aggressive and dangerous type. The floor rises in <strong>real time</strong> with every single tick of unrealized profit. If your account touches a new high for even one second, the floor moves up permanently &mdash; even if you never close the trade at that level.</p>
+
+  <div class="warning-box">
+    <h4 id="tickWarningTitle">&#9888; Why This Is Dangerous</h4>
+    <p id="tickWarningP">With tick-by-tick trailing, a brief spike in unrealized profit that you never captured permanently raises your floor. You lose drawdown room for profit you never actually locked in. This is the #1 way traders unknowingly erode their drawdown buffer.</p>
+  </div>
+
+  <h3 id="h3tickExample">Example: $50K Account, $2,000 Tick-by-Tick Trailing Drawdown</h3>
+
+  <div class="scenario-box" id="scenarioTick">
+    <span class="label">Starting balance:</span> $50,000<br>
+    <span class="label">Trailing drawdown:</span> $2,000<br>
+    <span class="label">Initial floor:</span> $48,000<br><br>
+    <span class="label">9:35 AM:</span> You enter a long on NQ. Trade runs to +$2,000 unrealized.<br>
+    &rarr; Account touches $52,000 for <span class="val-red">1 second</span><br>
+    &rarr; Floor IMMEDIATELY moves to: $52,000 - $2,000 = <span class="val-red">$50,000</span><br><br>
+    <span class="label">9:36 AM:</span> Price pulls back. You close at +$500.<br>
+    &rarr; Balance: $50,500<br>
+    &rarr; Floor is still: <span class="val-red">$50,000</span><br>
+    &rarr; <span class="val-red">You only have $500 of drawdown room left!</span><br><br>
+    <span class="label">What happened:</span> You captured $500 in profit, but your floor rose by $2,000.<br>
+    <span class="val-red">You lost $1,500 of drawdown cushion for profit you never kept.</span>
+  </div>
+
+  <p id="tickP2">This is why tick-by-tick trailing is so treacherous. The floor chases unrealized profit that evaporates when the trade pulls back. Scalpers who ride quick spikes are particularly vulnerable &mdash; every momentary spike permanently erodes their safety net.</p>
+
+  <p id="tickP3">Firms using tick-by-tick trailing include <strong>Bulenox (Option 1)</strong> and <strong>Apex (during evaluation)</strong>. If your firm uses this type, you must manage your trades with extreme precision. The AI-powered risk management at <a href="https://x-trade.ai">x-trade.ai</a> is specifically designed to track real-time drawdown floor movement and alert you before you silently erode your cushion.</p>
+
+  <!-- COMPARISON TABLE -->
+  <h2 id="h2compare">Side-by-Side Comparison</h2>
+
+  <p id="compareIntro">Here is the complete comparison of all three drawdown types. Study this table before choosing a prop firm or placing your next trade:</p>
+
+  <table class="compare-table" id="compareTable">
+    <thead>
+      <tr>
+        <th id="colCriteria">Criteria</th>
+        <th id="colStatic">Static</th>
+        <th id="colEOD">EOD Trailing</th>
+        <th id="colTick">Tick-by-Tick</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td id="rowFloor">How floor moves</td>
+        <td id="rowFloorStatic">Never moves. Fixed at start.</td>
+        <td id="rowFloorEOD">Moves up based on closing balance at end of day.</td>
+        <td id="rowFloorTick">Moves up in real time with every tick of unrealized P&L.</td>
+      </tr>
+      <tr>
+        <td id="rowWhen">When it updates</td>
+        <td id="rowWhenStatic">Never</td>
+        <td id="rowWhenEOD">Once per day, at session close</td>
+        <td id="rowWhenTick">Every tick, continuously</td>
+      </tr>
+      <tr>
+        <td id="rowDanger">Danger level</td>
+        <td id="rowDangerStatic">Low &mdash; profits create permanent cushion</td>
+        <td id="rowDangerEOD">Medium &mdash; closing balance matters, intraday spikes don't</td>
+        <td id="rowDangerTick">High &mdash; unrealized spikes permanently erode cushion</td>
+      </tr>
+      <tr>
+        <td id="rowStyle">Best for</td>
+        <td id="rowStyleStatic">All styles, especially swing traders</td>
+        <td id="rowStyleEOD">Day traders and scalpers</td>
+        <td id="rowStyleTick">Ultra-disciplined traders with tight targets</td>
+      </tr>
+      <tr>
+        <td id="rowFirms">Which firms use it</td>
+        <td id="rowFirmsStatic">FTMO, MyFundedFX (funded)</td>
+        <td id="rowFirmsEOD">Topstep, Bulenox Opt2, Tradeify</td>
+        <td id="rowFirmsTick">Bulenox Opt1, Apex (eval)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- THE TRAP -->
+  <h2 id="h2trap">The Rule-Change Trap</h2>
+
+  <p id="trapP1">Here is the trap that catches thousands of traders every month: <strong>many firms change their drawdown type between evaluation and funded phases</strong>. You pass the evaluation under one set of rules, then trade the funded account under a completely different set.</p>
+
+  <p id="trapP2">The most common switch is <strong>EOD trailing during evaluation &rarr; tick-by-tick trailing once funded</strong>. Take Prop Trading (TPT) is known for this. Traders develop habits during the eval that work under EOD rules &mdash; letting trades breathe, riding momentum spikes, closing at session end &mdash; then those same habits destroy them under tick-by-tick rules.</p>
+
+  <p id="trapP3">Apex uses a hybrid approach: trailing drawdown during evaluation but different parameters and calculation methods for funded accounts. The trader who doesn't read the fine print passes the eval, gets funded, trades the same way, and blows the account within days.</p>
+
+  <div class="warning-box">
+    <h4 id="trapWarningTitle">&#9888; Always Verify Both Phases</h4>
+    <p id="trapWarningP">Before starting any evaluation, check the drawdown rules for <strong>both</strong> the eval phase AND the funded phase. If the rules change, adjust your strategy before going live. Learn strategies adapted to each drawdown type and phase transition with our <a href="https://basstrading.fr">formations on basstrading.fr</a>.</p>
+  </div>
+
+  <!-- HOW TO PROTECT -->
+  <h2 id="h2protect">How to Protect Your Drawdown</h2>
+
+  <p id="protectIntro">Regardless of which drawdown type you're trading under, these four principles will keep you safe:</p>
+
+  <ol>
+    <li id="protect1"><strong>Always know your drawdown type before placing a single trade.</strong> Is it static, EOD trailing, or tick-by-tick? Does it change between eval and funded? Don't guess. Read the rules document. If it's unclear, contact support and get it in writing.</li>
+    <li id="protect2"><strong>Set your daily loss limit at 20% of your total drawdown allowance.</strong> If your drawdown is $2,500, your maximum daily loss should be $500. This gives you at least 5 full losing days before breach &mdash; enough runway to recover from a bad streak.</li>
+    <li id="protect3"><strong>Use ATR-based stop losses.</strong> Your stop distance should be calibrated to actual volatility, not an arbitrary number of ticks. In high-ATR conditions, reduce size. In low-ATR conditions, you can afford slightly wider stops. This prevents outsized losses relative to the market environment.</li>
+    <li id="protect4"><strong>Lock profits with automated tools.</strong> <a href="https://x-trade.ai">x-trade.ai</a> automatically adjusts your remaining risk budget as profits accumulate, preventing you from giving back gains in a drawdown spiral. Once your cushion grows, the system protects it.</li>
+  </ol>
+
+  <div class="tip-box">
+    <h4 id="tipTitle">&#128161; Pro Tip: Combine Knowledge + Automation</h4>
+    <p id="tipP1">The AI on <a href="https://hubtrading.fr">hubtrading.fr</a> helps you identify reversal zones and optimal stop placement based on market structure &mdash; so you place better stops from the start.</p>
+    <p id="tipP2">Master drawdown management in depth with our <a href="https://basstrading.fr">formations on basstrading.fr</a> &mdash; dedicated modules cover each drawdown type with live examples and position sizing calculators.</p>
+  </div>
+
+  <p id="protectOutro">The traders who survive in prop firms are not the ones with the best entries. They're the ones who understand their drawdown rules inside and out, and who use systems &mdash; not willpower &mdash; to enforce them.</p>
+
+  <!-- FAQ -->
+  <h2 id="h2faq">Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq1q">What is a trailing drawdown in prop firms?</div>
+    <div class="faq-a" id="faq1a">A trailing drawdown is a maximum loss limit whose floor rises as your account reaches new highs. Unlike a static drawdown where the floor is permanently fixed, a trailing drawdown follows your profits upward, meaning you can never let your account drop more than a set amount below its highest point. There are two sub-types: EOD trailing (floor updates only at session close) and tick-by-tick trailing (floor updates in real time with every tick of unrealized profit).</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq2q">What is the difference between EOD trailing and tick-by-tick trailing drawdown?</div>
+    <div class="faq-a" id="faq2a">EOD (End of Day) trailing drawdown only recalculates the floor at the end of each trading session, based on the closing balance. Tick-by-tick trailing drawdown updates the floor in real time with every tick of unrealized profit, even if you never close the trade at that level. Tick-by-tick is significantly more dangerous because a brief spike in unrealized profit permanently raises the floor, costing you drawdown room for gains you never actually captured.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq3q">Which prop firms use trailing drawdown?</div>
+    <div class="faq-a" id="faq3a">Topstep, Bulenox (Option 2), and Tradeify use EOD trailing drawdown. Bulenox (Option 1) and Apex (during evaluation) use tick-by-tick trailing drawdown. FTMO and MyFundedFX use static drawdown on funded accounts. Importantly, many firms switch drawdown types between evaluation and funded phases, so always verify the rules for each phase before trading.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq4q">How do I protect myself from trailing drawdown?</div>
+    <div class="faq-a" id="faq4a">Four key strategies: (1) Always confirm which drawdown type your account uses before placing any trade. (2) Set your daily loss limit to no more than 20% of your total drawdown allowance. (3) Use ATR-based stop losses calibrated to current market volatility. (4) Use automated risk management tools like x-trade.ai to lock in profits and enforce hard limits that prevent you from giving back gains in a drawdown spiral.</div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-box">
+    <h2 id="ctaTitle">Master Your Drawdown. Protect Your Account.</h2>
+    <p id="ctaText">x-trade.ai tracks your drawdown floor in real time, locks profits automatically, and enforces daily limits that prevent blow-ups. Works with every drawdown type &mdash; static, EOD trailing, and tick-by-tick. Set up in under 5 minutes.</p>
+    <a href="/onboarding?mode=trial" class="cta-btn" id="ctaBtn">Start Free Trial</a>
+  </div>
+
+  <!-- UPDATED -->
+  <p style="text-align:center;font-size:.8rem;color:var(--dim);margin-top:2rem" id="lastUpdated">Last updated: March 2026</p>
+
+  <!-- CROSS LINKS -->
+  <div class="cross-links">
+    <h3 id="crossTitle">Related Articles</h3>
+    <a href="/blog/revenge-trading-prop-firm" class="cross-link" id="cross1">Revenge Trading: How to Stop It Before It Stops You</a>
+    <a href="/blog/why-prop-firm-traders-fail" class="cross-link" id="cross2">Why 93% of Prop Firm Traders Never Get Paid &mdash; The 5 Risk Mistakes</a>
+    <a href="/blog/pass-prop-firm-evaluation" class="cross-link" id="cross3">How to Pass a Prop Firm Evaluation &mdash; The Complete Risk Guide</a>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="https://basstrading.fr" target="_blank" rel="noopener">basstrading.fr - Formations</a>
+    <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr - IA &amp; Communaut&eacute;</a>
+    <a href="/blog" id="footBlog">Blog</a>
+    <a href="/onboarding?mode=trial" id="footTrial">Free Trial</a>
+  </div>
+  <p id="footCopy">&copy; 2026 x-trade.ai &mdash; All rights reserved.</p>
+</footer>
+
+<script>
+let lang = localStorage.getItem('xtrade_lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en');
+
+const TR = {
+en: {
+'navHome': 'Home',
+'navBlog': 'Blog',
+'navStart': 'Start Free',
+'breadcrumb': '<a href="/">Home</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; Trailing vs Static vs EOD Drawdown',
+'metaTag': 'Risk Management',
+'metaDate': 'March 30, 2026',
+'metaRead': '8 min read',
+'title': 'Trailing vs Static vs EOD Drawdown: The Complete Visual Guide for Prop Firm Traders',
+'takeawaysTitle': 'Key Takeaways',
+'tk1': 'There are 3 drawdown types in prop firms: static (fixed floor), EOD trailing (floor updates at session close), and tick-by-tick trailing (floor updates in real time with every tick).',
+'tk2': 'Tick-by-tick trailing drawdown is the most dangerous \u2014 a brief spike in unrealized profit permanently raises your floor, even if you never close the trade at that level.',
+'tk3': 'Many firms switch drawdown types between evaluation and funded phases. The rules that helped you pass the eval may not be the rules that govern your funded account.',
+'tk4': 'Protecting your drawdown requires knowing your type, setting daily limits at 20% of total drawdown, using ATR-based stops, and locking profits with automated tools like x-trade.ai.',
+'answerBox': '<strong>Trailing drawdown</strong> is a maximum loss limit whose floor rises as your account reaches new highs. Unlike a static drawdown where the floor is permanently fixed, a trailing drawdown follows your profits upward \u2014 meaning you can never let your account drop more than a set amount below its highest recorded value. There are two sub-types: <strong>EOD trailing</strong> (floor recalculates only at session close) and <strong>tick-by-tick trailing</strong> (floor rises in real time with every tick of unrealized profit).',
+'intro': 'Drawdown is the #1 reason traders lose their funded accounts. Yet most traders don\'t understand the difference between the three drawdown types \u2014 and that misunderstanding costs them thousands of dollars in blown accounts and re-evaluation fees.',
+'intro2': 'This guide breaks down each drawdown type with concrete examples, a side-by-side comparison table, and the specific firms that use each one. By the end, you\'ll know exactly how your floor moves, when it updates, and how to protect it.',
+'h2overview': 'The 3 Types of Drawdown in Prop Firms',
+'overviewP1': 'Every prop firm gives you a drawdown allowance \u2014 the maximum amount your account can lose before it gets terminated. But <strong>how</strong> that limit works varies dramatically between firms. The three types are:',
+'stat1label': 'Fixed floor, never moves up',
+'stat2label': 'Floor trails at session close',
+'stat3label': 'Floor trails every tick in real time',
+'overviewP2': 'The difference between these three types can mean the difference between keeping a funded account and blowing it. Let\'s examine each one in detail.',
+'h2static': 'Static Drawdown (Fixed Floor)',
+'staticP1': '<strong>Static drawdown</strong> is the simplest and most forgiving type. The floor is calculated once at the start: your starting balance minus the drawdown allowance. It <strong>never moves up</strong>, no matter how much profit you make.',
+'h3staticExample': 'Example: $50K Account, $2,500 Static Drawdown',
+'scenarioStatic': '<span class="label">Starting balance:</span> $50,000<br><span class="label">Drawdown allowance:</span> $2,500<br><span class="label">Floor (breach level):</span> <span class="val-green">$47,500 \u2014 FOREVER</span><br><br><span class="label">Day 1:</span> You profit $1,200 \u2192 Balance: $51,200 \u2192 Floor: <span class="val-green">$47,500</span><br><span class="label">Day 5:</span> You profit $3,000 more \u2192 Balance: $54,200 \u2192 Floor: <span class="val-green">$47,500</span><br><span class="label">Day 10:</span> Bad week, lose $4,000 \u2192 Balance: $50,200 \u2192 Floor: <span class="val-green">$47,500</span><br><br><span class="val-green">\u2713 You still have $2,700 of room above the floor.</span><br><span class="label">The floor never moved.</span> Your profits created a permanent cushion.',
+'staticP2': 'Static drawdown is the most forgiving because your profits create an ever-growing buffer. The more you make, the further you are from the floor. Firms like <strong>FTMO</strong> and <strong>MyFundedFX</strong> use static drawdown on their funded accounts. This is why experienced traders prefer static drawdown accounts whenever possible.',
+'h2eod': 'EOD Trailing Drawdown (End of Day)',
+'eodP1': '<strong>EOD trailing drawdown</strong> means the floor only updates at the end of each trading session, based on your <strong>closing balance</strong> (not your intraday high). This is the critical distinction: what happens during the session doesn\'t directly move the floor \u2014 only where you close matters.',
+'h3eodExample': 'Example: $50K Account, $2,000 EOD Trailing Drawdown',
+'scenarioEOD': '<span class="label">Starting balance:</span> $50,000<br><span class="label">Trailing drawdown:</span> $2,000<br><span class="label">Initial floor:</span> $48,000<br><br><span class="label">Day 1:</span> Close at $50,800<br>\u2192 New floor: $50,800 - $2,000 = <span class="val-gold">$48,800</span> <span class="label">(moved up $800)</span><br><br><span class="label">Day 2:</span> Intraday high reaches $52,000 \u2014 but you close at $51,200<br>\u2192 New floor: $51,200 - $2,000 = <span class="val-gold">$49,200</span> <span class="label">(NOT $50,000)</span><br>\u2192 <span class="val-green">The intraday spike to $52K did NOT affect the floor.</span><br><br><span class="label">Day 3:</span> Bad day, close at $50,500 (lower than yesterday)<br>\u2192 Floor stays: <span class="val-gold">$49,200</span> <span class="label">(floor only moves UP, never down)</span><br><br><span class="label">Day 4:</span> Close at $52,400 (new closing high)<br>\u2192 New floor: $52,400 - $2,000 = <span class="val-gold">$50,400</span>',
+'eodP2': 'The key advantage of EOD trailing is that <strong>intraday volatility doesn\'t move your floor</strong>. You can have a trade spike $2,000 in unrealized profit, pull back, and close at a modest gain \u2014 and only the modest gain moves the floor. This gives scalpers and intraday traders breathing room.',
+'eodP3': 'Firms using EOD trailing drawdown include <strong>Topstep</strong>, <strong>Bulenox (Option 2)</strong>, and <strong>Tradeify</strong>. If you have a choice between EOD trailing and tick-by-tick trailing, always choose EOD.',
+'h2tick': 'Tick-by-Tick Trailing Drawdown (Real-Time)',
+'tickP1': '<strong>Tick-by-tick trailing drawdown</strong> is the most aggressive and dangerous type. The floor rises in <strong>real time</strong> with every single tick of unrealized profit. If your account touches a new high for even one second, the floor moves up permanently \u2014 even if you never close the trade at that level.',
+'tickWarningTitle': '\u26a0 Why This Is Dangerous',
+'tickWarningP': 'With tick-by-tick trailing, a brief spike in unrealized profit that you never captured permanently raises your floor. You lose drawdown room for profit you never actually locked in. This is the #1 way traders unknowingly erode their drawdown buffer.',
+'h3tickExample': 'Example: $50K Account, $2,000 Tick-by-Tick Trailing Drawdown',
+'scenarioTick': '<span class="label">Starting balance:</span> $50,000<br><span class="label">Trailing drawdown:</span> $2,000<br><span class="label">Initial floor:</span> $48,000<br><br><span class="label">9:35 AM:</span> You enter a long on NQ. Trade runs to +$2,000 unrealized.<br>\u2192 Account touches $52,000 for <span class="val-red">1 second</span><br>\u2192 Floor IMMEDIATELY moves to: $52,000 - $2,000 = <span class="val-red">$50,000</span><br><br><span class="label">9:36 AM:</span> Price pulls back. You close at +$500.<br>\u2192 Balance: $50,500<br>\u2192 Floor is still: <span class="val-red">$50,000</span><br>\u2192 <span class="val-red">You only have $500 of drawdown room left!</span><br><br><span class="label">What happened:</span> You captured $500 in profit, but your floor rose by $2,000.<br><span class="val-red">You lost $1,500 of drawdown cushion for profit you never kept.</span>',
+'tickP2': 'This is why tick-by-tick trailing is so treacherous. The floor chases unrealized profit that evaporates when the trade pulls back. Scalpers who ride quick spikes are particularly vulnerable \u2014 every momentary spike permanently erodes their safety net.',
+'tickP3': 'Firms using tick-by-tick trailing include <strong>Bulenox (Option 1)</strong> and <strong>Apex (during evaluation)</strong>. If your firm uses this type, you must manage your trades with extreme precision. The AI-powered risk management at <a href="https://x-trade.ai">x-trade.ai</a> is specifically designed to track real-time drawdown floor movement and alert you before you silently erode your cushion.',
+'h2compare': 'Side-by-Side Comparison',
+'compareIntro': 'Here is the complete comparison of all three drawdown types. Study this table before choosing a prop firm or placing your next trade:',
+'colCriteria': 'Criteria',
+'colStatic': 'Static',
+'colEOD': 'EOD Trailing',
+'colTick': 'Tick-by-Tick',
+'rowFloor': 'How floor moves',
+'rowFloorStatic': 'Never moves. Fixed at start.',
+'rowFloorEOD': 'Moves up based on closing balance at end of day.',
+'rowFloorTick': 'Moves up in real time with every tick of unrealized P&L.',
+'rowWhen': 'When it updates',
+'rowWhenStatic': 'Never',
+'rowWhenEOD': 'Once per day, at session close',
+'rowWhenTick': 'Every tick, continuously',
+'rowDanger': 'Danger level',
+'rowDangerStatic': 'Low \u2014 profits create permanent cushion',
+'rowDangerEOD': 'Medium \u2014 closing balance matters, intraday spikes don\'t',
+'rowDangerTick': 'High \u2014 unrealized spikes permanently erode cushion',
+'rowStyle': 'Best for',
+'rowStyleStatic': 'All styles, especially swing traders',
+'rowStyleEOD': 'Day traders and scalpers',
+'rowStyleTick': 'Ultra-disciplined traders with tight targets',
+'rowFirms': 'Which firms use it',
+'rowFirmsStatic': 'FTMO, MyFundedFX (funded)',
+'rowFirmsEOD': 'Topstep, Bulenox Opt2, Tradeify',
+'rowFirmsTick': 'Bulenox Opt1, Apex (eval)',
+'h2trap': 'The Rule-Change Trap',
+'trapP1': 'Here is the trap that catches thousands of traders every month: <strong>many firms change their drawdown type between evaluation and funded phases</strong>. You pass the evaluation under one set of rules, then trade the funded account under a completely different set.',
+'trapP2': 'The most common switch is <strong>EOD trailing during evaluation \u2192 tick-by-tick trailing once funded</strong>. Take Prop Trading (TPT) is known for this. Traders develop habits during the eval that work under EOD rules \u2014 letting trades breathe, riding momentum spikes, closing at session end \u2014 then those same habits destroy them under tick-by-tick rules.',
+'trapP3': 'Apex uses a hybrid approach: trailing drawdown during evaluation but different parameters and calculation methods for funded accounts. The trader who doesn\'t read the fine print passes the eval, gets funded, trades the same way, and blows the account within days.',
+'trapWarningTitle': '\u26a0 Always Verify Both Phases',
+'trapWarningP': 'Before starting any evaluation, check the drawdown rules for <strong>both</strong> the eval phase AND the funded phase. If the rules change, adjust your strategy before going live. Learn strategies adapted to each drawdown type and phase transition with our <a href="https://basstrading.fr">formations on basstrading.fr</a>.',
+'h2protect': 'How to Protect Your Drawdown',
+'protectIntro': 'Regardless of which drawdown type you\'re trading under, these four principles will keep you safe:',
+'protect1': '<strong>Always know your drawdown type before placing a single trade.</strong> Is it static, EOD trailing, or tick-by-tick? Does it change between eval and funded? Don\'t guess. Read the rules document. If it\'s unclear, contact support and get it in writing.',
+'protect2': '<strong>Set your daily loss limit at 20% of your total drawdown allowance.</strong> If your drawdown is $2,500, your maximum daily loss should be $500. This gives you at least 5 full losing days before breach \u2014 enough runway to recover from a bad streak.',
+'protect3': '<strong>Use ATR-based stop losses.</strong> Your stop distance should be calibrated to actual volatility, not an arbitrary number of ticks. In high-ATR conditions, reduce size. In low-ATR conditions, you can afford slightly wider stops. This prevents outsized losses relative to the market environment.',
+'protect4': '<strong>Lock profits with automated tools.</strong> <a href="https://x-trade.ai">x-trade.ai</a> automatically adjusts your remaining risk budget as profits accumulate, preventing you from giving back gains in a drawdown spiral. Once your cushion grows, the system protects it.',
+'tipTitle': '\ud83d\udca1 Pro Tip: Combine Knowledge + Automation',
+'tipP1': 'The AI on <a href="https://hubtrading.fr">hubtrading.fr</a> helps you identify reversal zones and optimal stop placement based on market structure \u2014 so you place better stops from the start.',
+'tipP2': 'Master drawdown management in depth with our <a href="https://basstrading.fr">formations on basstrading.fr</a> \u2014 dedicated modules cover each drawdown type with live examples and position sizing calculators.',
+'protectOutro': 'The traders who survive in prop firms are not the ones with the best entries. They\'re the ones who understand their drawdown rules inside and out, and who use systems \u2014 not willpower \u2014 to enforce them.',
+'h2faq': 'Frequently Asked Questions',
+'faq1q': 'What is a trailing drawdown in prop firms?',
+'faq1a': 'A trailing drawdown is a maximum loss limit whose floor rises as your account reaches new highs. Unlike a static drawdown where the floor is permanently fixed, a trailing drawdown follows your profits upward, meaning you can never let your account drop more than a set amount below its highest point. There are two sub-types: EOD trailing (floor updates only at session close) and tick-by-tick trailing (floor updates in real time with every tick of unrealized profit).',
+'faq2q': 'What is the difference between EOD trailing and tick-by-tick trailing drawdown?',
+'faq2a': 'EOD (End of Day) trailing drawdown only recalculates the floor at the end of each trading session, based on the closing balance. Tick-by-tick trailing drawdown updates the floor in real time with every tick of unrealized profit, even if you never close the trade at that level. Tick-by-tick is significantly more dangerous because a brief spike in unrealized profit permanently raises the floor, costing you drawdown room for gains you never actually captured.',
+'faq3q': 'Which prop firms use trailing drawdown?',
+'faq3a': 'Topstep, Bulenox (Option 2), and Tradeify use EOD trailing drawdown. Bulenox (Option 1) and Apex (during evaluation) use tick-by-tick trailing drawdown. FTMO and MyFundedFX use static drawdown on funded accounts. Importantly, many firms switch drawdown types between evaluation and funded phases, so always verify the rules for each phase before trading.',
+'faq4q': 'How do I protect myself from trailing drawdown?',
+'faq4a': 'Four key strategies: (1) Always confirm which drawdown type your account uses before placing any trade. (2) Set your daily loss limit to no more than 20% of your total drawdown allowance. (3) Use ATR-based stop losses calibrated to current market volatility. (4) Use automated risk management tools like x-trade.ai to lock in profits and enforce hard limits that prevent you from giving back gains in a drawdown spiral.',
+'ctaTitle': 'Master Your Drawdown. Protect Your Account.',
+'ctaText': 'x-trade.ai tracks your drawdown floor in real time, locks profits automatically, and enforces daily limits that prevent blow-ups. Works with every drawdown type \u2014 static, EOD trailing, and tick-by-tick. Set up in under 5 minutes.',
+'ctaBtn': 'Start Free Trial',
+'lastUpdated': 'Last updated: March 2026',
+'crossTitle': 'Related Articles',
+'cross1': 'Revenge Trading: How to Stop It Before It Stops You',
+'cross2': 'Why 93% of Prop Firm Traders Never Get Paid \u2014 The 5 Risk Mistakes',
+'cross3': 'How to Pass a Prop Firm Evaluation \u2014 The Complete Risk Guide',
+'footBlog': 'Blog',
+'footTrial': 'Free Trial',
+'footCopy': '\u00a9 2026 x-trade.ai \u2014 All rights reserved.'
+},
+fr: {
+'navHome': 'Accueil',
+'navBlog': 'Blog',
+'navStart': 'Essai Gratuit',
+'breadcrumb': '<a href="/">Accueil</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; Drawdown Trailing vs Statique vs EOD',
+'metaTag': 'Gestion du Risque',
+'metaDate': '30 mars 2026',
+'metaRead': '8 min de lecture',
+'title': 'Drawdown Trailing vs Statique vs EOD : Tout Comprendre en 5 Minutes',
+'takeawaysTitle': 'Points Cl\u00e9s',
+'tk1': 'Il existe 3 types de drawdown en prop firm : statique (plancher fixe), trailing EOD (plancher mis \u00e0 jour \u00e0 la cl\u00f4ture de session), et trailing tick-by-tick (plancher mis \u00e0 jour en temps r\u00e9el \u00e0 chaque tick).',
+'tk2': 'Le drawdown trailing tick-by-tick est le plus dangereux \u2014 un pic bref de profit non r\u00e9alis\u00e9 rel\u00e8ve d\u00e9finitivement votre plancher, m\u00eame si vous ne cl\u00f4turez jamais le trade \u00e0 ce niveau.',
+'tk3': 'Beaucoup de firmes changent le type de drawdown entre la phase d\'\u00e9valuation et la phase funded. Les r\u00e8gles qui vous ont aid\u00e9 \u00e0 passer l\'\u00e9val ne sont peut-\u00eatre pas celles qui r\u00e9gissent votre compte funded.',
+'tk4': 'Prot\u00e9ger votre drawdown exige de conna\u00eetre votre type, de fixer des limites journali\u00e8res \u00e0 20% du drawdown total, d\'utiliser des stops bas\u00e9s sur l\'ATR, et de verrouiller les profits avec des outils automatis\u00e9s comme x-trade.ai.',
+'answerBox': '<strong>Le drawdown trailing</strong> est une limite de perte maximale dont le plancher monte \u00e0 mesure que votre compte atteint de nouveaux sommets. Contrairement au drawdown statique o\u00f9 le plancher est fix\u00e9 d\u00e9finitivement, un drawdown trailing suit vos profits \u00e0 la hausse \u2014 ce qui signifie que vous ne pouvez jamais laisser votre compte baisser de plus d\'un montant d\u00e9fini en dessous de sa valeur la plus haute enregistr\u00e9e. Il existe deux sous-types : <strong>trailing EOD</strong> (le plancher ne se recalcule qu\'\u00e0 la cl\u00f4ture de session) et <strong>trailing tick-by-tick</strong> (le plancher monte en temps r\u00e9el \u00e0 chaque tick de profit non r\u00e9alis\u00e9).',
+'intro': 'Le drawdown est la raison #1 de perte de comptes funded. Pourtant, la plupart des traders ne comprennent pas la diff\u00e9rence entre les 3 types \u2014 et cette incompr\u00e9hension leur co\u00fbte des milliers de dollars en comptes explos\u00e9s et en frais de r\u00e9\u00e9valuation.',
+'intro2': 'Ce guide d\u00e9cortique chaque type de drawdown avec des exemples concrets, un tableau comparatif c\u00f4te \u00e0 c\u00f4te, et les firmes sp\u00e9cifiques qui utilisent chacun. \u00c0 la fin, vous saurez exactement comment votre plancher bouge, quand il se met \u00e0 jour, et comment le prot\u00e9ger.',
+'h2overview': 'Les 3 Types de Drawdown en Prop Firm',
+'overviewP1': 'Chaque prop firm vous donne une allocation de drawdown \u2014 le montant maximum que votre compte peut perdre avant d\'\u00eatre r\u00e9sili\u00e9. Mais <strong>comment</strong> cette limite fonctionne varie consid\u00e9rablement d\'une firme \u00e0 l\'autre. Les trois types sont :',
+'stat1label': 'Plancher fixe, ne monte jamais',
+'stat2label': 'Le plancher suit \u00e0 la cl\u00f4ture de session',
+'stat3label': 'Le plancher suit chaque tick en temps r\u00e9el',
+'overviewP2': 'La diff\u00e9rence entre ces trois types peut faire la diff\u00e9rence entre garder un compte funded et le faire exploser. Examinons chacun en d\u00e9tail.',
+'h2static': 'Drawdown Statique (Plancher Fixe)',
+'staticP1': '<strong>Le drawdown statique</strong> est le type le plus simple et le plus indulgent. Le plancher est calcul\u00e9 une seule fois au d\u00e9part : votre solde initial moins l\'allocation de drawdown. Il <strong>ne monte jamais</strong>, quel que soit le profit que vous r\u00e9alisez.',
+'h3staticExample': 'Exemple : Compte $50K, Drawdown Statique de $2,500',
+'scenarioStatic': '<span class="label">Solde initial :</span> 50 000$<br><span class="label">Allocation drawdown :</span> 2 500$<br><span class="label">Plancher (niveau de violation) :</span> <span class="val-green">47 500$ \u2014 POUR TOUJOURS</span><br><br><span class="label">Jour 1 :</span> Vous gagnez 1 200$ \u2192 Solde : 51 200$ \u2192 Plancher : <span class="val-green">47 500$</span><br><span class="label">Jour 5 :</span> Vous gagnez 3 000$ de plus \u2192 Solde : 54 200$ \u2192 Plancher : <span class="val-green">47 500$</span><br><span class="label">Jour 10 :</span> Mauvaise semaine, perte de 4 000$ \u2192 Solde : 50 200$ \u2192 Plancher : <span class="val-green">47 500$</span><br><br><span class="val-green">\u2713 Il vous reste 2 700$ de marge au-dessus du plancher.</span><br><span class="label">Le plancher n\'a jamais boug\u00e9.</span> Vos profits ont cr\u00e9\u00e9 un coussin permanent.',
+'staticP2': 'Le drawdown statique est le plus indulgent car vos profits cr\u00e9ent un tampon toujours croissant. Plus vous gagnez, plus vous \u00eates loin du plancher. Des firmes comme <strong>FTMO</strong> et <strong>MyFundedFX</strong> utilisent le drawdown statique sur leurs comptes funded. C\'est pourquoi les traders exp\u00e9riment\u00e9s pr\u00e9f\u00e8rent les comptes \u00e0 drawdown statique d\u00e8s que possible.',
+'h2eod': 'Drawdown Trailing EOD (End of Day)',
+'eodP1': '<strong>Le drawdown trailing EOD</strong> signifie que le plancher ne se met \u00e0 jour qu\'\u00e0 la fin de chaque session de trading, bas\u00e9 sur votre <strong>solde de cl\u00f4ture</strong> (pas votre plus haut intraday). C\'est la distinction cruciale : ce qui se passe pendant la session ne d\u00e9place pas directement le plancher \u2014 seul le niveau de cl\u00f4ture compte.',
+'h3eodExample': 'Exemple : Compte $50K, Drawdown Trailing EOD de $2,000',
+'scenarioEOD': '<span class="label">Solde initial :</span> 50 000$<br><span class="label">Drawdown trailing :</span> 2 000$<br><span class="label">Plancher initial :</span> 48 000$<br><br><span class="label">Jour 1 :</span> Cl\u00f4ture \u00e0 50 800$<br>\u2192 Nouveau plancher : 50 800$ - 2 000$ = <span class="val-gold">48 800$</span> <span class="label">(mont\u00e9 de 800$)</span><br><br><span class="label">Jour 2 :</span> Plus haut intraday atteint 52 000$ \u2014 mais vous cl\u00f4turez \u00e0 51 200$<br>\u2192 Nouveau plancher : 51 200$ - 2 000$ = <span class="val-gold">49 200$</span> <span class="label">(PAS 50 000$)</span><br>\u2192 <span class="val-green">Le pic intraday \u00e0 52K$ n\'a PAS affect\u00e9 le plancher.</span><br><br><span class="label">Jour 3 :</span> Mauvais jour, cl\u00f4ture \u00e0 50 500$ (plus bas qu\'hier)<br>\u2192 Le plancher reste : <span class="val-gold">49 200$</span> <span class="label">(le plancher ne monte que vers le HAUT, jamais vers le bas)</span><br><br><span class="label">Jour 4 :</span> Cl\u00f4ture \u00e0 52 400$ (nouveau plus haut de cl\u00f4ture)<br>\u2192 Nouveau plancher : 52 400$ - 2 000$ = <span class="val-gold">50 400$</span>',
+'eodP2': 'L\'avantage cl\u00e9 du trailing EOD est que <strong>la volatilit\u00e9 intraday ne d\u00e9place pas votre plancher</strong>. Vous pouvez avoir un trade qui spike de 2 000$ en profit non r\u00e9alis\u00e9, qui retrace, et cl\u00f4turer avec un gain modeste \u2014 et seul le gain modeste d\u00e9place le plancher. Cela donne aux scalpers et traders intraday de l\'espace pour respirer.',
+'eodP3': 'Les firmes utilisant le drawdown trailing EOD incluent <strong>Topstep</strong>, <strong>Bulenox (Option 2)</strong> et <strong>Tradeify</strong>. Si vous avez le choix entre trailing EOD et trailing tick-by-tick, choisissez toujours l\'EOD.',
+'h2tick': 'Drawdown Trailing Tick-by-Tick (Temps R\u00e9el)',
+'tickP1': '<strong>Le drawdown trailing tick-by-tick</strong> est le type le plus agressif et le plus dangereux. Le plancher monte en <strong>temps r\u00e9el</strong> \u00e0 chaque tick de profit non r\u00e9alis\u00e9. Si votre compte touche un nouveau sommet pendant ne serait-ce qu\'une seconde, le plancher monte d\u00e9finitivement \u2014 m\u00eame si vous ne cl\u00f4turez jamais le trade \u00e0 ce niveau.',
+'tickWarningTitle': '\u26a0 Pourquoi C\'est Dangereux',
+'tickWarningP': 'Avec le trailing tick-by-tick, un pic bref de profit non r\u00e9alis\u00e9 que vous n\'avez jamais captur\u00e9 rel\u00e8ve d\u00e9finitivement votre plancher. Vous perdez de la marge de drawdown pour du profit que vous n\'avez jamais v\u00e9ritablement encaiss\u00e9. C\'est la raison #1 pour laquelle les traders \u00e9rodent leur coussin de drawdown sans le savoir.',
+'h3tickExample': 'Exemple : Compte $50K, Drawdown Trailing Tick-by-Tick de $2,000',
+'scenarioTick': '<span class="label">Solde initial :</span> 50 000$<br><span class="label">Drawdown trailing :</span> 2 000$<br><span class="label">Plancher initial :</span> 48 000$<br><br><span class="label">9h35 :</span> Vous entrez long sur le NQ. Le trade monte \u00e0 +2 000$ de profit non r\u00e9alis\u00e9.<br>\u2192 Le compte touche 52 000$ pendant <span class="val-red">1 seconde</span><br>\u2192 Le plancher monte IMM\u00c9DIATEMENT \u00e0 : 52 000$ - 2 000$ = <span class="val-red">50 000$</span><br><br><span class="label">9h36 :</span> Le prix retrace. Vous cl\u00f4turez \u00e0 +500$.<br>\u2192 Solde : 50 500$<br>\u2192 Le plancher est toujours \u00e0 : <span class="val-red">50 000$</span><br>\u2192 <span class="val-red">Il ne vous reste que 500$ de marge de drawdown !</span><br><br><span class="label">Ce qui s\'est pass\u00e9 :</span> Vous avez captur\u00e9 500$ de profit, mais votre plancher a mont\u00e9 de 2 000$.<br><span class="val-red">Vous avez perdu 1 500$ de coussin de drawdown pour du profit que vous n\'avez jamais gard\u00e9.</span>',
+'tickP2': 'C\'est pourquoi le trailing tick-by-tick est si tra\u00eetre. Le plancher poursuit le profit non r\u00e9alis\u00e9 qui s\'\u00e9vapore quand le trade retrace. Les scalpers qui surfent sur des pics rapides sont particuli\u00e8rement vuln\u00e9rables \u2014 chaque pic momentan\u00e9 \u00e9rode d\u00e9finitivement leur filet de s\u00e9curit\u00e9.',
+'tickP3': 'Les firmes utilisant le trailing tick-by-tick incluent <strong>Bulenox (Option 1)</strong> et <strong>Apex (pendant l\'\u00e9valuation)</strong>. Si votre firme utilise ce type, vous devez g\u00e9rer vos trades avec une pr\u00e9cision extr\u00eame. La gestion du risque par IA de <a href="https://x-trade.ai">x-trade.ai</a> est sp\u00e9cifiquement con\u00e7ue pour suivre le mouvement du plancher de drawdown en temps r\u00e9el et vous alerter avant que vous n\'\u00e9rodiez silencieusement votre coussin.',
+'h2compare': 'Comparaison C\u00f4te \u00e0 C\u00f4te',
+'compareIntro': 'Voici la comparaison compl\u00e8te des trois types de drawdown. \u00c9tudiez ce tableau avant de choisir une prop firm ou de placer votre prochain trade :',
+'colCriteria': 'Crit\u00e8re',
+'colStatic': 'Statique',
+'colEOD': 'Trailing EOD',
+'colTick': 'Tick-by-Tick',
+'rowFloor': 'Comment le plancher bouge',
+'rowFloorStatic': 'Ne bouge jamais. Fix\u00e9 au d\u00e9part.',
+'rowFloorEOD': 'Monte selon le solde de cl\u00f4ture en fin de journ\u00e9e.',
+'rowFloorTick': 'Monte en temps r\u00e9el \u00e0 chaque tick de P&L non r\u00e9alis\u00e9.',
+'rowWhen': 'Quand il se met \u00e0 jour',
+'rowWhenStatic': 'Jamais',
+'rowWhenEOD': 'Une fois par jour, \u00e0 la cl\u00f4ture de session',
+'rowWhenTick': 'Chaque tick, en continu',
+'rowDanger': 'Niveau de danger',
+'rowDangerStatic': 'Faible \u2014 les profits cr\u00e9ent un coussin permanent',
+'rowDangerEOD': 'Moyen \u2014 le solde de cl\u00f4ture compte, pas les pics intraday',
+'rowDangerTick': '\u00c9lev\u00e9 \u2014 les pics non r\u00e9alis\u00e9s \u00e9rodent d\u00e9finitivement le coussin',
+'rowStyle': 'Id\u00e9al pour',
+'rowStyleStatic': 'Tous les styles, surtout swing traders',
+'rowStyleEOD': 'Day traders et scalpers',
+'rowStyleTick': 'Traders ultra-disciplin\u00e9s avec des objectifs serr\u00e9s',
+'rowFirms': 'Firmes qui l\'utilisent',
+'rowFirmsStatic': 'FTMO, MyFundedFX (funded)',
+'rowFirmsEOD': 'Topstep, Bulenox Opt2, Tradeify',
+'rowFirmsTick': 'Bulenox Opt1, Apex (\u00e9val)',
+'h2trap': 'Le Pi\u00e8ge du Changement de R\u00e8gles',
+'trapP1': 'Voici le pi\u00e8ge qui attrape des milliers de traders chaque mois : <strong>beaucoup de firmes changent leur type de drawdown entre les phases d\'\u00e9valuation et funded</strong>. Vous passez l\'\u00e9valuation sous un jeu de r\u00e8gles, puis tradez le compte funded sous un jeu compl\u00e8tement diff\u00e9rent.',
+'trapP2': 'Le changement le plus courant est <strong>trailing EOD pendant l\'\u00e9valuation \u2192 trailing tick-by-tick une fois funded</strong>. Take Prop Trading (TPT) est connu pour cela. Les traders d\u00e9veloppent des habitudes pendant l\'\u00e9val qui fonctionnent sous les r\u00e8gles EOD \u2014 laisser les trades respirer, surfer les pics de momentum, cl\u00f4turer en fin de session \u2014 puis ces m\u00eames habitudes les d\u00e9truisent sous les r\u00e8gles tick-by-tick.',
+'trapP3': 'Apex utilise une approche hybride : drawdown trailing pendant l\'\u00e9valuation mais avec des param\u00e8tres et m\u00e9thodes de calcul diff\u00e9rents pour les comptes funded. Le trader qui ne lit pas les petits caract\u00e8res passe l\'\u00e9val, obtient le funded, trade de la m\u00eame mani\u00e8re, et fait exploser le compte en quelques jours.',
+'trapWarningTitle': '\u26a0 V\u00e9rifiez Toujours les Deux Phases',
+'trapWarningP': 'Avant de commencer toute \u00e9valuation, v\u00e9rifiez les r\u00e8gles de drawdown pour <strong>les deux</strong> phases : \u00e9val ET funded. Si les r\u00e8gles changent, ajustez votre strat\u00e9gie avant de passer en live. Apprenez des strat\u00e9gies sp\u00e9cifiques adapt\u00e9es \u00e0 chaque type de drawdown avec nos <a href="https://basstrading.fr">formations sur basstrading.fr</a>.',
+'h2protect': 'Comment Prot\u00e9ger Votre Drawdown',
+'protectIntro': 'Quel que soit le type de drawdown sous lequel vous tradez, ces quatre principes vous garderont en s\u00e9curit\u00e9 :',
+'protect1': '<strong>Connaissez toujours votre type de drawdown avant de placer un seul trade.</strong> Est-ce statique, trailing EOD ou tick-by-tick ? Est-ce que \u00e7a change entre l\'\u00e9val et le funded ? Ne devinez pas. Lisez le document de r\u00e8gles. Si c\'est flou, contactez le support et obtenez-le par \u00e9crit.',
+'protect2': '<strong>Fixez votre limite de perte journali\u00e8re \u00e0 20% de votre allocation totale de drawdown.</strong> Si votre drawdown est de 2 500$, votre perte journali\u00e8re maximale devrait \u00eatre de 500$. Cela vous donne au moins 5 jours perdants complets avant la violation \u2014 assez de marge pour r\u00e9cup\u00e9rer d\'une mauvaise s\u00e9rie.',
+'protect3': '<strong>Utilisez des stop-loss bas\u00e9s sur l\'ATR.</strong> La distance de votre stop devrait \u00eatre calibr\u00e9e sur la volatilit\u00e9 r\u00e9elle, pas un nombre arbitraire de ticks. En conditions de forte ATR, r\u00e9duisez la taille. En conditions de faible ATR, vous pouvez vous permettre des stops l\u00e9g\u00e8rement plus larges. Cela \u00e9vite les pertes surdimensionn\u00e9es par rapport \u00e0 l\'environnement de march\u00e9.',
+'protect4': '<strong>Verrouillez les profits avec des outils automatis\u00e9s.</strong> <a href="https://x-trade.ai">x-trade.ai</a> ajuste automatiquement votre budget de risque restant \u00e0 mesure que les profits s\'accumulent, vous emp\u00eachant de rendre vos gains dans une spirale de drawdown. Une fois que votre coussin grandit, le syst\u00e8me le prot\u00e8ge.',
+'tipTitle': '\ud83d\udca1 Astuce Pro : Combinez Connaissance + Automatisation',
+'tipP1': 'L\'IA de <a href="https://hubtrading.fr">hubtrading.fr</a> vous aide \u00e0 identifier les zones de retournement et le placement optimal des stops bas\u00e9 sur la structure de march\u00e9 \u2014 pour mieux placer vos stops d\u00e8s le d\u00e9part.',
+'tipP2': 'Ma\u00eetrisez la gestion du drawdown en profondeur avec nos <a href="https://basstrading.fr">formations sur basstrading.fr</a> \u2014 des modules d\u00e9di\u00e9s couvrent chaque type de drawdown avec des exemples en live et des calculateurs de taille de position.',
+'protectOutro': 'Les traders qui survivent en prop firm ne sont pas ceux qui ont les meilleures entr\u00e9es. Ce sont ceux qui comprennent leurs r\u00e8gles de drawdown sur le bout des doigts, et qui utilisent des syst\u00e8mes \u2014 pas la volont\u00e9 \u2014 pour les faire respecter.',
+'h2faq': 'Questions Fr\u00e9quemment Pos\u00e9es',
+'faq1q': 'Qu\'est-ce qu\'un drawdown trailing en prop firm ?',
+'faq1a': 'Un drawdown trailing est une limite de perte maximale dont le plancher monte \u00e0 mesure que votre compte atteint de nouveaux sommets. Contrairement au drawdown statique o\u00f9 le plancher est fix\u00e9 d\u00e9finitivement, un drawdown trailing suit vos profits \u00e0 la hausse, ce qui signifie que vous ne pouvez jamais laisser votre compte baisser de plus d\'un montant d\u00e9fini en dessous de son plus haut point. Il existe deux sous-types : trailing EOD (le plancher ne se met \u00e0 jour qu\'\u00e0 la cl\u00f4ture de session) et trailing tick-by-tick (le plancher se met \u00e0 jour en temps r\u00e9el \u00e0 chaque tick de profit non r\u00e9alis\u00e9).',
+'faq2q': 'Quelle est la diff\u00e9rence entre drawdown trailing EOD et tick-by-tick ?',
+'faq2a': 'Le drawdown trailing EOD (End of Day) ne recalcule le plancher qu\'\u00e0 la fin de chaque session de trading, bas\u00e9 sur le solde de cl\u00f4ture. Le drawdown trailing tick-by-tick met \u00e0 jour le plancher en temps r\u00e9el \u00e0 chaque tick de profit non r\u00e9alis\u00e9, m\u00eame si vous ne cl\u00f4turez jamais le trade \u00e0 ce niveau. Le tick-by-tick est nettement plus dangereux car un pic bref de profit non r\u00e9alis\u00e9 rel\u00e8ve d\u00e9finitivement le plancher, vous co\u00fbtant de la marge de drawdown pour des gains que vous n\'avez jamais r\u00e9ellement captur\u00e9s.',
+'faq3q': 'Quelles prop firms utilisent le drawdown trailing ?',
+'faq3a': 'Topstep, Bulenox (Option 2) et Tradeify utilisent le drawdown trailing EOD. Bulenox (Option 1) et Apex (pendant l\'\u00e9valuation) utilisent le drawdown trailing tick-by-tick. FTMO et MyFundedFX utilisent le drawdown statique sur les comptes funded. Important : beaucoup de firmes changent de type de drawdown entre les phases d\'\u00e9valuation et funded, donc v\u00e9rifiez toujours les r\u00e8gles pour chaque phase avant de trader.',
+'faq4q': 'Comment me prot\u00e9ger du drawdown trailing ?',
+'faq4a': 'Quatre strat\u00e9gies cl\u00e9s : (1) Confirmez toujours quel type de drawdown votre compte utilise avant de placer un trade. (2) Fixez votre limite de perte journali\u00e8re \u00e0 maximum 20% de votre allocation totale de drawdown. (3) Utilisez des stop-loss bas\u00e9s sur l\'ATR calibr\u00e9s sur la volatilit\u00e9 actuelle du march\u00e9. (4) Utilisez des outils automatis\u00e9s de gestion du risque comme x-trade.ai pour verrouiller les profits et imposer des limites strictes qui vous emp\u00eachent de rendre vos gains dans une spirale de drawdown.',
+'ctaTitle': 'Ma\u00eetrisez Votre Drawdown. Prot\u00e9gez Votre Compte.',
+'ctaText': 'x-trade.ai suit votre plancher de drawdown en temps r\u00e9el, verrouille les profits automatiquement et impose des limites journali\u00e8res qui emp\u00eachent les explosions de compte. Fonctionne avec tous les types de drawdown \u2014 statique, trailing EOD et tick-by-tick. Configuration en moins de 5 minutes.',
+'ctaBtn': 'Commencer l\'Essai Gratuit',
+'lastUpdated': 'Derni\u00e8re mise \u00e0 jour : Mars 2026',
+'crossTitle': 'Articles Associ\u00e9s',
+'cross1': 'Revenge Trading : Comment l\'Arr\u00eater Avant Qu\'il Ne Vous Arr\u00eate',
+'cross2': 'Pourquoi 93% des Traders Prop Firm Ne Sont Jamais Pay\u00e9s \u2014 Les 5 Erreurs de Risque',
+'cross3': 'Comment R\u00e9ussir une \u00c9valuation Prop Firm \u2014 Le Guide Complet du Risque',
+'footBlog': 'Blog',
+'footTrial': 'Essai Gratuit',
+'footCopy': '\u00a9 2026 x-trade.ai \u2014 Tous droits r\u00e9serv\u00e9s.'
+}
+};
+
+function applyLang() {
+  for (const [id, html] of Object.entries(TR[lang] || TR.en)) {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  }
+  document.getElementById('langBtn').textContent = lang === 'en' ? 'FR' : 'EN';
+  document.documentElement.lang = lang;
+}
+
+function toggleLang() {
+  lang = lang === 'en' ? 'fr' : 'en';
+  localStorage.setItem('xtrade_lang', lang);
+  applyLang();
+}
+
+document.addEventListener('DOMContentLoaded', applyLang);
+</script>
+</body>
+</html>

@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MES vs MNQ for Prop Firm Traders: Which Micro Future Should You Trade? | x-trade.ai</title>
+<meta name="description" content="MES vs MNQ comparison for prop firm traders. Contract specs, risk math per contract, position sizing by account size, and which micro future fits your drawdown rules.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://x-trade.ai/blog/mes-vs-mnq-prop-firm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MES vs MNQ for Prop Firm Traders: Which Micro Future Should You Trade? | x-trade.ai">
+<meta property="og:description" content="MES vs MNQ head-to-head comparison — contract specs, risk per contract, and position sizing for every prop firm account size.">
+<meta property="og:url" content="https://x-trade.ai/blog/mes-vs-mnq-prop-firm">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MES vs MNQ for Prop Firm Traders: Which Micro Future Should You Trade? | x-trade.ai">
+<meta name="twitter:description" content="MES vs MNQ head-to-head comparison — contract specs, risk per contract, and position sizing for every prop firm account size.">
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Article",
+  "headline":"MES vs MNQ for Prop Firm Traders: Which Micro Future Should You Trade?",
+  "author":{"@type":"Person","name":"Bass","jobTitle":"Founder, x-trade.ai"},
+  "datePublished":"2026-03-30",
+  "dateModified":"2026-03-30",
+  "publisher":{"@type":"Organization","name":"x-trade.ai","url":"https://x-trade.ai"},
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://x-trade.ai/blog/mes-vs-mnq-prop-firm"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"Is MNQ or MES better for passing a prop firm evaluation?","acceptedAnswer":{"@type":"Answer","text":"It depends on your win rate and risk tolerance. MNQ is better for traders with a 55%+ win rate who want to reach the profit target faster, because each point is worth $2 vs $1.25 on MES. However, MNQ's higher volatility (200-400 point daily range vs 40-80 on MES) means you can also breach your drawdown faster. MES is better for conservative traders who prioritize survival and drawdown management over speed."}},
+    {"@type":"Question","name":"How many MNQ contracts can I trade on a $50K prop firm account?","acceptedAnswer":{"@type":"Answer","text":"On a typical $50K account with a $2,000 trailing drawdown, you should trade 1-2 MNQ contracts maximum. With a 20-point ATR-based stop, 1 MNQ contract risks $40 per trade, and 2 contracts risk $80. This keeps your risk per trade at 2-4% of your total drawdown, which is sustainable for passing an evaluation without breaching."}},
+    {"@type":"Question","name":"Can I trade both MES and MNQ in the same prop firm account?","acceptedAnswer":{"@type":"Answer","text":"Yes, most prop firms allow you to trade multiple instruments within the same account as long as you stay within the maximum contract limit. A common approach is to use MNQ for high-conviction setups where you want more dollar exposure per contract, and MES for lower-conviction trades or when you want tighter risk control. Just make sure to calculate your total risk across both instruments combined."}},
+    {"@type":"Question","name":"What is the tick value difference between MES and MNQ?","acceptedAnswer":{"@type":"Answer","text":"MES (Micro E-mini S&P 500) has a tick value of $1.25 with a tick size of 0.25 points, giving a point value of $5.00. MNQ (Micro E-mini Nasdaq 100) has a tick value of $0.50 with a tick size of 0.25 points, giving a point value of $2.00. Despite MNQ having a smaller tick value, its much larger daily point range (200-400 points vs 40-80 for MES) means the actual dollar risk per contract is significantly higher on MNQ."}}
+  ]
+}
+</script>
+<style>
+:root{--bg:#07090f;--bg2:#0f1420;--cyan:#06b6d4;--green:#22d97f;--red:#ef4444;--gold:#f59e0b;--text:#f0f4f8;--dim:#94a3b8;--border:rgba(255,255,255,0.06)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}
+code,pre,.mono{font-family:'JetBrains Mono',monospace}
+a{color:var(--cyan);text-decoration:none;transition:color .2s}
+a:hover{color:var(--green)}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(7,9,15,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-weight:800;font-size:1.15rem;color:var(--text);letter-spacing:-.5px}
+.nav-logo span{color:var(--cyan)}
+.nav-links{display:flex;align-items:center;gap:1.5rem}
+.nav-links a{color:var(--dim);font-size:.875rem;font-weight:500}
+.nav-links a:hover{color:var(--text)}
+.lang-btn{background:transparent;border:1px solid var(--cyan);color:var(--cyan);padding:4px 12px;border-radius:6px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
+.lang-btn:hover{background:var(--cyan);color:var(--bg)}
+
+/* ARTICLE */
+.article-wrap{max-width:760px;margin:0 auto;padding:3rem 1.5rem 4rem}
+.breadcrumb{font-size:.8rem;color:var(--dim);margin-bottom:2rem}
+.breadcrumb a{color:var(--dim)}
+.breadcrumb a:hover{color:var(--cyan)}
+.article-meta{display:flex;align-items:center;gap:.75rem;font-size:.8rem;color:var(--dim);margin-bottom:1.25rem;flex-wrap:wrap}
+.article-meta .tag{background:rgba(6,182,212,.1);color:var(--cyan);padding:2px 10px;border-radius:99px;font-weight:500}
+h1{font-size:2.25rem;font-weight:800;line-height:1.2;letter-spacing:-.5px;margin-bottom:1.5rem}
+h2{font-size:1.5rem;font-weight:700;margin:2.5rem 0 1rem;letter-spacing:-.3px;color:var(--text)}
+h3{font-size:1.15rem;font-weight:600;margin:1.75rem 0 .75rem;color:var(--green)}
+p{margin-bottom:1.25rem;color:var(--dim);font-size:1rem}
+strong{color:var(--text)}
+
+/* KEY TAKEAWAYS */
+.takeaways{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--cyan);border-radius:10px;padding:1.5rem 1.75rem;margin-bottom:2.5rem}
+.takeaways h3{color:var(--cyan);margin:0 0 .75rem;font-size:1rem}
+.takeaways ul{list-style:none;padding:0}
+.takeaways li{position:relative;padding-left:1.5rem;margin-bottom:.5rem;color:var(--dim);font-size:.95rem}
+.takeaways li::before{content:"\2713";position:absolute;left:0;color:var(--green);font-weight:700}
+
+/* ANSWER BOX */
+.answer-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:10px;padding:1.5rem 1.75rem;margin-bottom:2.5rem}
+.answer-box h3{color:var(--green);margin:0 0 .75rem;font-size:1rem}
+.answer-box p{margin-bottom:.5rem;font-size:.95rem}
+.answer-box p:last-child{margin-bottom:0}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;margin:1.5rem 0 2rem;border-radius:10px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:.82rem;min-width:500px}
+th{text-align:left;padding:10px 12px;background:var(--bg2);color:var(--cyan);font-size:.7rem;text-transform:uppercase;letter-spacing:.8px;border-bottom:2px solid var(--border);white-space:nowrap;position:sticky;top:0}
+td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--dim);white-space:nowrap}
+td strong{color:var(--text)}
+tr:hover td{background:rgba(6,182,212,.03)}
+.warn{color:var(--red);font-weight:600}
+.ok{color:var(--green)}
+.note{color:var(--gold);font-style:italic}
+th:first-child,td:first-child{position:sticky;left:0;background:var(--bg);z-index:2}
+tr:hover td:first-child{background:rgba(6,182,212,.03)}
+
+/* MATH BOX */
+.math-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1.25rem}
+.math-box h3{color:var(--gold);margin:0 0 .5rem;font-size:1rem}
+.math-box p{margin-bottom:.5rem;font-size:.95rem}
+.math-box p:last-child{margin-bottom:0}
+.math-box code{background:rgba(6,182,212,.1);color:var(--cyan);padding:2px 6px;border-radius:4px;font-size:.85rem}
+
+/* LISTS */
+.article-wrap ul,.article-wrap ol{margin:0 0 1.25rem 1.25rem;color:var(--dim)}
+.article-wrap li{margin-bottom:.4rem;font-size:1rem}
+
+/* PROS/CONS */
+.pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0 1.5rem}
+.pros-cons .pro,.pros-cons .con{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem}
+.pros-cons .pro{border-left:3px solid var(--green)}
+.pros-cons .con{border-left:3px solid var(--red)}
+.pros-cons h4{font-size:.9rem;font-weight:600;margin-bottom:.5rem}
+.pros-cons .pro h4{color:var(--green)}
+.pros-cons .con h4{color:var(--red)}
+.pros-cons ul{margin:0;padding:0;list-style:none}
+.pros-cons li{font-size:.9rem;color:var(--dim);padding-left:1.25rem;position:relative;margin-bottom:.35rem}
+.pros-cons .pro li::before{content:"+";position:absolute;left:0;color:var(--green);font-weight:700}
+.pros-cons .con li::before{content:"\2212";position:absolute;left:0;color:var(--red);font-weight:700}
+@media(max-width:640px){.pros-cons{grid-template-columns:1fr}}
+
+/* FAQ */
+.faq-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1rem}
+.faq-q{font-weight:600;color:var(--text);margin-bottom:.5rem;font-size:1.05rem}
+.faq-a{color:var(--dim);font-size:.95rem}
+
+/* CTA */
+.cta-box{background:linear-gradient(135deg,rgba(6,182,212,.12),rgba(34,217,127,.08));border:1px solid rgba(6,182,212,.25);border-radius:14px;padding:2.5rem;text-align:center;margin:3rem 0 2rem}
+.cta-box h2{margin:0 0 .75rem;font-size:1.5rem}
+.cta-box p{color:var(--dim);margin-bottom:1.5rem}
+.cta-btn{display:inline-block;background:var(--cyan);color:var(--bg);padding:12px 32px;border-radius:8px;font-weight:700;font-size:1rem;transition:all .25s}
+.cta-btn:hover{background:var(--green);color:var(--bg);transform:translateY(-1px)}
+
+/* CROSS LINKS */
+.cross-links{border-top:1px solid var(--border);padding-top:2rem;margin-top:2rem}
+.cross-links h3{font-size:1rem;color:var(--dim);margin-bottom:1rem}
+.cross-link{display:block;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin-bottom:.75rem;color:var(--text);font-weight:500;transition:border-color .2s}
+.cross-link:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* TRAP BOX (reused for verdict) */
+.trap-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1.25rem}
+.trap-box h3{color:var(--red);margin:0 0 .5rem;font-size:1rem}
+.trap-box p{margin-bottom:.5rem;font-size:.95rem}
+.trap-box p:last-child{margin-bottom:0}
+
+.verdict-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--cyan);border-radius:10px;padding:1.5rem 1.75rem;margin-bottom:1.5rem}
+.verdict-box h3{color:var(--cyan);margin:0 0 .75rem;font-size:1rem}
+.verdict-box p{margin-bottom:.5rem;font-size:.95rem}
+.verdict-box p:last-child{margin-bottom:0}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;text-align:center;font-size:.8rem;color:var(--dim)}
+.footer a{color:var(--dim)}
+.footer a:hover{color:var(--cyan)}
+.footer-links{display:flex;justify-content:center;gap:1.5rem;margin-bottom:.75rem;flex-wrap:wrap}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+h1{font-size:1.6rem}
+h2{font-size:1.25rem}
+.article-wrap{padding:2rem 1rem 3rem}
+.nav{padding:0 1rem}
+.nav-links{gap:1rem}
+table{font-size:.72rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="/" class="nav-logo">x-trade<span>.ai</span></a>
+  <div class="nav-links">
+    <a href="/" id="navHome">Home</a>
+    <a href="/blog" id="navBlog">Blog</a>
+    <a href="/onboarding?mode=trial" id="navStart">Start Free</a>
+    <button class="lang-btn" id="langBtn" onclick="toggleLang()">FR</button>
+  </div>
+</nav>
+
+<!-- ARTICLE -->
+<main class="article-wrap">
+
+  <div class="breadcrumb" id="breadcrumb"><a href="/">Home</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; MES vs MNQ for Prop Firm</div>
+
+  <div class="article-meta">
+    <span class="tag" id="metaTag">Comparison</span>
+    <span id="metaDate">March 30, 2026</span>
+    <span>&middot;</span>
+    <span id="metaRead">12 min read</span>
+  </div>
+
+  <h1 id="title">MES vs MNQ for Prop Firm Traders: Which Micro Future Should You Trade?</h1>
+
+  <!-- KEY TAKEAWAYS -->
+  <div class="takeaways">
+    <h3 id="takeawaysTitle">Key Takeaways</h3>
+    <ul>
+      <li id="tk1">MNQ moves 3-5x more points per day than MES, which means faster profits but also faster drawdown breaches if your stops are too tight or your sizing too large.</li>
+      <li id="tk2">On a $50K account with $2,000 drawdown, you can safely trade 1-2 MNQ contracts or 2-3 MES contracts using ATR-based stops &mdash; going beyond this puts your account at serious risk.</li>
+      <li id="tk3">MES gives you a smoother equity curve because you can spread risk across more contracts. MNQ concentrates risk into fewer contracts with higher dollar-per-point exposure.</li>
+      <li id="tk4">The best choice depends on your win rate: MNQ for 55%+ WR traders who want to pass faster, MES for conservative traders who prioritize survival over speed.</li>
+    </ul>
+  </div>
+
+  <!-- ANSWER BOX -->
+  <div class="answer-box">
+    <h3 id="answerTitle">Quick Answer: MES vs MNQ for Prop Firms</h3>
+    <p id="answerP1"><strong>MNQ (Micro Nasdaq)</strong> = more volatile, more opportunity per trade, but significantly more risk per contract. One bad MNQ trade can consume 2-4% of your drawdown.</p>
+    <p id="answerP2"><strong>MES (Micro S&amp;P 500)</strong> = calmer instrument, easier to manage drawdown, allows more contracts for the same risk budget. Better for capital preservation during evaluations.</p>
+  </div>
+
+  <!-- INTRO -->
+  <p id="intro"><strong>MNQ and MES are the two most popular micro futures for prop firm traders.</strong> Choosing the wrong one for your account size and drawdown rules can end your evaluation before it starts. A single MNQ trade with a 30-point stop costs $60 &mdash; that is 3% of a $2,000 drawdown gone in one trade. The same stop distance on MES costs just $37.50.</p>
+
+  <p id="intro2">This guide breaks down every specification, runs the risk math per contract, and shows you exactly how many contracts of each instrument you can safely trade on $50K, $100K, and $150K prop firm accounts. No guesswork &mdash; just numbers.</p>
+
+  <p id="lastUpdated" style="font-size:.85rem;color:var(--gold);font-weight:500;">Last updated: March 2026</p>
+
+  <!-- CONTRACT SPECS TABLE -->
+  <h2 id="h2specs">Contract Specifications: MES vs MNQ vs Full-Size</h2>
+
+  <p id="specsIntro">Before choosing an instrument, you need to understand exactly what each tick and point costs you in real dollars. Here is the complete specification breakdown for micro and full-size contracts.</p>
+
+  <div class="table-wrap">
+    <table id="specsTable">
+      <thead>
+        <tr>
+          <th id="thSpec">Specification</th>
+          <th id="thMNQ">MNQ</th>
+          <th id="thMES">MES</th>
+          <th id="thNQ">NQ (Full)</th>
+          <th id="thES">ES (Full)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td id="rowUnderlying"><strong>Underlying Index</strong></td>
+          <td>Nasdaq 100</td>
+          <td>S&amp;P 500</td>
+          <td>Nasdaq 100</td>
+          <td>S&amp;P 500</td>
+        </tr>
+        <tr>
+          <td id="rowPointVal"><strong>Point Value</strong></td>
+          <td class="note">$2.00</td>
+          <td>$1.25</td>
+          <td class="warn">$20.00</td>
+          <td class="warn">$50.00</td>
+        </tr>
+        <tr>
+          <td id="rowTickSize"><strong>Tick Size</strong></td>
+          <td>0.25 pts</td>
+          <td>0.25 pts</td>
+          <td>0.25 pts</td>
+          <td>0.25 pts</td>
+        </tr>
+        <tr>
+          <td id="rowTickVal"><strong>Tick Value</strong></td>
+          <td>$0.50</td>
+          <td>$0.3125</td>
+          <td>$5.00</td>
+          <td>$12.50</td>
+        </tr>
+        <tr>
+          <td id="rowDailyRange"><strong>Avg Daily Range</strong></td>
+          <td class="warn">200&ndash;400 pts</td>
+          <td class="ok">40&ndash;80 pts</td>
+          <td class="warn">200&ndash;400 pts</td>
+          <td class="ok">40&ndash;80 pts</td>
+        </tr>
+        <tr>
+          <td id="rowATR"><strong>Avg ATR(14)</strong></td>
+          <td class="note">250&ndash;400 pts</td>
+          <td class="ok">15&ndash;25 pts</td>
+          <td class="note">250&ndash;400 pts</td>
+          <td class="ok">15&ndash;25 pts</td>
+        </tr>
+        <tr>
+          <td id="rowDollarRange"><strong>$ Range / Contract / Day</strong></td>
+          <td class="warn">$400&ndash;$800</td>
+          <td class="ok">$50&ndash;$100</td>
+          <td class="warn">$4,000&ndash;$8,000</td>
+          <td class="warn">$2,000&ndash;$4,000</td>
+        </tr>
+        <tr>
+          <td id="rowMultiplier"><strong>Micro Multiplier</strong></td>
+          <td>1/10th of NQ</td>
+          <td>1/10th of ES</td>
+          <td>&mdash;</td>
+          <td>&mdash;</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p id="specsNote"><strong>Key insight:</strong> MNQ's daily dollar range per contract ($400-$800) is 4-8x larger than MES ($50-$100). This means MNQ offers far more profit potential per contract but also far more risk exposure. On a prop firm account with limited drawdown, this difference is everything.</p>
+
+  <!-- RISK MATH -->
+  <h2 id="h2risk">Risk Math Per Contract: The Numbers That Matter</h2>
+
+  <p id="riskIntro">Prop firm success is a math problem. Before placing a single trade, you need to know exactly how much each contract risks relative to your drawdown. Here is the math for both instruments using a standard ATR-based stop.</p>
+
+  <div class="math-box">
+    <h3 id="mathMNQTitle">MNQ Risk Per Trade</h3>
+    <p id="mathMNQ1"><code>1 MNQ contract &times; 20-pt stop = 20 &times; $2.00 = $40 risk</code></p>
+    <p id="mathMNQ2"><code>2 MNQ contracts &times; 20-pt stop = 20 &times; $2.00 &times; 2 = $80 risk</code></p>
+    <p id="mathMNQ3"><code>3 MNQ contracts &times; 20-pt stop = 20 &times; $2.00 &times; 3 = $120 risk</code></p>
+    <p id="mathMNQ4">On a <strong>$2,000 drawdown</strong>: $40 risk = 2% per trade (1 lot). $80 risk = 4% per trade (2 lots). At 4%, five consecutive losers breach your account.</p>
+  </div>
+
+  <div class="math-box">
+    <h3 id="mathMESTitle">MES Risk Per Trade</h3>
+    <p id="mathMES1"><code>1 MES contract &times; 20-pt stop = 20 &times; $1.25 = $25 risk</code></p>
+    <p id="mathMES2"><code>2 MES contracts &times; 20-pt stop = 20 &times; $1.25 &times; 2 = $50 risk</code></p>
+    <p id="mathMES3"><code>3 MES contracts &times; 20-pt stop = 20 &times; $1.25 &times; 3 = $75 risk</code></p>
+    <p id="mathMES4">On a <strong>$2,000 drawdown</strong>: $25 risk = 1.25% per trade (1 lot). $75 risk = 3.75% per trade (3 lots). You get more contracts for the same risk budget, allowing better scaling.</p>
+  </div>
+
+  <p id="riskSummary"><strong>The practical difference:</strong> With a $2,000 drawdown and 2% risk per trade, you can trade <strong>1 MNQ contract</strong> or <strong>1-2 MES contracts</strong>. If you want to trade 2+ contracts for averaging or scaling, MES gives you significantly more flexibility without exceeding safe risk thresholds.</p>
+
+  <!-- ACCOUNT SIZE GUIDE -->
+  <h2 id="h2sizing">Which One for Your Account Size?</h2>
+
+  <p id="sizingIntro">The right contract count depends on your drawdown, not your account balance. A $50K account means nothing if the drawdown is only $2,000 &mdash; that is your real risk capital. Here are the recommended maximum positions for each account tier, assuming 2% risk per trade with a 20-point ATR stop.</p>
+
+  <div class="table-wrap">
+    <table id="sizingTable">
+      <thead>
+        <tr>
+          <th id="thAccount">Account</th>
+          <th id="thDrawdown">Drawdown</th>
+          <th id="thMNQSize">MNQ Max</th>
+          <th id="thMESSize">MES Max</th>
+          <th id="thRiskTrade">Risk / Trade (2%)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>$50K</strong></td>
+          <td>$2,000</td>
+          <td class="note">1&ndash;2 contracts</td>
+          <td class="ok">2&ndash;3 contracts</td>
+          <td>$40&ndash;$50</td>
+        </tr>
+        <tr>
+          <td><strong>$100K</strong></td>
+          <td>$3,000</td>
+          <td class="note">2&ndash;3 contracts</td>
+          <td class="ok">4&ndash;5 contracts</td>
+          <td>$60&ndash;$75</td>
+        </tr>
+        <tr>
+          <td><strong>$150K</strong></td>
+          <td>$4,500</td>
+          <td class="ok">3&ndash;4 contracts</td>
+          <td class="ok">5&ndash;7 contracts</td>
+          <td>$90&ndash;$112</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p id="sizingNote"><strong>Important:</strong> These are maximum positions, not recommended starting positions. During the first week of an evaluation, trade at the lower end of the range. Scale up only after establishing a profit buffer. If your drawdown is trailing, every dollar of profit raises the floor &mdash; so early losses are the most expensive losses you can take.</p>
+
+  <!-- MNQ PROS AND CONS -->
+  <h2 id="h2mnq">MNQ for Prop Firm: Pros and Cons</h2>
+
+  <p id="mnqIntro">MNQ (Micro E-mini Nasdaq 100) is the higher-octane choice. It tracks the Nasdaq 100, which is heavily weighted toward mega-cap tech stocks &mdash; meaning it reacts sharply to earnings, Fed announcements, and AI/tech sentiment. Here is what that means for your prop firm account.</p>
+
+  <div class="pros-cons">
+    <div class="pro">
+      <h4 id="mnqProTitle">Pros</h4>
+      <ul>
+        <li id="mnqPro1">Faster profit accumulation &mdash; $2/point means fewer trades needed to hit profit target</li>
+        <li id="mnqPro2">More daily movement (200-400 pts) creates more trading opportunities per session</li>
+        <li id="mnqPro3">Higher reward-to-risk possible on trend days &mdash; a 50-point runner = $100/contract</li>
+        <li id="mnqPro4">Cleaner technical levels due to high institutional volume on NQ/MNQ</li>
+      </ul>
+    </div>
+    <div class="con">
+      <h4 id="mnqConTitle">Cons</h4>
+      <ul>
+        <li id="mnqCon1">Easier to breach drawdown &mdash; a 40-pt adverse move = $80/contract loss</li>
+        <li id="mnqCon2">Wider stops needed to survive normal volatility, consuming more risk budget</li>
+        <li id="mnqCon3">Higher risk per contract limits your position size on small drawdowns</li>
+        <li id="mnqCon4">Emotional pressure is higher when each tick moves $0.50 and swings are large</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- MES PROS AND CONS -->
+  <h2 id="h2mes">MES for Prop Firm: Pros and Cons</h2>
+
+  <p id="mesIntro">MES (Micro E-mini S&amp;P 500) tracks the S&amp;P 500 &mdash; the broadest and most diversified of the major US indices. It moves more slowly and predictably than the Nasdaq, which makes it the instrument of choice for risk-conscious prop firm traders.</p>
+
+  <div class="pros-cons">
+    <div class="pro">
+      <h4 id="mesProTitle">Pros</h4>
+      <ul>
+        <li id="mesPro1">Tighter risk control &mdash; $1.25/point keeps losses small even on wider stops</li>
+        <li id="mesPro2">More contracts per drawdown budget = smoother equity curve via position averaging</li>
+        <li id="mesPro3">Easier drawdown management &mdash; a 20-pt adverse move = only $25/contract</li>
+        <li id="mesPro4">Lower emotional pressure per trade, reducing revenge trading and overtrading</li>
+      </ul>
+    </div>
+    <div class="con">
+      <h4 id="mesConTitle">Cons</h4>
+      <ul>
+        <li id="mesCon1">Slower profit growth &mdash; may need more trades or more days to hit profit target</li>
+        <li id="mesCon2">Smaller daily range (40-80 pts) means fewer large-move opportunities</li>
+        <li id="mesCon3">Harder to pass fast evaluations if your strategy relies on momentum</li>
+        <li id="mesCon4">Commission costs become a larger percentage of smaller per-trade profits</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- THE VERDICT -->
+  <h2 id="h2verdict">The Verdict: Which Micro Future Should You Trade?</h2>
+
+  <p id="verdictIntro">There is no universal answer. The right instrument depends on three factors: your win rate, your risk tolerance, and how fast you need to pass.</p>
+
+  <div class="verdict-box">
+    <h3 id="verdictMNQTitle">Choose MNQ if:</h3>
+    <p id="verdictMNQ">You have a <strong>55%+ win rate</strong> with a proven strategy, you want to reach the profit target in fewer trades, and you have the discipline to take small stops without widening them. MNQ rewards precision &mdash; one clean 40-point trade pays $80/contract. But you need iron discipline because MNQ also punishes mistakes faster.</p>
+  </div>
+
+  <div class="verdict-box">
+    <h3 id="verdictMESTitle">Choose MES if:</h3>
+    <p id="verdictMES">You prioritize <strong>survival and consistency</strong> over speed. MES lets you trade 2-3x more contracts for the same risk budget, creating a smoother equity curve. It is the better choice if you are risk-averse, if you struggle with emotional trading, or if your drawdown is small relative to your account size. Most traders who consistently pass prop firm evaluations trade MES.</p>
+  </div>
+
+  <div class="verdict-box">
+    <h3 id="verdictMixTitle">The Mixed Approach:</h3>
+    <p id="verdictMix">Many successful funded traders use <strong>both instruments</strong>. They trade MNQ on high-conviction setups (A+ patterns with clear levels) and MES on lower-conviction trades or during high-volatility conditions. This hybrid approach lets you capitalize on MNQ's profit potential while using MES as your capital preservation instrument. Just track your combined risk across both at all times.</p>
+  </div>
+
+  <!-- CROSS LINKS - PARTNER SITES -->
+  <h2 id="h2edge">Get an Edge on MNQ and MES</h2>
+
+  <p id="edgeP1">The AI on <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a> analyses gamma levels and options flow on the Nasdaq to give you an edge on MNQ. Understanding where dealers are hedging and where gamma exposure flips helps you identify high-probability reversal and breakout zones &mdash; the exact setups that make MNQ profitable on a prop firm account.</p>
+
+  <p id="edgeP2">Learn our step-by-step MNQ and MES trading strategies with our <a href="https://basstrading.fr" target="_blank" rel="noopener">formations on basstrading.fr</a>. From entry triggers to position management to drawdown-safe exit rules &mdash; every strategy is designed specifically for prop firm conditions with limited drawdown.</p>
+
+  <!-- FAQ -->
+  <h2 id="h2faq">Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq1q">Is MNQ or MES better for passing a prop firm evaluation?</div>
+    <div class="faq-a" id="faq1a">It depends on your win rate and risk tolerance. MNQ is better for traders with a 55%+ win rate who want to reach the profit target faster, because each point is worth $2 vs $1.25 on MES. However, MNQ's higher volatility (200-400 point daily range vs 40-80 on MES) means you can also breach your drawdown faster. MES is better for conservative traders who prioritize survival and drawdown management over speed.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq2q">How many MNQ contracts can I trade on a $50K prop firm account?</div>
+    <div class="faq-a" id="faq2a">On a typical $50K account with a $2,000 trailing drawdown, you should trade 1-2 MNQ contracts maximum. With a 20-point ATR-based stop, 1 MNQ contract risks $40 per trade, and 2 contracts risk $80. This keeps your risk per trade at 2-4% of your total drawdown, which is sustainable for passing an evaluation without breaching.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq3q">Can I trade both MES and MNQ in the same prop firm account?</div>
+    <div class="faq-a" id="faq3a">Yes, most prop firms allow you to trade multiple instruments within the same account as long as you stay within the maximum contract limit. A common approach is to use MNQ for high-conviction setups where you want more dollar exposure per contract, and MES for lower-conviction trades or when you want tighter risk control. Just make sure to calculate your total risk across both instruments combined.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq4q">What is the tick value difference between MES and MNQ?</div>
+    <div class="faq-a" id="faq4a">MES has a tick value of $0.3125 (0.25 points &times; $1.25/point) while MNQ has a tick value of $0.50 (0.25 points &times; $2.00/point). Despite MNQ having a smaller tick value than MES's full-size counterpart ES ($12.50/tick), MNQ's much larger daily point range (200-400 points vs 40-80 for MES) means the actual dollar risk per contract per day is significantly higher on MNQ.</div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-box">
+    <h2 id="ctaTitle">Size Your MES and MNQ Positions Automatically</h2>
+    <p id="ctaText">x-trade.ai calculates your maximum position size based on real-time ATR, your prop firm's drawdown rules, and your remaining risk budget &mdash; for both MES and MNQ. No more guessing. No more over-sizing.</p>
+    <a href="/onboarding?mode=trial" class="cta-btn" id="ctaBtn">Start Free Trial</a>
+  </div>
+
+  <!-- CROSS LINKS -->
+  <div class="cross-links">
+    <h3 id="crossTitle">Related Articles</h3>
+    <a href="/blog/prop-firm-drawdown-rules-compared" class="cross-link" id="cross1">Prop Firm Drawdown Rules Compared: Topstep vs Apex vs Bulenox (2026)</a>
+    <a href="/blog/why-prop-firm-traders-fail" class="cross-link" id="cross2">Why 93% of Prop Firm Traders Never Get Paid &mdash; The 5 Risk Mistakes</a>
+    <a href="/blog/revenge-trading-prop-firm" class="cross-link" id="cross3">Revenge Trading: The #1 Prop Firm Account Killer (And How to Stop It)</a>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="/blog" id="footBlog">Blog</a>
+    <a href="/onboarding?mode=trial" id="footTrial">Free Trial</a>
+    <a href="https://basstrading.fr" target="_blank" rel="noopener">basstrading.fr - Formations</a>
+    <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr - IA &amp; Communaut&eacute;</a>
+  </div>
+  <span id="footCopy">&copy; 2026 x-trade.ai &mdash; All rights reserved.</span>
+</footer>
+
+<script>
+let lang = localStorage.getItem('xtrade_lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en');
+
+const TR = {
+en: {
+'navHome': 'Home',
+'navBlog': 'Blog',
+'navStart': 'Start Free',
+'breadcrumb': '<a href="/">Home</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; MES vs MNQ for Prop Firm',
+'metaTag': 'Comparison',
+'metaDate': 'March 30, 2026',
+'metaRead': '12 min read',
+'title': 'MES vs MNQ for Prop Firm Traders: Which Micro Future Should You Trade?',
+'takeawaysTitle': 'Key Takeaways',
+'tk1': 'MNQ moves 3-5x more points per day than MES, which means faster profits but also faster drawdown breaches if your stops are too tight or your sizing too large.',
+'tk2': 'On a $50K account with $2,000 drawdown, you can safely trade 1-2 MNQ contracts or 2-3 MES contracts using ATR-based stops \u2014 going beyond this puts your account at serious risk.',
+'tk3': 'MES gives you a smoother equity curve because you can spread risk across more contracts. MNQ concentrates risk into fewer contracts with higher dollar-per-point exposure.',
+'tk4': 'The best choice depends on your win rate: MNQ for 55%+ WR traders who want to pass faster, MES for conservative traders who prioritize survival over speed.',
+'answerTitle': 'Quick Answer: MES vs MNQ for Prop Firms',
+'answerP1': '<strong>MNQ (Micro Nasdaq)</strong> = more volatile, more opportunity per trade, but significantly more risk per contract. One bad MNQ trade can consume 2-4% of your drawdown.',
+'answerP2': '<strong>MES (Micro S&P 500)</strong> = calmer instrument, easier to manage drawdown, allows more contracts for the same risk budget. Better for capital preservation during evaluations.',
+'intro': '<strong>MNQ and MES are the two most popular micro futures for prop firm traders.</strong> Choosing the wrong one for your account size and drawdown rules can end your evaluation before it starts. A single MNQ trade with a 30-point stop costs $60 \u2014 that is 3% of a $2,000 drawdown gone in one trade. The same stop distance on MES costs just $37.50.',
+'intro2': 'This guide breaks down every specification, runs the risk math per contract, and shows you exactly how many contracts of each instrument you can safely trade on $50K, $100K, and $150K prop firm accounts. No guesswork \u2014 just numbers.',
+'lastUpdated': 'Last updated: March 2026',
+'h2specs': 'Contract Specifications: MES vs MNQ vs Full-Size',
+'specsIntro': 'Before choosing an instrument, you need to understand exactly what each tick and point costs you in real dollars. Here is the complete specification breakdown for micro and full-size contracts.',
+'thSpec': 'Specification',
+'thMNQ': 'MNQ',
+'thMES': 'MES',
+'thNQ': 'NQ (Full)',
+'thES': 'ES (Full)',
+'rowUnderlying': '<strong>Underlying Index</strong>',
+'rowPointVal': '<strong>Point Value</strong>',
+'rowTickSize': '<strong>Tick Size</strong>',
+'rowTickVal': '<strong>Tick Value</strong>',
+'rowDailyRange': '<strong>Avg Daily Range</strong>',
+'rowATR': '<strong>Avg ATR(14)</strong>',
+'rowDollarRange': '<strong>$ Range / Contract / Day</strong>',
+'rowMultiplier': '<strong>Micro Multiplier</strong>',
+'specsNote': '<strong>Key insight:</strong> MNQ\'s daily dollar range per contract ($400-$800) is 4-8x larger than MES ($50-$100). This means MNQ offers far more profit potential per contract but also far more risk exposure. On a prop firm account with limited drawdown, this difference is everything.',
+'h2risk': 'Risk Math Per Contract: The Numbers That Matter',
+'riskIntro': 'Prop firm success is a math problem. Before placing a single trade, you need to know exactly how much each contract risks relative to your drawdown. Here is the math for both instruments using a standard ATR-based stop.',
+'mathMNQTitle': 'MNQ Risk Per Trade',
+'mathMNQ1': '<code>1 MNQ contract \u00d7 20-pt stop = 20 \u00d7 $2.00 = $40 risk</code>',
+'mathMNQ2': '<code>2 MNQ contracts \u00d7 20-pt stop = 20 \u00d7 $2.00 \u00d7 2 = $80 risk</code>',
+'mathMNQ3': '<code>3 MNQ contracts \u00d7 20-pt stop = 20 \u00d7 $2.00 \u00d7 3 = $120 risk</code>',
+'mathMNQ4': 'On a <strong>$2,000 drawdown</strong>: $40 risk = 2% per trade (1 lot). $80 risk = 4% per trade (2 lots). At 4%, five consecutive losers breach your account.',
+'mathMESTitle': 'MES Risk Per Trade',
+'mathMES1': '<code>1 MES contract \u00d7 20-pt stop = 20 \u00d7 $1.25 = $25 risk</code>',
+'mathMES2': '<code>2 MES contracts \u00d7 20-pt stop = 20 \u00d7 $1.25 \u00d7 2 = $50 risk</code>',
+'mathMES3': '<code>3 MES contracts \u00d7 20-pt stop = 20 \u00d7 $1.25 \u00d7 3 = $75 risk</code>',
+'mathMES4': 'On a <strong>$2,000 drawdown</strong>: $25 risk = 1.25% per trade (1 lot). $75 risk = 3.75% per trade (3 lots). You get more contracts for the same risk budget, allowing better scaling.',
+'riskSummary': '<strong>The practical difference:</strong> With a $2,000 drawdown and 2% risk per trade, you can trade <strong>1 MNQ contract</strong> or <strong>1-2 MES contracts</strong>. If you want to trade 2+ contracts for averaging or scaling, MES gives you significantly more flexibility without exceeding safe risk thresholds.',
+'h2sizing': 'Which One for Your Account Size?',
+'sizingIntro': 'The right contract count depends on your drawdown, not your account balance. A $50K account means nothing if the drawdown is only $2,000 \u2014 that is your real risk capital. Here are the recommended maximum positions for each account tier, assuming 2% risk per trade with a 20-point ATR stop.',
+'thAccount': 'Account',
+'thDrawdown': 'Drawdown',
+'thMNQSize': 'MNQ Max',
+'thMESSize': 'MES Max',
+'thRiskTrade': 'Risk / Trade (2%)',
+'sizingNote': '<strong>Important:</strong> These are maximum positions, not recommended starting positions. During the first week of an evaluation, trade at the lower end of the range. Scale up only after establishing a profit buffer. If your drawdown is trailing, every dollar of profit raises the floor \u2014 so early losses are the most expensive losses you can take.',
+'h2mnq': 'MNQ for Prop Firm: Pros and Cons',
+'mnqIntro': 'MNQ (Micro E-mini Nasdaq 100) is the higher-octane choice. It tracks the Nasdaq 100, which is heavily weighted toward mega-cap tech stocks \u2014 meaning it reacts sharply to earnings, Fed announcements, and AI/tech sentiment. Here is what that means for your prop firm account.',
+'mnqProTitle': 'Pros',
+'mnqPro1': 'Faster profit accumulation \u2014 $2/point means fewer trades needed to hit profit target',
+'mnqPro2': 'More daily movement (200-400 pts) creates more trading opportunities per session',
+'mnqPro3': 'Higher reward-to-risk possible on trend days \u2014 a 50-point runner = $100/contract',
+'mnqPro4': 'Cleaner technical levels due to high institutional volume on NQ/MNQ',
+'mnqConTitle': 'Cons',
+'mnqCon1': 'Easier to breach drawdown \u2014 a 40-pt adverse move = $80/contract loss',
+'mnqCon2': 'Wider stops needed to survive normal volatility, consuming more risk budget',
+'mnqCon3': 'Higher risk per contract limits your position size on small drawdowns',
+'mnqCon4': 'Emotional pressure is higher when each tick moves $0.50 and swings are large',
+'h2mes': 'MES for Prop Firm: Pros and Cons',
+'mesIntro': 'MES (Micro E-mini S&P 500) tracks the S&P 500 \u2014 the broadest and most diversified of the major US indices. It moves more slowly and predictably than the Nasdaq, which makes it the instrument of choice for risk-conscious prop firm traders.',
+'mesProTitle': 'Pros',
+'mesPro1': 'Tighter risk control \u2014 $1.25/point keeps losses small even on wider stops',
+'mesPro2': 'More contracts per drawdown budget = smoother equity curve via position averaging',
+'mesPro3': 'Easier drawdown management \u2014 a 20-pt adverse move = only $25/contract',
+'mesPro4': 'Lower emotional pressure per trade, reducing revenge trading and overtrading',
+'mesConTitle': 'Cons',
+'mesCon1': 'Slower profit growth \u2014 may need more trades or more days to hit profit target',
+'mesCon2': 'Smaller daily range (40-80 pts) means fewer large-move opportunities',
+'mesCon3': 'Harder to pass fast evaluations if your strategy relies on momentum',
+'mesCon4': 'Commission costs become a larger percentage of smaller per-trade profits',
+'h2verdict': 'The Verdict: Which Micro Future Should You Trade?',
+'verdictIntro': 'There is no universal answer. The right instrument depends on three factors: your win rate, your risk tolerance, and how fast you need to pass.',
+'verdictMNQTitle': 'Choose MNQ if:',
+'verdictMNQ': 'You have a <strong>55%+ win rate</strong> with a proven strategy, you want to reach the profit target in fewer trades, and you have the discipline to take small stops without widening them. MNQ rewards precision \u2014 one clean 40-point trade pays $80/contract. But you need iron discipline because MNQ also punishes mistakes faster.',
+'verdictMESTitle': 'Choose MES if:',
+'verdictMES': 'You prioritize <strong>survival and consistency</strong> over speed. MES lets you trade 2-3x more contracts for the same risk budget, creating a smoother equity curve. It is the better choice if you are risk-averse, if you struggle with emotional trading, or if your drawdown is small relative to your account size. Most traders who consistently pass prop firm evaluations trade MES.',
+'verdictMixTitle': 'The Mixed Approach:',
+'verdictMix': 'Many successful funded traders use <strong>both instruments</strong>. They trade MNQ on high-conviction setups (A+ patterns with clear levels) and MES on lower-conviction trades or during high-volatility conditions. This hybrid approach lets you capitalize on MNQ\'s profit potential while using MES as your capital preservation instrument. Just track your combined risk across both at all times.',
+'h2edge': 'Get an Edge on MNQ and MES',
+'edgeP1': 'The AI on <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a> analyses gamma levels and options flow on the Nasdaq to give you an edge on MNQ. Understanding where dealers are hedging and where gamma exposure flips helps you identify high-probability reversal and breakout zones \u2014 the exact setups that make MNQ profitable on a prop firm account.',
+'edgeP2': 'Learn our step-by-step MNQ and MES trading strategies with our <a href="https://basstrading.fr" target="_blank" rel="noopener">formations on basstrading.fr</a>. From entry triggers to position management to drawdown-safe exit rules \u2014 every strategy is designed specifically for prop firm conditions with limited drawdown.',
+'h2faq': 'Frequently Asked Questions',
+'faq1q': 'Is MNQ or MES better for passing a prop firm evaluation?',
+'faq1a': 'It depends on your win rate and risk tolerance. MNQ is better for traders with a 55%+ win rate who want to reach the profit target faster, because each point is worth $2 vs $1.25 on MES. However, MNQ\'s higher volatility (200-400 point daily range vs 40-80 on MES) means you can also breach your drawdown faster. MES is better for conservative traders who prioritize survival and drawdown management over speed.',
+'faq2q': 'How many MNQ contracts can I trade on a $50K prop firm account?',
+'faq2a': 'On a typical $50K account with a $2,000 trailing drawdown, you should trade 1-2 MNQ contracts maximum. With a 20-point ATR-based stop, 1 MNQ contract risks $40 per trade, and 2 contracts risk $80. This keeps your risk per trade at 2-4% of your total drawdown, which is sustainable for passing an evaluation without breaching.',
+'faq3q': 'Can I trade both MES and MNQ in the same prop firm account?',
+'faq3a': 'Yes, most prop firms allow you to trade multiple instruments within the same account as long as you stay within the maximum contract limit. A common approach is to use MNQ for high-conviction setups where you want more dollar exposure per contract, and MES for lower-conviction trades or when you want tighter risk control. Just make sure to calculate your total risk across both instruments combined.',
+'faq4q': 'What is the tick value difference between MES and MNQ?',
+'faq4a': 'MES has a tick value of $0.3125 (0.25 points \u00d7 $1.25/point) while MNQ has a tick value of $0.50 (0.25 points \u00d7 $2.00/point). Despite MNQ having a smaller tick value than MES\'s full-size counterpart ES ($12.50/tick), MNQ\'s much larger daily point range (200-400 points vs 40-80 for MES) means the actual dollar risk per contract per day is significantly higher on MNQ.',
+'ctaTitle': 'Size Your MES and MNQ Positions Automatically',
+'ctaText': 'x-trade.ai calculates your maximum position size based on real-time ATR, your prop firm\'s drawdown rules, and your remaining risk budget \u2014 for both MES and MNQ. No more guessing. No more over-sizing.',
+'ctaBtn': 'Start Free Trial',
+'crossTitle': 'Related Articles',
+'cross1': 'Prop Firm Drawdown Rules Compared: Topstep vs Apex vs Bulenox (2026)',
+'cross2': 'Why 93% of Prop Firm Traders Never Get Paid \u2014 The 5 Risk Mistakes',
+'cross3': 'Revenge Trading: The #1 Prop Firm Account Killer (And How to Stop It)',
+'footBlog': 'Blog',
+'footTrial': 'Free Trial',
+'footCopy': '\u00a9 2026 x-trade.ai \u2014 All rights reserved.'
+},
+fr: {
+'navHome': 'Accueil',
+'navBlog': 'Blog',
+'navStart': 'Essai Gratuit',
+'breadcrumb': '<a href="/">Accueil</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; MES vs MNQ pour Prop Firm',
+'metaTag': 'Comparatif',
+'metaDate': '30 mars 2026',
+'metaRead': '12 min de lecture',
+'title': 'MES vs MNQ pour Traders Prop Firm : Quel Micro Future Trader ?',
+'takeawaysTitle': 'Points Cl\u00e9s',
+'tk1': 'Le MNQ bouge 3 \u00e0 5 fois plus de points par jour que le MES, ce qui signifie des profits plus rapides mais aussi des violations de drawdown plus rapides si vos stops sont trop serr\u00e9s ou votre sizing trop important.',
+'tk2': 'Sur un compte de 50K$ avec 2\u202f000$ de drawdown, vous pouvez trader en s\u00e9curit\u00e9 1-2 contrats MNQ ou 2-3 contrats MES avec des stops bas\u00e9s sur l\'ATR \u2014 aller au-del\u00e0 met votre compte en danger s\u00e9rieux.',
+'tk3': 'Le MES vous donne une courbe d\'\u00e9quit\u00e9 plus lisse car vous pouvez r\u00e9partir le risque sur plus de contrats. Le MNQ concentre le risque sur moins de contrats avec une exposition dollar par point plus \u00e9lev\u00e9e.',
+'tk4': 'Le meilleur choix d\u00e9pend de votre win rate : MNQ pour les traders avec 55%+ de WR qui veulent passer plus vite, MES pour les traders conservateurs qui privil\u00e9gient la survie \u00e0 la vitesse.',
+'answerTitle': 'R\u00e9ponse Rapide : MES vs MNQ pour Prop Firm',
+'answerP1': '<strong>MNQ (Micro Nasdaq)</strong> = plus volatile, plus d\'opportunit\u00e9s par trade, mais significativement plus de risque par contrat. Un seul mauvais trade MNQ peut consommer 2-4% de votre drawdown.',
+'answerP2': '<strong>MES (Micro S&P 500)</strong> = instrument plus calme, gestion du drawdown plus facile, permet plus de contrats pour le m\u00eame budget de risque. Meilleur pour la pr\u00e9servation du capital pendant les \u00e9valuations.',
+'intro': '<strong>Le MNQ et le MES sont les deux micro futures les plus populaires pour les traders prop firm.</strong> Choisir le mauvais pour la taille de votre compte et vos r\u00e8gles de drawdown peut terminer votre \u00e9valuation avant m\u00eame qu\'elle ne commence. Un seul trade MNQ avec un stop de 30 points co\u00fbte 60$ \u2014 soit 3% d\'un drawdown de 2\u202f000$ parti en un seul trade. Le m\u00eame stop sur MES ne co\u00fbte que 37,50$.',
+'intro2': 'Ce guide d\u00e9compose chaque sp\u00e9cification, fait le calcul de risque par contrat, et vous montre exactement combien de contrats de chaque instrument vous pouvez trader en s\u00e9curit\u00e9 sur des comptes prop firm de 50K$, 100K$ et 150K$. Pas de devinettes \u2014 que des chiffres.',
+'lastUpdated': 'Derni\u00e8re mise \u00e0 jour : mars 2026',
+'h2specs': 'Sp\u00e9cifications des Contrats : MES vs MNQ vs Taille Compl\u00e8te',
+'specsIntro': 'Avant de choisir un instrument, vous devez comprendre exactement ce que chaque tick et point vous co\u00fbte en dollars r\u00e9els. Voici le d\u00e9tail complet des sp\u00e9cifications pour les contrats micro et taille compl\u00e8te.',
+'thSpec': 'Sp\u00e9cification',
+'thMNQ': 'MNQ',
+'thMES': 'MES',
+'thNQ': 'NQ (Complet)',
+'thES': 'ES (Complet)',
+'rowUnderlying': '<strong>Indice Sous-jacent</strong>',
+'rowPointVal': '<strong>Valeur du Point</strong>',
+'rowTickSize': '<strong>Taille du Tick</strong>',
+'rowTickVal': '<strong>Valeur du Tick</strong>',
+'rowDailyRange': '<strong>Range Journalier Moy.</strong>',
+'rowATR': '<strong>ATR(14) Moyen</strong>',
+'rowDollarRange': '<strong>Range $ / Contrat / Jour</strong>',
+'rowMultiplier': '<strong>Multiplicateur Micro</strong>',
+'specsNote': '<strong>Point cl\u00e9 :</strong> Le range journalier en dollars du MNQ par contrat (400-800$) est 4 \u00e0 8 fois plus grand que celui du MES (50-100$). Cela signifie que le MNQ offre un potentiel de profit bien sup\u00e9rieur par contrat mais aussi une exposition au risque bien plus importante. Sur un compte prop firm avec un drawdown limit\u00e9, cette diff\u00e9rence est d\u00e9terminante.',
+'h2risk': 'Math\u00e9matiques du Risque Par Contrat : Les Chiffres Qui Comptent',
+'riskIntro': 'Le succ\u00e8s en prop firm est un probl\u00e8me math\u00e9matique. Avant de placer un seul trade, vous devez savoir exactement combien chaque contrat risque par rapport \u00e0 votre drawdown. Voici le calcul pour les deux instruments avec un stop bas\u00e9 sur l\'ATR standard.',
+'mathMNQTitle': 'Risque Par Trade MNQ',
+'mathMNQ1': '<code>1 contrat MNQ \u00d7 stop 20 pts = 20 \u00d7 2,00$ = 40$ de risque</code>',
+'mathMNQ2': '<code>2 contrats MNQ \u00d7 stop 20 pts = 20 \u00d7 2,00$ \u00d7 2 = 80$ de risque</code>',
+'mathMNQ3': '<code>3 contrats MNQ \u00d7 stop 20 pts = 20 \u00d7 2,00$ \u00d7 3 = 120$ de risque</code>',
+'mathMNQ4': 'Sur un <strong>drawdown de 2\u202f000$</strong> : 40$ de risque = 2% par trade (1 lot). 80$ de risque = 4% par trade (2 lots). \u00c0 4%, cinq perdants cons\u00e9cutifs violent votre compte.',
+'mathMESTitle': 'Risque Par Trade MES',
+'mathMES1': '<code>1 contrat MES \u00d7 stop 20 pts = 20 \u00d7 1,25$ = 25$ de risque</code>',
+'mathMES2': '<code>2 contrats MES \u00d7 stop 20 pts = 20 \u00d7 1,25$ \u00d7 2 = 50$ de risque</code>',
+'mathMES3': '<code>3 contrats MES \u00d7 stop 20 pts = 20 \u00d7 1,25$ \u00d7 3 = 75$ de risque</code>',
+'mathMES4': 'Sur un <strong>drawdown de 2\u202f000$</strong> : 25$ de risque = 1,25% par trade (1 lot). 75$ de risque = 3,75% par trade (3 lots). Vous obtenez plus de contrats pour le m\u00eame budget de risque, permettant un meilleur scaling.',
+'riskSummary': '<strong>La diff\u00e9rence pratique :</strong> Avec un drawdown de 2\u202f000$ et 2% de risque par trade, vous pouvez trader <strong>1 contrat MNQ</strong> ou <strong>1-2 contrats MES</strong>. Si vous voulez trader 2+ contrats pour moyenner ou scaler, le MES vous donne significativement plus de flexibilit\u00e9 sans d\u00e9passer les seuils de risque s\u00fbrs.',
+'h2sizing': 'Lequel pour Votre Taille de Compte ?',
+'sizingIntro': 'Le bon nombre de contrats d\u00e9pend de votre drawdown, pas de votre solde de compte. Un compte de 50K$ ne signifie rien si le drawdown n\'est que de 2\u202f000$ \u2014 c\'est votre vrai capital de risque. Voici les positions maximales recommand\u00e9es pour chaque palier de compte, en supposant 2% de risque par trade avec un stop ATR de 20 points.',
+'thAccount': 'Compte',
+'thDrawdown': 'Drawdown',
+'thMNQSize': 'MNQ Max',
+'thMESSize': 'MES Max',
+'thRiskTrade': 'Risque / Trade (2%)',
+'sizingNote': '<strong>Important :</strong> Ce sont des positions maximales, pas des positions de d\u00e9part recommand\u00e9es. Pendant la premi\u00e8re semaine d\'une \u00e9valuation, tradez dans le bas de la fourchette. N\'augmentez qu\'apr\u00e8s avoir \u00e9tabli un coussin de profit. Si votre drawdown est trailing, chaque dollar de profit rel\u00e8ve le plancher \u2014 donc les pertes pr\u00e9coces sont les plus co\u00fbteuses.',
+'h2mnq': 'MNQ pour Prop Firm : Avantages et Inconv\u00e9nients',
+'mnqIntro': 'Le MNQ (Micro E-mini Nasdaq 100) est le choix \u00e0 haut octane. Il suit le Nasdaq 100, fortement pond\u00e9r\u00e9 en m\u00e9ga-caps tech \u2014 ce qui signifie qu\'il r\u00e9agit fortement aux earnings, aux annonces de la Fed et au sentiment AI/tech. Voici ce que cela implique pour votre compte prop firm.',
+'mnqProTitle': 'Avantages',
+'mnqPro1': 'Accumulation de profit plus rapide \u2014 2$/point signifie moins de trades n\u00e9cessaires pour atteindre l\'objectif de profit',
+'mnqPro2': 'Plus de mouvement journalier (200-400 pts) cr\u00e9e plus d\'opportunit\u00e9s de trading par session',
+'mnqPro3': 'Ratio reward-to-risk plus \u00e9lev\u00e9 possible en journ\u00e9e de tendance \u2014 un runner de 50 points = 100$/contrat',
+'mnqPro4': 'Niveaux techniques plus propres gr\u00e2ce au volume institutionnel \u00e9lev\u00e9 sur NQ/MNQ',
+'mnqConTitle': 'Inconv\u00e9nients',
+'mnqCon1': 'Plus facile de violer le drawdown \u2014 un mouvement adverse de 40 pts = 80$/contrat de perte',
+'mnqCon2': 'Des stops plus larges n\u00e9cessaires pour survivre \u00e0 la volatilit\u00e9 normale, consommant plus de budget de risque',
+'mnqCon3': 'Le risque plus \u00e9lev\u00e9 par contrat limite votre taille de position sur les petits drawdowns',
+'mnqCon4': 'La pression \u00e9motionnelle est plus forte quand chaque tick bouge 0,50$ et les swings sont amples',
+'h2mes': 'MES pour Prop Firm : Avantages et Inconv\u00e9nients',
+'mesIntro': 'Le MES (Micro E-mini S&P 500) suit le S&P 500 \u2014 le plus large et le plus diversifi\u00e9 des grands indices am\u00e9ricains. Il bouge plus lentement et de mani\u00e8re plus pr\u00e9visible que le Nasdaq, ce qui en fait l\'instrument de choix pour les traders prop firm soucieux du risque.',
+'mesProTitle': 'Avantages',
+'mesPro1': 'Contr\u00f4le du risque plus serr\u00e9 \u2014 1,25$/point maintient les pertes faibles m\u00eame avec des stops larges',
+'mesPro2': 'Plus de contrats par budget de drawdown = courbe d\'\u00e9quit\u00e9 plus lisse gr\u00e2ce au moyennage de position',
+'mesPro3': 'Gestion du drawdown plus facile \u2014 un mouvement adverse de 20 pts = seulement 25$/contrat',
+'mesPro4': 'Moins de pression \u00e9motionnelle par trade, r\u00e9duisant le revenge trading et l\'overtrading',
+'mesConTitle': 'Inconv\u00e9nients',
+'mesCon1': 'Croissance des profits plus lente \u2014 peut n\u00e9cessiter plus de trades ou plus de jours pour atteindre l\'objectif',
+'mesCon2': 'Range journalier plus petit (40-80 pts) signifie moins d\'opportunit\u00e9s de grands mouvements',
+'mesCon3': 'Plus difficile de passer les \u00e9valuations rapides si votre strat\u00e9gie repose sur le momentum',
+'mesCon4': 'Les co\u00fbts de commission deviennent un pourcentage plus important des profits par trade plus petits',
+'h2verdict': 'Le Verdict : Quel Micro Future Devriez-Vous Trader ?',
+'verdictIntro': 'Il n\'y a pas de r\u00e9ponse universelle. Le bon instrument d\u00e9pend de trois facteurs : votre win rate, votre tol\u00e9rance au risque, et la vitesse \u00e0 laquelle vous devez passer.',
+'verdictMNQTitle': 'Choisissez le MNQ si :',
+'verdictMNQ': 'Vous avez un <strong>win rate de 55%+</strong> avec une strat\u00e9gie \u00e9prouv\u00e9e, vous voulez atteindre l\'objectif de profit en moins de trades, et vous avez la discipline de prendre des petits stops sans les \u00e9largir. Le MNQ r\u00e9compense la pr\u00e9cision \u2014 un trade propre de 40 points paie 80$/contrat. Mais il faut une discipline de fer car le MNQ punit aussi les erreurs plus vite.',
+'verdictMESTitle': 'Choisissez le MES si :',
+'verdictMES': 'Vous privil\u00e9giez la <strong>survie et la r\u00e9gularit\u00e9</strong> plut\u00f4t que la vitesse. Le MES vous permet de trader 2-3x plus de contrats pour le m\u00eame budget de risque, cr\u00e9ant une courbe d\'\u00e9quit\u00e9 plus lisse. C\'est le meilleur choix si vous \u00eates averse au risque, si vous luttez contre le trading \u00e9motionnel, ou si votre drawdown est petit par rapport \u00e0 la taille de votre compte. La majorit\u00e9 des traders qui passent r\u00e9guli\u00e8rement les \u00e9valuations prop firm tradent le MES.',
+'verdictMixTitle': 'L\'Approche Mixte :',
+'verdictMix': 'De nombreux traders funded \u00e0 succ\u00e8s utilisent <strong>les deux instruments</strong>. Ils tradent le MNQ sur les setups \u00e0 haute conviction (patterns A+ avec des niveaux clairs) et le MES sur les trades \u00e0 conviction inf\u00e9rieure ou en conditions de haute volatilit\u00e9. Cette approche hybride vous permet de capitaliser sur le potentiel de profit du MNQ tout en utilisant le MES comme instrument de pr\u00e9servation du capital. Suivez simplement votre risque combin\u00e9 sur les deux \u00e0 tout moment.',
+'h2edge': 'Prenez l\'Avantage sur le MNQ et le MES',
+'edgeP1': 'L\'IA de <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a> analyse les niveaux gamma et le flux d\'options sur le Nasdaq pour te donner un edge sur le MNQ. Comprendre o\u00f9 les dealers se couvrent et o\u00f9 l\'exposition gamma bascule t\'aide \u00e0 identifier les zones de retournement et de breakout \u00e0 haute probabilit\u00e9 \u2014 exactement les setups qui rendent le MNQ profitable sur un compte prop firm.',
+'edgeP2': 'Apprends nos strat\u00e9gies MNQ et MES step-by-step avec nos <a href="https://basstrading.fr" target="_blank" rel="noopener">formations sur basstrading.fr</a>. Des triggers d\'entr\u00e9e \u00e0 la gestion de position en passant par les r\u00e8gles de sortie drawdown-safe \u2014 chaque strat\u00e9gie est con\u00e7ue sp\u00e9cifiquement pour les conditions prop firm avec un drawdown limit\u00e9.',
+'h2faq': 'Questions Fr\u00e9quemment Pos\u00e9es',
+'faq1q': 'Le MNQ ou le MES est-il meilleur pour passer une \u00e9valuation prop firm ?',
+'faq1a': 'Cela d\u00e9pend de votre win rate et de votre tol\u00e9rance au risque. Le MNQ est meilleur pour les traders avec un win rate de 55%+ qui veulent atteindre l\'objectif de profit plus rapidement, car chaque point vaut 2$ contre 1,25$ sur le MES. Cependant, la volatilit\u00e9 plus \u00e9lev\u00e9e du MNQ (range journalier de 200-400 points vs 40-80 sur le MES) signifie que vous pouvez aussi violer votre drawdown plus vite. Le MES est meilleur pour les traders conservateurs qui privil\u00e9gient la survie et la gestion du drawdown plut\u00f4t que la vitesse.',
+'faq2q': 'Combien de contrats MNQ puis-je trader sur un compte prop firm de 50K$ ?',
+'faq2a': 'Sur un compte typique de 50K$ avec un drawdown trailing de 2\u202f000$, vous devriez trader 1-2 contrats MNQ maximum. Avec un stop bas\u00e9 sur un ATR de 20 points, 1 contrat MNQ risque 40$ par trade, et 2 contrats risquent 80$. Cela maintient votre risque par trade \u00e0 2-4% de votre drawdown total, ce qui est soutenable pour passer une \u00e9valuation sans violation.',
+'faq3q': 'Puis-je trader \u00e0 la fois le MES et le MNQ dans le m\u00eame compte prop firm ?',
+'faq3a': 'Oui, la plupart des prop firms vous permettent de trader plusieurs instruments au sein du m\u00eame compte tant que vous restez dans la limite de contrats maximum. Une approche courante est d\'utiliser le MNQ pour les setups \u00e0 haute conviction o\u00f9 vous voulez plus d\'exposition en dollars par contrat, et le MES pour les trades \u00e0 conviction inf\u00e9rieure ou quand vous voulez un contr\u00f4le du risque plus serr\u00e9. Assurez-vous simplement de calculer votre risque total sur les deux instruments combin\u00e9s.',
+'faq4q': 'Quelle est la diff\u00e9rence de valeur de tick entre le MES et le MNQ ?',
+'faq4a': 'Le MES a une valeur de tick de 0,3125$ (0,25 points \u00d7 1,25$/point) tandis que le MNQ a une valeur de tick de 0,50$ (0,25 points \u00d7 2,00$/point). Malgr\u00e9 le fait que le MNQ ait une valeur de tick plus petite que le contrat taille compl\u00e8te du MES, l\'ES (12,50$/tick), le range journalier en points beaucoup plus large du MNQ (200-400 points vs 40-80 pour le MES) signifie que le risque r\u00e9el en dollars par contrat par jour est significativement plus \u00e9lev\u00e9 sur le MNQ.',
+'ctaTitle': 'Dimensionnez Vos Positions MES et MNQ Automatiquement',
+'ctaText': 'x-trade.ai calcule votre taille de position maximale en temps r\u00e9el bas\u00e9e sur l\'ATR, les r\u00e8gles de drawdown de votre prop firm, et votre budget de risque restant \u2014 pour le MES et le MNQ. Plus de devinettes. Plus de sur-sizing.',
+'ctaBtn': 'Essai Gratuit',
+'crossTitle': 'Articles Connexes',
+'cross1': 'Comparatif des R\u00e8gles de Drawdown en Prop Firm : Topstep vs Apex vs Bulenox (2026)',
+'cross2': 'Pourquoi 93% des Traders Prop Firm Ne Sont Jamais Pay\u00e9s \u2014 Les 5 Erreurs de Risque',
+'cross3': 'Revenge Trading : Le Tueur N\u00b01 des Comptes Prop Firm (Et Comment l\'Arr\u00eater)',
+'footBlog': 'Blog',
+'footTrial': 'Essai Gratuit',
+'footCopy': '\u00a9 2026 x-trade.ai \u2014 Tous droits r\u00e9serv\u00e9s.'
+}
+};
+
+function applyLang() {
+  for (const [id, html] of Object.entries(TR[lang] || TR.en)) {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  }
+  document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+    el.textContent = el.getAttribute('data-' + lang);
+  });
+  document.getElementById('langBtn').textContent = lang === 'en' ? 'FR' : 'EN';
+}
+
+function toggleLang() {
+  lang = lang === 'en' ? 'fr' : 'en';
+  localStorage.setItem('xtrade_lang', lang);
+  applyLang();
+}
+
+document.addEventListener('DOMContentLoaded', applyLang);
+</script>
+
+</body>
+</html>

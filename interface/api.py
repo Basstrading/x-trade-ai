@@ -85,6 +85,21 @@ async def owner_page(admin_key: str = ""):
     return FileResponse(os.path.join(static_dir, "owner.html"))
 
 
+@app.get("/robots.txt")
+async def robots_txt():
+    return FileResponse(os.path.join(static_dir, "robots.txt"), media_type="text/plain")
+
+
+@app.get("/sitemap.xml")
+async def sitemap_xml():
+    return FileResponse(os.path.join(static_dir, "sitemap.xml"), media_type="application/xml")
+
+
+@app.get("/llms.txt")
+async def llms_txt():
+    return FileResponse(os.path.join(static_dir, "llms.txt"), media_type="text/plain")
+
+
 @app.get("/blog")
 async def blog_index():
     return FileResponse(os.path.join(static_dir, "blog", "index.html"))

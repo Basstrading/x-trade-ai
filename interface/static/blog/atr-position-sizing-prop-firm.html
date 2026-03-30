@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATR Position Sizing for Prop Firm Traders: The Only Formula You Need | x-trade.ai</title>
+<meta name="description" content="Learn the ATR position sizing formula that keeps your dollar risk constant regardless of volatility. Calculate exact contract size for MNQ, NQ, MES, ES in 10 seconds.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://x-trade.ai/blog/atr-position-sizing-prop-firm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ATR Position Sizing for Prop Firm Traders: The Only Formula You Need | x-trade.ai">
+<meta property="og:description" content="Learn the ATR position sizing formula that keeps your dollar risk constant regardless of volatility. Calculate exact contract size for MNQ, NQ, MES, ES.">
+<meta property="og:url" content="https://x-trade.ai/blog/atr-position-sizing-prop-firm">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ATR Position Sizing for Prop Firm Traders: The Only Formula You Need | x-trade.ai">
+<meta name="twitter:description" content="Learn the ATR position sizing formula that keeps your dollar risk constant regardless of volatility. Calculate exact contract size for MNQ, NQ, MES, ES.">
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Article",
+  "headline":"ATR Position Sizing for Prop Firm Traders: The Only Formula You Need",
+  "author":{"@type":"Person","name":"Bass","jobTitle":"Founder, x-trade.ai"},
+  "datePublished":"2026-03-30",
+  "dateModified":"2026-03-30",
+  "publisher":{"@type":"Organization","name":"x-trade.ai","url":"https://x-trade.ai"},
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://x-trade.ai/blog/atr-position-sizing-prop-firm"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"What is ATR-based position sizing?","acceptedAnswer":{"@type":"Answer","text":"ATR-based position sizing is a method where you divide your fixed dollar risk per trade by the current ATR value multiplied by the instrument's point value. The formula is: Contracts = Risk Per Trade / (ATR x Point Value). This keeps your dollar risk constant while automatically adjusting your position size to match current market volatility."}},
+    {"@type":"Question","name":"What ATR period should I use for position sizing?","acceptedAnswer":{"@type":"Answer","text":"Use the 14-period ATR on your trading timeframe. If you trade off the 5-minute chart, use the 14-period ATR on the 5-minute chart. If you trade off the 15-minute, use 14-period on the 15-minute. The 14-period setting is the industry standard because it captures roughly two weeks of price action and smooths out single-day anomalies."}},
+    {"@type":"Question","name":"How many MNQ contracts should I trade with an $80 risk budget?","acceptedAnswer":{"@type":"Answer","text":"It depends on the current ATR. At ATR 20: $80 / (20 x $2) = 2 contracts. At ATR 30: $80 / (30 x $2) = 1 contract. At ATR 12: $80 / (12 x $2) = 3 contracts. The number of contracts changes but the dollar risk stays at $80 every time. Always round down, never up."}},
+    {"@type":"Question","name":"Why is a fixed-point stop loss bad for prop firm trading?","acceptedAnswer":{"@type":"Answer","text":"A fixed-point stop ignores volatility. A 20-point stop on a day when ATR is 30 points will get hit by normal market noise, causing unnecessary losses. On a day when ATR is 12 points, the same 20-point stop is too wide, meaning you need fewer contracts but are using too many, increasing your dollar risk beyond your budget. ATR-based stops adapt to the market; fixed stops fight it."}}
+  ]
+}
+</script>
+<style>
+:root{--bg:#07090f;--bg2:#0f1420;--cyan:#06b6d4;--green:#22d97f;--red:#ef4444;--gold:#f59e0b;--text:#f0f4f8;--dim:#94a3b8;--border:rgba(255,255,255,0.06)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}
+code,pre,.mono{font-family:'JetBrains Mono',monospace}
+a{color:var(--cyan);text-decoration:none;transition:color .2s}
+a:hover{color:var(--green)}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(7,9,15,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-weight:800;font-size:1.15rem;color:var(--text);letter-spacing:-.5px}
+.nav-logo span{color:var(--cyan)}
+.nav-links{display:flex;align-items:center;gap:1.5rem}
+.nav-links a{color:var(--dim);font-size:.875rem;font-weight:500}
+.nav-links a:hover{color:var(--text)}
+.lang-btn{background:transparent;border:1px solid var(--cyan);color:var(--cyan);padding:4px 12px;border-radius:6px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
+.lang-btn:hover{background:var(--cyan);color:var(--bg)}
+
+/* ARTICLE */
+.article-wrap{max-width:760px;margin:0 auto;padding:3rem 1.5rem 4rem}
+.breadcrumb{font-size:.8rem;color:var(--dim);margin-bottom:2rem}
+.breadcrumb a{color:var(--dim)}
+.breadcrumb a:hover{color:var(--cyan)}
+.article-meta{display:flex;align-items:center;gap:.75rem;font-size:.8rem;color:var(--dim);margin-bottom:1.25rem;flex-wrap:wrap}
+.article-meta .tag{background:rgba(6,182,212,.1);color:var(--cyan);padding:2px 10px;border-radius:99px;font-weight:500}
+h1{font-size:2.25rem;font-weight:800;line-height:1.2;letter-spacing:-.5px;margin-bottom:1.5rem}
+h2{font-size:1.5rem;font-weight:700;margin:2.5rem 0 1rem;letter-spacing:-.3px;color:var(--text)}
+h3{font-size:1.15rem;font-weight:600;margin:1.75rem 0 .75rem;color:var(--green)}
+p{margin-bottom:1.25rem;color:var(--dim);font-size:1rem}
+strong{color:var(--text)}
+
+/* KEY TAKEAWAYS */
+.takeaways{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--cyan);border-radius:10px;padding:1.5rem 1.75rem;margin-bottom:2.5rem}
+.takeaways h3{color:var(--cyan);margin:0 0 .75rem;font-size:1rem}
+.takeaways ul{list-style:none;padding:0}
+.takeaways li{position:relative;padding-left:1.5rem;margin-bottom:.5rem;color:var(--dim);font-size:.95rem}
+.takeaways li::before{content:"\2713";position:absolute;left:0;color:var(--green);font-weight:700}
+
+/* STAT BOX */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.5rem 0 2rem}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem;text-align:center}
+.stat-card .num{font-size:2rem;font-weight:800;font-family:'JetBrains Mono',monospace}
+.stat-card .num.red{color:var(--red)}
+.stat-card .num.green{color:var(--green)}
+.stat-card .num.gold{color:var(--gold)}
+.stat-card .num.cyan{color:var(--cyan)}
+.stat-card .label{font-size:.8rem;color:var(--dim);margin-top:.25rem}
+
+/* LISTS */
+.article-wrap ul,.article-wrap ol{margin:0 0 1.25rem 1.25rem;color:var(--dim)}
+.article-wrap li{margin-bottom:.4rem;font-size:1rem}
+
+/* MATH BOX */
+.math-box{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.5rem 1.75rem;margin:1.5rem 0;font-family:'JetBrains Mono',monospace;font-size:.9rem;color:var(--cyan);line-height:1.9}
+.math-box .math-title{font-family:'Inter',sans-serif;font-weight:700;font-size:1rem;color:var(--text);margin-bottom:.75rem}
+.math-box .math-line{display:flex;justify-content:space-between;align-items:center;padding:.25rem 0;border-bottom:1px solid var(--border)}
+.math-box .math-line:last-child{border-bottom:none}
+.math-box .math-result{color:var(--green);font-weight:700;font-size:1.05rem;border-top:2px solid var(--green);margin-top:.5rem;padding-top:.5rem}
+.math-box .math-label{color:var(--dim);font-size:.85rem}
+.math-box .math-value{color:var(--cyan);font-weight:600}
+.math-box .math-value.green{color:var(--green)}
+.math-box .math-value.red{color:var(--red)}
+
+/* STEP BOX */
+.step-box{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.5rem 1.75rem;margin:1.5rem 0}
+.step-box ol{margin:0;padding-left:1.25rem}
+.step-box li{margin-bottom:.75rem;color:var(--dim);font-size:.95rem;padding-left:.25rem}
+.step-box li strong{color:var(--text)}
+.step-box li code{background:rgba(6,182,212,.1);color:var(--cyan);padding:2px 6px;border-radius:4px;font-size:.85rem}
+
+/* FORMULA BOX */
+.formula-box{background:linear-gradient(135deg,rgba(6,182,212,.08),rgba(34,217,127,.05));border:1px solid rgba(6,182,212,.2);border-radius:10px;padding:1.75rem;margin:1.5rem 0;text-align:center}
+.formula-box .formula{font-family:'JetBrains Mono',monospace;font-size:1.05rem;color:var(--cyan);font-weight:600;margin-bottom:1rem;letter-spacing:.5px}
+.formula-box .formula-example{font-family:'JetBrains Mono',monospace;font-size:.9rem;color:var(--dim);line-height:1.8}
+.formula-box .formula-example strong{color:var(--green)}
+
+/* ANSWER BOX */
+.answer-box{background:var(--bg2);border:1px solid rgba(6,182,212,.2);border-radius:10px;padding:1.5rem 1.75rem;margin-bottom:2rem}
+.answer-box .answer-label{font-size:.8rem;font-weight:600;color:var(--cyan);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.5rem}
+.answer-box p{margin-bottom:0;font-size:.95rem}
+
+/* TABLE */
+.data-table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.9rem}
+.data-table th{background:var(--bg2);color:var(--cyan);font-weight:600;text-align:left;padding:.75rem 1rem;border-bottom:2px solid var(--cyan)}
+.data-table td{padding:.75rem 1rem;border-bottom:1px solid var(--border);color:var(--dim)}
+.data-table tr:hover td{background:rgba(6,182,212,.04)}
+.data-table td strong{color:var(--text)}
+.data-table td.green{color:var(--green);font-weight:600;font-family:'JetBrains Mono',monospace}
+
+/* MISTAKE LIST */
+.mistake-list{list-style:none;margin:1.5rem 0;padding:0}
+.mistake-list li{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:8px;padding:1rem 1.25rem;margin-bottom:.75rem;color:var(--dim);font-size:.95rem}
+.mistake-list li strong{color:var(--red)}
+
+/* FAQ */
+.faq-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1rem}
+.faq-q{font-weight:600;color:var(--text);margin-bottom:.5rem;font-size:1.05rem}
+.faq-a{color:var(--dim);font-size:.95rem}
+
+/* CTA */
+.cta-box{background:linear-gradient(135deg,rgba(6,182,212,.12),rgba(34,217,127,.08));border:1px solid rgba(6,182,212,.25);border-radius:14px;padding:2.5rem;text-align:center;margin:3rem 0 2rem}
+.cta-box h2{margin:0 0 .75rem;font-size:1.5rem}
+.cta-box p{color:var(--dim);margin-bottom:1.5rem}
+.cta-btn{display:inline-block;background:var(--cyan);color:var(--bg);padding:12px 32px;border-radius:8px;font-weight:700;font-size:1rem;transition:all .25s}
+.cta-btn:hover{background:var(--green);color:var(--bg);transform:translateY(-1px)}
+
+/* CROSS LINKS */
+.cross-links{border-top:1px solid var(--border);padding-top:2rem;margin-top:2rem}
+.cross-links h3{font-size:1rem;color:var(--dim);margin-bottom:1rem}
+.cross-link{display:block;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin-bottom:.75rem;color:var(--text);font-weight:500;transition:border-color .2s}
+.cross-link:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;text-align:center;font-size:.8rem;color:var(--dim)}
+.footer a{color:var(--dim)}
+.footer a:hover{color:var(--cyan)}
+.footer-links{display:flex;justify-content:center;gap:1.5rem;margin-bottom:.75rem;flex-wrap:wrap}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+h1{font-size:1.6rem}
+h2{font-size:1.25rem}
+.stat-grid{grid-template-columns:1fr}
+.article-wrap{padding:2rem 1rem 3rem}
+.nav{padding:0 1rem}
+.nav-links{gap:1rem}
+.formula-box .formula{font-size:.85rem}
+.math-box{font-size:.8rem}
+.data-table{font-size:.8rem}
+.data-table th,.data-table td{padding:.5rem .65rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="/" class="nav-logo">x-trade<span>.ai</span></a>
+  <div class="nav-links">
+    <a href="/" id="navHome">Home</a>
+    <a href="/blog" id="navBlog">Blog</a>
+    <a href="/onboarding?mode=trial" id="navStart">Start Free</a>
+    <button class="lang-btn" id="langBtn" onclick="toggleLang()">FR</button>
+  </div>
+</nav>
+
+<!-- ARTICLE -->
+<main class="article-wrap">
+
+  <div class="breadcrumb" id="breadcrumb"><a href="/">Home</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; ATR Position Sizing for Prop Firm Traders</div>
+
+  <div class="article-meta">
+    <span class="tag" id="metaTag">Position Sizing</span>
+    <span id="metaDate">March 30, 2026</span>
+    <span>&middot;</span>
+    <span id="metaRead">12 min read</span>
+  </div>
+
+  <h1 id="title">ATR Position Sizing for Prop Firm Traders: The Only Formula You Need</h1>
+
+  <!-- KEY TAKEAWAYS -->
+  <div class="takeaways">
+    <h3 id="takeawaysTitle">Key Takeaways</h3>
+    <ul>
+      <li id="tk1">ATR-based position sizing keeps your dollar risk constant regardless of market volatility &mdash; the number of contracts changes, but the risk per trade never does.</li>
+      <li id="tk2">The formula is simple: Contracts = Risk Per Trade / (ATR &times; Point Value). It takes 10 seconds to calculate and eliminates guesswork.</li>
+      <li id="tk3">On a normal day (ATR 20) you trade 2 MNQ contracts. On a volatile day (ATR 30) you trade 1. On a quiet day (ATR 12) you trade 3. Dollar risk: $80 every time.</li>
+      <li id="tk4">The three deadliest stop-loss mistakes are fixed-point stops, percentage-of-account stops, and "mental stops" (no stop at all). ATR-based stops solve all three.</li>
+    </ul>
+  </div>
+
+  <!-- ANSWER BOX -->
+  <div class="answer-box">
+    <div class="answer-label" id="answerLabel">Quick Answer</div>
+    <p id="answerText">ATR-based position sizing is a method where you divide your fixed dollar risk per trade by the current Average True Range multiplied by the instrument's point value. The result is the exact number of contracts to trade. It automatically reduces your size on volatile days and increases it on calm days, keeping your dollar exposure identical on every single trade.</p>
+  </div>
+
+  <!-- INTRO -->
+  <p id="intro">Most traders pick their position size based on gut feel or what they saw on YouTube. Professional traders use a formula. It takes 10 seconds and it never lets you blow your drawdown.</p>
+
+  <p id="intro2">If you are trading a prop firm evaluation &mdash; Topstep, Apex, FTMO, or any drawdown-based challenge &mdash; your position size is the single most important variable in your entire plan. Get it wrong and even a 60% win rate won't save you. Get it right and the math becomes your best risk manager. This article gives you the exact formula, worked examples for every major futures instrument, and the three stop-loss mistakes that blow accounts.</p>
+
+  <!-- WHAT IS ATR -->
+  <h2 id="h2atr">What Is ATR (Average True Range)?</h2>
+
+  <p id="atrP1">Average True Range measures <strong>volatility</strong>. Specifically, it calculates the average range between the high and low of each candle over a given period, accounting for gaps. The standard setting is <strong>14 periods on your trading timeframe</strong>. If you trade the 5-minute chart, use the 14-period ATR on the 5-minute chart.</p>
+
+  <p id="atrP2">The key insight is this: <strong>higher ATR = wider stops = smaller position. Lower ATR = tighter stops = bigger position.</strong> The dollar risk stays CONSTANT. ATR is not a directional indicator &mdash; it doesn't tell you which way the market is going. It tells you how far the market is moving, and that's exactly what you need to set intelligent stop distances and calculate contract size.</p>
+
+  <p id="atrP3">Think of ATR as a volatility thermometer. On a quiet Monday morning, MNQ might have an ATR of 12 points. On an FOMC Wednesday afternoon, that same instrument could show an ATR of 35 points. If you use the same number of contracts in both environments, you're taking three times more risk on the volatile day. ATR-based sizing eliminates that asymmetry completely.</p>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="num cyan" id="stat1num">14</div>
+      <div class="label" id="stat1label">Period ATR (standard)</div>
+    </div>
+    <div class="stat-card">
+      <div class="num green" id="stat2num">$80</div>
+      <div class="label" id="stat2label">Risk stays constant</div>
+    </div>
+    <div class="stat-card">
+      <div class="num gold" id="stat3num">10s</div>
+      <div class="label" id="stat3label">To calculate your size</div>
+    </div>
+  </div>
+
+  <!-- THE FORMULA -->
+  <h2 id="h2formula">The ATR Position Sizing Formula</h2>
+
+  <p id="formulaP1">Here is the only formula you need. Memorize it. Tattoo it on your forearm if necessary. Every professional futures trader uses some version of this calculation &mdash; the only difference is how much they risk per trade.</p>
+
+  <div class="formula-box">
+    <div class="formula" id="formulaText">Contracts = Risk Per Trade / (ATR &times; Point Value)</div>
+    <div class="formula-example" id="formulaExample">
+      = $80 / (20 pts &times; $2/pt)<br>
+      = $80 / $40<br>
+      = <strong>2 MNQ contracts</strong>
+    </div>
+  </div>
+
+  <p id="formulaP2">Where does the $80 come from? It's derived from your daily loss budget:</p>
+
+  <div class="formula-box">
+    <div class="formula" id="formulaText2">Risk Per Trade = Daily Loss Budget &times; 20%</div>
+    <div class="formula-example" id="formulaExample2">
+      = $400 &times; 20%<br>
+      = <strong>$80 per trade</strong> (5 trades before daily limit)
+    </div>
+  </div>
+
+  <p id="formulaP3">And the daily loss budget comes from your trailing drawdown: $2,000 &times; 20% = $400. This cascading structure means every dollar of risk is traceable back to your account's hard limit. Nothing is arbitrary. Nothing is based on feel. The drawdown limit defines your daily budget, the daily budget defines your per-trade risk, and the per-trade risk combined with ATR defines your contract count.</p>
+
+  <!-- VOLATILITY ADJUSTMENT EXAMPLES -->
+  <h2 id="h2vol">Volatility Adjustment: 3 Scenarios</h2>
+
+  <p id="volP1">This is where the magic of ATR-based sizing becomes obvious. Watch how the formula automatically adjusts your position to keep the dollar risk locked at $80 regardless of what the market is doing:</p>
+
+  <div class="math-box">
+    <div class="math-title" id="volTitle1">Scenario 1: Normal Day (ATR 20)</div>
+    <div class="math-line">
+      <span class="math-label" id="vol1risk">Risk per trade</span>
+      <span class="math-value">$80</span>
+    </div>
+    <div class="math-line">
+      <span class="math-label" id="vol1atr">ATR &times; Point Value</span>
+      <span class="math-value">20 &times; $2 = $40</span>
+    </div>
+    <div class="math-line math-result">
+      <span class="math-label" id="vol1result">Contracts</span>
+      <span class="math-value green">2 MNQ</span>
+    </div>
+  </div>
+
+  <div class="math-box">
+    <div class="math-title" id="volTitle2">Scenario 2: High Volatility (ATR 30)</div>
+    <div class="math-line">
+      <span class="math-label" id="vol2risk">Risk per trade</span>
+      <span class="math-value">$80</span>
+    </div>
+    <div class="math-line">
+      <span class="math-label" id="vol2atr">ATR &times; Point Value</span>
+      <span class="math-value">30 &times; $2 = $60</span>
+    </div>
+    <div class="math-line">
+      <span class="math-label" id="vol2calc">$80 / $60 = 1.33</span>
+      <span class="math-value" id="vol2round">&darr; round down</span>
+    </div>
+    <div class="math-line math-result">
+      <span class="math-label" id="vol2result">Contracts</span>
+      <span class="math-value green">1 MNQ</span>
+    </div>
+  </div>
+
+  <div class="math-box">
+    <div class="math-title" id="volTitle3">Scenario 3: Low Volatility (ATR 12)</div>
+    <div class="math-line">
+      <span class="math-label" id="vol3risk">Risk per trade</span>
+      <span class="math-value">$80</span>
+    </div>
+    <div class="math-line">
+      <span class="math-label" id="vol3atr">ATR &times; Point Value</span>
+      <span class="math-value">12 &times; $2 = $24</span>
+    </div>
+    <div class="math-line">
+      <span class="math-label" id="vol3calc">$80 / $24 = 3.33</span>
+      <span class="math-value" id="vol3round">&darr; round down</span>
+    </div>
+    <div class="math-line math-result">
+      <span class="math-label" id="vol3result">Contracts</span>
+      <span class="math-value green">3 MNQ</span>
+    </div>
+  </div>
+
+  <p id="volP2"><strong>Dollar risk in all three scenarios: $80.</strong> The position size changes. The stop distance changes. But the amount of money at risk never changes. This is exactly how institutional desks manage risk across different volatility regimes. The formula does the thinking so you don't have to make emotional decisions about size when the market is moving fast.</p>
+
+  <!-- ATR BY INSTRUMENT -->
+  <h2 id="h2instruments">ATR Position Sizing by Instrument</h2>
+
+  <p id="instrP1">The formula works identically across every futures instrument. The only variable that changes is the <strong>point value</strong>. Here's how many contracts you would trade at $80 risk assuming an ATR of 20 points for each instrument:</p>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th id="thInstrument">Instrument</th>
+        <th id="thPointVal">Point Value</th>
+        <th id="thATR">ATR (example)</th>
+        <th id="thDollarStop">Dollar Stop</th>
+        <th id="thContracts">Contracts at $80</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>MNQ</strong></td>
+        <td id="tdMnqPV">$2/pt</td>
+        <td>20 pts</td>
+        <td>$40</td>
+        <td class="green" id="tdMnqC">2</td>
+      </tr>
+      <tr>
+        <td><strong>NQ</strong></td>
+        <td id="tdNqPV">$20/pt</td>
+        <td>20 pts</td>
+        <td>$400</td>
+        <td class="green" id="tdNqC">0 (risk too small)</td>
+      </tr>
+      <tr>
+        <td><strong>MES</strong></td>
+        <td id="tdMesPV">$1.25/pt</td>
+        <td>20 pts</td>
+        <td>$25</td>
+        <td class="green" id="tdMesC">3</td>
+      </tr>
+      <tr>
+        <td><strong>ES</strong></td>
+        <td id="tdEsPV">$12.50/pt</td>
+        <td>20 pts</td>
+        <td>$250</td>
+        <td class="green" id="tdEsC">0 (risk too small)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p id="instrP2">Notice the critical insight: with an $80 risk budget, <strong>you cannot trade full-size NQ or ES</strong> because a single 20-point ATR stop on NQ costs $400 and on ES costs $250. Both exceed your $80 budget on even one contract. This is why micro contracts (MNQ, MES) are the standard for prop firm evaluations &mdash; they give you the granularity to size correctly at smaller risk budgets.</p>
+
+  <p id="instrP3">If your prop firm allows it and your daily budget is higher, the formula scales perfectly. A $200 risk budget on NQ with a 20-point ATR: $200 / (20 &times; $20) = 0.5 &mdash; still not enough for a full contract. You'd need a $400+ risk budget to trade even 1 NQ contract with a proper ATR stop. <strong>The formula will never let you over-size.</strong> That's the point.</p>
+
+  <!-- 3 STOP LOSS MISTAKES -->
+  <h2 id="h2mistakes">The 3 Stop-Loss Mistakes That Blow Accounts</h2>
+
+  <p id="mistakesIntro">ATR-based stops solve problems that most prop firm traders don't even realize they have. Here are the three most common stop-loss approaches that destroy evaluations:</p>
+
+  <ul class="mistake-list">
+    <li id="mistake1"><strong>Mistake #1: Fixed-point stops.</strong> "I always use a 20-point stop on MNQ." This sounds disciplined, but it's blind to volatility. On a day when ATR is 30 points, a 20-point stop sits inside normal market noise &mdash; you'll get stopped out by regular price fluctuations, not by being wrong on direction. On a day when ATR is 12 points, that same 20-point stop is nearly 2x ATR wide, meaning you're risking far more than necessary. Fixed stops guarantee inconsistent risk.</li>
+    <li id="mistake2"><strong>Mistake #2: Percentage-of-account stops.</strong> "I risk 2% of my account per trade." This approach ignores the instrument's volatility entirely. 2% of a $50,000 account is $1,000 &mdash; but whether that translates to a tight stop or a wide stop depends on the ATR and point value. Without factoring in volatility, you might be using a 5-point stop on one day and a 50-point stop on another. The position size becomes random.</li>
+    <li id="mistake3"><strong>Mistake #3: "I'll manage it mentally."</strong> No stop at all. This is not a strategy &mdash; it's hope dressed up as flexibility. Mental stops don't get executed when the market moves against you because your brain is wired to avoid locking in losses. Every prop firm account that has ever been blown in a single trade started with "I'll just watch it and exit if it goes too far." Set a hard stop. Use ATR to place it. End of discussion.</li>
+  </ul>
+
+  <p id="mistakesOutro">All three mistakes share one root cause: <strong>they ignore what the market is actually doing right now.</strong> ATR-based stops are the antidote because they are derived from current market behaviour, not from arbitrary rules or wishful thinking. The market tells you how far it's moving; your job is to listen and size accordingly.</p>
+
+  <!-- HOW X-TRADE.AI DOES IT -->
+  <h2 id="h2auto">How x-trade.ai Does It Automatically</h2>
+
+  <p id="autoP1">The formula is simple, but executing it perfectly on every single trade under pressure is where most traders slip. One miscalculation on a volatile day, one moment of "I'll just add one more contract" &mdash; and weeks of disciplined trading evaporate. That's why <strong>x-trade.ai automates the entire process</strong>.</p>
+
+  <p id="autoP2">Here's what happens when you place a trade with x-trade.ai:</p>
+
+  <div class="step-box">
+    <ol>
+      <li id="autoStep1"><strong>Auto-reads ATR</strong> &mdash; The system pulls the current 14-period ATR from your trading timeframe in real time. No manual chart reading required.</li>
+      <li id="autoStep2"><strong>Calculates position size</strong> &mdash; Using your pre-configured risk budget, it applies the formula <code>Contracts = Risk / (ATR &times; Point Value)</code> and rounds down automatically.</li>
+      <li id="autoStep3"><strong>Sets stop distance</strong> &mdash; The stop is placed at the exact ATR distance from your entry. No guessing, no manual placement, no temptation to "give it a little more room."</li>
+      <li id="autoStep4"><strong>Enforces daily limits</strong> &mdash; If you've hit your daily loss budget, the system blocks new trades. No override, no exceptions. Your drawdown is protected even when your discipline isn't.</li>
+    </ol>
+  </div>
+
+  <p id="autoP3">L'IA de <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a> identifie les niveaux de support/r&eacute;sistance et optimise le placement de tes stops. Ma&icirc;trise l'ATR et le position sizing avec nos <a href="https://basstrading.fr" target="_blank" rel="noopener">formations sur basstrading.fr</a>.</p>
+
+  <!-- FAQ -->
+  <h2 id="h2faq">Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq1q">What is ATR-based position sizing?</div>
+    <div class="faq-a" id="faq1a">ATR-based position sizing is a method where you divide your fixed dollar risk per trade by the current ATR value multiplied by the instrument's point value. The formula is: Contracts = Risk Per Trade / (ATR &times; Point Value). This keeps your dollar risk constant while automatically adjusting your position size to match current market volatility. On high-volatility days you trade fewer contracts; on low-volatility days you trade more. The result is perfectly consistent risk exposure on every trade.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq2q">What ATR period should I use for position sizing?</div>
+    <div class="faq-a" id="faq2a">Use the 14-period ATR on your trading timeframe. If you trade off the 5-minute chart, use the 14-period ATR on the 5-minute chart. If you trade off the 15-minute, use 14-period on the 15-minute. The 14-period setting is the industry standard because it captures roughly two weeks of price action and smooths out single-day anomalies. Some traders experiment with 10 or 20 periods, but the difference is marginal. Consistency matters more than the exact setting.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq3q">How many MNQ contracts should I trade with an $80 risk budget?</div>
+    <div class="faq-a" id="faq3a">It depends entirely on the current ATR. At ATR 20: $80 / (20 &times; $2) = 2 contracts. At ATR 30: $80 / (30 &times; $2) = 1 contract. At ATR 12: $80 / (12 &times; $2) = 3 contracts. The number of contracts changes but the dollar risk stays at $80 every time. Always round down, never up. If the math says 1.33 contracts, you trade 1.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="faq4q">Why is a fixed-point stop loss bad for prop firm trading?</div>
+    <div class="faq-a" id="faq4a">A fixed-point stop ignores volatility. A 20-point stop on a day when ATR is 30 points will get hit by normal market noise, causing unnecessary losses. On a day when ATR is 12 points, the same 20-point stop is too wide, meaning you need fewer contracts but are using too many, increasing your dollar risk beyond your budget. ATR-based stops adapt to the market; fixed stops fight it. During a prop firm evaluation, fighting the market's volatility is the fastest way to breach your drawdown limit.</div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-box">
+    <h2 id="ctaTitle">Automate Your ATR Position Sizing</h2>
+    <p id="ctaText">x-trade.ai reads ATR in real time, calculates your exact contract size, places your stops automatically, and enforces your daily loss limits. No spreadsheets. No mental math under pressure. Just consistent, formula-driven risk management on every trade.</p>
+    <a href="/onboarding?mode=trial" class="cta-btn" id="ctaBtn">Start Free Trial</a>
+  </div>
+
+  <!-- UPDATED -->
+  <p style="text-align:center;font-size:.8rem;color:var(--dim);margin-top:2rem" id="lastUpdated">Last updated: March 2026</p>
+
+  <!-- CROSS LINKS -->
+  <div class="cross-links">
+    <h3 id="crossTitle">Related Articles</h3>
+    <a href="/blog/pass-prop-firm-evaluation" class="cross-link" id="cross1">How to Pass Your Prop Firm Evaluation: The Risk-First Approach</a>
+    <a href="/blog/why-prop-firm-traders-fail" class="cross-link" id="cross2">Why 93% of Prop Firm Traders Never Get Paid &mdash; The 5 Risk Mistakes</a>
+    <a href="/blog/revenge-trading-prop-firm" class="cross-link" id="cross3">Revenge Trading: The #1 Prop Firm Account Killer (And How to Stop It)</a>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="https://basstrading.fr" target="_blank" rel="noopener">basstrading.fr - Formations</a>
+    <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr - IA &amp; Communaut&eacute;</a>
+    <a href="/blog" id="footBlog">Blog</a>
+    <a href="/onboarding?mode=trial" id="footTrial">Free Trial</a>
+  </div>
+  <p id="footCopy">&copy; 2026 x-trade.ai &mdash; All rights reserved.</p>
+</footer>
+
+<script>
+let lang = localStorage.getItem('xtrade_lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en');
+
+const TR = {
+en: {
+'navHome': 'Home',
+'navBlog': 'Blog',
+'navStart': 'Start Free',
+'breadcrumb': '<a href="/">Home</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; ATR Position Sizing for Prop Firm Traders',
+'metaTag': 'Position Sizing',
+'metaDate': 'March 30, 2026',
+'metaRead': '12 min read',
+'title': 'ATR Position Sizing for Prop Firm Traders: The Only Formula You Need',
+'takeawaysTitle': 'Key Takeaways',
+'tk1': 'ATR-based position sizing keeps your dollar risk constant regardless of market volatility \u2014 the number of contracts changes, but the risk per trade never does.',
+'tk2': 'The formula is simple: Contracts = Risk Per Trade / (ATR \u00d7 Point Value). It takes 10 seconds to calculate and eliminates guesswork.',
+'tk3': 'On a normal day (ATR 20) you trade 2 MNQ contracts. On a volatile day (ATR 30) you trade 1. On a quiet day (ATR 12) you trade 3. Dollar risk: $80 every time.',
+'tk4': 'The three deadliest stop-loss mistakes are fixed-point stops, percentage-of-account stops, and "mental stops" (no stop at all). ATR-based stops solve all three.',
+'answerLabel': 'Quick Answer',
+'answerText': 'ATR-based position sizing is a method where you divide your fixed dollar risk per trade by the current Average True Range multiplied by the instrument\'s point value. The result is the exact number of contracts to trade. It automatically reduces your size on volatile days and increases it on calm days, keeping your dollar exposure identical on every single trade.',
+'intro': 'Most traders pick their position size based on gut feel or what they saw on YouTube. Professional traders use a formula. It takes 10 seconds and it never lets you blow your drawdown.',
+'intro2': 'If you are trading a prop firm evaluation \u2014 Topstep, Apex, FTMO, or any drawdown-based challenge \u2014 your position size is the single most important variable in your entire plan. Get it wrong and even a 60% win rate won\'t save you. Get it right and the math becomes your best risk manager. This article gives you the exact formula, worked examples for every major futures instrument, and the three stop-loss mistakes that blow accounts.',
+'h2atr': 'What Is ATR (Average True Range)?',
+'atrP1': 'Average True Range measures <strong>volatility</strong>. Specifically, it calculates the average range between the high and low of each candle over a given period, accounting for gaps. The standard setting is <strong>14 periods on your trading timeframe</strong>. If you trade the 5-minute chart, use the 14-period ATR on the 5-minute chart.',
+'atrP2': 'The key insight is this: <strong>higher ATR = wider stops = smaller position. Lower ATR = tighter stops = bigger position.</strong> The dollar risk stays CONSTANT. ATR is not a directional indicator \u2014 it doesn\'t tell you which way the market is going. It tells you how far the market is moving, and that\'s exactly what you need to set intelligent stop distances and calculate contract size.',
+'atrP3': 'Think of ATR as a volatility thermometer. On a quiet Monday morning, MNQ might have an ATR of 12 points. On an FOMC Wednesday afternoon, that same instrument could show an ATR of 35 points. If you use the same number of contracts in both environments, you\'re taking three times more risk on the volatile day. ATR-based sizing eliminates that asymmetry completely.',
+'stat1label': 'Period ATR (standard)',
+'stat2label': 'Risk stays constant',
+'stat3label': 'To calculate your size',
+'h2formula': 'The ATR Position Sizing Formula',
+'formulaP1': 'Here is the only formula you need. Memorize it. Tattoo it on your forearm if necessary. Every professional futures trader uses some version of this calculation \u2014 the only difference is how much they risk per trade.',
+'formulaText': 'Contracts = Risk Per Trade / (ATR \u00d7 Point Value)',
+'formulaExample': '= $80 / (20 pts \u00d7 $2/pt)<br>= $80 / $40<br>= <strong>2 MNQ contracts</strong>',
+'formulaText2': 'Risk Per Trade = Daily Loss Budget \u00d7 20%',
+'formulaExample2': '= $400 \u00d7 20%<br>= <strong>$80 per trade</strong> (5 trades before daily limit)',
+'formulaP2': 'Where does the $80 come from? It\'s derived from your daily loss budget:',
+'formulaP3': 'And the daily loss budget comes from your trailing drawdown: $2,000 \u00d7 20% = $400. This cascading structure means every dollar of risk is traceable back to your account\'s hard limit. Nothing is arbitrary. Nothing is based on feel. The drawdown limit defines your daily budget, the daily budget defines your per-trade risk, and the per-trade risk combined with ATR defines your contract count.',
+'h2vol': 'Volatility Adjustment: 3 Scenarios',
+'volP1': 'This is where the magic of ATR-based sizing becomes obvious. Watch how the formula automatically adjusts your position to keep the dollar risk locked at $80 regardless of what the market is doing:',
+'volTitle1': 'Scenario 1: Normal Day (ATR 20)',
+'vol1risk': 'Risk per trade',
+'vol1atr': 'ATR \u00d7 Point Value',
+'vol1result': 'Contracts',
+'volTitle2': 'Scenario 2: High Volatility (ATR 30)',
+'vol2risk': 'Risk per trade',
+'vol2atr': 'ATR \u00d7 Point Value',
+'vol2calc': '$80 / $60 = 1.33',
+'vol2round': '\u2193 round down',
+'vol2result': 'Contracts',
+'volTitle3': 'Scenario 3: Low Volatility (ATR 12)',
+'vol3risk': 'Risk per trade',
+'vol3atr': 'ATR \u00d7 Point Value',
+'vol3calc': '$80 / $24 = 3.33',
+'vol3round': '\u2193 round down',
+'vol3result': 'Contracts',
+'volP2': '<strong>Dollar risk in all three scenarios: $80.</strong> The position size changes. The stop distance changes. But the amount of money at risk never changes. This is exactly how institutional desks manage risk across different volatility regimes. The formula does the thinking so you don\'t have to make emotional decisions about size when the market is moving fast.',
+'h2instruments': 'ATR Position Sizing by Instrument',
+'instrP1': 'The formula works identically across every futures instrument. The only variable that changes is the <strong>point value</strong>. Here\'s how many contracts you would trade at $80 risk assuming an ATR of 20 points for each instrument:',
+'thInstrument': 'Instrument',
+'thPointVal': 'Point Value',
+'thATR': 'ATR (example)',
+'thDollarStop': 'Dollar Stop',
+'thContracts': 'Contracts at $80',
+'tdMnqPV': '$2/pt',
+'tdMnqC': '2',
+'tdNqPV': '$20/pt',
+'tdNqC': '0 (risk too small)',
+'tdMesPV': '$1.25/pt',
+'tdMesC': '3',
+'tdEsPV': '$12.50/pt',
+'tdEsC': '0 (risk too small)',
+'instrP2': 'Notice the critical insight: with an $80 risk budget, <strong>you cannot trade full-size NQ or ES</strong> because a single 20-point ATR stop on NQ costs $400 and on ES costs $250. Both exceed your $80 budget on even one contract. This is why micro contracts (MNQ, MES) are the standard for prop firm evaluations \u2014 they give you the granularity to size correctly at smaller risk budgets.',
+'instrP3': 'If your prop firm allows it and your daily budget is higher, the formula scales perfectly. A $200 risk budget on NQ with a 20-point ATR: $200 / (20 \u00d7 $20) = 0.5 \u2014 still not enough for a full contract. You\'d need a $400+ risk budget to trade even 1 NQ contract with a proper ATR stop. <strong>The formula will never let you over-size.</strong> That\'s the point.',
+'h2mistakes': 'The 3 Stop-Loss Mistakes That Blow Accounts',
+'mistakesIntro': 'ATR-based stops solve problems that most prop firm traders don\'t even realize they have. Here are the three most common stop-loss approaches that destroy evaluations:',
+'mistake1': '<strong>Mistake #1: Fixed-point stops.</strong> "I always use a 20-point stop on MNQ." This sounds disciplined, but it\'s blind to volatility. On a day when ATR is 30 points, a 20-point stop sits inside normal market noise \u2014 you\'ll get stopped out by regular price fluctuations, not by being wrong on direction. On a day when ATR is 12 points, that same 20-point stop is nearly 2x ATR wide, meaning you\'re risking far more than necessary. Fixed stops guarantee inconsistent risk.',
+'mistake2': '<strong>Mistake #2: Percentage-of-account stops.</strong> "I risk 2% of my account per trade." This approach ignores the instrument\'s volatility entirely. 2% of a $50,000 account is $1,000 \u2014 but whether that translates to a tight stop or a wide stop depends on the ATR and point value. Without factoring in volatility, you might be using a 5-point stop on one day and a 50-point stop on another. The position size becomes random.',
+'mistake3': '<strong>Mistake #3: "I\'ll manage it mentally."</strong> No stop at all. This is not a strategy \u2014 it\'s hope dressed up as flexibility. Mental stops don\'t get executed when the market moves against you because your brain is wired to avoid locking in losses. Every prop firm account that has ever been blown in a single trade started with "I\'ll just watch it and exit if it goes too far." Set a hard stop. Use ATR to place it. End of discussion.',
+'mistakesOutro': 'All three mistakes share one root cause: <strong>they ignore what the market is actually doing right now.</strong> ATR-based stops are the antidote because they are derived from current market behaviour, not from arbitrary rules or wishful thinking. The market tells you how far it\'s moving; your job is to listen and size accordingly.',
+'h2auto': 'How x-trade.ai Does It Automatically',
+'autoP1': 'The formula is simple, but executing it perfectly on every single trade under pressure is where most traders slip. One miscalculation on a volatile day, one moment of "I\'ll just add one more contract" \u2014 and weeks of disciplined trading evaporate. That\'s why <strong>x-trade.ai automates the entire process</strong>.',
+'autoP2': 'Here\'s what happens when you place a trade with x-trade.ai:',
+'autoStep1': '<strong>Auto-reads ATR</strong> \u2014 The system pulls the current 14-period ATR from your trading timeframe in real time. No manual chart reading required.',
+'autoStep2': '<strong>Calculates position size</strong> \u2014 Using your pre-configured risk budget, it applies the formula <code>Contracts = Risk / (ATR \u00d7 Point Value)</code> and rounds down automatically.',
+'autoStep3': '<strong>Sets stop distance</strong> \u2014 The stop is placed at the exact ATR distance from your entry. No guessing, no manual placement, no temptation to "give it a little more room."',
+'autoStep4': '<strong>Enforces daily limits</strong> \u2014 If you\'ve hit your daily loss budget, the system blocks new trades. No override, no exceptions. Your drawdown is protected even when your discipline isn\'t.',
+'autoP3': 'The AI on <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a> identifies support/resistance levels and optimizes your stop placement. Master ATR and position sizing with our <a href="https://basstrading.fr" target="_blank" rel="noopener">formations on basstrading.fr</a>.',
+'h2faq': 'Frequently Asked Questions',
+'faq1q': 'What is ATR-based position sizing?',
+'faq1a': 'ATR-based position sizing is a method where you divide your fixed dollar risk per trade by the current ATR value multiplied by the instrument\'s point value. The formula is: Contracts = Risk Per Trade / (ATR \u00d7 Point Value). This keeps your dollar risk constant while automatically adjusting your position size to match current market volatility. On high-volatility days you trade fewer contracts; on low-volatility days you trade more. The result is perfectly consistent risk exposure on every trade.',
+'faq2q': 'What ATR period should I use for position sizing?',
+'faq2a': 'Use the 14-period ATR on your trading timeframe. If you trade off the 5-minute chart, use the 14-period ATR on the 5-minute chart. If you trade off the 15-minute, use 14-period on the 15-minute. The 14-period setting is the industry standard because it captures roughly two weeks of price action and smooths out single-day anomalies. Some traders experiment with 10 or 20 periods, but the difference is marginal. Consistency matters more than the exact setting.',
+'faq3q': 'How many MNQ contracts should I trade with an $80 risk budget?',
+'faq3a': 'It depends entirely on the current ATR. At ATR 20: $80 / (20 \u00d7 $2) = 2 contracts. At ATR 30: $80 / (30 \u00d7 $2) = 1 contract. At ATR 12: $80 / (12 \u00d7 $2) = 3 contracts. The number of contracts changes but the dollar risk stays at $80 every time. Always round down, never up. If the math says 1.33 contracts, you trade 1.',
+'faq4q': 'Why is a fixed-point stop loss bad for prop firm trading?',
+'faq4a': 'A fixed-point stop ignores volatility. A 20-point stop on a day when ATR is 30 points will get hit by normal market noise, causing unnecessary losses. On a day when ATR is 12 points, the same 20-point stop is too wide, meaning you\'re risking far more than necessary. ATR-based stops adapt to the market; fixed stops fight it. During a prop firm evaluation, fighting the market\'s volatility is the fastest way to breach your drawdown limit.',
+'ctaTitle': 'Automate Your ATR Position Sizing',
+'ctaText': 'x-trade.ai reads ATR in real time, calculates your exact contract size, places your stops automatically, and enforces your daily loss limits. No spreadsheets. No mental math under pressure. Just consistent, formula-driven risk management on every trade.',
+'ctaBtn': 'Start Free Trial',
+'lastUpdated': 'Last updated: March 2026',
+'crossTitle': 'Related Articles',
+'cross1': 'How to Pass Your Prop Firm Evaluation: The Risk-First Approach',
+'cross2': 'Why 93% of Prop Firm Traders Never Get Paid \u2014 The 5 Risk Mistakes',
+'cross3': 'Revenge Trading: The #1 Prop Firm Account Killer (And How to Stop It)',
+'footBlog': 'Blog',
+'footTrial': 'Free Trial',
+'footCopy': '\u00a9 2026 x-trade.ai \u2014 All rights reserved.'
+},
+fr: {
+'navHome': 'Accueil',
+'navBlog': 'Blog',
+'navStart': 'Essai Gratuit',
+'breadcrumb': '<a href="/">Accueil</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; Position Sizing ATR pour Traders Prop Firm',
+'metaTag': 'Position Sizing',
+'metaDate': '30 mars 2026',
+'metaRead': '12 min de lecture',
+'title': 'Position Sizing ATR pour Traders Prop Firm : La Seule Formule Dont Tu As Besoin',
+'takeawaysTitle': 'Points Cl\u00e9s',
+'tk1': 'Le position sizing bas\u00e9 sur l\'ATR maintient ton risque en dollars constant quelle que soit la volatilit\u00e9 du march\u00e9 \u2014 le nombre de contrats change, mais le risque par trade jamais.',
+'tk2': 'La formule est simple : Contrats = Risque Par Trade / (ATR \u00d7 Valeur du Point). 10 secondes de calcul et z\u00e9ro approximation.',
+'tk3': 'Jour normal (ATR 20) : 2 contrats MNQ. Jour volatile (ATR 30) : 1 contrat. Jour calme (ATR 12) : 3 contrats. Risque en dollars : 80$ \u00e0 chaque fois.',
+'tk4': 'Les trois erreurs mortelles de stop-loss : stops \u00e0 points fixes, stops en pourcentage du compte, et les "stops mentaux" (pas de stop du tout). Les stops ATR r\u00e8glent les trois.',
+'answerLabel': 'R\u00e9ponse Rapide',
+'answerText': 'Le position sizing bas\u00e9 sur l\'ATR est une m\u00e9thode o\u00f9 tu divises ton risque fixe en dollars par trade par l\'Average True Range actuel multipli\u00e9 par la valeur du point de l\'instrument. Le r\u00e9sultat est le nombre exact de contrats \u00e0 trader. Il r\u00e9duit automatiquement ta taille les jours volatils et l\'augmente les jours calmes, gardant ton exposition en dollars identique sur chaque trade.',
+'intro': 'La plupart des traders choisissent leur taille de position au feeling ou selon ce qu\'ils ont vu sur YouTube. Les traders professionnels utilisent une formule. Elle prend 10 secondes et elle ne te laissera jamais exploser ton drawdown.',
+'intro2': 'Si tu trades une \u00e9valuation prop firm \u2014 Topstep, Apex, FTMO, ou n\'importe quel challenge bas\u00e9 sur le drawdown \u2014 ta taille de position est la variable la plus importante de tout ton plan. Si tu te trompes, m\u00eame un win rate de 60% ne te sauvera pas. Si tu la calcules correctement, les math\u00e9matiques deviennent ton meilleur gestionnaire de risque. Cet article te donne la formule exacte, des exemples concrets pour chaque instrument futures majeur, et les trois erreurs de stop-loss qui font exploser les comptes.',
+'h2atr': 'Qu\'est-ce que l\'ATR (Average True Range) ?',
+'atrP1': 'L\'Average True Range mesure la <strong>volatilit\u00e9</strong>. Plus pr\u00e9cis\u00e9ment, il calcule la fourchette moyenne entre le plus haut et le plus bas de chaque bougie sur une p\u00e9riode donn\u00e9e, en tenant compte des gaps. Le r\u00e9glage standard est <strong>14 p\u00e9riodes sur ton timeframe de trading</strong>. Si tu trades le graphique 5 minutes, utilise l\'ATR 14 p\u00e9riodes sur le 5 minutes.',
+'atrP2': 'L\'insight cl\u00e9 est le suivant : <strong>ATR \u00e9lev\u00e9 = stops plus larges = position plus petite. ATR bas = stops plus serr\u00e9s = position plus grande.</strong> Le risque en dollars reste CONSTANT. L\'ATR n\'est pas un indicateur directionnel \u2014 il ne te dit pas dans quelle direction va le march\u00e9. Il te dit \u00e0 quelle distance le march\u00e9 bouge, et c\'est exactement ce dont tu as besoin pour placer des stops intelligents et calculer ta taille de position.',
+'atrP3': 'Pense \u00e0 l\'ATR comme un thermom\u00e8tre de volatilit\u00e9. Un lundi matin calme, le MNQ peut avoir un ATR de 12 points. Un mercredi apr\u00e8s-midi FOMC, le m\u00eame instrument pourrait afficher un ATR de 35 points. Si tu utilises le m\u00eame nombre de contrats dans les deux environnements, tu prends trois fois plus de risque le jour volatile. Le sizing ATR \u00e9limine compl\u00e8tement cette asym\u00e9trie.',
+'stat1label': 'P\u00e9riodes ATR (standard)',
+'stat2label': 'Risque reste constant',
+'stat3label': 'Pour calculer ta taille',
+'h2formula': 'La Formule de Position Sizing ATR',
+'formulaP1': 'Voici la seule formule dont tu as besoin. M\u00e9morise-la. Tattoue-la sur ton avant-bras si n\u00e9cessaire. Chaque trader futures professionnel utilise une version de ce calcul \u2014 la seule diff\u00e9rence est combien ils risquent par trade.',
+'formulaText': 'Contrats = Risque Par Trade / (ATR \u00d7 Valeur du Point)',
+'formulaExample': '= 80$ / (20 pts \u00d7 2$/pt)<br>= 80$ / 40$<br>= <strong>2 contrats MNQ</strong>',
+'formulaText2': 'Risque Par Trade = Budget de Perte Journalier \u00d7 20%',
+'formulaExample2': '= 400$ \u00d7 20%<br>= <strong>80$ par trade</strong> (5 trades avant la limite journali\u00e8re)',
+'formulaP2': 'D\'o\u00f9 viennent les 80$ ? Ils sont d\u00e9riv\u00e9s de ton budget de perte journalier :',
+'formulaP3': 'Et le budget de perte journalier vient de ton drawdown trailing : 2\u202f000$ \u00d7 20% = 400$. Cette structure en cascade signifie que chaque dollar de risque est tra\u00e7able jusqu\'\u00e0 la limite stricte de ton compte. Rien n\'est arbitraire. Rien n\'est bas\u00e9 sur le feeling. La limite de drawdown d\u00e9finit ton budget journalier, le budget journalier d\u00e9finit ton risque par trade, et le risque par trade combin\u00e9 \u00e0 l\'ATR d\u00e9finit ton nombre de contrats.',
+'h2vol': 'Ajustement \u00e0 la Volatilit\u00e9 : 3 Sc\u00e9narios',
+'volP1': 'C\'est l\u00e0 que la magie du sizing ATR devient \u00e9vidente. Regarde comment la formule ajuste automatiquement ta position pour maintenir le risque en dollars verrouill\u00e9 \u00e0 80$ ind\u00e9pendamment de ce que fait le march\u00e9 :',
+'volTitle1': 'Sc\u00e9nario 1 : Jour Normal (ATR 20)',
+'vol1risk': 'Risque par trade',
+'vol1atr': 'ATR \u00d7 Valeur du Point',
+'vol1result': 'Contrats',
+'volTitle2': 'Sc\u00e9nario 2 : Forte Volatilit\u00e9 (ATR 30)',
+'vol2risk': 'Risque par trade',
+'vol2atr': 'ATR \u00d7 Valeur du Point',
+'vol2calc': '80$ / 60$ = 1,33',
+'vol2round': '\u2193 arrondir vers le bas',
+'vol2result': 'Contrats',
+'volTitle3': 'Sc\u00e9nario 3 : Faible Volatilit\u00e9 (ATR 12)',
+'vol3risk': 'Risque par trade',
+'vol3atr': 'ATR \u00d7 Valeur du Point',
+'vol3calc': '80$ / 24$ = 3,33',
+'vol3round': '\u2193 arrondir vers le bas',
+'vol3result': 'Contrats',
+'volP2': '<strong>Risque en dollars dans les trois sc\u00e9narios : 80$.</strong> La taille de position change. La distance du stop change. Mais le montant d\'argent \u00e0 risque ne change jamais. C\'est exactement comme \u00e7a que les desks institutionnels g\u00e8rent le risque \u00e0 travers diff\u00e9rents r\u00e9gimes de volatilit\u00e9. La formule r\u00e9fl\u00e9chit pour toi pour que tu n\'aies pas \u00e0 prendre des d\u00e9cisions \u00e9motionnelles sur la taille quand le march\u00e9 bouge vite.',
+'h2instruments': 'Position Sizing ATR par Instrument',
+'instrP1': 'La formule fonctionne de mani\u00e8re identique sur tous les instruments futures. La seule variable qui change est la <strong>valeur du point</strong>. Voici combien de contrats tu traderais avec un risque de 80$ en supposant un ATR de 20 points pour chaque instrument :',
+'thInstrument': 'Instrument',
+'thPointVal': 'Valeur du Point',
+'thATR': 'ATR (exemple)',
+'thDollarStop': 'Stop en $',
+'thContracts': 'Contrats \u00e0 80$',
+'tdMnqPV': '2$/pt',
+'tdMnqC': '2',
+'tdNqPV': '20$/pt',
+'tdNqC': '0 (risque trop petit)',
+'tdMesPV': '1,25$/pt',
+'tdMesC': '3',
+'tdEsPV': '12,50$/pt',
+'tdEsC': '0 (risque trop petit)',
+'instrP2': 'Remarque l\'insight critique : avec un budget de risque de 80$, <strong>tu ne peux pas trader le NQ ou l\'ES en taille r\u00e9elle</strong> car un seul stop ATR de 20 points sur le NQ co\u00fbte 400$ et sur l\'ES 250$. Les deux d\u00e9passent ton budget de 80$ sur un seul contrat. C\'est pourquoi les micro contrats (MNQ, MES) sont le standard pour les \u00e9valuations prop firm \u2014 ils te donnent la granularit\u00e9 pour dimensionner correctement avec des budgets de risque plus petits.',
+'instrP3': 'Si ta prop firm le permet et que ton budget journalier est plus \u00e9lev\u00e9, la formule s\'\u00e9chelle parfaitement. Un budget de risque de 200$ sur le NQ avec un ATR de 20 points : 200$ / (20 \u00d7 20$) = 0,5 \u2014 toujours pas assez pour un contrat complet. Tu aurais besoin d\'un budget de 400$+ pour trader ne serait-ce qu\'1 contrat NQ avec un stop ATR correct. <strong>La formule ne te laissera jamais surdimensionner.</strong> C\'est le but.',
+'h2mistakes': 'Les 3 Erreurs de Stop-Loss Qui Font Exploser les Comptes',
+'mistakesIntro': 'Les stops ATR r\u00e8glent des probl\u00e8mes que la plupart des traders prop firm ne r\u00e9alisent m\u00eame pas qu\'ils ont. Voici les trois approches de stop-loss les plus courantes qui d\u00e9truisent les \u00e9valuations :',
+'mistake1': '<strong>Erreur #1 : Stops \u00e0 points fixes.</strong> "J\'utilise toujours un stop de 20 points sur MNQ." \u00c7a semble disciplin\u00e9, mais c\'est aveugle \u00e0 la volatilit\u00e9. Un jour o\u00f9 l\'ATR est \u00e0 30 points, un stop de 20 points se situe dans le bruit normal du march\u00e9 \u2014 tu seras stopp\u00e9 par les fluctuations normales des prix, pas parce que tu avais tort sur la direction. Un jour o\u00f9 l\'ATR est \u00e0 12 points, ce m\u00eame stop de 20 points est presque 2x l\'ATR, ce qui signifie que tu risques bien plus que n\u00e9cessaire. Les stops fixes garantissent un risque incoh\u00e9rent.',
+'mistake2': '<strong>Erreur #2 : Stops en pourcentage du compte.</strong> "Je risque 2% de mon compte par trade." Cette approche ignore totalement la volatilit\u00e9 de l\'instrument. 2% d\'un compte de 50\u202f000$ c\'est 1\u202f000$ \u2014 mais que cela se traduise par un stop serr\u00e9 ou large d\u00e9pend de l\'ATR et de la valeur du point. Sans prendre en compte la volatilit\u00e9, tu pourrais utiliser un stop de 5 points un jour et de 50 points un autre. La taille de position devient al\u00e9atoire.',
+'mistake3': '<strong>Erreur #3 : "Je vais g\u00e9rer \u00e7a mentalement."</strong> Pas de stop du tout. Ce n\'est pas une strat\u00e9gie \u2014 c\'est de l\'espoir d\u00e9guis\u00e9 en flexibilit\u00e9. Les stops mentaux ne sont pas ex\u00e9cut\u00e9s quand le march\u00e9 va contre toi parce que ton cerveau est programm\u00e9 pour \u00e9viter de mat\u00e9rialiser des pertes. Chaque compte prop firm qui a \u00e9t\u00e9 explos\u00e9 en un seul trade a commenc\u00e9 par "Je vais juste surveiller et sortir si \u00e7a va trop loin." Place un stop dur. Utilise l\'ATR pour le positionner. Fin de la discussion.',
+'mistakesOutro': 'Ces trois erreurs partagent une cause racine : <strong>elles ignorent ce que le march\u00e9 fait r\u00e9ellement en ce moment.</strong> Les stops ATR sont l\'antidote car ils sont d\u00e9riv\u00e9s du comportement actuel du march\u00e9, pas de r\u00e8gles arbitraires ou de v\u0153ux pieux. Le march\u00e9 te dit \u00e0 quelle distance il bouge ; ton travail est d\'\u00e9couter et de dimensionner en cons\u00e9quence.',
+'h2auto': 'Comment x-trade.ai le Fait Automatiquement',
+'autoP1': 'La formule est simple, mais l\'ex\u00e9cuter parfaitement sur chaque trade sous pression, c\'est l\u00e0 que la plupart des traders d\u00e9rapent. Un mauvais calcul un jour volatile, un moment de "je vais juste ajouter un contrat de plus" \u2014 et des semaines de trading disciplin\u00e9 s\'\u00e9vaporent. C\'est pourquoi <strong>x-trade.ai automatise tout le processus</strong>.',
+'autoP2': 'Voici ce qui se passe quand tu places un trade avec x-trade.ai :',
+'autoStep1': '<strong>Lecture automatique de l\'ATR</strong> \u2014 Le syst\u00e8me r\u00e9cup\u00e8re l\'ATR 14 p\u00e9riodes actuel de ton timeframe de trading en temps r\u00e9el. Aucune lecture manuelle du graphique n\u00e9cessaire.',
+'autoStep2': '<strong>Calcul de la taille de position</strong> \u2014 En utilisant ton budget de risque pr\u00e9-configur\u00e9, il applique la formule <code>Contrats = Risque / (ATR \u00d7 Valeur du Point)</code> et arrondit automatiquement vers le bas.',
+'autoStep3': '<strong>Placement du stop</strong> \u2014 Le stop est plac\u00e9 \u00e0 la distance ATR exacte de ton entr\u00e9e. Pas de devinette, pas de placement manuel, pas de tentation de "lui laisser un peu plus de marge."',
+'autoStep4': '<strong>Application des limites journali\u00e8res</strong> \u2014 Si tu as atteint ton budget de perte journalier, le syst\u00e8me bloque les nouveaux trades. Pas de contournement, pas d\'exception. Ton drawdown est prot\u00e9g\u00e9 m\u00eame quand ta discipline ne l\'est pas.',
+'autoP3': 'L\'IA de <a href="https://hubtrading.fr" target="_blank" rel="noopener">hubtrading.fr</a> identifie les niveaux de support/r\u00e9sistance et optimise le placement de tes stops. Ma\u00eetrise l\'ATR et le position sizing avec nos <a href="https://basstrading.fr" target="_blank" rel="noopener">formations sur basstrading.fr</a>.',
+'h2faq': 'Questions Fr\u00e9quemment Pos\u00e9es',
+'faq1q': 'Qu\'est-ce que le position sizing bas\u00e9 sur l\'ATR ?',
+'faq1a': 'Le position sizing bas\u00e9 sur l\'ATR est une m\u00e9thode o\u00f9 tu divises ton risque fixe en dollars par trade par la valeur actuelle de l\'ATR multipli\u00e9e par la valeur du point de l\'instrument. La formule est : Contrats = Risque Par Trade / (ATR \u00d7 Valeur du Point). Cela maintient ton risque en dollars constant tout en ajustant automatiquement ta taille de position \u00e0 la volatilit\u00e9 actuelle du march\u00e9. Les jours de forte volatilit\u00e9, tu trades moins de contrats ; les jours de faible volatilit\u00e9, tu en trades plus. Le r\u00e9sultat est une exposition au risque parfaitement constante sur chaque trade.',
+'faq2q': 'Quelle p\u00e9riode ATR utiliser pour le position sizing ?',
+'faq2a': 'Utilise l\'ATR 14 p\u00e9riodes sur ton timeframe de trading. Si tu trades sur le graphique 5 minutes, utilise l\'ATR 14 p\u00e9riodes sur le 5 minutes. Si tu trades sur le 15 minutes, utilise le 14 p\u00e9riodes sur le 15 minutes. Le r\u00e9glage 14 p\u00e9riodes est le standard de l\'industrie car il capture environ deux semaines d\'action des prix et lisse les anomalies d\'un seul jour. Certains traders exp\u00e9rimentent avec 10 ou 20 p\u00e9riodes, mais la diff\u00e9rence est marginale. La coh\u00e9rence compte plus que le r\u00e9glage exact.',
+'faq3q': 'Combien de contrats MNQ trader avec un budget de risque de 80$ ?',
+'faq3a': 'Cela d\u00e9pend enti\u00e8rement de l\'ATR actuel. \u00c0 ATR 20 : 80$ / (20 \u00d7 2$) = 2 contrats. \u00c0 ATR 30 : 80$ / (30 \u00d7 2$) = 1 contrat. \u00c0 ATR 12 : 80$ / (12 \u00d7 2$) = 3 contrats. Le nombre de contrats change mais le risque en dollars reste \u00e0 80$ \u00e0 chaque fois. Toujours arrondir vers le bas, jamais vers le haut. Si le calcul donne 1,33 contrats, tu trades 1.',
+'faq4q': 'Pourquoi un stop-loss \u00e0 points fixes est mauvais en prop firm ?',
+'faq4a': 'Un stop \u00e0 points fixes ignore la volatilit\u00e9. Un stop de 20 points un jour o\u00f9 l\'ATR est \u00e0 30 points sera touch\u00e9 par le bruit normal du march\u00e9, causant des pertes inutiles. Un jour o\u00f9 l\'ATR est \u00e0 12 points, le m\u00eame stop de 20 points est trop large, ce qui signifie que tu as besoin de moins de contrats mais tu en utilises trop, augmentant ton risque en dollars au-del\u00e0 de ton budget. Les stops ATR s\'adaptent au march\u00e9 ; les stops fixes le combattent. Pendant une \u00e9valuation prop firm, combattre la volatilit\u00e9 du march\u00e9 est le moyen le plus rapide de violer ta limite de drawdown.',
+'ctaTitle': 'Automatise Ton Position Sizing ATR',
+'ctaText': 'x-trade.ai lit l\'ATR en temps r\u00e9el, calcule ta taille de position exacte, place tes stops automatiquement et applique tes limites de perte journali\u00e8re. Pas de tableurs. Pas de calcul mental sous pression. Juste une gestion du risque constante et bas\u00e9e sur la formule \u00e0 chaque trade.',
+'ctaBtn': 'Commencer l\'Essai Gratuit',
+'lastUpdated': 'Derni\u00e8re mise \u00e0 jour : Mars 2026',
+'crossTitle': 'Articles Associ\u00e9s',
+'cross1': 'Comment R\u00e9ussir Votre \u00c9valuation Prop Firm : L\'Approche Risk-First',
+'cross2': 'Pourquoi 93% des Traders Prop Firm Ne Sont Jamais Pay\u00e9s \u2014 Les 5 Erreurs de Risque',
+'cross3': 'Revenge Trading : Le Tueur #1 de Comptes Prop Firm (Et Comment l\'Arr\u00eater)',
+'footBlog': 'Blog',
+'footTrial': 'Essai Gratuit',
+'footCopy': '\u00a9 2026 x-trade.ai \u2014 Tous droits r\u00e9serv\u00e9s.'
+}
+};
+
+function applyLang() {
+  for (const [id, html] of Object.entries(TR[lang] || TR.en)) {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  }
+  document.getElementById('langBtn').textContent = lang === 'en' ? 'FR' : 'EN';
+  document.documentElement.lang = lang;
+}
+
+function toggleLang() {
+  lang = lang === 'en' ? 'fr' : 'en';
+  localStorage.setItem('xtrade_lang', lang);
+  applyLang();
+}
+
+document.addEventListener('DOMContentLoaded', applyLang);
+</script>
+</body>
+</html>
