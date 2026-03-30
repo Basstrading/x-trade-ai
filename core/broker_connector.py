@@ -232,7 +232,7 @@ class BrokerConnector:
                                 # Trade ferme ! Calculer le PnL via le changement de balance
                                 await self._on_trade_closed(acc_id, prev_pos)
 
-                        # Positions nouvelles → trades ouverts (log seulement)
+                        # Positions nouvelles → trades ouverts
                         for cid, cur_pos in current_sizes.items():
                             if cid not in prev_sizes:
                                 logger.info(
@@ -240,6 +240,22 @@ class BrokerConnector:
                                     f"{cur_pos['direction']} {cur_pos['size']}ct "
                                     f"@ {cur_pos['avg_price']}"
                                 )
+                                # Si bloqué → fermer immédiatement la position
+                                if self._enforce_callback:
+                                    try:
+                                        cancelled = await self._enforce_callback(
+                                            self.client, acc_id
+                                        )
+                                        if cancelled == -1:  # Signal: flatten needed
+                                            await self.client.close_position(
+                                                acc_id, cid
+                                            )
+                                            logger.critical(
+                                                f"ENFORCE FLATTEN | Position {cid} "
+                                                f"fermee automatiquement — trading bloque"
+                                            )
+                                    except Exception as e:
+                                        logger.error(f"Enforce flatten: {e}")
 
                         self._last_known_positions[acc_id] = current_positions
 

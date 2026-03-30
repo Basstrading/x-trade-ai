@@ -937,10 +937,12 @@ class RiskDeskEngine:
 
     async def enforce_blocks(self, client, account_id: int) -> int:
         """
-        Si le framework dit BLOQUÉ, annule les ordres pending.
-        Ne touche PAS aux positions ouvertes.
-        À appeler périodiquement (chaque tick / chaque seconde).
-        Retourne le nombre d'ordres annulés.
+        Si le framework dit BLOQUÉ :
+        - Annule les ordres pending
+        - Retourne -1 pour signaler au monitor de flatten toute
+          nouvelle position détectée
+
+        Retourne: nombre d'ordres annulés, ou -1 si flatten requis.
         """
         fw = self.get_framework()
         if not fw.allowed:
@@ -949,7 +951,7 @@ class RiskDeskEngine:
                 logger.warning(
                     f"ENFORCE: {cancelled} ordres annulés — {fw.blocked_reason}"
                 )
-            return cancelled
+            return -1  # Signal: flatten toute nouvelle position
         return 0
 
     def must_close_overnight(self) -> Tuple[bool, str]:
