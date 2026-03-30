@@ -862,6 +862,54 @@ class RiskDeskEngine:
         self.session_config.feed_bar(open_p or close, high, low, close)
 
     # ═══════════════════════════════════════════════════════════
+    # SYNC FROM BROKER
+    # ═══════════════════════════════════════════════════════════
+
+    def sync_from_broker(self, broker_balance: float):
+        """
+        Synchronise le Risk Desk avec la balance réelle du broker.
+        À appeler à chaque reconnexion et périodiquement.
+
+        - Met à jour la balance dans le state (persiste)
+        - Met à jour la balance dans l'IRM (RAM)
+        - Recalcule le P&L du jour si le state n'a pas de trades
+          (le trader a tradé pendant que le Risk Desk était off)
+        """
+        old_balance = self.irm.current_balance
+
+        # 1. Sync le state persistant
+        self.state.sync_balance(broker_balance)
+
+        # 2. Sync l'IRM en RAM
+        self.irm.current_balance = broker_balance
+        if broker_balance > self.irm.peak_balance:
+            self.irm.peak_balance = broker_balance
+
+        # 3. Si le P&L du jour est 0 mais la balance a bougé
+        #    → le trader a tradé sans le Risk Desk
+        #    → recalculer le daily P&L depuis la balance d'ouverture
+        if self.irm.daily_trades == 0 and abs(broker_balance - old_balance) > 0.50:
+            # Retrouver la balance d'ouverture du jour
+            opening = self.state.state.initial_balance + (
+                self.state.state.total_profit - self.state.state.today_pnl
+            )
+            inferred_pnl = broker_balance - opening
+            if abs(inferred_pnl) > 0.50:
+                self.irm.daily_pnl = inferred_pnl
+                self.state.state.today_pnl = inferred_pnl
+                self.state._save()
+                logger.warning(
+                    f"SYNC: P&L du jour recalcule depuis broker: "
+                    f"${inferred_pnl:+,.2f} (balance {old_balance:,.0f} -> "
+                    f"{broker_balance:,.0f})"
+                )
+
+        if abs(broker_balance - old_balance) > 0.01:
+            logger.info(
+                f"SYNC: Balance {old_balance:,.2f} -> {broker_balance:,.2f}"
+            )
+
+    # ═══════════════════════════════════════════════════════════
     # KILL SWITCH & OVERNIGHT
     # ═══════════════════════════════════════════════════════════
 

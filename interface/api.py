@@ -1412,6 +1412,18 @@ async def broker_select_accounts(account_ids: str):
     broker = _get_broker()
     ids = [int(x.strip()) for x in account_ids.split(",") if x.strip()]
     broker.select_accounts(ids)
+
+    # Sync balance du broker → Risk Desk à la connexion
+    if _risk_desk and ids:
+        try:
+            accounts = await broker.get_accounts()
+            for acc in accounts:
+                if acc["id"] == ids[0]:
+                    _risk_desk.sync_from_broker(acc.get("balance", 0))
+                    break
+        except Exception as e:
+            pass
+
     # Demarrer le trade monitor sur ces comptes
     await broker.start_trade_monitor(interval=5)
     return {"ok": True, "selected": ids}
@@ -1425,6 +1437,7 @@ async def _start_broker_services(broker, instrument: str = "MNQ"):
             price_callback=_risk_desk.feed_price,
             trade_callback=_risk_desk.record_trade,
             enforce_callback=_risk_desk.enforce_blocks,
+            sync_callback=_risk_desk.sync_from_broker,
         )
     await broker.start_market_feed(instrument=instrument, interval=30)
     if broker.selected_account_ids:
