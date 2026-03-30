@@ -520,6 +520,20 @@ class RiskDeskEngine:
             self.irm.daily_wins = self.state.state.today_wins
             self.irm.daily_losses = self.state.state.today_losses
             self.irm.consecutive_losses = self.state.state.today_consec_losses
+            # CRITIQUE: fixer la date pour empêcher new_day() de reset
+            # les compteurs au premier appel. Si on est le même jour
+            # que le state sauvegardé, le trader RESTE bloqué.
+            from datetime import date as _date
+            if self.state.state.today_date == str(_date.today()):
+                self.irm.current_date = _date.today()
+                # Recalculer le circuit breaker depuis le P&L restauré
+                self.irm._update_circuit_breaker()
+
+        # Restaurer le profit protector depuis le state
+        if self.state.state.today_peak_pnl > 0:
+            self.profit_protector.peak_pnl = self.state.state.today_peak_pnl
+            daily_limit = self._get_daily_limit()
+            self.profit_protector.update(self.state.state.today_pnl, daily_limit)
 
         # Historique des trades du jour
         self._trades_today: List[dict] = self.state.state.today_trade_log
