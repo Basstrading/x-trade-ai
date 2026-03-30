@@ -532,6 +532,160 @@
         }
 
         /* ══════════════════════════════════════
+           ANALYTICS — DONUTS + STATS
+           ══════════════════════════════════════ */
+        .analytics-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .analytics-title {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text2);
+            margin-bottom: 14px;
+        }
+        .donuts-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .donut-cell {
+            text-align: center;
+        }
+        .donut-cell canvas {
+            width: 90px;
+            height: 90px;
+            display: block;
+            margin: 0 auto 6px;
+        }
+        .donut-label {
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text2);
+        }
+        .donut-value {
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .ag-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 10px;
+            background: rgba(255,255,255,0.015);
+            border-radius: 6px;
+            font-size: 10px;
+        }
+        .ag-item .ag-k { color: var(--text2); }
+        .ag-item .ag-v { font-weight: 600; }
+
+        /* ══════════════════════════════════════
+           COACH
+           ══════════════════════════════════════ */
+        .coach-card {
+            background: linear-gradient(135deg, rgba(0,224,255,0.03), rgba(0,255,136,0.02));
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0,224,255,0.08);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        .coach-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .coach-icon {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: var(--cyan-dim);
+            border: 1px solid rgba(0,224,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        .coach-name {
+            font-family: var(--title);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--cyan);
+            text-transform: uppercase;
+        }
+        .coach-msg {
+            font-family: var(--body);
+            font-size: 12px;
+            line-height: 1.65;
+            color: var(--text2);
+            padding: 10px 12px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            border-left: 3px solid var(--cyan);
+            margin-bottom: 8px;
+        }
+        .coach-msg:last-child { margin-bottom: 0; }
+        .coach-msg strong { color: var(--text1); }
+        .coach-msg .tag-good {
+            display: inline-block;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: 700;
+            background: var(--green-dim);
+            color: var(--green);
+            margin-right: 4px;
+        }
+        .coach-msg .tag-warn {
+            display: inline-block;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: 700;
+            background: var(--gold-dim);
+            color: var(--gold);
+            margin-right: 4px;
+        }
+        .coach-msg .tag-bad {
+            display: inline-block;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: 700;
+            background: var(--red-dim);
+            color: var(--red);
+            margin-right: 4px;
+        }
+        .coach-empty {
+            font-family: var(--body);
+            font-size: 12px;
+            color: var(--text3);
+            text-align: center;
+            padding: 16px;
+            font-style: italic;
+        }
+
+        @media (max-width: 520px) {
+            .donuts-row { gap: 6px; }
+            .donut-cell canvas { width: 72px; height: 72px; }
+            .analytics-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ══════════════════════════════════════
            FOOTER
            ══════════════════════════════════════ */
         .desk-footer {
@@ -717,6 +871,38 @@
     <div class="trades-card">
         <div class="trades-title">Trades du jour</div>
         <div id="tradeLog"><div class="no-trades">Aucun trade aujourd'hui</div></div>
+    </div>
+
+    <!-- ═══ ANALYTICS ═══ -->
+    <div class="analytics-card" id="analyticsCard" style="display:none">
+        <div class="analytics-title">Analyse de la session</div>
+        <div class="donuts-row">
+            <div class="donut-cell">
+                <canvas id="donutWinRate" width="180" height="180"></canvas>
+                <div class="donut-label">Win Rate</div>
+                <div class="donut-value" id="valWinRate">--</div>
+            </div>
+            <div class="donut-cell">
+                <canvas id="donutPF" width="180" height="180"></canvas>
+                <div class="donut-label">Profit Factor</div>
+                <div class="donut-value" id="valPF">--</div>
+            </div>
+            <div class="donut-cell">
+                <canvas id="donutLongShort" width="180" height="180"></canvas>
+                <div class="donut-label">Long vs Short</div>
+                <div class="donut-value" id="valLongShort">--</div>
+            </div>
+        </div>
+        <div class="analytics-grid" id="analyticsGrid"></div>
+    </div>
+
+    <!-- ═══ COACH ═══ -->
+    <div class="coach-card" id="coachCard" style="display:none">
+        <div class="coach-header">
+            <div class="coach-icon">🎯</div>
+            <div class="coach-name">Coach</div>
+        </div>
+        <div id="coachMessages"><div class="coach-empty">Minimum 3 trades pour l'analyse</div></div>
     </div>
 
     <!-- ═══ FOOTER ═══ -->
@@ -960,7 +1146,231 @@
         } catch(e) {}
     }
 
-    // Poll chaque seconde (framework) + chaque 5s (equity/trades)
+    // ── Donut Chart ──
+    function drawDonut(canvasId, value, max, color1, color2) {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+        const size = canvas.getBoundingClientRect().width;
+        canvas.width = size * dpr;
+        canvas.height = size * dpr;
+        ctx.scale(dpr, dpr);
+
+        const cx = size / 2, cy = size / 2;
+        const r = size / 2 - 8;
+        const lw = 7;
+        const pct = Math.min(value / (max || 1), 1);
+
+        // Background ring
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+        ctx.lineWidth = lw;
+        ctx.stroke();
+
+        // Value arc
+        if (pct > 0) {
+            ctx.beginPath();
+            ctx.arc(cx, cy, r, -Math.PI/2, -Math.PI/2 + Math.PI * 2 * pct);
+            ctx.strokeStyle = color1;
+            ctx.lineWidth = lw;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+        }
+
+        // Second arc (remainder) for 2-part donuts
+        if (color2 && pct < 1) {
+            ctx.beginPath();
+            ctx.arc(cx, cy, r, -Math.PI/2 + Math.PI * 2 * pct, -Math.PI/2 + Math.PI * 2);
+            ctx.strokeStyle = color2;
+            ctx.lineWidth = lw;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+        }
+    }
+
+    // ── Analytics + Coach ──
+    function analyzeAndCoach(trades) {
+        const card = document.getElementById('analyticsCard');
+        const coachCard = document.getElementById('coachCard');
+        if (!trades || trades.length < 1) {
+            card.style.display = 'none';
+            coachCard.style.display = 'none';
+            return;
+        }
+        card.style.display = 'block';
+        coachCard.style.display = 'block';
+
+        // ── Compute stats ──
+        const wins = trades.filter(t => t.pnl > 0);
+        const losses = trades.filter(t => t.pnl < 0);
+        const longs = trades.filter(t => (t.direction||'').toLowerCase() === 'long');
+        const shorts = trades.filter(t => (t.direction||'').toLowerCase() === 'short');
+
+        const totalTrades = trades.length;
+        const winRate = totalTrades > 0 ? (wins.length / totalTrades) * 100 : 0;
+        const grossWin = wins.reduce((s, t) => s + t.pnl, 0);
+        const grossLoss = Math.abs(losses.reduce((s, t) => s + t.pnl, 0));
+        const pf = grossLoss > 0 ? grossWin / grossLoss : grossWin > 0 ? 99 : 0;
+        const avgWin = wins.length > 0 ? grossWin / wins.length : 0;
+        const avgLoss = losses.length > 0 ? grossLoss / losses.length : 0;
+        const rr = avgLoss > 0 ? avgWin / avgLoss : 0;
+
+        const longPnl = longs.reduce((s, t) => s + t.pnl, 0);
+        const shortPnl = shorts.reduce((s, t) => s + t.pnl, 0);
+        const longWins = longs.filter(t => t.pnl > 0).length;
+        const shortWins = shorts.filter(t => t.pnl > 0).length;
+        const longWR = longs.length > 0 ? (longWins / longs.length * 100) : 0;
+        const shortWR = shorts.length > 0 ? (shortWins / shorts.length * 100) : 0;
+
+        // Position size consistency
+        const sizes = trades.map(t => t.contracts || 1);
+        const avgSize = sizes.reduce((a,b) => a+b, 0) / sizes.length;
+        const sizeStdDev = Math.sqrt(sizes.reduce((s, c) => s + Math.pow(c - avgSize, 2), 0) / sizes.length);
+        const sizeCV = avgSize > 0 ? (sizeStdDev / avgSize) : 0;
+
+        // Time analysis
+        const hours = trades.map(t => t.timestamp ? new Date(t.timestamp).getHours() : 0);
+        const morningTrades = trades.filter(t => { const h = t.timestamp ? new Date(t.timestamp).getHours() : 0; return h >= 8 && h < 12; });
+        const afternoonTrades = trades.filter(t => { const h = t.timestamp ? new Date(t.timestamp).getHours() : 0; return h >= 12; });
+        const morningPnl = morningTrades.reduce((s,t) => s + t.pnl, 0);
+        const afternoonPnl = afternoonTrades.reduce((s,t) => s + t.pnl, 0);
+
+        // Consecutive losses max
+        let maxConsec = 0, curConsec = 0;
+        trades.forEach(t => { if (t.pnl < 0) { curConsec++; maxConsec = Math.max(maxConsec, curConsec); } else { curConsec = 0; }});
+
+        // Rapid fire (trades < 3 min apart)
+        let rapidFire = 0;
+        for (let i = 1; i < trades.length; i++) {
+            if (trades[i].timestamp && trades[i-1].timestamp) {
+                const diff = (new Date(trades[i].timestamp) - new Date(trades[i-1].timestamp)) / 60000;
+                if (diff < 3) rapidFire++;
+            }
+        }
+
+        // ── Draw donuts ──
+        drawDonut('donutWinRate', winRate, 100, 'rgba(0,255,136,0.85)', 'rgba(255,61,90,0.35)');
+        document.getElementById('valWinRate').textContent = winRate.toFixed(0) + '%';
+        document.getElementById('valWinRate').style.color = winRate >= 50 ? 'var(--green)' : 'var(--red)';
+
+        const pfDisplay = pf > 10 ? '∞' : pf.toFixed(1);
+        drawDonut('donutPF', Math.min(pf, 3), 3, 'rgba(0,224,255,0.85)', 'rgba(255,255,255,0.04)');
+        document.getElementById('valPF').textContent = pfDisplay;
+        document.getElementById('valPF').style.color = pf >= 1.5 ? 'var(--green)' : pf >= 1 ? 'var(--gold)' : 'var(--red)';
+
+        const longPct = (longs.length / Math.max(totalTrades, 1)) * 100;
+        drawDonut('donutLongShort', longPct, 100, 'rgba(0,255,136,0.7)', 'rgba(255,61,90,0.7)');
+        document.getElementById('valLongShort').textContent = longs.length + 'L / ' + shorts.length + 'S';
+
+        // ── Stats grid ──
+        const grid = document.getElementById('analyticsGrid');
+        const stats = [
+            ['Gain moyen', '+$' + avgWin.toFixed(0), avgWin > 0 ? 'var(--green)' : 'var(--text2)'],
+            ['Perte moyenne', '-$' + avgLoss.toFixed(0), 'var(--red)'],
+            ['R:R moyen', rr.toFixed(1) + ':1', rr >= 1.5 ? 'var(--green)' : rr >= 1 ? 'var(--gold)' : 'var(--red)'],
+            ['Pertes consec. max', maxConsec.toString(), maxConsec >= 3 ? 'var(--red)' : 'var(--text1)'],
+            ['WR Long', longWR.toFixed(0) + '% (' + (longPnl >= 0 ? '+' : '') + '$' + longPnl.toFixed(0) + ')', longPnl >= 0 ? 'var(--green)' : 'var(--red)'],
+            ['WR Short', shortWR.toFixed(0) + '% (' + (shortPnl >= 0 ? '+' : '') + '$' + shortPnl.toFixed(0) + ')', shortPnl >= 0 ? 'var(--green)' : 'var(--red)'],
+            ['Matin', '+$' + morningPnl.toFixed(0) + ' (' + morningTrades.length + 't)', morningPnl >= 0 ? 'var(--green)' : 'var(--red)'],
+            ['Apres-midi', (afternoonPnl >= 0 ? '+' : '') + '$' + afternoonPnl.toFixed(0) + ' (' + afternoonTrades.length + 't)', afternoonPnl >= 0 ? 'var(--green)' : 'var(--red)'],
+        ];
+        grid.innerHTML = stats.map(([k, v, c]) =>
+            `<div class="ag-item"><span class="ag-k">${k}</span><span class="ag-v" style="color:${c}">${v}</span></div>`
+        ).join('');
+
+        // ── Coach messages ──
+        if (totalTrades < 3) {
+            document.getElementById('coachMessages').innerHTML = '<div class="coach-empty">Minimum 3 trades pour l\'analyse</div>';
+            return;
+        }
+
+        const msgs = [];
+
+        // Win Rate
+        if (winRate >= 60) {
+            msgs.push(`<span class="tag-good">SOLIDE</span> Win rate de <strong>${winRate.toFixed(0)}%</strong> — ton edge est la. Continue d'executer le meme plan sans modifier ta strategie.`);
+        } else if (winRate >= 45) {
+            msgs.push(`<span class="tag-warn">CORRECT</span> Win rate de <strong>${winRate.toFixed(0)}%</strong> — c'est jouable si ton R:R compense. Verifie que tu ne coupes pas tes gagnants trop tot.`);
+        } else {
+            msgs.push(`<span class="tag-bad">ATTENTION</span> Win rate de <strong>${winRate.toFixed(0)}%</strong> — en dessous de 45%, meme un bon R:R ne suffit plus. Revois tes criteres d'entree.`);
+        }
+
+        // Profit Factor
+        if (pf >= 2) {
+            msgs.push(`<span class="tag-good">EXCELLENT</span> Profit factor de <strong>${pfDisplay}</strong> — tu gagnes ${pfDisplay}$ pour chaque dollar perdu. C'est institutionnel.`);
+        } else if (pf >= 1.2) {
+            msgs.push(`<span class="tag-warn">VIABLE</span> Profit factor de <strong>${pfDisplay}</strong> — positif mais fragile. Un mauvais trade peut faire basculer. Reste conservateur.`);
+        } else if (pf < 1 && totalTrades > 3) {
+            msgs.push(`<span class="tag-bad">NEGATIF</span> Profit factor de <strong>${pfDisplay}</strong> — tu perds plus que tu ne gagnes. Reduis ta taille et concentre-toi sur les setups A+ uniquement.`);
+        }
+
+        // R:R
+        if (rr < 1 && totalTrades > 3) {
+            msgs.push(`<span class="tag-bad">R:R</span> Ton gain moyen (<strong>$${avgWin.toFixed(0)}</strong>) est inferieur a ta perte moyenne (<strong>$${avgLoss.toFixed(0)}</strong>). Laisse courir tes gagnants ou resserre tes stops.`);
+        } else if (rr >= 2) {
+            msgs.push(`<span class="tag-good">R:R</span> Ratio de <strong>${rr.toFixed(1)}:1</strong> — tu gagnes ${rr.toFixed(1)}x plus sur tes winners que tu perds sur tes losers. C'est la marque d'un pro.`);
+        }
+
+        // Long vs Short
+        if (longs.length >= 3 && shorts.length >= 3) {
+            if (longPnl > 0 && shortPnl < 0 && Math.abs(shortPnl) > longPnl * 0.5) {
+                msgs.push(`<span class="tag-warn">DIRECTION</span> Tu gagnes en <strong>LONG</strong> (+$${longPnl.toFixed(0)}) mais tu perds en <strong>SHORT</strong> ($${shortPnl.toFixed(0)}). Envisage de reduire les shorts ou d'attendre des setups plus clairs.`);
+            } else if (shortPnl > 0 && longPnl < 0 && Math.abs(longPnl) > shortPnl * 0.5) {
+                msgs.push(`<span class="tag-warn">DIRECTION</span> Tu gagnes en <strong>SHORT</strong> (+$${shortPnl.toFixed(0)}) mais tu perds en <strong>LONG</strong> ($${longPnl.toFixed(0)}). Concentre-toi sur ta direction forte.`);
+            }
+        }
+
+        // Overtrading
+        if (totalTrades > 8) {
+            msgs.push(`<span class="tag-warn">OVERTRADING</span> <strong>${totalTrades} trades</strong> aujourd'hui — au-dela de 6-8 trades, la qualite des decisions chute. Chaque trade supplementaire dilue ton edge.`);
+        }
+        if (rapidFire >= 2) {
+            msgs.push(`<span class="tag-bad">RAPID FIRE</span> <strong>${rapidFire} trades</strong> espaces de moins de 3 minutes. C'est un signe de revenge trading ou d'impulsivite. Force une pause de 5 min entre chaque trade.`);
+        }
+
+        // Consecutive losses
+        if (maxConsec >= 3) {
+            msgs.push(`<span class="tag-bad">SERIE NOIRE</span> <strong>${maxConsec} pertes consecutives</strong> — apres 3 pertes de suite, ton cerveau n'est plus en mode analyse. La prochaine fois, arrete apres 3.`);
+        }
+
+        // Position size consistency
+        if (sizeCV > 0.3 && totalTrades > 4) {
+            msgs.push(`<span class="tag-warn">TAILLE VARIABLE</span> Tes tailles de position varient beaucoup (${sizes.join(', ')} contrats). Garde une taille constante — ne double pas apres un gain ou une perte.`);
+        }
+
+        // Time of day
+        if (morningTrades.length >= 3 && afternoonTrades.length >= 3) {
+            if (morningPnl > 50 && afternoonPnl < -50) {
+                msgs.push(`<span class="tag-warn">TIMING</span> Tu gagnes le matin (<strong>+$${morningPnl.toFixed(0)}</strong>) et tu perds l'apres-midi (<strong>$${afternoonPnl.toFixed(0)}</strong>). Ton edge est en pre-market / open. Envisage de ne pas trader l'apres-midi.`);
+            } else if (afternoonPnl > 50 && morningPnl < -50) {
+                msgs.push(`<span class="tag-warn">TIMING</span> Tu perds le matin (<strong>$${morningPnl.toFixed(0)}</strong>) et tu gagnes l'apres-midi (<strong>+$${afternoonPnl.toFixed(0)}</strong>). Attends l'apres-midi pour trader.`);
+            }
+        }
+
+        // Positive summary
+        if (msgs.length === 0 || (pf >= 1.5 && winRate >= 50 && maxConsec < 3)) {
+            msgs.push(`<span class="tag-good">DISCIPLINE</span> Session propre. Tu respectes ton plan, ta taille est constante, et ton R:R est bon. Continue exactement comme ca.`);
+        }
+
+        document.getElementById('coachMessages').innerHTML = msgs.map(m => `<div class="coach-msg">${m}</div>`).join('');
+    }
+
+    // Hook analytics into updateExtras
+    const _origUpdateExtras = updateExtras;
+    updateExtras = async function() {
+        await _origUpdateExtras();
+        try {
+            const res = await fetch(`${API}/api/risk-desk/today`);
+            const today = await res.json();
+            if (today.trade_log && today.trade_log.length > 0) {
+                analyzeAndCoach(today.trade_log);
+            }
+        } catch(e) {}
+    };
+
+    // Poll chaque seconde (framework) + chaque 5s (equity/trades/analytics)
     update();
     updateExtras();
     setInterval(update, 1000);
