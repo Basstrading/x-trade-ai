@@ -873,6 +873,23 @@ class RiskDeskEngine:
         """Verifie et declenche le kill switch si necessaire."""
         return await self.irm.check_and_kill_if_needed(client, account_id)
 
+    async def enforce_blocks(self, client, account_id: int) -> int:
+        """
+        Si le framework dit BLOQUÉ, annule les ordres pending.
+        Ne touche PAS aux positions ouvertes.
+        À appeler périodiquement (chaque tick / chaque seconde).
+        Retourne le nombre d'ordres annulés.
+        """
+        fw = self.get_framework()
+        if not fw.allowed:
+            cancelled = await self.irm.cancel_pending_orders(client, account_id)
+            if cancelled > 0:
+                logger.warning(
+                    f"ENFORCE: {cancelled} ordres annulés — {fw.blocked_reason}"
+                )
+            return cancelled
+        return 0
+
     def must_close_overnight(self) -> Tuple[bool, str]:
         """Doit-on fermer les positions maintenant ?"""
         return self.overnight.must_close_positions()

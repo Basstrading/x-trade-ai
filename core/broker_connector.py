@@ -56,6 +56,7 @@ class BrokerConnector:
         self._bar_callback: Optional[Callable] = None
         self._price_callback: Optional[Callable] = None
         self._trade_callback: Optional[Callable] = None  # Appele quand un trade est detecte
+        self._enforce_callback: Optional[Callable] = None  # Cancel ordres si bloque
 
         # Taches background
         self._feed_task: Optional[asyncio.Task] = None
@@ -178,11 +179,13 @@ class BrokerConnector:
             logger.debug(f"Erreur positions: {e}")
             return []
 
-    def set_callbacks(self, bar_callback=None, price_callback=None, trade_callback=None):
+    def set_callbacks(self, bar_callback=None, price_callback=None,
+                      trade_callback=None, enforce_callback=None):
         """Callbacks pour alimenter le Risk Desk."""
         self._bar_callback = bar_callback
         self._price_callback = price_callback
         self._trade_callback = trade_callback
+        self._enforce_callback = enforce_callback
 
     async def start_trade_monitor(self, interval: int = 5):
         """
@@ -236,6 +239,13 @@ class BrokerConnector:
                                 )
 
                         self._last_known_positions[acc_id] = current_positions
+
+                        # Enforce risk blocks: cancel pending orders if blocked
+                        if hasattr(self, '_enforce_callback') and self._enforce_callback:
+                            try:
+                                await self._enforce_callback(self.client, acc_id)
+                            except Exception as e:
+                                logger.debug(f"Enforce callback: {e}")
 
                 except Exception as e:
                     logger.warning(f"Trade monitor: {e}")

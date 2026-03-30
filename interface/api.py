@@ -1379,6 +1379,7 @@ async def _start_broker_services(broker, instrument: str = "MNQ"):
             bar_callback=_risk_desk.feed_bar,
             price_callback=_risk_desk.feed_price,
             trade_callback=_risk_desk.record_trade,
+            enforce_callback=_risk_desk.enforce_blocks,
         )
     await broker.start_market_feed(instrument=instrument, interval=30)
     if broker.selected_account_ids:

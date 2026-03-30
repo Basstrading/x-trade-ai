@@ -1056,6 +1056,24 @@ class InstitutionalRiskManager:
 
         return results
 
+    async def cancel_pending_orders(self, client, account_id: int) -> int:
+        """
+        Annule tous les ordres pending SANS toucher aux positions ouvertes.
+        Retourne le nombre d'ordres annulés.
+        """
+        cancelled = 0
+        try:
+            open_orders = await client.search_for_open_orders(account_id)
+            for order in (open_orders or []):
+                order_id = order.get("orderId") or order.get("order_id")
+                if order_id:
+                    await client.cancel_order(account_id, order_id)
+                    cancelled += 1
+                    logger.info(f"Ordre pending annulé (risk block): {order_id}")
+        except Exception as e:
+            logger.error(f"Erreur annulation ordres pending: {e}")
+        return cancelled
+
     async def check_and_kill_if_needed(self, client, account_id: int) -> bool:
         """
         Vérifie l'état et déclenche le kill switch si nécessaire.
