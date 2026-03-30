@@ -5,226 +5,455 @@
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Risk Desk — Trader View</title>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #07090f;
-            --bg-card: #0f1420;
+            --bg: #06080e;
+            --bg2: #0b0f1a;
+            --bg-card: rgba(12, 17, 30, 0.7);
+            --bg-glass: rgba(15, 22, 40, 0.55);
             --green: #00ff88;
+            --green-dim: rgba(0,255,136,0.12);
             --red: #ff3d5a;
+            --red-dim: rgba(255,61,90,0.12);
             --gold: #ffcc44;
-            --accent: #00e0ff;
-            --text1: #e2eaf5;
-            --text2: #5d7490;
-            --border: rgba(0,224,255,0.08);
-            --font-mono: 'JetBrains Mono', monospace;
-            --font-title: 'Syne', sans-serif;
+            --gold-dim: rgba(255,204,68,0.10);
+            --cyan: #00e0ff;
+            --cyan-dim: rgba(0,224,255,0.08);
+            --text1: #e8edf5;
+            --text2: #546580;
+            --text3: #2a3548;
+            --border: rgba(0,224,255,0.06);
+            --border-glass: rgba(255,255,255,0.04);
+            --mono: 'JetBrains Mono', monospace;
+            --title: 'Syne', sans-serif;
+            --body: 'DM Sans', sans-serif;
+            --radius: 14px;
+            --radius-sm: 10px;
         }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: var(--font-mono);
+            font-family: var(--mono);
             background: var(--bg);
             color: var(--text1);
             min-height: 100vh;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding-top: 20px;
+            overflow-x: hidden;
         }
 
-        .container {
-            width: 100%;
-            max-width: 480px;
-            padding: 20px;
+        /* ── Noise overlay for texture ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
         }
 
-        /* ── Feu vert/rouge principal ── */
-        .signal-box {
-            text-align: center;
-            padding: 40px 20px;
-            border-radius: 16px;
-            background: var(--bg-card);
-            border: 2px solid var(--border);
-            margin-bottom: 16px;
-            transition: all 0.3s;
-        }
-        .signal-box.allowed {
-            border-color: rgba(0,255,136,0.3);
-            box-shadow: 0 0 40px rgba(0,255,136,0.05);
-        }
-        .signal-box.blocked {
-            border-color: rgba(255,61,90,0.3);
-            box-shadow: 0 0 40px rgba(255,61,90,0.05);
-        }
-
-        .signal-dot {
-            width: 80px; height: 80px;
+        /* ── Ambient glow ── */
+        .ambient {
+            position: fixed;
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 400px;
             border-radius: 50%;
-            margin: 0 auto 16px;
-            transition: all 0.3s;
+            filter: blur(120px);
+            opacity: 0.15;
+            pointer-events: none;
+            transition: background 1s ease;
+            z-index: 0;
         }
-        .signal-dot.green {
-            background: var(--green);
-            box-shadow: 0 0 60px rgba(0,255,136,0.4);
-        }
-        .signal-dot.red {
-            background: var(--red);
-            box-shadow: 0 0 60px rgba(255,61,90,0.4);
-            animation: pulse-red 1.5s ease-in-out infinite;
-        }
-        @keyframes pulse-red {
-            0%,100% { box-shadow: 0 0 60px rgba(255,61,90,0.4); }
-            50% { box-shadow: 0 0 80px rgba(255,61,90,0.6); }
+        .ambient.green-glow { background: var(--green); }
+        .ambient.red-glow { background: var(--red); }
+
+        /* ── Layout ── */
+        .shell {
+            position: relative;
+            z-index: 1;
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 16px 20px 40px;
         }
 
-        .signal-label {
-            font-family: var(--font-title);
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: 4px;
+        /* ── Top bar ── */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
         }
-        .signal-label.green { color: var(--green); }
-        .signal-label.red { color: var(--red); }
+        .topbar-brand {
+            font-family: var(--title);
+            font-weight: 800;
+            font-size: 13px;
+            letter-spacing: 3px;
+            color: var(--text2);
+            text-transform: uppercase;
+        }
+        .topbar-brand em {
+            font-style: normal;
+            color: var(--cyan);
+        }
+        .topbar-live {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+            color: var(--text2);
+            letter-spacing: 1px;
+        }
+        .live-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+            animation: live-pulse 2s ease-in-out infinite;
+        }
+        @keyframes live-pulse {
+            0%,100% { opacity: 1; box-shadow: 0 0 4px var(--green); }
+            50% { opacity: 0.4; box-shadow: none; }
+        }
+
+        /* ══════════════════════════════════════
+           SIGNAL — THE HERO
+           ══════════════════════════════════════ */
+        .signal {
+            position: relative;
+            text-align: center;
+            padding: 32px 20px 28px;
+            border-radius: var(--radius);
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        .signal.allowed {
+            border-color: rgba(0,255,136,0.15);
+            box-shadow: inset 0 1px 0 rgba(0,255,136,0.08), 0 0 60px rgba(0,255,136,0.03);
+        }
+        .signal.blocked {
+            border-color: rgba(255,61,90,0.15);
+            box-shadow: inset 0 1px 0 rgba(255,61,90,0.08), 0 0 60px rgba(255,61,90,0.03);
+        }
+
+        /* Signal glow ring */
+        .signal-ring {
+            width: 72px; height: 72px;
+            border-radius: 50%;
+            margin: 0 auto 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s;
+        }
+        .signal-ring .dot {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        .signal-ring.green {
+            background: rgba(0,255,136,0.08);
+            border: 2px solid rgba(0,255,136,0.25);
+        }
+        .signal-ring.green .dot {
+            background: var(--green);
+            box-shadow: 0 0 30px rgba(0,255,136,0.5);
+        }
+        .signal-ring.red {
+            background: rgba(255,61,90,0.08);
+            border: 2px solid rgba(255,61,90,0.25);
+            animation: ring-pulse 1.8s ease-in-out infinite;
+        }
+        .signal-ring.red .dot {
+            background: var(--red);
+            box-shadow: 0 0 30px rgba(255,61,90,0.5);
+        }
+        @keyframes ring-pulse {
+            0%,100% { border-color: rgba(255,61,90,0.25); }
+            50% { border-color: rgba(255,61,90,0.5); }
+        }
+
+        .signal-word {
+            font-family: var(--title);
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+        }
+        .signal-word.green { color: var(--green); }
+        .signal-word.red { color: var(--red); }
 
         .blocked-reason {
+            font-family: var(--body);
             color: var(--red);
             font-size: 12px;
-            margin-top: 8px;
-            opacity: 0.8;
+            margin-top: 6px;
+            opacity: 0.75;
+            font-style: italic;
         }
 
-        /* ── Parametres du trade ── */
-        .trade-params {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
+        /* ══════════════════════════════════════
+           P&L HERO
+           ══════════════════════════════════════ */
+        .pnl-hero {
+            text-align: center;
+            padding: 20px 0 16px;
             margin-bottom: 16px;
         }
-
-        .param-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
-            text-align: center;
-        }
-        .param-label {
-            font-size: 9px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+        .pnl-label {
+            font-size: 10px;
+            letter-spacing: 3px;
             color: var(--text2);
-            margin-bottom: 8px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
         }
-        .param-value {
-            font-size: 24px;
-            font-weight: 700;
+        .pnl-amount {
+            font-family: var(--mono);
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            transition: color 0.3s;
         }
-        .param-unit {
+        .pnl-sub {
             font-size: 11px;
             color: var(--text2);
             margin-top: 2px;
         }
+        .pnl-sub span { font-weight: 600; }
 
-        /* ── Budget bar ── */
-        .budget-section {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
+        /* ══════════════════════════════════════
+           CIRCUIT GAUGE
+           ══════════════════════════════════════ */
+        .gauge {
+            display: flex;
+            gap: 3px;
+            margin-bottom: 20px;
+            padding: 0 2px;
+        }
+        .gauge-seg {
+            flex: 1;
+            height: 3px;
+            border-radius: 2px;
+            background: var(--text3);
+            transition: all 0.5s ease;
+        }
+        .gauge-seg.on-green { background: var(--green); box-shadow: 0 0 8px rgba(0,255,136,0.4); }
+        .gauge-seg.on-yellow { background: var(--gold); box-shadow: 0 0 8px rgba(255,204,68,0.4); }
+        .gauge-seg.on-orange { background: #ff8800; box-shadow: 0 0 8px rgba(255,136,0,0.4); }
+        .gauge-seg.on-red { background: var(--red); box-shadow: 0 0 8px rgba(255,61,90,0.4); }
+
+        /* ══════════════════════════════════════
+           BADGES (regime / vol / ATR)
+           ══════════════════════════════════════ */
+        .badges {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .badge {
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            background: rgba(255,255,255,0.03);
+            color: var(--text2);
+            border: 1px solid var(--border-glass);
+        }
+
+        /* ══════════════════════════════════════
+           CORE PARAMS — 3 columns
+           ══════════════════════════════════════ */
+        .core-params {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
             margin-bottom: 16px;
         }
-        .budget-header {
+        .cp {
+            background: var(--bg-glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-sm);
+            padding: 14px 10px;
+            text-align: center;
+            transition: border-color 0.2s;
+        }
+        .cp:hover { border-color: rgba(0,224,255,0.12); }
+        .cp-label {
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text2);
+            margin-bottom: 6px;
+        }
+        .cp-val {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text1);
+        }
+        .cp-unit {
+            font-size: 9px;
+            color: var(--text2);
+            margin-top: 2px;
+        }
+        .cp-hint {
+            font-family: var(--body);
+            font-size: 8px;
+            color: var(--text3);
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        /* ══════════════════════════════════════
+           SECONDARY PARAMS — 2 columns
+           ══════════════════════════════════════ */
+        .sec-params {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .sp {
+            background: var(--bg-glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-sm);
+            padding: 14px;
+            text-align: center;
+        }
+
+        /* ══════════════════════════════════════
+           BARS (budget + floor)
+           ══════════════════════════════════════ */
+        .bar-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            margin-bottom: 12px;
+        }
+        .bar-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
-        .budget-label {
+        .bar-title {
             font-size: 9px;
             text-transform: uppercase;
             letter-spacing: 2px;
             color: var(--text2);
         }
-        .budget-value {
-            font-size: 18px;
+        .bar-value {
+            font-size: 16px;
             font-weight: 700;
         }
-        .budget-bar-bg {
+        .bar-track {
             width: 100%;
-            height: 6px;
-            background: rgba(255,255,255,0.05);
+            height: 5px;
+            background: rgba(255,255,255,0.04);
             border-radius: 3px;
             overflow: hidden;
         }
-        .budget-bar-fill {
+        .bar-fill {
             height: 100%;
             border-radius: 3px;
-            transition: width 0.5s, background 0.3s;
+            transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s;
         }
-
-        /* ── Stats row ── */
-        .stats-row {
+        .bar-sub {
             display: flex;
-            gap: 12px;
+            justify-content: space-between;
+            margin-top: 6px;
+            font-size: 10px;
+            color: var(--text2);
+        }
+        .bar-sub .accent { font-weight: 600; }
+
+        /* Floor card — warm protective feeling */
+        .floor-card {
+            background: linear-gradient(135deg, rgba(255,204,68,0.04), rgba(255,136,0,0.02));
+            border-color: rgba(255,204,68,0.08);
+        }
+        .floor-card .bar-title { color: var(--gold); }
+
+        /* ══════════════════════════════════════
+           STATS ROW
+           ══════════════════════════════════════ */
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
             margin-bottom: 16px;
         }
-        .stat {
-            flex: 1;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 12px;
+        .st {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-sm);
+            padding: 12px 10px;
             text-align: center;
         }
-        .stat-label {
-            font-size: 9px;
+        .st-label {
+            font-size: 8px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             color: var(--text2);
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
-        .stat-value {
-            font-size: 16px;
+        .st-value {
+            font-size: 15px;
             font-weight: 600;
         }
 
-        /* ── Warnings ── */
-        .warnings {
-            margin-bottom: 16px;
-        }
+        /* ══════════════════════════════════════
+           WARNINGS
+           ══════════════════════════════════════ */
+        .warnings { margin-bottom: 16px; }
         .warning-item {
-            background: rgba(255,204,68,0.05);
-            border: 1px solid rgba(255,204,68,0.15);
+            background: rgba(255,204,68,0.04);
+            border: 1px solid rgba(255,204,68,0.10);
+            border-left: 3px solid var(--gold);
             border-radius: 8px;
             padding: 10px 14px;
-            font-size: 11px;
+            font-family: var(--body);
+            font-size: 12px;
             color: var(--gold);
             margin-bottom: 6px;
         }
 
-        /* ── Circuit indicator ── */
-        .circuit-bar {
-            display: flex;
-            gap: 4px;
+        /* ══════════════════════════════════════
+           STOP HINT
+           ══════════════════════════════════════ */
+        .stop-hint {
+            text-align: center;
             margin-bottom: 16px;
+            padding: 8px;
+            font-family: var(--body);
+            font-size: 10px;
+            color: var(--text3);
+            letter-spacing: 0.5px;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
         }
-        .circuit-segment {
-            flex: 1;
-            height: 4px;
-            border-radius: 2px;
-            background: rgba(255,255,255,0.05);
-            transition: background 0.3s;
-        }
-        .circuit-segment.active-green { background: var(--green); box-shadow: 0 0 8px rgba(0,255,136,0.3); }
-        .circuit-segment.active-yellow { background: var(--gold); box-shadow: 0 0 8px rgba(255,204,68,0.3); }
-        .circuit-segment.active-orange { background: #ff8800; box-shadow: 0 0 8px rgba(255,136,0,0.3); }
-        .circuit-segment.active-red { background: var(--red); box-shadow: 0 0 8px rgba(255,61,90,0.3); }
 
-        /* ── Equity Curve ── */
-        .equity-section {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+        /* ══════════════════════════════════════
+           EQUITY CURVE
+           ══════════════════════════════════════ */
+        .equity-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius);
             padding: 16px;
             margin-bottom: 16px;
         }
@@ -234,31 +463,35 @@
             align-items: center;
             margin-bottom: 12px;
         }
-        .equity-label {
+        .equity-title {
             font-size: 9px;
             text-transform: uppercase;
             letter-spacing: 2px;
             color: var(--text2);
         }
-        .equity-value {
+        .equity-profit {
             font-size: 16px;
             font-weight: 700;
         }
         .equity-canvas {
             width: 100%;
-            height: 120px;
+            height: 180px;
             border-radius: 8px;
+            display: block;
         }
 
-        /* ── Trade Log ── */
-        .trades-section {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+        /* ══════════════════════════════════════
+           TRADE LOG
+           ══════════════════════════════════════ */
+        .trades-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius);
             padding: 16px;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
-        .trades-label {
+        .trades-title {
             font-size: 9px;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -269,388 +502,478 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
+            padding: 7px 4px;
+            border-radius: 4px;
             font-size: 11px;
+            transition: background 0.15s;
         }
-        .trade-row:last-child { border-bottom: none; }
-        .trade-time { color: var(--text2); width: 55px; }
-        .trade-dir { font-weight: 700; width: 45px; }
+        .trade-row:nth-child(even) {
+            background: rgba(255,255,255,0.015);
+        }
+        .trade-row:hover {
+            background: rgba(0,224,255,0.03);
+        }
+        .trade-time { color: var(--text2); width: 50px; font-size: 10px; }
+        .trade-dir { font-weight: 700; width: 50px; font-size: 10px; }
         .trade-dir.long { color: var(--green); }
         .trade-dir.short { color: var(--red); }
-        .trade-ct { color: var(--text2); width: 30px; text-align: center; }
-        .trade-pnl { font-weight: 700; width: 70px; text-align: right; }
+        .trade-ct { color: var(--text2); width: 32px; text-align: center; font-size: 10px; }
+        .trade-pnl { font-weight: 700; width: 65px; text-align: right; }
         .trade-pnl.win { color: var(--green); }
         .trade-pnl.loss { color: var(--red); }
-        .trade-bal { color: var(--text2); width: 80px; text-align: right; font-size: 10px; }
-        .no-trades { color: var(--text2); font-size: 11px; text-align: center; padding: 12px; }
-
-        /* ── Footer ── */
-        .footer {
+        .trade-bal { color: var(--text3); width: 85px; text-align: right; font-size: 9px; }
+        .no-trades {
+            color: var(--text3);
+            font-family: var(--body);
+            font-size: 12px;
             text-align: center;
-            font-size: 9px;
-            color: var(--text2);
-            padding: 10px;
-            letter-spacing: 1px;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        /* ══════════════════════════════════════
+           FOOTER
+           ══════════════════════════════════════ */
+        .desk-footer {
+            text-align: center;
+            padding: 16px 0;
+            border-top: 1px solid var(--border);
+        }
+        .desk-footer span {
+            font-family: var(--title);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: var(--text3);
+            text-transform: uppercase;
+        }
+
+        /* ══════════════════════════════════════
+           ANIMATIONS
+           ══════════════════════════════════════ */
+        @keyframes fade-up {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .shell > * {
+            animation: fade-up 0.4s ease both;
+        }
+        .shell > *:nth-child(1) { animation-delay: 0.02s; }
+        .shell > *:nth-child(2) { animation-delay: 0.04s; }
+        .shell > *:nth-child(3) { animation-delay: 0.06s; }
+        .shell > *:nth-child(4) { animation-delay: 0.08s; }
+        .shell > *:nth-child(5) { animation-delay: 0.10s; }
+        .shell > *:nth-child(6) { animation-delay: 0.12s; }
+        .shell > *:nth-child(7) { animation-delay: 0.14s; }
+        .shell > *:nth-child(8) { animation-delay: 0.16s; }
+        .shell > *:nth-child(9) { animation-delay: 0.18s; }
+        .shell > *:nth-child(10) { animation-delay: 0.20s; }
+        .shell > *:nth-child(11) { animation-delay: 0.22s; }
+        .shell > *:nth-child(12) { animation-delay: 0.24s; }
+        .shell > *:nth-child(13) { animation-delay: 0.26s; }
+        .shell > *:nth-child(14) { animation-delay: 0.28s; }
+
+        /* ══════════════════════════════════════
+           RESPONSIVE
+           ══════════════════════════════════════ */
+        @media (max-width: 520px) {
+            .shell { padding: 12px 14px 32px; }
+            .pnl-amount { font-size: 38px; }
+            .core-params { grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+            .cp-val { font-size: 18px; }
+            .cp-label { font-size: 7px; }
+            .signal-word { font-size: 18px; letter-spacing: 4px; }
+            .signal-ring { width: 56px; height: 56px; }
+            .signal-ring .dot { width: 28px; height: 28px; }
+            .stats { gap: 8px; }
+            .equity-canvas { height: 140px; }
+            .trade-bal { display: none; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Feu vert/rouge -->
-        <div class="signal-box" id="signalBox">
-            <div class="signal-dot" id="signalDot"></div>
-            <div class="signal-label" id="signalLabel">--</div>
-            <div class="blocked-reason" id="blockedReason"></div>
+
+<div class="ambient" id="ambientGlow"></div>
+
+<div class="shell">
+
+    <!-- Top bar -->
+    <div class="topbar">
+        <div class="topbar-brand"><em>x-trade</em>.ai</div>
+        <div class="topbar-live">
+            <div class="live-dot"></div>
+            RISK DESK
         </div>
-
-        <!-- Circuit breaker bar -->
-        <div class="circuit-bar" id="circuitBar">
-            <div class="circuit-segment" id="cb-green"></div>
-            <div class="circuit-segment" id="cb-yellow"></div>
-            <div class="circuit-segment" id="cb-orange"></div>
-            <div class="circuit-segment" id="cb-red"></div>
-        </div>
-
-        <!-- Regime & Volatilite (barre info) -->
-        <div id="regimeBar" style="display:flex;gap:6px;margin-bottom:12px;justify-content:center">
-            <span id="regimeBadge" style="padding:4px 12px;border-radius:12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:rgba(0,255,136,0.1);color:var(--green)">TREND</span>
-            <span id="volBadge" style="padding:4px 12px;border-radius:12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:rgba(0,224,255,0.1);color:var(--accent)">VOL NORMAL</span>
-            <span id="atrBadge" style="padding:4px 12px;border-radius:12px;font-size:10px;font-weight:700;letter-spacing:1px;background:rgba(255,255,255,0.04);color:var(--text2)">ATR --</span>
-        </div>
-
-        <!-- Parametres du trade -->
-        <div class="trade-params">
-            <div class="param-card">
-                <div class="param-label">Taille max</div>
-                <div class="param-value" id="contracts">--</div>
-                <div class="param-unit" id="instrument">--</div>
-                <div style="font-size:9px;color:var(--text2);margin-top:4px">Vous pouvez trader moins</div>
-            </div>
-            <div class="param-card">
-                <div class="param-label">Stop max</div>
-                <div class="param-value" id="stopPts">--</div>
-                <div class="param-unit">pts</div>
-                <div style="font-size:9px;color:var(--text2);margin-top:4px">Serrer OK, elargir NON</div>
-            </div>
-            <div class="param-card">
-                <div class="param-label">Perte max</div>
-                <div class="param-value" id="maxLoss">--</div>
-                <div class="param-unit">par trade</div>
-            </div>
-            <div class="param-card">
-                <div class="param-label">Trades restants</div>
-                <div class="param-value" id="tradesRemaining">--</div>
-                <div class="param-unit" id="tradesToday">0 / 0</div>
-            </div>
-        </div>
-
-        <!-- Budget risque -->
-        <div class="budget-section">
-            <div class="budget-header">
-                <span class="budget-label">Budget risque restant</span>
-                <span class="budget-value" id="budgetValue">--</span>
-            </div>
-            <div class="budget-bar-bg">
-                <div class="budget-bar-fill" id="budgetBar"></div>
-            </div>
-        </div>
-
-        <!-- Plancher du jour -->
-        <div class="budget-section" id="profitProtection">
-            <div class="budget-header">
-                <span class="budget-label">Plancher du jour</span>
-                <span class="budget-value" id="minPnl" style="color:var(--gold)">--</span>
-            </div>
-            <div class="budget-bar-bg">
-                <div class="budget-bar-fill" id="floorBar" style="background:var(--gold)"></div>
-            </div>
-            <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:10px">
-                <span style="color:var(--text2)">P&L : <span id="floorPnl" style="color:var(--green)">$0</span></span>
-                <span style="color:var(--text2)">Peak : <span id="peakPnl" style="color:var(--accent)">$0</span></span>
-            </div>
-        </div>
-
-        <!-- Stop info -->
-        <div style="text-align:center;margin-bottom:16px;padding:10px;background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid var(--border)">
-            <span style="font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:1px">Stop = maximum. Vous pouvez serrer, jamais elargir.</span>
-        </div>
-
-        <!-- Stats -->
-        <div class="stats-row">
-            <div class="stat">
-                <div class="stat-label">P&L Jour</div>
-                <div class="stat-value" id="dailyPnl">$0</div>
-            </div>
-            <div class="stat">
-                <div class="stat-label">Balance</div>
-                <div class="stat-value" id="balance">--</div>
-            </div>
-            <div class="stat">
-                <div class="stat-label">Vol</div>
-                <div class="stat-value" id="volRegime">--</div>
-            </div>
-        </div>
-
-        <!-- Warnings -->
-        <div class="warnings" id="warnings"></div>
-
-        <!-- Equity Curve -->
-        <div class="equity-section">
-            <div class="equity-header">
-                <span class="equity-label">Equity Curve</span>
-                <span class="equity-value" id="equityProfit">--</span>
-            </div>
-            <canvas class="equity-canvas" id="equityCanvas"></canvas>
-        </div>
-
-        <!-- Trade Log du jour -->
-        <div class="trades-section">
-            <div class="trades-label">Trades du jour</div>
-            <div id="tradeLog"><div class="no-trades">Aucun trade aujourd'hui</div></div>
-        </div>
-
-        <div class="footer">RISK DESK — NON NEGOCIABLE</div>
     </div>
 
-    <script>
-        const API = window.location.origin;
+    <!-- ═══ SIGNAL ═══ -->
+    <div class="signal" id="signalBox">
+        <div class="signal-ring" id="signalDot">
+            <div class="dot"></div>
+        </div>
+        <div class="signal-word" id="signalLabel">--</div>
+        <div class="blocked-reason" id="blockedReason"></div>
+    </div>
 
-        async function update() {
-            try {
-                const res = await fetch(`${API}/api/risk-desk/framework`);
-                const fw = await res.json();
-                if (fw.error) return;
-                render(fw);
-            } catch(e) {}
-        }
+    <!-- ═══ P&L HERO ═══ -->
+    <div class="pnl-hero">
+        <div class="pnl-label">P&L du jour</div>
+        <div class="pnl-amount" id="dailyPnl">$0</div>
+        <div class="pnl-sub"><span id="balance">--</span></div>
+    </div>
 
-        function render(fw) {
-            const box = document.getElementById('signalBox');
-            const dot = document.getElementById('signalDot');
-            const label = document.getElementById('signalLabel');
-            const reason = document.getElementById('blockedReason');
+    <!-- ═══ CIRCUIT GAUGE ═══ -->
+    <div class="gauge" id="circuitBar">
+        <div class="gauge-seg" id="cb-green"></div>
+        <div class="gauge-seg" id="cb-yellow"></div>
+        <div class="gauge-seg" id="cb-orange"></div>
+        <div class="gauge-seg" id="cb-red"></div>
+    </div>
 
-            if (fw.allowed) {
-                box.className = 'signal-box allowed';
-                dot.className = 'signal-dot green';
-                label.className = 'signal-label green';
-                label.textContent = 'TRADE';
-                reason.textContent = '';
-            } else {
-                box.className = 'signal-box blocked';
-                dot.className = 'signal-dot red';
-                label.className = 'signal-label red';
-                label.textContent = 'BLOQUE';
-                reason.textContent = fw.blocked_reason;
-            }
+    <!-- ═══ BADGES ═══ -->
+    <div class="badges" id="regimeBar">
+        <span class="badge" id="regimeBadge">TREND</span>
+        <span class="badge" id="volBadge">VOL NORMAL</span>
+        <span class="badge" id="atrBadge">ATR --</span>
+    </div>
 
-            // Params
-            document.getElementById('contracts').textContent = fw.contracts;
-            document.getElementById('instrument').textContent = fw.instrument;
-            document.getElementById('stopPts').textContent = fw.stop_distance_pts;
-            document.getElementById('maxLoss').textContent = '$' + fw.max_loss_per_trade;
-            document.getElementById('tradesRemaining').textContent = fw.trades_remaining;
-            document.getElementById('tradesToday').textContent = fw.trades_today + ' / ' + (fw.trades_today + fw.trades_remaining);
+    <!-- ═══ CORE PARAMS (3 cols) ═══ -->
+    <div class="core-params">
+        <div class="cp">
+            <div class="cp-label">Taille</div>
+            <div class="cp-val" id="contracts">--</div>
+            <div class="cp-unit" id="instrument">--</div>
+        </div>
+        <div class="cp">
+            <div class="cp-label">Stop max</div>
+            <div class="cp-val" id="stopPts">--</div>
+            <div class="cp-unit">pts</div>
+        </div>
+        <div class="cp">
+            <div class="cp-label">Trades</div>
+            <div class="cp-val" id="tradesRemaining">--</div>
+            <div class="cp-unit" id="tradesToday">0 / 0</div>
+        </div>
+    </div>
 
-            // Budget
-            const totalBudget = fw.risk_budget_remaining + Math.abs(Math.min(0, fw.daily_pnl));
-            const budgetPct = totalBudget > 0 ? (fw.risk_budget_remaining / totalBudget) * 100 : 0;
-            document.getElementById('budgetValue').textContent = '$' + fw.risk_budget_remaining;
-            const bar = document.getElementById('budgetBar');
-            bar.style.width = budgetPct + '%';
-            bar.style.background = budgetPct > 50 ? 'var(--green)' : budgetPct > 25 ? 'var(--gold)' : 'var(--red)';
+    <!-- ═══ SECONDARY (2 cols) ═══ -->
+    <div class="sec-params">
+        <div class="sp">
+            <div class="cp-label">Perte max</div>
+            <div class="cp-val" id="maxLoss">--</div>
+            <div class="cp-unit">par trade</div>
+        </div>
+        <div class="sp">
+            <div class="cp-label">Volatilite</div>
+            <div class="cp-val" id="volRegime">--</div>
+            <div class="cp-unit">regime</div>
+        </div>
+    </div>
 
-            // Plancher du jour (toujours visible)
-            const floor = fw.min_daily_pnl;
-            const floorEl = document.getElementById('minPnl');
-            floorEl.textContent = (floor >= 0 ? '+$' : '-$') + Math.abs(floor).toFixed(0);
-            floorEl.style.color = floor >= 0 ? 'var(--green)' : 'var(--gold)';
+    <!-- ═══ BUDGET BAR ═══ -->
+    <div class="bar-card">
+        <div class="bar-header">
+            <span class="bar-title">Budget risque</span>
+            <span class="bar-value" id="budgetValue">--</span>
+        </div>
+        <div class="bar-track">
+            <div class="bar-fill" id="budgetBar"></div>
+        </div>
+    </div>
 
-            const floorPnl = document.getElementById('floorPnl');
-            floorPnl.textContent = (fw.daily_pnl >= 0 ? '+$' : '-$') + Math.abs(fw.daily_pnl).toFixed(0);
-            floorPnl.style.color = fw.daily_pnl >= 0 ? 'var(--green)' : 'var(--red)';
+    <!-- ═══ FLOOR BAR ═══ -->
+    <div class="bar-card floor-card" id="profitProtection">
+        <div class="bar-header">
+            <span class="bar-title">Plancher du jour</span>
+            <span class="bar-value" id="minPnl" style="color:var(--gold)">--</span>
+        </div>
+        <div class="bar-track">
+            <div class="bar-fill" id="floorBar" style="background:var(--gold)"></div>
+        </div>
+        <div class="bar-sub">
+            <span>P&L : <span class="accent" id="floorPnl" style="color:var(--green)">$0</span></span>
+            <span>Peak : <span class="accent" id="peakPnl" style="color:var(--cyan)">$0</span></span>
+        </div>
+    </div>
 
-            document.getElementById('peakPnl').textContent = '+$' + fw.daily_peak_pnl.toFixed(0);
+    <!-- ═══ STOP HINT ═══ -->
+    <div class="stop-hint">
+        Stop = maximum. Vous pouvez serrer, jamais elargir.
+    </div>
 
-            // Barre : distance entre P&L actuel et plancher
-            const room = fw.daily_pnl - floor;
-            const maxRoom = 300;
-            const roomPct = Math.min(100, Math.max(0, (room / maxRoom) * 100));
-            const floorBar = document.getElementById('floorBar');
-            floorBar.style.width = roomPct + '%';
-            floorBar.style.background = roomPct > 50 ? 'var(--green)' : roomPct > 25 ? 'var(--gold)' : 'var(--red)';
+    <!-- ═══ WARNINGS ═══ -->
+    <div class="warnings" id="warnings"></div>
 
-            // Stats
-            const pnl = document.getElementById('dailyPnl');
-            pnl.textContent = '$' + fw.daily_pnl;
-            pnl.style.color = fw.daily_pnl >= 0 ? 'var(--green)' : 'var(--red)';
+    <!-- ═══ EQUITY CURVE ═══ -->
+    <div class="equity-card">
+        <div class="equity-header">
+            <span class="equity-title">Equity Curve</span>
+            <span class="equity-profit" id="equityProfit">--</span>
+        </div>
+        <canvas class="equity-canvas" id="equityCanvas"></canvas>
+    </div>
 
-            document.getElementById('balance').textContent = '$' + fw.balance.toLocaleString();
-            document.getElementById('volRegime').textContent = fw.vol_regime.toUpperCase();
+    <!-- ═══ TRADE LOG ═══ -->
+    <div class="trades-card">
+        <div class="trades-title">Trades du jour</div>
+        <div id="tradeLog"><div class="no-trades">Aucun trade aujourd'hui</div></div>
+    </div>
 
-            // Regime & vol badges
-            const volColors = {low:'var(--accent)',normal:'var(--green)',high:'var(--gold)',extreme:'var(--red)'};
-            const volBgs = {low:'rgba(0,224,255,0.1)',normal:'rgba(0,255,136,0.1)',high:'rgba(255,204,68,0.1)',extreme:'rgba(255,61,90,0.1)'};
-            const vb = document.getElementById('volBadge');
-            vb.textContent = 'VOL ' + fw.vol_regime.toUpperCase();
-            vb.style.color = volColors[fw.vol_regime] || 'var(--text2)';
-            vb.style.background = volBgs[fw.vol_regime] || 'rgba(255,255,255,0.04)';
+    <!-- ═══ FOOTER ═══ -->
+    <div class="desk-footer">
+        <span>Risk Desk — Non Negociable</span>
+    </div>
 
-            document.getElementById('atrBadge').textContent = 'ATR ' + fw.atr_5min;
+</div>
 
-            // Circuit breaker
-            const levels = ['green', 'yellow', 'orange', 'red'];
-            const currentIdx = levels.indexOf(fw.circuit_level.toLowerCase());
-            levels.forEach((l, i) => {
-                const el = document.getElementById('cb-' + l);
-                if (i <= currentIdx) {
-                    el.className = 'circuit-segment active-' + l;
-                } else {
-                    el.className = 'circuit-segment';
-                }
-            });
+<script>
+    const API = window.location.origin;
 
-            // Warnings
-            const wDiv = document.getElementById('warnings');
-            wDiv.innerHTML = fw.warnings.map(w => `<div class="warning-item">${w}</div>`).join('');
-        }
-
-        // ── Equity Curve ──
-        function drawEquity(curve) {
-            const canvas = document.getElementById('equityCanvas');
-            const ctx = canvas.getContext('2d');
-            const dpr = window.devicePixelRatio || 1;
-            const rect = canvas.getBoundingClientRect();
-            canvas.width = rect.width * dpr;
-            canvas.height = rect.height * dpr;
-            ctx.scale(dpr, dpr);
-            const W = rect.width, H = rect.height;
-
-            ctx.clearRect(0, 0, W, H);
-            if (!curve || curve.length < 2) {
-                ctx.fillStyle = '#5d7490';
-                ctx.font = '11px JetBrains Mono';
-                ctx.textAlign = 'center';
-                ctx.fillText('Pas encore de trades', W/2, H/2);
-                return;
-            }
-
-            const balances = curve.map(p => p.balance);
-            const min = Math.min(...balances) - 50;
-            const max = Math.max(...balances) + 50;
-            const range = max - min || 1;
-
-            const toX = (i) => (i / (curve.length - 1)) * W;
-            const toY = (b) => H - ((b - min) / range) * (H - 8) - 4;
-
-            // Fill gradient
-            const initial = curve[0].balance;
-            const last = curve[curve.length - 1].balance;
-            const isProfit = last >= initial;
-            const color = isProfit ? '0,255,136' : '255,61,90';
-
-            ctx.beginPath();
-            ctx.moveTo(toX(0), toY(balances[0]));
-            for (let i = 1; i < curve.length; i++) ctx.lineTo(toX(i), toY(balances[i]));
-            ctx.strokeStyle = `rgba(${color},0.8)`;
-            ctx.lineWidth = 2;
-            ctx.stroke();
-
-            // Fill under
-            ctx.lineTo(toX(curve.length - 1), H);
-            ctx.lineTo(toX(0), H);
-            ctx.closePath();
-            const grad = ctx.createLinearGradient(0, 0, 0, H);
-            grad.addColorStop(0, `rgba(${color},0.15)`);
-            grad.addColorStop(1, `rgba(${color},0.01)`);
-            ctx.fillStyle = grad;
-            ctx.fill();
-
-            // Dots for each trade
-            for (let i = 0; i < curve.length; i++) {
-                ctx.beginPath();
-                ctx.arc(toX(i), toY(balances[i]), 2.5, 0, Math.PI * 2);
-                const pnl = curve[i].pnl || 0;
-                ctx.fillStyle = pnl >= 0 ? 'rgba(0,255,136,0.7)' : 'rgba(255,61,90,0.7)';
-                ctx.fill();
-            }
-
-            // Initial balance line
-            ctx.setLineDash([4, 4]);
-            ctx.strokeStyle = 'rgba(255,255,255,0.1)';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(0, toY(initial));
-            ctx.lineTo(W, toY(initial));
-            ctx.stroke();
-            ctx.setLineDash([]);
-        }
-
-        // ── Trade Log ──
-        function renderTrades(trades) {
-            const div = document.getElementById('tradeLog');
-            if (!trades || trades.length === 0) {
-                div.innerHTML = '<div class="no-trades">Aucun trade aujourd\'hui</div>';
-                return;
-            }
-            div.innerHTML = trades.map(t => {
-                const time = t.timestamp ? new Date(t.timestamp).toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'}) : '--';
-                const dir = (t.direction || '').toLowerCase();
-                const dirLabel = dir === 'long' ? 'LONG' : dir === 'short' ? 'SHORT' : dir.toUpperCase() || '—';
-                const dirClass = dir === 'long' ? 'long' : dir === 'short' ? 'short' : '';
-                const pnl = t.pnl || 0;
-                const pnlClass = pnl >= 0 ? 'win' : 'loss';
-                const bal = t.balance_after ? '$' + t.balance_after.toLocaleString() : '';
-                const ct = t.contracts || '';
-                return `<div class="trade-row">
-                    <span class="trade-time">${time}</span>
-                    <span class="trade-dir ${dirClass}">${dirLabel}</span>
-                    <span class="trade-ct">${ct}ct</span>
-                    <span class="trade-pnl ${pnlClass}">${pnl >= 0 ? '+' : ''}$${pnl.toFixed(0)}</span>
-                    <span class="trade-bal">${bal}</span>
-                </div>`;
-            }).join('');
-        }
-
-        // ── Fetch equity + trades ──
-        async function updateExtras() {
-            try {
-                const [eqRes, todayRes] = await Promise.all([
-                    fetch(`${API}/api/risk-desk/equity`),
-                    fetch(`${API}/api/risk-desk/today`)
-                ]);
-                const eq = await eqRes.json();
-                const today = await todayRes.json();
-
-                if (eq.curve) {
-                    drawEquity(eq.curve);
-                    const profitEl = document.getElementById('equityProfit');
-                    const p = eq.total_profit || 0;
-                    profitEl.textContent = (p >= 0 ? '+' : '') + '$' + p.toFixed(0);
-                    profitEl.style.color = p >= 0 ? 'var(--green)' : 'var(--red)';
-                }
-
-                if (today.trade_log) {
-                    renderTrades(today.trade_log);
-                }
-            } catch(e) {}
-        }
-
-        // Poll chaque seconde (framework) + chaque 5s (equity/trades)
-        update();
-        updateExtras();
-        setInterval(update, 1000);
-        setInterval(updateExtras, 5000);
-
-        // WebSocket fallback
+    async function update() {
         try {
-            const ws = new WebSocket(`ws://${window.location.host}/ws`);
-            ws.onmessage = (e) => {
-                const msg = JSON.parse(e.data);
-                if (msg.type === 'risk_desk') render(msg.data);
-            };
+            const res = await fetch(`${API}/api/risk-desk/framework`);
+            const fw = await res.json();
+            if (fw.error) return;
+            render(fw);
         } catch(e) {}
-    </script>
+    }
+
+    function render(fw) {
+        const box = document.getElementById('signalBox');
+        const dot = document.getElementById('signalDot');
+        const label = document.getElementById('signalLabel');
+        const reason = document.getElementById('blockedReason');
+        const glow = document.getElementById('ambientGlow');
+
+        if (fw.allowed) {
+            box.className = 'signal allowed';
+            dot.className = 'signal-ring green';
+            label.className = 'signal-word green';
+            label.textContent = 'TRADE';
+            reason.textContent = '';
+            glow.className = 'ambient green-glow';
+        } else {
+            box.className = 'signal blocked';
+            dot.className = 'signal-ring red';
+            label.className = 'signal-word red';
+            label.textContent = 'BLOQUE';
+            reason.textContent = fw.blocked_reason;
+            glow.className = 'ambient red-glow';
+        }
+
+        // Params
+        document.getElementById('contracts').textContent = fw.contracts;
+        document.getElementById('instrument').textContent = fw.instrument;
+        document.getElementById('stopPts').textContent = fw.stop_distance_pts;
+        document.getElementById('maxLoss').textContent = '$' + fw.max_loss_per_trade;
+        document.getElementById('tradesRemaining').textContent = fw.trades_remaining;
+        document.getElementById('tradesToday').textContent = fw.trades_today + ' / ' + (fw.trades_today + fw.trades_remaining);
+
+        // Budget
+        const totalBudget = fw.risk_budget_remaining + Math.abs(Math.min(0, fw.daily_pnl));
+        const budgetPct = totalBudget > 0 ? (fw.risk_budget_remaining / totalBudget) * 100 : 0;
+        document.getElementById('budgetValue').textContent = '$' + fw.risk_budget_remaining;
+        const bar = document.getElementById('budgetBar');
+        bar.style.width = budgetPct + '%';
+        bar.style.background = budgetPct > 50 ? 'var(--green)' : budgetPct > 25 ? 'var(--gold)' : 'var(--red)';
+
+        // Plancher du jour (toujours visible)
+        const floor = fw.min_daily_pnl;
+        const floorEl = document.getElementById('minPnl');
+        floorEl.textContent = (floor >= 0 ? '+$' : '-$') + Math.abs(floor).toFixed(0);
+        floorEl.style.color = floor >= 0 ? 'var(--green)' : 'var(--gold)';
+
+        const floorPnl = document.getElementById('floorPnl');
+        floorPnl.textContent = (fw.daily_pnl >= 0 ? '+$' : '-$') + Math.abs(fw.daily_pnl).toFixed(0);
+        floorPnl.style.color = fw.daily_pnl >= 0 ? 'var(--green)' : 'var(--red)';
+
+        document.getElementById('peakPnl').textContent = '+$' + fw.daily_peak_pnl.toFixed(0);
+
+        // Barre : distance entre P&L actuel et plancher
+        const room = fw.daily_pnl - floor;
+        const maxRoom = 300;
+        const roomPct = Math.min(100, Math.max(0, (room / maxRoom) * 100));
+        const floorBar = document.getElementById('floorBar');
+        floorBar.style.width = roomPct + '%';
+        floorBar.style.background = roomPct > 50 ? 'var(--green)' : roomPct > 25 ? 'var(--gold)' : 'var(--red)';
+
+        // Stats — P&L hero
+        const pnl = document.getElementById('dailyPnl');
+        pnl.textContent = (fw.daily_pnl >= 0 ? '+$' : '-$') + Math.abs(fw.daily_pnl).toFixed(2);
+        pnl.style.color = fw.daily_pnl >= 0 ? 'var(--green)' : 'var(--red)';
+
+        document.getElementById('balance').textContent = 'Balance $' + fw.balance.toLocaleString();
+        document.getElementById('volRegime').textContent = fw.vol_regime.toUpperCase();
+
+        // Regime & vol badges
+        const volColors = {low:'var(--cyan)',normal:'var(--green)',high:'var(--gold)',extreme:'var(--red)'};
+        const volBgs = {low:'rgba(0,224,255,0.06)',normal:'rgba(0,255,136,0.06)',high:'rgba(255,204,68,0.06)',extreme:'rgba(255,61,90,0.06)'};
+        const vb = document.getElementById('volBadge');
+        vb.textContent = 'VOL ' + fw.vol_regime.toUpperCase();
+        vb.style.color = volColors[fw.vol_regime] || 'var(--text2)';
+        vb.style.background = volBgs[fw.vol_regime] || 'rgba(255,255,255,0.03)';
+        vb.style.borderColor = (volColors[fw.vol_regime] || 'transparent').replace(')', ',0.15)').replace('var(','rgba(');
+
+        document.getElementById('atrBadge').textContent = 'ATR ' + fw.atr_5min;
+
+        // Circuit breaker
+        const levels = ['green', 'yellow', 'orange', 'red'];
+        const currentIdx = levels.indexOf(fw.circuit_level.toLowerCase());
+        levels.forEach((l, i) => {
+            const el = document.getElementById('cb-' + l);
+            if (i <= currentIdx) {
+                el.className = 'gauge-seg on-' + l;
+            } else {
+                el.className = 'gauge-seg';
+            }
+        });
+
+        // Warnings
+        const wDiv = document.getElementById('warnings');
+        wDiv.innerHTML = fw.warnings.map(w => `<div class="warning-item">${w}</div>`).join('');
+    }
+
+    // ── Equity Curve ──
+    function drawEquity(curve) {
+        const canvas = document.getElementById('equityCanvas');
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        ctx.scale(dpr, dpr);
+        const W = rect.width, H = rect.height;
+
+        ctx.clearRect(0, 0, W, H);
+        if (!curve || curve.length < 2) {
+            ctx.fillStyle = '#546580';
+            ctx.font = '12px DM Sans';
+            ctx.textAlign = 'center';
+            ctx.fillText('Pas encore de trades', W/2, H/2);
+            return;
+        }
+
+        const balances = curve.map(p => p.balance);
+        const min = Math.min(...balances) - 50;
+        const max = Math.max(...balances) + 50;
+        const range = max - min || 1;
+
+        const toX = (i) => 8 + (i / (curve.length - 1)) * (W - 16);
+        const toY = (b) => H - 6 - ((b - min) / range) * (H - 12);
+
+        // Fill gradient
+        const initial = curve[0].balance;
+        const last = curve[curve.length - 1].balance;
+        const isProfit = last >= initial;
+        const color = isProfit ? '0,255,136' : '255,61,90';
+
+        // Smooth line
+        ctx.beginPath();
+        ctx.moveTo(toX(0), toY(balances[0]));
+        for (let i = 1; i < curve.length; i++) {
+            const cx = (toX(i - 1) + toX(i)) / 2;
+            const cy = (toY(balances[i - 1]) + toY(balances[i])) / 2;
+            ctx.quadraticCurveTo(toX(i - 1), toY(balances[i - 1]), cx, cy);
+        }
+        ctx.lineTo(toX(curve.length - 1), toY(balances[curve.length - 1]));
+        ctx.strokeStyle = `rgba(${color},0.9)`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Fill under
+        ctx.lineTo(toX(curve.length - 1), H);
+        ctx.lineTo(toX(0), H);
+        ctx.closePath();
+        const grad = ctx.createLinearGradient(0, 0, 0, H);
+        grad.addColorStop(0, `rgba(${color},0.12)`);
+        grad.addColorStop(1, `rgba(${color},0.0)`);
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        // Dots for each trade
+        for (let i = 1; i < curve.length; i++) {
+            const pnl = curve[i].pnl || 0;
+            ctx.beginPath();
+            ctx.arc(toX(i), toY(balances[i]), 3, 0, Math.PI * 2);
+            ctx.fillStyle = pnl >= 0 ? `rgba(0,255,136,0.8)` : `rgba(255,61,90,0.8)`;
+            ctx.fill();
+        }
+
+        // Initial balance line
+        ctx.setLineDash([3, 5]);
+        ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(0, toY(initial));
+        ctx.lineTo(W, toY(initial));
+        ctx.stroke();
+        ctx.setLineDash([]);
+    }
+
+    // ── Trade Log ──
+    function renderTrades(trades) {
+        const div = document.getElementById('tradeLog');
+        if (!trades || trades.length === 0) {
+            div.innerHTML = '<div class="no-trades">Aucun trade aujourd\'hui</div>';
+            return;
+        }
+        div.innerHTML = trades.map(t => {
+            const time = t.timestamp ? new Date(t.timestamp).toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'}) : '--';
+            const dir = (t.direction || '').toLowerCase();
+            const dirLabel = dir === 'long' ? 'LONG' : dir === 'short' ? 'SHORT' : dir.toUpperCase() || '—';
+            const dirClass = dir === 'long' ? 'long' : dir === 'short' ? 'short' : '';
+            const pnl = t.pnl || 0;
+            const pnlClass = pnl >= 0 ? 'win' : 'loss';
+            const bal = t.balance_after ? '$' + t.balance_after.toLocaleString() : '';
+            const ct = t.contracts || '';
+            return `<div class="trade-row">
+                <span class="trade-time">${time}</span>
+                <span class="trade-dir ${dirClass}">${dirLabel}</span>
+                <span class="trade-ct">${ct}ct</span>
+                <span class="trade-pnl ${pnlClass}">${pnl >= 0 ? '+' : ''}$${pnl.toFixed(0)}</span>
+                <span class="trade-bal">${bal}</span>
+            </div>`;
+        }).join('');
+    }
+
+    // ── Fetch equity + trades ──
+    async function updateExtras() {
+        try {
+            const [eqRes, todayRes] = await Promise.all([
+                fetch(`${API}/api/risk-desk/equity`),
+                fetch(`${API}/api/risk-desk/today`)
+            ]);
+            const eq = await eqRes.json();
+            const today = await todayRes.json();
+
+            if (eq.curve) {
+                drawEquity(eq.curve);
+                const profitEl = document.getElementById('equityProfit');
+                const p = eq.total_profit || 0;
+                profitEl.textContent = (p >= 0 ? '+' : '') + '$' + p.toFixed(0);
+                profitEl.style.color = p >= 0 ? 'var(--green)' : 'var(--red)';
+            }
+
+            if (today.trade_log) {
+                renderTrades(today.trade_log);
+            }
+        } catch(e) {}
+    }
+
+    // Poll chaque seconde (framework) + chaque 5s (equity/trades)
+    update();
+    updateExtras();
+    setInterval(update, 1000);
+    setInterval(updateExtras, 5000);
+
+    // WebSocket fallback
+    try {
+        const ws = new WebSocket(`ws://${window.location.host}/ws`);
+        ws.onmessage = (e) => {
+            const msg = JSON.parse(e.data);
+            if (msg.type === 'risk_desk') render(msg.data);
+        };
+    } catch(e) {}
+</script>
 </body>
 </html>
