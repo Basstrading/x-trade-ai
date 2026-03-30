@@ -356,15 +356,18 @@
             </div>
         </div>
 
-        <!-- Protection gains -->
-        <div class="budget-section" id="profitProtection" style="display:none">
+        <!-- Plancher du jour -->
+        <div class="budget-section" id="profitProtection">
             <div class="budget-header">
-                <span class="budget-label" style="color:var(--green)">Profit protege</span>
-                <span class="budget-value" style="color:var(--green)" id="lockedProfit">$0</span>
+                <span class="budget-label">Plancher du jour</span>
+                <span class="budget-value" id="minPnl" style="color:var(--gold)">--</span>
             </div>
-            <div style="font-size:10px;color:var(--text2);margin-top:4px">
-                Plancher du jour : <span id="minPnl" style="color:var(--gold)">--</span> —
-                Peak : <span id="peakPnl" style="color:var(--accent)">--</span>
+            <div class="budget-bar-bg">
+                <div class="budget-bar-fill" id="floorBar" style="background:var(--gold)"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:10px">
+                <span style="color:var(--text2)">P&L : <span id="floorPnl" style="color:var(--green)">$0</span></span>
+                <span style="color:var(--text2)">Peak : <span id="peakPnl" style="color:var(--accent)">$0</span></span>
             </div>
         </div>
 
@@ -458,16 +461,25 @@
             bar.style.width = budgetPct + '%';
             bar.style.background = budgetPct > 50 ? 'var(--green)' : budgetPct > 25 ? 'var(--gold)' : 'var(--red)';
 
-            // Profit protection
-            const ppDiv = document.getElementById('profitProtection');
-            if (fw.locked_profit > 0) {
-                ppDiv.style.display = 'block';
-                document.getElementById('lockedProfit').textContent = '$' + fw.locked_profit;
-                document.getElementById('minPnl').textContent = '$' + fw.min_daily_pnl;
-                document.getElementById('peakPnl').textContent = '$' + fw.daily_peak_pnl;
-            } else {
-                ppDiv.style.display = 'none';
-            }
+            // Plancher du jour (toujours visible)
+            const floor = fw.min_daily_pnl;
+            const floorEl = document.getElementById('minPnl');
+            floorEl.textContent = (floor >= 0 ? '+$' : '-$') + Math.abs(floor).toFixed(0);
+            floorEl.style.color = floor >= 0 ? 'var(--green)' : 'var(--gold)';
+
+            const floorPnl = document.getElementById('floorPnl');
+            floorPnl.textContent = (fw.daily_pnl >= 0 ? '+$' : '-$') + Math.abs(fw.daily_pnl).toFixed(0);
+            floorPnl.style.color = fw.daily_pnl >= 0 ? 'var(--green)' : 'var(--red)';
+
+            document.getElementById('peakPnl').textContent = '+$' + fw.daily_peak_pnl.toFixed(0);
+
+            // Barre : distance entre P&L actuel et plancher
+            const room = fw.daily_pnl - floor;
+            const maxRoom = 300;
+            const roomPct = Math.min(100, Math.max(0, (room / maxRoom) * 100));
+            const floorBar = document.getElementById('floorBar');
+            floorBar.style.width = roomPct + '%';
+            floorBar.style.background = roomPct > 50 ? 'var(--green)' : roomPct > 25 ? 'var(--gold)' : 'var(--red)';
 
             // Stats
             const pnl = document.getElementById('dailyPnl');

@@ -199,24 +199,28 @@ class ConsistencyMonitor:
 
 class ProfitProtector:
     """
-    Trailing daily P&L — protege les gains du trader.
+    Double protection des gains :
 
-    Un trader qui gagne $300 ne doit PAS finir a -$400.
-    Le desk verrouille une partie du profit au fur et a mesure.
+    1. Trailing daily stop : plancher = peak - $300 (toujours actif)
+       → protege des le premier dollar de gain, pas de trou
 
-    Paliers de verrouillage :
-    - $0-$150   : pas de lock (le trader a besoin de room)
-    - $150-$300 : 40% du peak verrouille
-    - $300-$500 : 50% du peak verrouille
-    - $500+     : 60% du peak verrouille
+    2. Profit lock (paliers) : verrouille un % du peak
+       - $150+ : 40%
+       - $300+ : 50%
+       - $500+ : 60%
+       → protege les grosses journees plus agressivement
 
-    Le plancher P&L = -(budget_restant) mais jamais en dessous du profit locke.
+    Le plancher effectif = MAX(trailing, profit_lock, base_daily_limit)
+    Le trader voit juste le chiffre, pas la mecanique.
     """
+
+    TRAILING_DISTANCE = 300.0  # Trailing fixe en dollars
 
     def __init__(self):
         self.peak_pnl: float = 0.0
         self.locked_profit: float = 0.0
-        self.min_pnl: float = 0.0  # Plancher P&L du jour
+        self.trailing_floor: float = 0.0
+        self.min_pnl: float = 0.0
 
     def update(self, current_pnl: float, base_daily_limit: float):
         """
@@ -227,7 +231,10 @@ class ProfitProtector:
         if current_pnl > self.peak_pnl:
             self.peak_pnl = current_pnl
 
-        # Calcul du lock
+        # 1. Trailing daily stop : peak - $300
+        self.trailing_floor = self.peak_pnl - self.TRAILING_DISTANCE
+
+        # 2. Profit lock (paliers)
         if self.peak_pnl >= 500:
             self.locked_profit = self.peak_pnl * 0.60
         elif self.peak_pnl >= 300:
@@ -237,32 +244,30 @@ class ProfitProtector:
         else:
             self.locked_profit = 0.0
 
-        # Plancher = max entre le base limit et le profit locke
-        # base_daily_limit est negatif (ex: -$400)
-        # Si locked_profit = $150, le plancher est $150 (pas en dessous)
-        if self.locked_profit > 0:
-            self.min_pnl = self.locked_profit
-        else:
-            self.min_pnl = base_daily_limit
+        # Plancher effectif = MAX des trois protections
+        self.min_pnl = max(base_daily_limit, self.trailing_floor, self.locked_profit)
 
         return self.min_pnl
 
     def is_breached(self, current_pnl: float) -> bool:
         """Le P&L a-t-il franchi le plancher ?"""
-        if self.locked_profit > 0:
-            return current_pnl < self.locked_profit
-        return False
+        # Le plancher monte avec les gains. Si le P&L descend en dessous → breach.
+        # On ne breach que si le plancher est au-dessus du daily limit de base
+        # (sinon c'est le daily limit normal qui gère)
+        return current_pnl < self.min_pnl and self.peak_pnl > 0
 
     def reset(self):
         """Reset quotidien."""
         self.peak_pnl = 0.0
         self.locked_profit = 0.0
+        self.trailing_floor = 0.0
         self.min_pnl = 0.0
 
     def get_status(self) -> dict:
         return {
             "peak_pnl": round(self.peak_pnl, 2),
             "locked_profit": round(self.locked_profit, 2),
+            "trailing_floor": round(self.trailing_floor, 2),
             "min_pnl": round(self.min_pnl, 2),
         }
 
