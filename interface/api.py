@@ -1223,6 +1223,51 @@ async def risk_desk_history():
     return _risk_desk.state.get_daily_history()
 
 
+@app.get("/api/risk-desk/today")
+async def risk_desk_today():
+    """Trades du jour avec trade_log complet."""
+    if not _risk_desk:
+        return {"error": "Risk Desk non initialise"}
+    return _risk_desk.state.get_today()
+
+
+@app.get("/api/risk-desk/trades")
+async def risk_desk_all_trades():
+    """Tous les trades enregistres (persistant)."""
+    if not _risk_desk:
+        return {"error": "Risk Desk non initialise"}
+    return {"trades": _risk_desk.state._all_trades, "total": len(_risk_desk.state._all_trades)}
+
+
+@app.get("/api/risk-desk/equity")
+async def risk_desk_equity():
+    """Equity curve depuis tous les trades enregistres."""
+    if not _risk_desk:
+        return {"error": "Risk Desk non initialise"}
+    trades = _risk_desk.state._all_trades
+    initial = _risk_desk.state.state.initial_balance or _risk_desk.state.state.account_size
+    points = [{"x": 0, "balance": round(initial, 2), "timestamp": "", "pnl": 0}]
+    balance = initial
+    for i, t in enumerate(trades):
+        pnl = t.get("pnl", 0)
+        balance += pnl
+        points.append({
+            "x": i + 1,
+            "balance": round(balance, 2),
+            "timestamp": t.get("timestamp", ""),
+            "pnl": round(pnl, 2),
+            "direction": t.get("direction", ""),
+            "contracts": t.get("contracts", 0),
+        })
+    return {
+        "initial_balance": round(initial, 2),
+        "current_balance": round(balance, 2),
+        "total_profit": round(balance - initial, 2),
+        "total_trades": len(trades),
+        "curve": points,
+    }
+
+
 @app.get("/api/risk-desk/plans")
 async def risk_desk_available_plans():
     """Liste toutes les prop firms et plans disponibles."""
