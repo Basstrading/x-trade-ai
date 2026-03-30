@@ -58,6 +58,7 @@ class BrokerConnector:
         self._trade_callback: Optional[Callable] = None  # Appele quand un trade est detecte
         self._enforce_callback: Optional[Callable] = None  # Cancel ordres si bloque
         self._sync_callback: Optional[Callable] = None     # Sync balance broker → risk desk
+        self._is_blocked: bool = False                        # Flag pour polling adaptatif
 
         # Taches background
         self._feed_task: Optional[asyncio.Task] = None
@@ -270,22 +271,24 @@ class BrokerConnector:
                             except Exception as e:
                                 logger.debug(f"Sync callback: {e}")
 
-                        # Enforce risk blocks: cancel pending orders if blocked
+                        # Enforce risk blocks: cancel pending orders + flatten if blocked
                         if self._enforce_callback:
                             try:
-                                await self._enforce_callback(self.client, acc_id)
+                                result = await self._enforce_callback(self.client, acc_id)
+                                self._is_blocked = (result == -1)
                             except Exception as e:
                                 logger.debug(f"Enforce callback: {e}")
 
                 except Exception as e:
                     logger.warning(f"Trade monitor: {e}")
 
-                await asyncio.sleep(interval)
+                # Polling adaptatif : 1s si bloqué, 2s sinon
+                await asyncio.sleep(1 if self._is_blocked else 2)
 
         self._trade_monitor_task = asyncio.create_task(_monitor_loop())
         logger.success(
             f"Trade monitor demarre — {len(self.selected_account_ids)} comptes "
-            f"(polling {interval}s)"
+            f"(polling adaptatif: 2s normal, 1s si bloque)"
         )
 
     async def _on_trade_closed(self, account_id: int, closed_position: dict):

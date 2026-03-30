@@ -1425,7 +1425,7 @@ async def broker_select_accounts(account_ids: str):
             pass
 
     # Demarrer le trade monitor sur ces comptes
-    await broker.start_trade_monitor(interval=5)
+    await broker.start_trade_monitor(interval=2)
     return {"ok": True, "selected": ids}
 
 
@@ -1441,7 +1441,7 @@ async def _start_broker_services(broker, instrument: str = "MNQ"):
         )
     await broker.start_market_feed(instrument=instrument, interval=30)
     if broker.selected_account_ids:
-        await broker.start_trade_monitor(interval=5)
+        await broker.start_trade_monitor(interval=2)
 
 
 @app.get("/api/broker/status")
