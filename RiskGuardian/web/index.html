@@ -76,8 +76,8 @@
       <span class="gradient-text">We make sure of it.</span>
     </h1>
     <p class="hero-sub reveal" id="hero-sub">
-      x-trade.ai is your personal risk desk. It calculates your size, sets your stops,<br/>
-      and blocks you before you hit the drawdown. You trade. It protects.
+      Prop firms give you a guillotine — you're alive or you're dead.<br/>
+      x-trade.ai gives you an institutional risk desk that keeps you alive. No override. No emotions. No blown accounts.
     </p>
     <div class="hero-cta reveal">
       <a href="#pricing" class="btn-primary">
@@ -355,6 +355,55 @@
     </div>
   </section>
 
+  <!-- ====== WHY NOT FREE — OBJECTION KILLER ====== -->
+  <section class="section vs-section" id="vs">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-badge" id="vs-badge">WHY PAY?</div>
+        <h2 id="vs-title">"But my prop firm already has risk management."<br/><span class="gradient-text">No. It has a kill switch.</span></h2>
+        <p style="color: var(--text-dim); margin-top: 12px; font-size: 16px;" id="vs-sub">Prop firm risk controls protect the firm. x-trade.ai protects you. Here's the difference.</p>
+      </div>
+
+      <div class="vs-grid reveal">
+        <div class="vs-card vs-them">
+          <h3 id="vs-them-title" style="color:var(--accent3);margin-bottom:1.5rem;font-size:1.2rem">Topstep / Apex / Bulenox "risk tools"</h3>
+          <ul class="vs-list" id="vs-them-list">
+            <li class="vs-bad" id="vs-t1">Limits set by the firm — you can't change them</li>
+            <li class="vs-bad" id="vs-t2">Binary: you're within limits or you're liquidated. No warning.</li>
+            <li class="vs-bad" id="vs-t3">Zero position sizing — you pick your own size (and you pick wrong)</li>
+            <li class="vs-bad" id="vs-t4">No ATR stops, no volatility adaptation — just raw bracket orders</li>
+            <li class="vs-bad" id="vs-t5">No tilt detection — revenge trade all you want until you're dead</li>
+            <li class="vs-bad" id="vs-t6">No daily sub-limit — if your firm allows $1,000 loss, you'll lose $1,000</li>
+            <li class="vs-bad" id="vs-t7">Designed to let you fail. Your blown account = their next challenge fee.</li>
+          </ul>
+          <p class="vs-verdict" id="vs-them-verdict" style="color:var(--accent3);font-weight:700;margin-top:1.5rem;font-size:0.95rem">Their risk management is a guillotine. It doesn't save you. It executes you.</p>
+        </div>
+
+        <div class="vs-card vs-us">
+          <h3 id="vs-us-title" style="color:var(--green);margin-bottom:1.5rem;font-size:1.2rem">x-trade.ai — Institutional Risk Desk</h3>
+          <ul class="vs-list" id="vs-us-list">
+            <li class="vs-good" id="vs-u1">Dynamic daily limit that shrinks with your drawdown — mathematically impossible to blow the account</li>
+            <li class="vs-good" id="vs-u2">4-level circuit breakers: GREEN → YELLOW → ORANGE → RED. Graduated, not binary.</li>
+            <li class="vs-good" id="vs-u3">Auto position sizing (Kelly + ATR) — the desk tells you exactly how many contracts</li>
+            <li class="vs-good" id="vs-u4">ATR-based stops that adapt to volatility. Tight day = tight stop. Wild day = smaller size.</li>
+            <li class="vs-good" id="vs-u5">Tilt detection — 3 trades in 5 min with 2 losses? Blocked. Before you destroy your account.</li>
+            <li class="vs-good" id="vs-u6">News protection — FOMC, NFP, CPI: size auto-reduced 50%. No surprises.</li>
+            <li class="vs-good" id="vs-u7">You cannot override it. That's the point. It works because you can't turn it off.</li>
+          </ul>
+          <p class="vs-verdict" id="vs-us-verdict" style="color:var(--green);font-weight:700;margin-top:1.5rem;font-size:0.95rem">This is how banks manage trader risk. The trader doesn't get a choice. The desk decides.</p>
+        </div>
+      </div>
+
+      <div class="vs-bottom reveal" style="text-align:center;margin-top:3rem">
+        <p style="font-size:1.15rem;color:var(--text);font-weight:600" id="vs-conclusion">
+          FTMO data shows traders risking 1% per trade pass at <span style="color:var(--green)">35-67%</span>. Traders risking >3% pass at <span style="color:var(--accent3)">less than 5%</span>.<br/>
+          <span style="color:var(--text-dim);font-weight:400">The difference isn't skill. It's whether something forces you to manage risk — or you "manage it yourself" like every blown account before.</span>
+        </p>
+        <span style="font-size:0.72rem;color:var(--text-muted);font-style:italic">Source: FunderPro — Prop Trading Pass Rates 2025 (FTMO data)</span>
+      </div>
+    </div>
+  </section>
+
   <!-- ====== PROP FIRMS ====== -->
   <section class="section platforms" id="firms">
     <div class="container">
@@ -498,7 +547,7 @@
           <ul class="price-features" id="plan2-features">
             <li>5 prop firm accounts</li>
             <li>All 5 prop firms supported</li>
-            <li>Admin panel (AUTO/MANUAL controls)</li>
+            <li>Hands-off risk engine (no override possible)</li>
             <li>Full trade history & analytics</li>
             <li>Persistence & payout tracking</li>
             <li>Priority rule updates</li>
@@ -523,7 +572,7 @@
           <ul class="price-features" id="plan3-features">
             <li>Unlimited prop firm accounts</li>
             <li>All 5 prop firms supported</li>
-            <li>Admin panel (AUTO/MANUAL controls)</li>
+            <li>Hands-off risk engine (no override possible)</li>
             <li>Full trade history & analytics</li>
             <li>Persistence & payout tracking</li>
             <li>Priority support & rule updates</li>
@@ -629,7 +678,7 @@
     en: {
       'hero-badge': 'INSTITUTIONAL RISK DESK FOR PROP FIRM TRADERS',
       'hero-title': 'Your prop firm account<br/><s>won\'t blow itself up.</s><br/><span class="gradient-text">We make sure of it.</span>',
-      'hero-sub': 'x-trade.ai is your personal risk desk. It calculates your size, sets your stops,<br/>and blocks you before you hit the drawdown. You trade. It protects.',
+      'hero-sub': 'Prop firms give you a guillotine \u2014 you\'re alive or you\'re dead.<br/>x-trade.ai gives you an institutional risk desk that keeps you alive. No override. No emotions. No blown accounts.',
       'hero-cta-1': 'Start Free Trial', 'hero-cta-2': 'How It Works',
       'p1-title': '93% of prop firm traders never get paid', 'p1-desc': 'FPFX Tech analyzed 300,000 accounts across 10 firms: only 7% ever received a payout. The Funded Trader CEO confirmed: "1-2 out of 100 clients ultimately receive payouts."',
       'p1-src': 'Sources: Finance Magnates / FPFX Tech (2024), The Funded Trader CEO statement',
@@ -640,6 +689,28 @@
       'p4-title': '"This time I\'ll manage my risk myself"', 'p4-desc': 'FTMO data: traders risking >3% per trade have less than 5% pass rate. At 1% risk: 35-67% pass rate. The difference isn\'t skill. It\'s risk management. The thing you keep saying you\'ll do.',
       'p4-src': 'Source: FunderPro \u2014 Prop Trading Pass Rates 2025',
       'solution': '<span class="gradient-text">In banks, traders don\'t manage their own risk. A dedicated desk does.</span><br/>x-trade.ai is that desk. The one thing standing between you and another blown challenge.',
+      'vs-badge': 'WHY PAY?',
+      'vs-title': '"But my prop firm already has risk management."<br/><span class="gradient-text">No. It has a kill switch.</span>',
+      'vs-sub': 'Prop firm risk controls protect the firm. x-trade.ai protects you. Here\'s the difference.',
+      'vs-them-title': 'Topstep / Apex / Bulenox "risk tools"',
+      'vs-t1': 'Limits set by the firm \u2014 you can\'t change them',
+      'vs-t2': 'Binary: you\'re within limits or you\'re liquidated. No warning.',
+      'vs-t3': 'Zero position sizing \u2014 you pick your own size (and you pick wrong)',
+      'vs-t4': 'No ATR stops, no volatility adaptation \u2014 just raw bracket orders',
+      'vs-t5': 'No tilt detection \u2014 revenge trade all you want until you\'re dead',
+      'vs-t6': 'No daily sub-limit \u2014 if your firm allows $1,000 loss, you\'ll lose $1,000',
+      'vs-t7': 'Designed to let you fail. Your blown account = their next challenge fee.',
+      'vs-them-verdict': 'Their risk management is a guillotine. It doesn\'t save you. It executes you.',
+      'vs-us-title': 'x-trade.ai \u2014 Institutional Risk Desk',
+      'vs-u1': 'Dynamic daily limit that shrinks with your drawdown \u2014 mathematically impossible to blow the account',
+      'vs-u2': '4-level circuit breakers: GREEN \u2192 YELLOW \u2192 ORANGE \u2192 RED. Graduated, not binary.',
+      'vs-u3': 'Auto position sizing (Kelly + ATR) \u2014 the desk tells you exactly how many contracts',
+      'vs-u4': 'ATR-based stops that adapt to volatility. Tight day = tight stop. Wild day = smaller size.',
+      'vs-u5': 'Tilt detection \u2014 3 trades in 5 min with 2 losses? Blocked. Before you destroy your account.',
+      'vs-u6': 'News protection \u2014 FOMC, NFP, CPI: size auto-reduced 50%. No surprises.',
+      'vs-u7': 'You cannot override it. That\'s the point. It works because you can\'t turn it off.',
+      'vs-us-verdict': 'This is how banks manage trader risk. The trader doesn\'t get a choice. The desk decides.',
+      'vs-conclusion': 'FTMO data shows traders risking 1% per trade pass at <span style="color:var(--green)">35-67%</span>. Traders risking >3% pass at <span style="color:var(--accent3)">less than 5%</span>.<br/><span style="color:var(--text-dim);font-weight:400">The difference isn\'t skill. It\'s whether something forces you to manage risk \u2014 or you "manage it yourself" like every blown account before.</span>',
       'cost-title': 'How much you\'re <span class="gradient-text">really</span> spending',
       'cost-sub': 'Real promo prices. Real reset fees. Real data from real traders.',
       'cost-col-ch': 'Challenge (promo)', 'cost-col-real': '3 months real cost*',
@@ -677,11 +748,11 @@
       'pro-badge': 'MOST POPULAR',
       'plan2-title': 'Risk Desk Pro', 'plan2-period': '/month', 'plan2-billing': '$40/account \u2014 cheaper than any reset',
       'plan2-desc': 'For the multi-firm trader. Run Topstep + Apex + Bulenox in parallel \u2014 all protected.',
-      'plan2-features': '<li>5 prop firm accounts</li><li>All 5 prop firms supported</li><li>Admin panel (AUTO/MANUAL controls)</li><li>Full trade history & analytics</li><li>Persistence & payout tracking</li><li>Priority rule updates</li><li>Cancel anytime \u2014 no commitment</li>',
+      'plan2-features': '<li>5 prop firm accounts</li><li>All 5 prop firms supported</li><li>Hands-off risk engine (no override possible)</li><li>Full trade history & analytics</li><li>Persistence & payout tracking</li><li>Priority rule updates</li><li>Cancel anytime \u2014 no commitment</li>',
       'plan2-btn': 'Protect My Accounts \u2014 $199/mo', 'plan2-guarantee': '\u2713 14-day free trial \u2022 30-day money-back guarantee',
       'plan3-title': 'Institution', 'plan3-period': '/month', 'plan3-billing': 'Unlimited accounts \u2014 scale without limits',
       'plan3-desc': 'For traders running 10+ performance accounts across multiple firms simultaneously.',
-      'plan3-features': '<li>Unlimited prop firm accounts</li><li>All 5 prop firms supported</li><li>Admin panel (AUTO/MANUAL controls)</li><li>Full trade history & analytics</li><li>Persistence & payout tracking</li><li>Priority support & rule updates</li><li>Custom configuration</li>',
+      'plan3-features': '<li>Unlimited prop firm accounts</li><li>All 5 prop firms supported</li><li>Hands-off risk engine (no override possible)</li><li>Full trade history & analytics</li><li>Persistence & payout tracking</li><li>Priority support & rule updates</li><li>Custom configuration</li>',
       'plan3-btn': 'Go Unlimited \u2014 $499/mo', 'plan3-guarantee': '\u2713 14-day free trial \u2022 30-day money-back guarantee',
       'roi-title': 'The math is simple',
       'roi-without': 'Without x-trade.ai', 'roi-wdesc': '/month in challenges & resets',
@@ -696,7 +767,7 @@
     fr: {
       'hero-badge': 'RISK DESK INSTITUTIONNEL POUR TRADERS PROP FIRM',
       'hero-title': 'Votre compte prop firm<br/><s>ne va pas se cramer tout seul.</s><br/><span class="gradient-text">On s\'en assure.</span>',
-      'hero-sub': 'x-trade.ai est votre risk desk personnel. Il calcule votre taille, fixe vos stops,<br/>et vous bloque avant de toucher le drawdown. Vous tradez. Il protege.',
+      'hero-sub': 'Les prop firms vous donnent une guillotine \u2014 vivant ou mort.<br/>x-trade.ai vous donne un risk desk institutionnel qui vous garde en vie. Pas d\'override. Pas d\'emotions. Plus de comptes crames.',
       'hero-cta-1': 'Essai gratuit', 'hero-cta-2': 'Comment ca marche',
       'p1-title': '93% des traders prop firm ne sont jamais payes', 'p1-desc': 'FPFX Tech a analyse 300,000 comptes sur 10 firms : seuls 7% ont recu un payout. Le CEO de The Funded Trader confirme : "1 a 2 clients sur 100 recoivent un payout."',
       'p1-src': 'Sources : Finance Magnates / FPFX Tech (2024), declaration CEO The Funded Trader',
@@ -707,6 +778,28 @@
       'p4-title': '"Cette fois je vais gerer mon risque moi-meme"', 'p4-desc': 'Donnees FTMO : les traders qui risquent >3% par trade ont moins de 5% de taux de reussite. A 1% de risque : 35-67%. La difference n\'est pas le skill. C\'est le risk management. Ce truc que vous dites toujours que vous allez faire.',
       'p4-src': 'Source : FunderPro \u2014 Prop Trading Pass Rates 2025',
       'solution': '<span class="gradient-text">En banque, les traders ne gerent pas leur propre risque. Un desk dedie le fait.</span><br/>x-trade.ai est ce desk. La seule chose entre vous et un autre challenge crame.',
+      'vs-badge': 'POURQUOI PAYER ?',
+      'vs-title': '"Mais ma prop firm a deja du risk management."<br/><span class="gradient-text">Non. Elle a un interrupteur.</span>',
+      'vs-sub': 'Le risk management des prop firms protege la firm. x-trade.ai vous protege vous. Voici la difference.',
+      'vs-them-title': 'Les "outils risk" de Topstep / Apex / Bulenox',
+      'vs-t1': 'Limites fixees par la firm \u2014 vous ne pouvez rien changer',
+      'vs-t2': 'Binaire : vous etes dans les limites ou liquide. Aucun warning.',
+      'vs-t3': 'Zero position sizing \u2014 vous choisissez votre taille (et vous choisissez mal)',
+      'vs-t4': 'Pas de stops ATR, pas d\'adaptation a la volatilite \u2014 juste des bracket orders',
+      'vs-t5': 'Pas de detection du tilt \u2014 faites du revenge trading jusqu\'a la mort',
+      'vs-t6': 'Pas de sous-limite journaliere \u2014 si la firm autorise $1,000 de perte, vous perdrez $1,000',
+      'vs-t7': 'Concu pour vous faire echouer. Votre compte crame = leur prochain challenge vendu.',
+      'vs-them-verdict': 'Leur risk management est une guillotine. Ca ne vous sauve pas. Ca vous execute.',
+      'vs-us-title': 'x-trade.ai \u2014 Risk Desk Institutionnel',
+      'vs-u1': 'Limite journaliere dynamique qui se reduit avec le drawdown \u2014 mathematiquement impossible de cramer le compte',
+      'vs-u2': '4 niveaux de circuit breakers : VERT \u2192 JAUNE \u2192 ORANGE \u2192 ROUGE. Gradue, pas binaire.',
+      'vs-u3': 'Position sizing auto (Kelly + ATR) \u2014 le desk vous dit exactement combien de contrats',
+      'vs-u4': 'Stops bases sur l\'ATR qui s\'adaptent a la volatilite. Jour calme = stop serre. Jour agite = taille reduite.',
+      'vs-u5': 'Detection du tilt \u2014 3 trades en 5 min avec 2 pertes ? Bloque. Avant que vous detruisiez votre compte.',
+      'vs-u6': 'Protection news \u2014 FOMC, NFP, CPI : taille auto-reduite de 50%. Pas de surprises.',
+      'vs-u7': 'Vous ne pouvez pas le desactiver. C\'est le principe. Ca marche parce que vous ne pouvez pas l\'eteindre.',
+      'vs-us-verdict': 'C\'est comme ca que les banques gerent le risque des traders. Le trader n\'a pas le choix. Le desk decide.',
+      'vs-conclusion': 'Les donnees FTMO montrent que les traders risquant 1% par trade reussissent a <span style="color:var(--green)">35-67%</span>. Ceux risquant >3% : <span style="color:var(--accent3)">moins de 5%</span>.<br/><span style="color:var(--text-dim);font-weight:400">La difference n\'est pas le skill. C\'est si quelque chose vous force a gerer le risque \u2014 ou si vous le "gerez vous-meme" comme pour chaque compte crame avant.</span>',
       'cost-title': 'Combien vous depensez <span class="gradient-text">vraiment</span>',
       'cost-sub': 'Vrais prix promo. Vrais frais de reset. Vraies donnees de vrais traders.',
       'cost-col-ch': 'Challenge (promo)', 'cost-col-real': 'Cout reel sur 3 mois*',
@@ -744,11 +837,11 @@
       'pro-badge': 'LE PLUS POPULAIRE',
       'plan2-title': 'Risk Desk Pro', 'plan2-period': '/mois', 'plan2-billing': '$40/compte \u2014 moins cher qu\'un reset',
       'plan2-desc': 'Pour le trader multi-firms. Topstep + Apex + Bulenox en parallele \u2014 tous proteges.',
-      'plan2-features': '<li>5 comptes prop firm</li><li>Les 5 prop firms supportees</li><li>Panneau admin (controles AUTO/MANUEL)</li><li>Historique complet & analytics</li><li>Persistence & suivi payout</li><li>Mises a jour prioritaires des regles</li><li>Annulation libre \u2014 sans engagement</li>',
+      'plan2-features': '<li>5 comptes prop firm</li><li>Les 5 prop firms supportees</li><li>Moteur risk hands-off (aucun override possible)</li><li>Historique complet & analytics</li><li>Persistence & suivi payout</li><li>Mises a jour prioritaires des regles</li><li>Annulation libre \u2014 sans engagement</li>',
       'plan2-btn': 'Proteger mes comptes \u2014 $199/mois', 'plan2-guarantee': '\u2713 Essai gratuit 14 jours \u2022 Garantie 30 jours',
       'plan3-title': 'Institution', 'plan3-period': '/mois', 'plan3-billing': 'Comptes illimites \u2014 scalez sans limites',
       'plan3-desc': 'Pour les traders avec 10+ comptes de performance sur plusieurs firms simultanement.',
-      'plan3-features': '<li>Comptes prop firm illimites</li><li>Les 5 prop firms supportees</li><li>Panneau admin (controles AUTO/MANUEL)</li><li>Historique complet & analytics</li><li>Persistence & suivi payout</li><li>Support prioritaire & mises a jour</li><li>Configuration personnalisee</li>',
+      'plan3-features': '<li>Comptes prop firm illimites</li><li>Les 5 prop firms supportees</li><li>Moteur risk hands-off (aucun override possible)</li><li>Historique complet & analytics</li><li>Persistence & suivi payout</li><li>Support prioritaire & mises a jour</li><li>Configuration personnalisee</li>',
       'plan3-btn': 'Illimite \u2014 $499/mois', 'plan3-guarantee': '\u2713 Essai gratuit 14 jours \u2022 Garantie 30 jours',
       'roi-title': 'Le calcul est simple',
       'roi-without': 'Sans x-trade.ai', 'roi-wdesc': '/mois en challenges & resets',
