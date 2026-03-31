@@ -458,37 +458,45 @@
         <p style="font-size:12px;color:var(--text-muted);margin-top:12px;font-style:italic" id="anchor-note">And that's without data feeds, activation fees, or the months after when you blow the funded account and start over.</p>
       </div>
 
-      <div class="pricing-grid reveal">
+      <div class="pricing-grid pricing-grid-3 reveal">
+        <!-- RISK DESK -->
         <div class="price-card">
-          <div class="price-tier" id="trial-title">Free Trial</div>
+          <div class="price-tier" id="plan1-title">Risk Desk</div>
           <div class="price-amount">
             <span class="price-currency">$</span>
-            <span class="price-number">0</span>
-            <span class="price-period" id="trial-period">/14 days</span>
+            <span class="price-number">99</span>
+            <span class="price-period" id="plan1-period">/month</span>
           </div>
-          <div class="price-desc" id="trial-desc">Full access. No credit card. No limits. Run it on your current challenge and see what happens.</div>
-          <ul class="price-features" id="trial-features">
-            <li>1 prop firm account</li>
-            <li>All risk modules unlocked</li>
+          <div style="font-size:13px;color:var(--accent);margin-bottom:8px;font-weight:600" id="plan1-billing">Less than a single challenge + reset</div>
+          <div class="price-desc" id="plan1-desc">Perfect for traders running 1-2 accounts. One eval + one funded — protected.</div>
+          <ul class="price-features" id="plan1-features">
+            <li>2 prop firm accounts</li>
+            <li>All 5 prop firms supported</li>
+            <li>All risk modules</li>
             <li>Real-time dashboard</li>
             <li>Payout tracking</li>
             <li>Auto-detection (news, tilt, regime)</li>
+            <li>Cancel anytime</li>
           </ul>
-          <a href="/onboarding?mode=trial" class="btn-primary btn-full" id="trial-btn">Start 14-Day Free Trial</a>
+          <a href="/onboarding?mode=paid&plan=desk" class="btn-ghost btn-full" id="plan1-btn">Get Started — $99/mo</a>
+          <div style="text-align:center;margin-top:10px;font-size:12px;color:var(--text-dim)" id="plan1-guarantee">
+            <span style="color:var(--green)">&#10003;</span> 14-day free trial
+          </div>
         </div>
 
+        <!-- RISK DESK PRO — MOST POPULAR -->
         <div class="price-card pro">
           <div class="price-badge" id="pro-badge">MOST POPULAR</div>
-          <div class="price-tier">Risk Desk</div>
+          <div class="price-tier" id="plan2-title">Risk Desk Pro</div>
           <div class="price-amount">
             <span class="price-currency">$</span>
-            <span class="price-number">149</span>
-            <span class="price-period" id="pro-period">/month</span>
+            <span class="price-number">199</span>
+            <span class="price-period" id="plan2-period">/month</span>
           </div>
-          <div style="font-size:13px;color:var(--green);margin-bottom:8px;font-weight:600" id="pro-billing">Less than your last blown challenge + reset</div>
-          <div class="price-desc" id="pro-desc">If you save 1 reset per month, x-trade.ai pays for itself. If you reach payout, it paid for itself 10x.</div>
-          <ul class="price-features" id="pro-features">
-            <li>Unlimited prop firm accounts</li>
+          <div style="font-size:13px;color:var(--green);margin-bottom:8px;font-weight:600" id="plan2-billing">$33/account — cheaper than any reset</div>
+          <div class="price-desc" id="plan2-desc">For the multi-firm trader. Run Topstep + Apex + Bulenox in parallel — all protected.</div>
+          <ul class="price-features" id="plan2-features">
+            <li>5 prop firm accounts</li>
             <li>All 5 prop firms supported</li>
             <li>Admin panel (AUTO/MANUAL controls)</li>
             <li>Full trade history & analytics</li>
@@ -496,9 +504,34 @@
             <li>Priority rule updates</li>
             <li>Cancel anytime — no commitment</li>
           </ul>
-          <a href="/onboarding?mode=paid" class="btn-primary btn-full" id="pro-btn">Protect My Accounts — $149/mo</a>
-          <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--text-dim)" id="pro-annual">
-            <span style="color:var(--green)">&#10003;</span> 30-day money-back guarantee
+          <a href="/onboarding?mode=paid&plan=pro" class="btn-primary btn-full" id="plan2-btn">Protect My Accounts — $199/mo</a>
+          <div style="text-align:center;margin-top:10px;font-size:12px;color:var(--text-dim)" id="plan2-guarantee">
+            <span style="color:var(--green)">&#10003;</span> 14-day free trial &bull; 30-day money-back guarantee
+          </div>
+        </div>
+
+        <!-- INSTITUTION -->
+        <div class="price-card">
+          <div class="price-tier" id="plan3-title">Institution</div>
+          <div class="price-amount">
+            <span class="price-currency">$</span>
+            <span class="price-number">499</span>
+            <span class="price-period" id="plan3-period">/month</span>
+          </div>
+          <div style="font-size:13px;color:var(--accent2);margin-bottom:8px;font-weight:600" id="plan3-billing">Unlimited accounts — scale without limits</div>
+          <div class="price-desc" id="plan3-desc">For traders running 10+ performance accounts across multiple firms simultaneously.</div>
+          <ul class="price-features" id="plan3-features">
+            <li>Unlimited prop firm accounts</li>
+            <li>All 5 prop firms supported</li>
+            <li>Admin panel (AUTO/MANUAL controls)</li>
+            <li>Full trade history & analytics</li>
+            <li>Persistence & payout tracking</li>
+            <li>Priority support & rule updates</li>
+            <li>Custom configuration</li>
+          </ul>
+          <a href="/onboarding?mode=paid&plan=institution" class="btn-ghost btn-full" id="plan3-btn">Go Unlimited — $499/mo</a>
+          <div style="text-align:center;margin-top:10px;font-size:12px;color:var(--text-dim)" id="plan3-guarantee">
+            <span style="color:var(--green)">&#10003;</span> 14-day free trial &bull; 30-day money-back guarantee
           </div>
         </div>
       </div>
@@ -514,12 +547,12 @@
           </div>
           <div style="font-size:32px;color:var(--text-dim)">vs</div>
           <div style="text-align:center">
-            <span style="font-size:13px;color:var(--text-dim);display:block" id="roi-with">With x-trade.ai</span>
-            <span style="font-size:32px;font-weight:900;color:var(--green);font-family:var(--mono)">$149</span>
+            <span style="font-size:13px;color:var(--text-dim);display:block" id="roi-with">With x-trade.ai (from)</span>
+            <span style="font-size:32px;font-weight:900;color:var(--green);font-family:var(--mono)">$99</span>
             <span style="font-size:12px;color:var(--green);display:block" id="roi-adesc">/month + you actually reach payout</span>
           </div>
         </div>
-        <p style="margin-top:20px;font-size:14px;color:var(--text-dim)" id="roi-bottom">One payout of $1,000+ covers an entire year of x-trade.ai. How much did your last 12 months of challenges cost you?</p>
+        <p style="margin-top:20px;font-size:14px;color:var(--text-dim)" id="roi-bottom">One payout of $1,000+ covers an entire year of the Risk Desk plan. How much did your last 12 months of challenges cost you?</p>
       </div>
     </div>
   </section>
@@ -576,7 +609,7 @@
   <!-- Schema.org Structured Data -->
   <script type="application/ld+json">
   {"@context":"https://schema.org","@graph":[
-    {"@type":"SoftwareApplication","name":"x-trade.ai","url":"https://x-trade.ai/","applicationCategory":"FinanceApplication","operatingSystem":"Web","description":"Institutional-grade prop firm risk management tool for futures traders. Automated position sizing, drawdown protection, and payout tracking for Topstep, Apex, Bulenox, Tradeify, and TakeProfitTrader.","offers":[{"@type":"Offer","name":"Free Trial","price":"0","priceCurrency":"USD","description":"7-day free trial with full access"},{"@type":"Offer","name":"Risk Desk","price":"149","priceCurrency":"USD","description":"$149/month — unlimited prop firm accounts, all risk modules"}],"featureList":["Dynamic daily loss limit","Auto position sizing (Kelly + ATR)","ATR-based stop loss","Payout tracker","Tilt detection","News protection (FOMC, NFP, CPI)","Consistency rule monitoring","Circuit breakers (4 levels)","Trade persistence"]},
+    {"@type":"SoftwareApplication","name":"x-trade.ai","url":"https://x-trade.ai/","applicationCategory":"FinanceApplication","operatingSystem":"Web","description":"Institutional-grade prop firm risk management tool for futures traders. Automated position sizing, drawdown protection, and payout tracking for Topstep, Apex, Bulenox, Tradeify, and TakeProfitTrader.","offers":[{"@type":"Offer","name":"Free Trial","price":"0","priceCurrency":"USD","description":"7-day free trial with full access"},{"@type":"Offer","name":"Risk Desk","price":"99","priceCurrency":"USD","description":"$99/month — 2 prop firm accounts, all risk modules"},{"@type":"Offer","name":"Risk Desk Pro","price":"199","priceCurrency":"USD","description":"$199/month — 5 prop firm accounts, priority updates"},{"@type":"Offer","name":"Institution","price":"499","priceCurrency":"USD","description":"$499/month — unlimited prop firm accounts, custom config"}],"featureList":["Dynamic daily loss limit","Auto position sizing (Kelly + ATR)","ATR-based stop loss","Payout tracker","Tilt detection","News protection (FOMC, NFP, CPI)","Consistency rule monitoring","Circuit breakers (4 levels)","Trade persistence"]},
     {"@type":"Organization","name":"x-trade.ai","url":"https://x-trade.ai/","description":"Prop firm risk management for futures traders","sameAs":["https://basstrading.fr","https://hubtrading.fr"]},
     {"@type":"FAQPage","mainEntity":[
       {"@type":"Question","name":"What prop firms does x-trade.ai support?","acceptedAnswer":{"@type":"Answer","text":"x-trade.ai supports Topstep, Apex Trader Funding (4.0), Bulenox (Option 1 and 2), Tradeify, and TakeProfitTrader. All drawdown rules, consistency requirements, and position limits are pre-loaded."}},
@@ -637,18 +670,23 @@
       'price-title': 'You spent $4,270 on challenges. You got nothing back.<br/><span class="gradient-text">This changes that.</span>',
       'anchor-label': 'The real cost isn\'t the challenge. It\'s the loop.',
       'anchor-note': 'And that\'s without data feeds, activation fees, or the months after when you blow the funded account and start over.',
-      'trial-title': 'Free Trial', 'trial-period': '/14 days',
-      'trial-desc': 'Full access. No credit card. No limits. Run it on your current challenge and see what happens.', 'trial-btn': 'Start 14-Day Free Trial',
-      'trial-features': '<li>1 prop firm account</li><li>All risk modules unlocked</li><li>Real-time dashboard</li><li>Payout tracking</li><li>Auto-detection (news, tilt, regime)</li>',
-      'pro-badge': 'MOST POPULAR', 'pro-period': '/month', 'pro-billing': 'Less than your last blown challenge + reset',
-      'pro-desc': 'If you save 1 reset per month, x-trade.ai pays for itself. If you reach payout, it paid for itself 10x.',
-      'pro-btn': 'Protect My Accounts \u2014 $149/mo',
-      'pro-annual': '\u2713 30-day money-back guarantee',
-      'pro-features': '<li>Unlimited prop firm accounts</li><li>All 5 prop firms supported</li><li>Admin panel (AUTO/MANUAL controls)</li><li>Full trade history & analytics</li><li>Persistence & payout tracking</li><li>Priority rule updates</li><li>Cancel anytime \u2014 no commitment</li>',
+      'plan1-title': 'Risk Desk', 'plan1-period': '/month', 'plan1-billing': 'Less than a single challenge + reset',
+      'plan1-desc': 'Perfect for traders running 1-2 accounts. One eval + one funded \u2014 protected.',
+      'plan1-features': '<li>2 prop firm accounts</li><li>All 5 prop firms supported</li><li>All risk modules</li><li>Real-time dashboard</li><li>Payout tracking</li><li>Auto-detection (news, tilt, regime)</li><li>Cancel anytime</li>',
+      'plan1-btn': 'Get Started \u2014 $99/mo', 'plan1-guarantee': '\u2713 14-day free trial',
+      'pro-badge': 'MOST POPULAR',
+      'plan2-title': 'Risk Desk Pro', 'plan2-period': '/month', 'plan2-billing': '$40/account \u2014 cheaper than any reset',
+      'plan2-desc': 'For the multi-firm trader. Run Topstep + Apex + Bulenox in parallel \u2014 all protected.',
+      'plan2-features': '<li>5 prop firm accounts</li><li>All 5 prop firms supported</li><li>Admin panel (AUTO/MANUAL controls)</li><li>Full trade history & analytics</li><li>Persistence & payout tracking</li><li>Priority rule updates</li><li>Cancel anytime \u2014 no commitment</li>',
+      'plan2-btn': 'Protect My Accounts \u2014 $199/mo', 'plan2-guarantee': '\u2713 14-day free trial \u2022 30-day money-back guarantee',
+      'plan3-title': 'Institution', 'plan3-period': '/month', 'plan3-billing': 'Unlimited accounts \u2014 scale without limits',
+      'plan3-desc': 'For traders running 10+ performance accounts across multiple firms simultaneously.',
+      'plan3-features': '<li>Unlimited prop firm accounts</li><li>All 5 prop firms supported</li><li>Admin panel (AUTO/MANUAL controls)</li><li>Full trade history & analytics</li><li>Persistence & payout tracking</li><li>Priority support & rule updates</li><li>Custom configuration</li>',
+      'plan3-btn': 'Go Unlimited \u2014 $499/mo', 'plan3-guarantee': '\u2713 14-day free trial \u2022 30-day money-back guarantee',
       'roi-title': 'The math is simple',
       'roi-without': 'Without x-trade.ai', 'roi-wdesc': '/month in challenges & resets',
-      'roi-with': 'With x-trade.ai', 'roi-adesc': '/month + you actually reach payout',
-      'roi-bottom': 'One payout of $1,000+ covers an entire year of x-trade.ai. How much did your last 12 months of challenges cost you?',
+      'roi-with': 'With x-trade.ai (from)', 'roi-adesc': '/month + you actually reach payout',
+      'roi-bottom': 'One payout of $1,000+ covers an entire year of the Risk Desk plan. How much did your last 12 months of challenges cost you?',
       'cta-title': 'You already know how this ends without a risk desk.<br/><span class="gradient-text">Another challenge. Another reset. Another $200.</span>',
       'cta-desc': 'You\'ve spent thousands. You\'ve blown accounts you should have passed. The only variable you haven\'t changed is risk management. 14 days free. If it doesn\'t save your account, you lose nothing. If it does, you stop the bleeding forever.',
       'cta-btn': 'Start 14-Day Free Trial', 'cta-sub': 'No credit card required. Full access. All prop firms.',
@@ -699,18 +737,23 @@
       'price-title': 'Vous avez depense $4,270 en challenges. Vous n\'avez rien recupere.<br/><span class="gradient-text">Ca change maintenant.</span>',
       'anchor-label': 'Le vrai cout, c\'est pas le challenge. C\'est la boucle.',
       'anchor-note': 'Et ca c\'est sans les flux de donnees, les frais d\'activation, ou les mois d\'apres quand vous cramez le compte funded et recommencez.',
-      'trial-title': 'Essai gratuit', 'trial-period': '/14 jours',
-      'trial-desc': 'Acces complet. Sans carte bancaire. Sans limite. Lancez-le sur votre challenge en cours et voyez ce qui se passe.', 'trial-btn': 'Essai gratuit 14 jours',
-      'trial-features': '<li>1 compte prop firm</li><li>Tous les modules risk debloques</li><li>Dashboard temps reel</li><li>Suivi du payout</li><li>Auto-detection (news, tilt, regime)</li>',
-      'pro-badge': 'LE PLUS POPULAIRE', 'pro-period': '/mois', 'pro-billing': 'Moins cher que votre dernier challenge crame + reset',
-      'pro-desc': 'Si vous economisez 1 reset par mois, x-trade.ai se rembourse tout seul. Si vous atteignez le payout, il s\'est rembourse 10x.',
-      'pro-btn': 'Proteger mes comptes \u2014 $149/mois',
-      'pro-annual': '\u2713 Garantie satisfait ou rembourse 30 jours',
-      'pro-features': '<li>Comptes prop firm illimites</li><li>Les 5 prop firms supportees</li><li>Panneau admin (controles AUTO/MANUEL)</li><li>Historique complet & analytics</li><li>Persistence & suivi payout</li><li>Mises a jour prioritaires des regles</li><li>Annulation libre \u2014 sans engagement</li>',
+      'plan1-title': 'Risk Desk', 'plan1-period': '/mois', 'plan1-billing': 'Moins cher qu\'un challenge + reset',
+      'plan1-desc': 'Parfait pour les traders avec 1-2 comptes. Une eval + un funded \u2014 proteges.',
+      'plan1-features': '<li>2 comptes prop firm</li><li>Les 5 prop firms supportees</li><li>Tous les modules risk</li><li>Dashboard temps reel</li><li>Suivi du payout</li><li>Auto-detection (news, tilt, regime)</li><li>Annulation libre</li>',
+      'plan1-btn': 'Commencer \u2014 $99/mois', 'plan1-guarantee': '\u2713 Essai gratuit 14 jours',
+      'pro-badge': 'LE PLUS POPULAIRE',
+      'plan2-title': 'Risk Desk Pro', 'plan2-period': '/mois', 'plan2-billing': '$40/compte \u2014 moins cher qu\'un reset',
+      'plan2-desc': 'Pour le trader multi-firms. Topstep + Apex + Bulenox en parallele \u2014 tous proteges.',
+      'plan2-features': '<li>5 comptes prop firm</li><li>Les 5 prop firms supportees</li><li>Panneau admin (controles AUTO/MANUEL)</li><li>Historique complet & analytics</li><li>Persistence & suivi payout</li><li>Mises a jour prioritaires des regles</li><li>Annulation libre \u2014 sans engagement</li>',
+      'plan2-btn': 'Proteger mes comptes \u2014 $199/mois', 'plan2-guarantee': '\u2713 Essai gratuit 14 jours \u2022 Garantie 30 jours',
+      'plan3-title': 'Institution', 'plan3-period': '/mois', 'plan3-billing': 'Comptes illimites \u2014 scalez sans limites',
+      'plan3-desc': 'Pour les traders avec 10+ comptes de performance sur plusieurs firms simultanement.',
+      'plan3-features': '<li>Comptes prop firm illimites</li><li>Les 5 prop firms supportees</li><li>Panneau admin (controles AUTO/MANUEL)</li><li>Historique complet & analytics</li><li>Persistence & suivi payout</li><li>Support prioritaire & mises a jour</li><li>Configuration personnalisee</li>',
+      'plan3-btn': 'Illimite \u2014 $499/mois', 'plan3-guarantee': '\u2713 Essai gratuit 14 jours \u2022 Garantie 30 jours',
       'roi-title': 'Le calcul est simple',
       'roi-without': 'Sans x-trade.ai', 'roi-wdesc': '/mois en challenges & resets',
-      'roi-with': 'Avec x-trade.ai', 'roi-adesc': '/mois + vous atteignez vraiment le payout',
-      'roi-bottom': 'Un seul payout de $1,000+ couvre une annee entiere de x-trade.ai. Combien vous ont coute vos 12 derniers mois de challenges ?',
+      'roi-with': 'Avec x-trade.ai (a partir de)', 'roi-adesc': '/mois + vous atteignez vraiment le payout',
+      'roi-bottom': 'Un seul payout de $1,000+ couvre une annee entiere du plan Risk Desk. Combien vous ont coute vos 12 derniers mois de challenges ?',
       'cta-title': 'Vous savez deja comment ca finit sans risk desk.<br/><span class="gradient-text">Un autre challenge. Un autre reset. Encore $200.</span>',
       'cta-desc': 'Vous avez depense des milliers. Vous avez crame des comptes que vous auriez du passer. La seule variable que vous n\'avez pas changee, c\'est le risk management. 14 jours gratuits. Si ca ne sauve pas votre compte, vous ne perdez rien. Si ca marche, vous arretez l\'hemorragie pour toujours.',
       'cta-btn': 'Essai gratuit 14 jours', 'cta-sub': 'Sans carte bancaire. Acces complet. Toutes les prop firms.',
