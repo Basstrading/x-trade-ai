@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>x-trade.ai — Connexion</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #07090f; --bg2: #0b0e17; --bg3: #111827;
+    --cyan: #00e0ff; --green: #00ff88; --red: #ff3d5a;
+    --text1: #e2eaf5; --text2: #5d7490;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-title: 'Syne', sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text1); font-family:var(--font-mono); min-height:100vh; display:flex; align-items:center; justify-content:center; }
+.login-card {
+    background:var(--bg2); border:1px solid rgba(0,224,255,0.1); border-radius:16px;
+    padding:40px; width:380px; max-width:90vw;
+}
+.brand { font-family:var(--font-title); font-size:24px; font-weight:700; color:var(--cyan); text-align:center; margin-bottom:4px; }
+.subtitle { font-size:10px; color:var(--text2); text-align:center; letter-spacing:3px; margin-bottom:32px; }
+.field { margin-bottom:16px; }
+.field label { display:block; font-size:9px; color:var(--text2); letter-spacing:1.5px; font-family:var(--font-title); margin-bottom:6px; }
+.field input {
+    width:100%; padding:10px 14px; background:var(--bg3); border:1px solid rgba(255,255,255,0.06);
+    border-radius:8px; color:var(--text1); font-family:var(--font-mono); font-size:13px;
+    outline:none; transition:border 0.2s;
+}
+.field input:focus { border-color:rgba(0,224,255,0.4); }
+.btn-login {
+    width:100%; padding:12px; margin-top:8px; border:none; border-radius:8px; cursor:pointer;
+    background:linear-gradient(135deg, var(--cyan), var(--green));
+    color:var(--bg); font-family:var(--font-title); font-size:13px; font-weight:600;
+    letter-spacing:1px; transition:opacity 0.2s;
+}
+.btn-login:hover { opacity:0.9; }
+.btn-login:disabled { opacity:0.4; cursor:not-allowed; }
+.error { color:var(--red); font-size:11px; text-align:center; margin-top:12px; display:none; }
+.divider { text-align:center; color:var(--text2); font-size:10px; margin:20px 0; letter-spacing:1px; }
+.link { text-align:center; margin-top:16px; }
+.link a { color:var(--cyan); font-size:11px; text-decoration:none; }
+.link a:hover { text-decoration:underline; }
+</style>
+</head>
+<body>
+
+<div class="login-card">
+    <div class="brand">x-trade.ai</div>
+    <div class="subtitle">JOURNAL & COACHING</div>
+
+    <div id="login-form">
+        <div class="field">
+            <label>EMAIL</label>
+            <input type="email" id="email" placeholder="ton@email.com" autocomplete="email">
+        </div>
+        <div class="field">
+            <label>MOT DE PASSE</label>
+            <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <button class="btn-login" id="btn-login" onclick="doLogin()">SE CONNECTER</button>
+        <div class="error" id="error"></div>
+        <div class="divider">ou</div>
+        <button class="btn-login" style="background:var(--bg3);color:var(--text1);border:1px solid rgba(255,255,255,0.1)" onclick="showSignup()">CREER UN COMPTE</button>
+    </div>
+
+    <div id="signup-form" style="display:none">
+        <div class="field">
+            <label>EMAIL</label>
+            <input type="email" id="s-email" placeholder="ton@email.com">
+        </div>
+        <div class="field">
+            <label>MOT DE PASSE</label>
+            <input type="password" id="s-password" placeholder="Minimum 6 caracteres">
+        </div>
+        <div class="field">
+            <label>NOM / PSEUDO</label>
+            <input type="text" id="s-name" placeholder="Bass">
+        </div>
+        <button class="btn-login" onclick="doSignup()">CREER MON COMPTE</button>
+        <div class="error" id="s-error"></div>
+        <div class="link"><a href="#" onclick="showLogin();return false">Deja un compte ? Se connecter</a></div>
+    </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://yqmjootmvonhqzzmtwij.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_p84R-Eu5vTObiFC42DHNxA_AysCkQdn';
+
+// Check if already logged in
+const token = localStorage.getItem('sb_token');
+if (token) {
+    window.location.href = '/journal';
+}
+
+function showSignup() { document.getElementById('login-form').style.display='none'; document.getElementById('signup-form').style.display='block'; }
+function showLogin() { document.getElementById('signup-form').style.display='none'; document.getElementById('login-form').style.display='block'; }
+
+async function doLogin() {
+    const email = document.getElementById('email').value.trim();
+    const pwd = document.getElementById('password').value;
+    const errEl = document.getElementById('error');
+    errEl.style.display = 'none';
+
+    if (!email || !pwd) { errEl.textContent = 'Email et mot de passe requis'; errEl.style.display = 'block'; return; }
+
+    document.getElementById('btn-login').disabled = true;
+
+    try {
+        const r = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
+            method: 'POST',
+            headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password: pwd }),
+        });
+        const data = await r.json();
+        if (data.access_token) {
+            localStorage.setItem('sb_token', data.access_token);
+            localStorage.setItem('sb_refresh', data.refresh_token);
+            localStorage.setItem('sb_user_id', data.user.id);
+            localStorage.setItem('sb_email', data.user.email);
+            window.location.href = '/journal';
+        } else {
+            errEl.textContent = data.error_description || data.msg || 'Email ou mot de passe incorrect';
+            errEl.style.display = 'block';
+        }
+    } catch(e) {
+        errEl.textContent = 'Erreur de connexion';
+        errEl.style.display = 'block';
+    }
+    document.getElementById('btn-login').disabled = false;
+}
+
+async function doSignup() {
+    const email = document.getElementById('s-email').value.trim();
+    const pwd = document.getElementById('s-password').value;
+    const name = document.getElementById('s-name').value.trim();
+    const errEl = document.getElementById('s-error');
+    errEl.style.display = 'none';
+
+    if (!email || !pwd) { errEl.textContent = 'Email et mot de passe requis'; errEl.style.display = 'block'; return; }
+    if (pwd.length < 6) { errEl.textContent = 'Mot de passe: 6 caracteres minimum'; errEl.style.display = 'block'; return; }
+
+    try {
+        const r = await fetch(`${SUPABASE_URL}/auth/v1/signup`, {
+            method: 'POST',
+            headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password: pwd, data: { display_name: name } }),
+        });
+        const data = await r.json();
+        if (data.access_token) {
+            localStorage.setItem('sb_token', data.access_token);
+            localStorage.setItem('sb_refresh', data.refresh_token);
+            localStorage.setItem('sb_user_id', data.user.id);
+            localStorage.setItem('sb_email', data.user.email);
+            window.location.href = '/journal';
+        } else if (data.id) {
+            // Email confirmation required
+            errEl.textContent = 'Compte cree ! Verifie tes emails pour confirmer.';
+            errEl.style.display = 'block';
+            errEl.style.color = 'var(--green)';
+        } else {
+            errEl.textContent = data.error_description || data.msg || 'Erreur lors de la creation';
+            errEl.style.display = 'block';
+        }
+    } catch(e) {
+        errEl.textContent = 'Erreur de connexion';
+        errEl.style.display = 'block';
+    }
+}
+
+// Enter key
+document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+</script>
+</body>
+</html>

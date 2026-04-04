@@ -512,87 +512,260 @@ class TradingCoach:
             return "REGLE: Pas de trade apres 12h ET. Ton edge est le matin."
         return "REGLE: Suis ton plan. Si tu doutes, ne trade pas. Le marche sera la demain."
 
-    # ── Rapport texte ──
+    # ── Rapport texte complet (style desk trader) ──
 
     def _format_report(self, metrics, daily_metrics, patterns, strengths,
                        weaknesses, action_plan, desk_rule, trades) -> str:
         n = len(trades)
         days = len(daily_metrics)
+        m = metrics
+        r = []
 
-        report = []
-        report.append("## DIAGNOSTIC COMPORTEMENTAL")
-        report.append("")
+        # ═══ INTRO ═══
+        r.append("## DIAGNOSTIC COMPORTEMENTAL")
+        r.append("")
 
-        # Resume
-        if metrics['net_pnl'] > 0:
-            report.append(
-                f"Sur {n} trades ({days} jours), tu es a +${metrics['net_pnl']:,.2f} "
-                f"avec un win rate de {metrics['win_rate']}% et un profit factor de "
-                f"{metrics['profit_factor']}. "
+        # Verdict en 1 phrase
+        if m['net_pnl'] > 0 and m['profit_factor'] >= 1.5:
+            verdict = f"Tu es rentable (+${m['net_pnl']:,.0f}) avec un edge reel. Maintenant il faut le proteger."
+        elif m['net_pnl'] > 0:
+            verdict = (
+                f"Tu es positif (+${m['net_pnl']:,.0f}) mais sur un fil. "
+                f"Ton profit factor de {m['profit_factor']} est fragile — "
+                f"un mauvais jour efface tout."
             )
         else:
-            report.append(
-                f"Sur {n} trades ({days} jours), tu es a ${metrics['net_pnl']:,.2f}. "
-                f"Win rate: {metrics['win_rate']}%, profit factor: {metrics['profit_factor']}. "
+            verdict = (
+                f"Tu es a ${m['net_pnl']:,.0f}. "
+                f"Le probleme n'est pas ton analyse, c'est ton comportement. Les donnees le montrent."
             )
+        r.append(f"**{verdict}**")
+        r.append("")
 
-        if patterns:
-            severity_count = sum(1 for p in patterns if p['severity'] == 'critical')
-            report.append(
-                f"J'ai detecte {len(patterns)} patterns, dont {severity_count} critiques. "
-                f"C'est ca qui te coute de l'argent, pas le marche."
+        # ═══ CE QUI MARCHE ═══
+        r.append("### Ce que tu fais bien")
+        r.append("")
+
+        # Analyse detaillee des forces
+        winning_days = {d: dm for d, dm in daily_metrics.items() if dm['net_pnl'] > 0}
+        losing_days = {d: dm for d, dm in daily_metrics.items() if dm['net_pnl'] < 0}
+
+        if winning_days:
+            best_day = max(winning_days.items(), key=lambda x: x[1]['net_pnl'])
+            avg_win_day = sum(dm['net_pnl'] for dm in winning_days.values()) / len(winning_days)
+            r.append(
+                f"**Tes jours gagnants sont solides.** Sur {len(winning_days)} jours verts, "
+                f"tu gagnes en moyenne ${avg_win_day:,.0f}/jour. "
+                f"Ta meilleure journee ({best_day[0]}): +${best_day[1]['net_pnl']:,.0f} "
+                f"en seulement {best_day[1]['total_trades']} trades. "
+                f"Ca montre que quand tu es discipline, tu sais generer du profit."
             )
+            r.append("")
 
-        # Forces
-        report.append("")
-        report.append("### Tes forces")
+        if m['rr_ratio'] >= 1.0:
+            r.append(
+                f"**Ton R:R est positif ({m['rr_ratio']}).** "
+                f"Gain moyen: ${m['avg_win']:,.0f} vs perte moyenne: ${abs(m['avg_loss']):,.0f}. "
+                f"Quand tu gagnes, tu gagnes plus que quand tu perds. "
+                f"C'est la base d'un edge — beaucoup de traders n'ont pas ca."
+            )
+            r.append("")
+
+        best_h = m.get('best_hour_et')
+        if best_h is not None:
+            paris_h = (best_h + 6) % 24
+            r.append(
+                f"**Tu as un creneau de performance clair: {paris_h}h (heure Paris).** "
+                f"C'est ta golden hour. Les donnees montrent que tes meilleurs resultats "
+                f"viennent de ce creneau. Un sniper ne tire pas 50 fois — il attend LE tir."
+            )
+            r.append("")
+
         for s in strengths:
-            report.append(f"- {s}")
+            if s not in '\n'.join(r):
+                r.append(f"- {s}")
+        r.append("")
 
-        # Patterns
+        # ═══ ANALYSE JOUR PAR JOUR ═══
+        r.append("### Analyse jour par jour")
+        r.append("")
+
+        sorted_days = sorted(daily_metrics.keys())
+        for d in sorted_days:
+            dm = daily_metrics[d]
+            net = dm['net_pnl']
+            trades_count = dm['total_trades']
+            wr = dm.get('win_rate', 0)
+            dd = dm.get('max_drawdown', 0)
+            consec = dm.get('max_consec_losses', 0)
+
+            status = "VERT" if net > 0 else "ROUGE"
+            r.append(f"**{d}** — {status}")
+
+            if net > 0:
+                if trades_count <= 12:
+                    r.append(
+                        f"  +${net:,.0f} en {trades_count} trades (WR {wr:.0f}%). "
+                        f"Bonne discipline, nombre de trades raisonnable. "
+                        f"C'est CA le trading rentable — pas de l'hyperactivite."
+                    )
+                else:
+                    r.append(
+                        f"  +${net:,.0f} mais {trades_count} trades — trop. "
+                        f"Tu aurais probablement gagne plus en t'arretant plus tot. "
+                        f"Le surtrading grignote tes gains meme les jours verts."
+                    )
+            else:
+                if consec >= 3:
+                    r.append(
+                        f"  ${net:,.0f} avec {consec} pertes consecutives. "
+                        f"Drawdown max: ${dd:,.0f}. "
+                        f"Apres la 3eme perte, tu aurais du couper. "
+                        f"Les trades suivants etaient du revenge trading — "
+                        f"tu ne tradais plus le marche, tu tradais tes emotions."
+                    )
+                elif trades_count > 20:
+                    r.append(
+                        f"  ${net:,.0f} en {trades_count} trades. "
+                        f"C'est de l'overtrading pur. A chaque trade tu paies des frais, "
+                        f"tu accumules de la fatigue, et tu prends des decisions de moins en moins bonnes."
+                    )
+                else:
+                    r.append(
+                        f"  ${net:,.0f} en {trades_count} trades (WR {wr:.0f}%). "
+                        f"Journee difficile mais le nombre de trades est correct."
+                    )
+            r.append("")
+
+        # ═══ LES PATTERNS QUI TE COUTENT DE L'ARGENT ═══
         if patterns:
-            report.append("")
-            report.append("### Tes patterns destructeurs")
-            severity_icons = {"critical": "RED", "serious": "ORANGE", "moderate": "YELLOW"}
+            r.append("### Les patterns qui te coutent de l'argent")
+            r.append("")
+
+            total_cost = 0
             for p in sorted(patterns, key=lambda x: {'critical': 0, 'serious': 1, 'moderate': 2}.get(x['severity'], 3)):
-                icon = severity_icons.get(p['severity'], '')
-                report.append(f"")
-                report.append(f"**{p['name']}** [{icon}]")
-                report.append(f"- Preuve: {p['evidence']}")
-                report.append(f"- Impact: {p['impact']}")
-                report.append(f"- Solution: {p['solution']}")
+                sev = {"critical": "CRITIQUE", "serious": "SERIEUX", "moderate": "MODERE"}.get(p['severity'], '')
+                r.append(f"**{p['name']}** [{sev}]")
+                r.append("")
+                r.append(f"*Ce que je vois :* {p['evidence']}")
+                r.append("")
 
-        # Plan
-        report.append("")
-        report.append("### Plan d'action (cette semaine)")
+                # Explication comportementale
+                if p['name'] == 'Revenge Trading':
+                    r.append(
+                        f"*Pourquoi c'est un probleme :* Le revenge trading, c'est quand ton cerveau "
+                        f"reptilien prend le controle. Tu viens de perdre, tu veux te refaire "
+                        f"immediatement. Sauf que dans cet etat, tu ne lis plus le marche — "
+                        f"tu reagis a ta douleur. Les 28 revenge trades que je detecte ont "
+                        f"probablement une esperance negative. Un trader de desk qui fait ca "
+                        f"se fait virer. Pas un warning — virer. Parce que ca detruit des comptes."
+                    )
+                elif p['name'] == 'Overtrading':
+                    r.append(
+                        f"*Pourquoi c'est un probleme :* Le marche ne donne pas 20+ opportunites "
+                        f"par jour sur un seul instrument. Si tu prends 20 trades, 5 sont "
+                        f"probablement bons, et les 15 autres sont du bruit que tu trades par "
+                        f"ennui, par impatience ou par addiction. Chaque trade en trop te coute "
+                        f"des frais + du slippage + de l'energie mentale. L'overtrading est "
+                        f"l'ennemi #1 des prop firm traders."
+                    )
+                elif 'Tilt' in p['name']:
+                    r.append(
+                        f"*Pourquoi c'est un probleme :* Apres 3 pertes d'affilee, ton cortisol "
+                        f"est au plafond. Ton jugement est altere — exactement comme un joueur "
+                        f"de poker en tilt. Les trades que tu prends dans cet etat ne sont pas "
+                        f"bases sur ton edge mais sur ton besoin de te refaire. La data montre "
+                        f"que ${abs(float(p.get('count', 0)))} trades post-tilt t'ont coute cher."
+                    )
+                else:
+                    r.append(f"*Impact :* {p['impact']}")
+                r.append("")
+
+                r.append(f"*Ce que tu dois faire :* {p['solution']}")
+                r.append("")
+
+        # ═══ OBJECTIF PAYOUT ═══
+        r.append("### Ta route vers le payout")
+        r.append("")
+
+        payout_target = 3000  # Topstep 50K
+        remaining = payout_target - m['net_pnl']
+        if remaining > 0:
+            avg_day_pnl = m['net_pnl'] / days if days > 0 else 0
+            if avg_day_pnl > 0:
+                days_needed = remaining / avg_day_pnl
+                r.append(
+                    f"Il te reste ${remaining:,.0f} pour atteindre le payout de ${payout_target:,.0f}. "
+                    f"A ton rythme actuel (+${avg_day_pnl:,.0f}/jour en moyenne), "
+                    f"ca represente environ {days_needed:.0f} jours de trading."
+                )
+            else:
+                r.append(
+                    f"Il te reste ${remaining:,.0f} pour le payout. "
+                    f"Ta moyenne journaliere est negative — il faut d'abord "
+                    f"corriger les patterns avant de viser le payout."
+                )
+            r.append("")
+
+            # Projection sans les patterns
+            cost_patterns = sum(
+                abs(float(str(p.get('impact', '0')).replace('$', '').replace(',', '').split()[0]))
+                for p in patterns
+                if p.get('impact', '').startswith('$')
+            ) if patterns else 0
+
+            if cost_patterns > 0:
+                corrected_pnl = m['net_pnl'] + cost_patterns
+                corrected_daily = corrected_pnl / days if days > 0 else 0
+                if corrected_daily > 0:
+                    faster_days = (payout_target - corrected_pnl) / corrected_daily
+                    r.append(
+                        f"**Si tu elimines tes patterns destructeurs**, ton PnL serait "
+                        f"d'environ +${corrected_pnl:,.0f} au lieu de +${m['net_pnl']:,.0f}. "
+                        f"Le payout arriverait en {faster_days:.0f} jours au lieu de {days_needed:.0f}. "
+                        f"Les patterns te coutent du temps ET de l'argent."
+                    )
+                    r.append("")
+        else:
+            r.append(f"Tu as atteint l'objectif de payout! Focus sur la consistance maintenant.")
+            r.append("")
+
+        # ═══ BENCHMARKS ═══
+        r.append("### Ou tu te situes vs un trader pro")
+        r.append("")
+        r.append("| Metrique | Toi | Debutant | Intermediaire | Pro |")
+        r.append("|----------|-----|----------|---------------|-----|")
+        r.append(f"| Win rate | {m['win_rate']}% | 30-40% | 45-55% | 50-60% |")
+        r.append(f"| Profit factor | {m['profit_factor']} | 0.5-0.9 | 1.0-1.5 | 1.5-3.0 |")
+        r.append(f"| R:R moyen | {m['rr_ratio']} | 0.5-0.8 | 1.0-1.5 | 1.5-3.0 |")
+        r.append(f"| Max DD | ${m['max_drawdown']:,.0f} | -50% compte | -20% | -5-10% |")
+        r.append(f"| Trades/jour | {n/days:.0f} | 15-30 | 5-12 | 2-6 |")
+        r.append("")
+
+        level = "debutant"
+        if m['profit_factor'] >= 1.5 and m['win_rate'] >= 50:
+            level = "intermediaire-pro"
+        elif m['profit_factor'] >= 1.0:
+            level = "intermediaire"
+
+        r.append(
+            f"**Ton profil actuel: {level}.** "
+            f"Ton R:R de {m['rr_ratio']} est {'bon' if m['rr_ratio'] >= 1.0 else 'a ameliorer'}. "
+            f"Ton nombre de trades/jour ({n/days:.0f}) est trop eleve pour un prop trader — "
+            f"les pros font 2-6 trades/jour. Moins de trades = moins d'erreurs = plus de profit."
+        )
+        r.append("")
+
+        # ═══ PLAN D'ACTION ═══
+        r.append("### Plan d'action concret (cette semaine)")
+        r.append("")
         for i, a in enumerate(action_plan, 1):
-            report.append(f"{i}. {a}")
+            r.append(f"**{i}.** {a}")
+            r.append("")
 
-        # Desk rule
-        report.append("")
-        report.append(f"### A afficher sur ton ecran")
-        report.append(f"> {desk_rule}")
+        # ═══ DESK RULE ═══
+        r.append("### Regle a afficher sur ton ecran")
+        r.append("")
+        r.append(f"> {desk_rule}")
 
-        # Metriques detaillees
-        report.append("")
-        report.append("### Metriques detaillees")
-        report.append(f"- Trades: {metrics['total_trades']} ({metrics['wins']}W / {metrics['losses']}L)")
-        report.append(f"- Win rate: {metrics['win_rate']}%")
-        report.append(f"- R:R moyen: {metrics['rr_ratio']}")
-        report.append(f"- Profit factor: {metrics['profit_factor']}")
-        report.append(f"- Esperance/trade: ${metrics['expectancy']:+,.2f}")
-        report.append(f"- Plus gros gain: ${metrics['largest_win']:+,.2f}")
-        report.append(f"- Plus grosse perte: ${metrics['largest_loss']:+,.2f}")
-        report.append(f"- Drawdown max: ${metrics['max_drawdown']:+,.2f}")
-        report.append(f"- Serie gagnante max: {metrics['max_consec_wins']}")
-        report.append(f"- Serie perdante max: {metrics['max_consec_losses']}")
-
-        if metrics['best_hour_et'] is not None:
-            report.append(f"- Meilleure heure (ET): {metrics['best_hour_et']}h")
-        if metrics['worst_hour_et'] is not None:
-            report.append(f"- Pire heure (ET): {metrics['worst_hour_et']}h")
-
-        if metrics['session_pnl']:
-            report.append(f"- PnL par session: {metrics['session_pnl']}")
-
-        return "\n".join(report)
+        return "\n".join(r)

@@ -44,7 +44,7 @@ body { background:var(--bg); color:var(--text1); font-family:var(--font-mono); m
 }
 
 /* Layout */
-.main { display:grid; grid-template-columns:1fr 360px; gap:20px; padding:20px; max-width:1400px; margin:0 auto; }
+.main { display:grid; grid-template-columns:1fr 480px; gap:20px; padding:20px; max-width:1500px; margin:0 auto; }
 @media(max-width:900px) { .main { grid-template-columns:1fr; } }
 
 /* Cards */
@@ -196,9 +196,10 @@ body { background:var(--bg); color:var(--text1); font-family:var(--font-mono); m
         <div class="header-sub">JOURNAL & COACHING</div>
     </div>
     <div class="header-nav">
-        <a href="/dashboard">TERMINAL</a>
         <a href="/journal" class="active">JOURNAL</a>
         <a href="/risk-desk">RISK DESK</a>
+        <span style="color:var(--text2);font-size:10px;padding:6px 8px" id="user-email"></span>
+        <a href="#" onclick="logout();return false" style="color:var(--red)">LOGOUT</a>
     </div>
 </div>
 
@@ -212,11 +213,32 @@ body { background:var(--bg); color:var(--text1); font-family:var(--font-mono); m
 
 <script>
 const SUPABASE_URL = 'https://yqmjootmvonhqzzmtwij.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_p84R-Eu5vTObiFC42DHNxA_AysCkQdn';
 const API_BASE = window.location.origin;
+
+// Auth check
+const sbToken = localStorage.getItem('sb_token');
+const sbUserId = localStorage.getItem('sb_user_id');
+if (!sbToken || !sbUserId) {
+    window.location.href = '/journal/login';
+}
+
+// Logout function
+function logout() {
+    localStorage.removeItem('sb_token');
+    localStorage.removeItem('sb_refresh');
+    localStorage.removeItem('sb_user_id');
+    localStorage.removeItem('sb_email');
+    window.location.href = '/journal/login';
+}
+
+// Show user email
+const emailEl = document.getElementById('user-email');
+if (emailEl) emailEl.textContent = localStorage.getItem('sb_email') || '';
 
 async function loadJournal() {
     try {
-        const r = await fetch(`${API_BASE}/api/journal`);
+        const r = await fetch(`${API_BASE}/api/journal?user_id=${sbUserId}`);
         const data = await r.json();
 
         if (data.error) {
@@ -296,12 +318,20 @@ function renderJournal(data) {
         <div class="chart-container"><canvas id="equity-chart"></canvas></div>
     </div>`;
 
-    // Hour heatmap
+    // Hour heatmap — convert ET to Paris (ET + 6h)
     const byHour = m.by_hour || {};
+    const byHourParis = {};
+    for (const [hEt, v] of Object.entries(byHour)) {
+        const hParis = (parseInt(hEt) + 6) % 24;
+        byHourParis[hParis] = (byHourParis[hParis] || 0) + v;
+    }
+    const parisHours = Object.keys(byHourParis).map(Number).sort((a,b) => a - b);
+    const startH = Math.min(...parisHours, 10);
+    const endH = Math.max(...parisHours, 21);
     let hourCells = '';
-    for (let h = 4; h <= 15; h++) {
-        const v = byHour[h] || 0;
-        const maxAbs = Math.max(...Object.values(byHour).map(Math.abs), 1);
+    const maxAbs = Math.max(...Object.values(byHourParis).map(Math.abs), 1);
+    for (let h = startH; h <= endH; h++) {
+        const v = byHourParis[h] || 0;
         const intensity = Math.abs(v) / maxAbs;
         let bg;
         if (v > 0) bg = `rgba(0,255,136,${0.1 + intensity * 0.4})`;
@@ -309,14 +339,16 @@ function renderJournal(data) {
         else bg = 'rgba(255,255,255,0.03)';
         hourCells += `<div class="hour-cell" style="background:${bg}"><span class="hour-label">${h}h</span><span class="hour-value ${v >= 0 ? 'positive' : 'negative'}">$${v.toFixed(0)}</span></div>`;
     }
+    const bestParis = m.best_hour_et != null ? (m.best_hour_et + 6) % 24 : '-';
+    const worstParis = m.worst_hour_et != null ? (m.worst_hour_et + 6) % 24 : '-';
     left.innerHTML += `
     <div class="card">
-        <div class="card-title">PERFORMANCE PAR HEURE (ET)</div>
+        <div class="card-title">PERFORMANCE PAR HEURE (PARIS)</div>
         <div class="hour-grid">${hourCells}</div>
         <div style="margin-top:8px;font-size:10px;color:var(--text2)">
-            Meilleure heure: <span style="color:var(--green)">${m.best_hour_et || '-'}h ET</span>
+            Meilleure heure: <span style="color:var(--green)">${bestParis}h</span>
             &nbsp;|&nbsp;
-            Pire heure: <span style="color:var(--red)">${m.worst_hour_et || '-'}h ET</span>
+            Pire heure: <span style="color:var(--red)">${worstParis}h</span>
         </div>
     </div>`;
 
@@ -398,6 +430,9 @@ function renderJournal(data) {
         actionsHtml += `<div class="action-item"><div class="action-num">${i+1}</div><div>${a}</div></div>`;
     });
 
+    // Parse the full_report markdown into HTML
+    const reportHtml = markdownToHtml(data.full_report || '');
+
     right.innerHTML = `
     <div class="coach-card">
         <div class="coach-header">
@@ -407,20 +442,8 @@ function renderJournal(data) {
                 <div class="coach-role">40 ans de desk trading</div>
             </div>
         </div>
-        <div class="coach-content">
-            <div style="margin-bottom:16px">${patternBadges || '<span style="color:var(--green);font-size:11px">Aucun pattern destructeur detecte</span>'}</div>
-
-            <h3>TES FORCES</h3>
-            <ul style="list-style:none;padding:0">${strengthsHtml}</ul>
-
-            <h3>PATTERNS DETECTES</h3>
-            ${patternDetails || '<div style="color:var(--green);font-size:11px">RAS</div>'}
-
-            <h3>PLAN D\'ACTION</h3>
-            ${actionsHtml}
-
-            <div class="desk-rule">${data.desk_rule || ''}</div>
-        </div>
+        <div style="margin-bottom:16px">${patternBadges || '<span style="color:var(--green);font-size:11px">Aucun pattern destructeur detecte</span>'}</div>
+        <div class="coach-content">${reportHtml}</div>
     </div>
 
     <!-- Session PnL -->
@@ -526,6 +549,38 @@ function renderSessionChart(sessionPnl) {
             },
         },
     });
+}
+
+// Simple markdown to HTML
+function markdownToHtml(md) {
+    if (!md) return '';
+    let html = md
+        // Tables
+        .replace(/\|(.+)\|\n\|[-| :]+\|\n([\s\S]*?)(?=\n\n|\n###|\n$)/g, (match, header, body) => {
+            const ths = header.split('|').filter(Boolean).map(h => `<th>${h.trim()}</th>`).join('');
+            const rows = body.trim().split('\n').map(row => {
+                const tds = row.split('|').filter(Boolean).map(c => `<td>${c.trim()}</td>`).join('');
+                return `<tr>${tds}</tr>`;
+            }).join('');
+            return `<table class="daily-table"><thead><tr>${ths}</tr></thead><tbody>${rows}</tbody></table>`;
+        })
+        // Headers
+        .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+        .replace(/^## (.+)$/gm, '<h2 style="font-size:14px;color:var(--cyan);margin:20px 0 10px;font-family:var(--font-title)">$1</h2>')
+        // Bold
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        // Italic
+        .replace(/\*(.+?)\*/g, '<em style="color:var(--text2)">$1</em>')
+        // Blockquotes
+        .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
+        // List items
+        .replace(/^(\d+)\.\s+(.+)$/gm, '<div class="action-item"><div class="action-num">$1</div><div>$2</div></div>')
+        .replace(/^- (.+)$/gm, '<li>$1</li>')
+        // Paragraphs
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n(?!<)/g, '<br>');
+
+    return `<p>${html}</p>`;
 }
 
 // Load on page ready

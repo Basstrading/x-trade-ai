@@ -83,23 +83,26 @@ async def journal_page():
     return FileResponse(os.path.join(static_dir, "journal.html"))
 
 
+@app.get("/journal/login")
+async def journal_login_page():
+    """Page de connexion au journal."""
+    return FileResponse(os.path.join(static_dir, "journal-login.html"))
+
+
 @app.get("/api/journal")
-async def journal_data():
+async def journal_data(user_id: str = ""):
     """Donnees du journal + analyse coach pour le user connecte."""
     try:
         from core.supabase_client import SupabaseClient
         from core.trading_coach import TradingCoach
 
+        if not user_id:
+            return {"error": "Non connecte. Veuillez vous connecter."}
+
         sb = SupabaseClient(
             key=os.getenv('SUPABASE_SERVICE_KEY', '')
         )
         coach = TradingCoach(sb)
-
-        # Pour l'instant, user_id fixe (sera remplace par auth Supabase)
-        user_id = os.getenv(
-            'XTRADE_USER_ID',
-            'bcdfb9ee-3297-4307-9534-7306c0ce2246'
-        )
 
         result = await coach.analyze(user_id)
         await sb.close()
