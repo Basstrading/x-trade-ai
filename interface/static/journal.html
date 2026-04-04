@@ -279,7 +279,7 @@ function renderJournal(data) {
         <div class="stat">
             <div class="stat-label">Net P&L</div>
             <div class="stat-value ${netPnl>=0?'positive':'negative'}">$${netPnl.toFixed(0)}</div>
-            <div class="stat-sub">${m.total_trades} trades / ${days.length} jours (${data.accounts_count || 1} comptes)</div>
+            <div class="stat-sub">${data.total_trades || m.total_trades} trades / ${days.length} jours (${data.accounts_count || 1} comptes)</div>
         </div>
         <div class="stat">
             <div class="stat-label">Win Rate</div>
@@ -506,7 +506,7 @@ function renderCalendar(monthStr) {
             const net = dayData.net_pnl || 0;
             cls = net > 0 ? 'win' : net < 0 ? 'loss' : 'flat';
             pnlStr = `<span class="day-pnl ${net >= 0 ? 'positive' : 'negative'}">$${net.toFixed(0)}</span>`;
-            tradesStr = `<span class="day-trades">${dayData.total_trades}t</span>`;
+            tradesStr = `<span class="day-trades">${dayData.real_trade_count || dayData.total_trades}t</span>`;
         }
         cells += `<div class="cal-day ${cls}"><span class="day-num">${d}</span>${pnlStr}${tradesStr}</div>`;
     }
