@@ -174,15 +174,24 @@ class TradingCoach:
                 by_day[d].append(t)
         daily_metrics = {d: self._compute_metrics(dt) for d, dt in by_day.items()}
 
-        # Daily metrics par jour pour le compte principal
+        # Remplacer les metrics journalieres avec les chiffres du compte principal
         for d in daily_metrics:
             day_primary = [t for t in primary_exits if (t.get('entry_time') or '')[:10] == d]
-            w = sum(1 for t in day_primary if (t.get('net_pnl') if t.get('net_pnl') is not None else (t.get('pnl') or 0) - (t.get('fees') or 0)) > 0)
-            l = sum(1 for t in day_primary if (t.get('net_pnl') if t.get('net_pnl') is not None else (t.get('pnl') or 0) - (t.get('fees') or 0)) < 0)
+            brut = [t.get('pnl') or 0 for t in day_primary]
+            w = sum(1 for p in brut if p > 0)
+            l = sum(1 for p in brut if p < 0)
             daily_metrics[d]['real_trade_count'] = w + l
+            daily_metrics[d]['total_trades'] = w + l  # Override pour que tout soit coherent
             daily_metrics[d]['wins'] = w
             daily_metrics[d]['losses'] = l
             daily_metrics[d]['win_rate'] = round(w / (w + l) * 100, 1) if (w + l) > 0 else 0
+            # Max consecutive losses sur le compte principal
+            mcl = cl = 0
+            for p in brut:
+                if p < 0: cl += 1
+                else: cl = 0
+                mcl = max(mcl, cl)
+            daily_metrics[d]['max_consec_losses'] = mcl
 
         # Grouper par jour pour les patterns (1 seul compte)
         by_day_primary = defaultdict(list)
@@ -729,9 +738,8 @@ class TradingCoach:
 
         best_h = m.get('best_hour_et')
         if best_h is not None:
-            paris_h = (best_h + 6) % 24
             r.append(
-                f"**Tu as un creneau de performance clair: {paris_h}h (heure Paris).** "
+                f"**Tu as un creneau de performance clair: {best_h}h (heure Paris).** "
                 f"C'est ta golden hour. Les donnees montrent que tes meilleurs resultats "
                 f"viennent de ce creneau. Un sniper ne tire pas 50 fois — il attend LE tir."
             )
@@ -831,7 +839,7 @@ class TradingCoach:
                         f"est au plafond. Ton jugement est altere — exactement comme un joueur "
                         f"de poker en tilt. Les trades que tu prends dans cet etat ne sont pas "
                         f"bases sur ton edge mais sur ton besoin de te refaire. La data montre "
-                        f"que ${abs(float(p.get('count', 0)))} trades post-tilt t'ont coute cher."
+                        f"que {p.get('count', 0)} trades post-tilt t'ont coute cher."
                     )
                 else:
                     r.append(f"*Impact :* {p['impact']}")
@@ -896,7 +904,7 @@ class TradingCoach:
         r.append(f"| Profit factor | {m['profit_factor']} | 0.5-0.9 | 1.0-1.5 | 1.5-3.0 |")
         r.append(f"| R:R moyen | {m['rr_ratio']} | 0.5-0.8 | 1.0-1.5 | 1.5-3.0 |")
         r.append(f"| Max DD | ${m['max_drawdown']:,.0f} | -50% compte | -20% | -5-10% |")
-        r.append(f"| Trades/jour | {n/days:.0f} | 15-30 | 5-12 | 2-6 |")
+        r.append(f"| Trades/jour | {m['total_trades']/days:.0f} | 15-30 | 5-12 | 2-6 |")
         r.append("")
 
         level = "debutant"
@@ -908,7 +916,7 @@ class TradingCoach:
         r.append(
             f"**Ton profil actuel: {level}.** "
             f"Ton R:R de {m['rr_ratio']} est {'bon' if m['rr_ratio'] >= 1.0 else 'a ameliorer'}. "
-            f"Ton nombre de trades/jour ({n/days:.0f}) est trop eleve pour un prop trader — "
+            f"Ton nombre de trades/jour ({m['total_trades']/days:.0f}) est trop eleve pour un prop trader — "
             f"les pros font 2-6 trades/jour. Moins de trades = moins d'erreurs = plus de profit."
         )
         r.append("")
