@@ -77,6 +77,38 @@ async def dashboard():
     return FileResponse(os.path.join(static_dir, "dashboard.html"))
 
 
+@app.get("/journal")
+async def journal_page():
+    """Journal de trading + Coach IA."""
+    return FileResponse(os.path.join(static_dir, "journal.html"))
+
+
+@app.get("/api/journal")
+async def journal_data():
+    """Donnees du journal + analyse coach pour le user connecte."""
+    try:
+        from core.supabase_client import SupabaseClient
+        from core.trading_coach import TradingCoach
+
+        sb = SupabaseClient(
+            key=os.getenv('SUPABASE_SERVICE_KEY', '')
+        )
+        coach = TradingCoach(sb)
+
+        # Pour l'instant, user_id fixe (sera remplace par auth Supabase)
+        user_id = os.getenv(
+            'XTRADE_USER_ID',
+            'bcdfb9ee-3297-4307-9534-7306c0ce2246'
+        )
+
+        result = await coach.analyze(user_id)
+        await sb.close()
+
+        return result
+    except Exception as e:
+        return {"error": str(e)}
+
+
 @app.get("/owner")
 async def owner_page(admin_key: str = ""):
     """Owner panel — gestion business, licences, codes promo."""

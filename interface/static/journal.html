@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>x-trade.ai — Journal & Coach</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root {
+    --bg: #07090f;
+    --bg2: #0b0e17;
+    --bg3: #111827;
+    --cyan: #00e0ff;
+    --green: #00ff88;
+    --red: #ff3d5a;
+    --gold: #ffcc44;
+    --orange: #ff8c42;
+    --text1: #e2eaf5;
+    --text2: #5d7490;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-title: 'Syne', sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text1); font-family:var(--font-mono); min-height:100vh; }
+
+/* Header */
+.header {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 24px; border-bottom:1px solid rgba(0,224,255,0.1);
+    background:var(--bg2);
+}
+.header-brand { font-family:var(--font-title); font-size:18px; font-weight:700; color:var(--cyan); }
+.header-sub { font-size:10px; color:var(--text2); letter-spacing:2px; }
+.header-nav { display:flex; gap:12px; }
+.header-nav a {
+    padding:6px 16px; border-radius:6px; font-size:11px; letter-spacing:1px;
+    color:var(--text2); text-decoration:none; font-family:var(--font-title);
+    border:1px solid transparent; transition:all 0.2s;
+}
+.header-nav a:hover, .header-nav a.active {
+    color:var(--cyan); border-color:rgba(0,224,255,0.3);
+    background:rgba(0,224,255,0.06);
+}
+
+/* Layout */
+.main { display:grid; grid-template-columns:1fr 360px; gap:20px; padding:20px; max-width:1400px; margin:0 auto; }
+@media(max-width:900px) { .main { grid-template-columns:1fr; } }
+
+/* Cards */
+.card {
+    background:var(--bg2); border:1px solid rgba(255,255,255,0.04);
+    border-radius:12px; padding:20px; margin-bottom:16px;
+}
+.card-title {
+    font-family:var(--font-title); font-size:11px; letter-spacing:2px;
+    color:var(--text2); margin-bottom:14px; text-transform:uppercase;
+}
+
+/* Stats grid */
+.stats-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin-bottom:16px; }
+@media(max-width:700px) { .stats-grid { grid-template-columns:repeat(2, 1fr); } }
+.stat-card {
+    background:var(--bg3); border-radius:10px; padding:14px;
+    border:1px solid rgba(255,255,255,0.03);
+}
+.stat-label { font-size:9px; color:var(--text2); letter-spacing:1.5px; font-family:var(--font-title); margin-bottom:6px; }
+.stat-value { font-size:22px; font-weight:600; }
+.stat-sub { font-size:10px; color:var(--text2); margin-top:2px; }
+.positive { color:var(--green); }
+.negative { color:var(--red); }
+.neutral { color:var(--cyan); }
+
+/* Payout progress */
+.payout-bar-container {
+    background:var(--bg3); border-radius:12px; padding:16px; margin-bottom:16px;
+    border:1px solid rgba(0,255,136,0.1);
+}
+.payout-bar-bg {
+    height:28px; background:rgba(255,255,255,0.04); border-radius:8px;
+    overflow:hidden; position:relative; margin-top:10px;
+}
+.payout-bar-fill {
+    height:100%; border-radius:8px; transition:width 1s ease;
+    background:linear-gradient(90deg, var(--cyan), var(--green));
+    box-shadow:0 0 20px rgba(0,255,136,0.3);
+}
+.payout-bar-text {
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    font-size:11px; font-weight:600; color:var(--text1); text-shadow:0 1px 4px rgba(0,0,0,0.8);
+}
+
+/* Daily table */
+.daily-table { width:100%; border-collapse:collapse; font-size:12px; }
+.daily-table th {
+    text-align:left; padding:8px 10px; font-size:9px; letter-spacing:1.5px;
+    color:var(--text2); font-family:var(--font-title); border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.daily-table td { padding:8px 10px; border-bottom:1px solid rgba(255,255,255,0.03); }
+.daily-table tr:hover { background:rgba(0,224,255,0.03); }
+
+/* Coach section */
+.coach-card {
+    background:linear-gradient(135deg, rgba(0,224,255,0.04), rgba(0,255,136,0.02));
+    border:1px solid rgba(0,224,255,0.15); border-radius:12px; padding:20px;
+}
+.coach-header {
+    display:flex; align-items:center; gap:10px; margin-bottom:16px;
+}
+.coach-avatar {
+    width:40px; height:40px; border-radius:50%;
+    background:linear-gradient(135deg, var(--cyan), var(--green));
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px; font-weight:700; color:var(--bg);
+}
+.coach-name { font-family:var(--font-title); font-size:14px; font-weight:600; color:var(--cyan); }
+.coach-role { font-size:10px; color:var(--text2); }
+.coach-content { font-size:12px; line-height:1.7; color:var(--text1); }
+.coach-content h3 { font-family:var(--font-title); font-size:12px; color:var(--cyan); margin:16px 0 8px; letter-spacing:1px; }
+.coach-content strong { color:var(--gold); }
+.coach-content li { margin:4px 0; padding-left:4px; }
+.coach-content blockquote {
+    margin:12px 0; padding:12px 16px; border-left:3px solid var(--cyan);
+    background:rgba(0,224,255,0.05); border-radius:0 8px 8px 0;
+    font-family:var(--font-title); font-size:13px; color:var(--cyan);
+}
+
+/* Pattern badges */
+.pattern-badge {
+    display:inline-flex; align-items:center; gap:6px;
+    padding:6px 12px; border-radius:20px; font-size:10px;
+    font-family:var(--font-title); letter-spacing:0.5px; margin:3px;
+}
+.pattern-critical { background:rgba(255,61,90,0.12); color:var(--red); border:1px solid rgba(255,61,90,0.3); }
+.pattern-serious { background:rgba(255,140,66,0.12); color:var(--orange); border:1px solid rgba(255,140,66,0.3); }
+.pattern-moderate { background:rgba(255,204,68,0.12); color:var(--gold); border:1px solid rgba(255,204,68,0.3); }
+
+/* Action items */
+.action-item {
+    display:flex; gap:10px; padding:10px 14px; margin:6px 0;
+    background:rgba(0,255,136,0.04); border:1px solid rgba(0,255,136,0.1);
+    border-radius:8px; font-size:11px; line-height:1.5;
+}
+.action-num {
+    width:22px; height:22px; border-radius:50%; flex-shrink:0;
+    background:var(--green); color:var(--bg); font-weight:700;
+    display:flex; align-items:center; justify-content:center; font-size:11px;
+}
+
+/* Desk rule */
+.desk-rule {
+    padding:16px; margin-top:16px; text-align:center;
+    background:rgba(255,204,68,0.06); border:1px solid rgba(255,204,68,0.2);
+    border-radius:10px; font-family:var(--font-title); font-size:13px;
+    color:var(--gold); letter-spacing:0.5px; line-height:1.6;
+}
+
+/* Charts */
+.chart-container { position:relative; height:200px; margin:10px 0; }
+
+/* Hour heatmap */
+.hour-grid { display:grid; grid-template-columns:repeat(12, 1fr); gap:4px; margin-top:8px; }
+.hour-cell {
+    aspect-ratio:1; border-radius:6px; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; font-size:8px; gap:2px;
+    transition:transform 0.2s;
+}
+.hour-cell:hover { transform:scale(1.15); }
+.hour-label { font-family:var(--font-title); opacity:0.7; }
+.hour-value { font-weight:600; font-size:9px; }
+
+/* Loading */
+.loading {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:60px; color:var(--text2);
+}
+.loading-spinner {
+    width:40px; height:40px; border:3px solid rgba(0,224,255,0.1);
+    border-top-color:var(--cyan); border-radius:50%;
+    animation:spin 0.8s linear infinite; margin-bottom:16px;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* Scrollbar */
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:rgba(0,224,255,0.15); border-radius:3px; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <div>
+        <div class="header-brand">x-trade.ai</div>
+        <div class="header-sub">JOURNAL & COACHING</div>
+    </div>
+    <div class="header-nav">
+        <a href="/dashboard">TERMINAL</a>
+        <a href="/journal" class="active">JOURNAL</a>
+        <a href="/risk-desk">RISK DESK</a>
+    </div>
+</div>
+
+<!-- Main -->
+<div class="main" id="app">
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+        <div style="font-family:var(--font-title);font-size:12px;letter-spacing:2px">ANALYSE EN COURS...</div>
+    </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://yqmjootmvonhqzzmtwij.supabase.co';
+const API_BASE = window.location.origin;
+
+async function loadJournal() {
+    try {
+        const r = await fetch(`${API_BASE}/api/journal`);
+        const data = await r.json();
+
+        if (data.error) {
+            document.getElementById('app').innerHTML = `<div class="card" style="grid-column:1/-1;text-align:center;padding:60px"><div style="color:var(--red);font-size:14px">${data.error}</div></div>`;
+            return;
+        }
+
+        renderJournal(data);
+    } catch(e) {
+        document.getElementById('app').innerHTML = `<div class="card" style="grid-column:1/-1;text-align:center;padding:60px"><div style="color:var(--red)">Erreur de connexion</div><div style="color:var(--text2);font-size:11px;margin-top:8px">${e.message}</div></div>`;
+    }
+}
+
+function renderJournal(data) {
+    const m = data.metrics;
+    const dm = data.daily_metrics || {};
+    const patterns = data.patterns_detected || [];
+    const days = Object.keys(dm).sort();
+
+    // Compute payout info
+    const netPnl = m.net_pnl || 0;
+    const payoutTarget = 3000; // Topstep 50K
+    const payoutPct = Math.min(100, Math.max(0, (netPnl / payoutTarget) * 100));
+
+    const app = document.getElementById('app');
+    app.innerHTML = '';
+
+    // ===== LEFT COLUMN =====
+    const left = document.createElement('div');
+
+    // Payout progress
+    left.innerHTML += `
+    <div class="payout-bar-container">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="card-title" style="margin:0">PROGRESSION PAYOUT</div>
+            <div style="font-size:11px;color:var(--text2)">Objectif: $${payoutTarget.toLocaleString()}</div>
+        </div>
+        <div class="payout-bar-bg">
+            <div class="payout-bar-fill" style="width:${Math.max(2, payoutPct)}%"></div>
+            <div class="payout-bar-text">$${netPnl.toFixed(0)} / $${payoutTarget.toLocaleString()} (${payoutPct.toFixed(0)}%)</div>
+        </div>
+    </div>`;
+
+    // Stats grid
+    const winRate = m.win_rate || 0;
+    const pf = m.profit_factor || 0;
+    const rr = m.rr_ratio || 0;
+    const exp = m.expectancy || 0;
+    left.innerHTML += `
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">NET P&L</div>
+            <div class="stat-value ${netPnl >= 0 ? 'positive' : 'negative'}">$${netPnl.toFixed(0)}</div>
+            <div class="stat-sub">${m.total_trades} trades / ${days.length} jours</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">WIN RATE</div>
+            <div class="stat-value ${winRate >= 50 ? 'positive' : winRate >= 40 ? 'neutral' : 'negative'}">${winRate.toFixed(1)}%</div>
+            <div class="stat-sub">${m.wins}W / ${m.losses}L</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">PROFIT FACTOR</div>
+            <div class="stat-value ${pf >= 1.5 ? 'positive' : pf >= 1.0 ? 'neutral' : 'negative'}">${pf.toFixed(2)}</div>
+            <div class="stat-sub">R:R ${rr.toFixed(2)}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">ESPERANCE</div>
+            <div class="stat-value ${exp >= 0 ? 'positive' : 'negative'}">$${exp.toFixed(2)}</div>
+            <div class="stat-sub">par trade</div>
+        </div>
+    </div>`;
+
+    // Equity curve
+    left.innerHTML += `
+    <div class="card">
+        <div class="card-title">EQUITY CURVE</div>
+        <div class="chart-container"><canvas id="equity-chart"></canvas></div>
+    </div>`;
+
+    // Hour heatmap
+    const byHour = m.by_hour || {};
+    let hourCells = '';
+    for (let h = 4; h <= 15; h++) {
+        const v = byHour[h] || 0;
+        const maxAbs = Math.max(...Object.values(byHour).map(Math.abs), 1);
+        const intensity = Math.abs(v) / maxAbs;
+        let bg;
+        if (v > 0) bg = `rgba(0,255,136,${0.1 + intensity * 0.4})`;
+        else if (v < 0) bg = `rgba(255,61,90,${0.1 + intensity * 0.4})`;
+        else bg = 'rgba(255,255,255,0.03)';
+        hourCells += `<div class="hour-cell" style="background:${bg}"><span class="hour-label">${h}h</span><span class="hour-value ${v >= 0 ? 'positive' : 'negative'}">$${v.toFixed(0)}</span></div>`;
+    }
+    left.innerHTML += `
+    <div class="card">
+        <div class="card-title">PERFORMANCE PAR HEURE (ET)</div>
+        <div class="hour-grid">${hourCells}</div>
+        <div style="margin-top:8px;font-size:10px;color:var(--text2)">
+            Meilleure heure: <span style="color:var(--green)">${m.best_hour_et || '-'}h ET</span>
+            &nbsp;|&nbsp;
+            Pire heure: <span style="color:var(--red)">${m.worst_hour_et || '-'}h ET</span>
+        </div>
+    </div>`;
+
+    // Daily breakdown
+    let dailyRows = '';
+    for (const d of days) {
+        const day = dm[d];
+        const net = day.net_pnl || 0;
+        const wr = day.win_rate || 0;
+        const dayName = new Date(d + 'T12:00:00').toLocaleDateString('fr-FR', {weekday: 'short', day: 'numeric', month: 'short'});
+        dailyRows += `<tr>
+            <td style="color:var(--text2)">${dayName}</td>
+            <td class="${net >= 0 ? 'positive' : 'negative'}" style="font-weight:600">$${net.toFixed(2)}</td>
+            <td>${day.total_trades}</td>
+            <td>${wr.toFixed(0)}%</td>
+            <td class="${(day.max_drawdown||0) < -200 ? 'negative' : ''}">${day.max_drawdown ? '$'+day.max_drawdown.toFixed(0) : '-'}</td>
+            <td>${day.max_consec_losses || 0}</td>
+        </tr>`;
+    }
+    left.innerHTML += `
+    <div class="card">
+        <div class="card-title">HISTORIQUE PAR JOUR</div>
+        <table class="daily-table">
+            <thead><tr><th>JOUR</th><th>NET P&L</th><th>TRADES</th><th>WIN%</th><th>MAX DD</th><th>CONSEC L</th></tr></thead>
+            <tbody>${dailyRows}</tbody>
+        </table>
+    </div>`;
+
+    // Extra stats
+    left.innerHTML += `
+    <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="stat-card">
+            <div class="stat-label">PLUS GROS GAIN</div>
+            <div class="stat-value positive" style="font-size:16px">$${(m.largest_win||0).toFixed(0)}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">PLUS GROSSE PERTE</div>
+            <div class="stat-value negative" style="font-size:16px">$${(m.largest_loss||0).toFixed(0)}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">MAX DRAWDOWN</div>
+            <div class="stat-value negative" style="font-size:16px">$${(m.max_drawdown||0).toFixed(0)}</div>
+        </div>
+    </div>`;
+
+    app.appendChild(left);
+
+    // ===== RIGHT COLUMN (COACH) =====
+    const right = document.createElement('div');
+
+    // Patterns detected
+    let patternBadges = '';
+    for (const p of patterns) {
+        const cls = p.severity === 'critical' ? 'pattern-critical' : p.severity === 'serious' ? 'pattern-serious' : 'pattern-moderate';
+        patternBadges += `<span class="pattern-badge ${cls}">${p.name}</span>`;
+    }
+
+    // Strengths
+    let strengthsHtml = '';
+    for (const s of data.strengths || []) {
+        strengthsHtml += `<li>${s}</li>`;
+    }
+
+    // Weaknesses as pattern details
+    let patternDetails = '';
+    for (const p of patterns) {
+        const color = p.severity === 'critical' ? 'var(--red)' : p.severity === 'serious' ? 'var(--orange)' : 'var(--gold)';
+        patternDetails += `
+        <div style="margin:12px 0;padding:12px;background:rgba(255,255,255,0.02);border-radius:8px;border-left:3px solid ${color}">
+            <div style="font-family:var(--font-title);font-size:11px;color:${color};margin-bottom:6px">${p.name.toUpperCase()}</div>
+            <div style="font-size:11px;color:var(--text2);margin-bottom:4px">${p.evidence}</div>
+            <div style="font-size:11px;color:var(--text1)">${p.impact}</div>
+        </div>`;
+    }
+
+    // Action plan
+    let actionsHtml = '';
+    (data.action_plan || []).forEach((a, i) => {
+        actionsHtml += `<div class="action-item"><div class="action-num">${i+1}</div><div>${a}</div></div>`;
+    });
+
+    right.innerHTML = `
+    <div class="coach-card">
+        <div class="coach-header">
+            <div class="coach-avatar">C</div>
+            <div>
+                <div class="coach-name">Coach x-trade</div>
+                <div class="coach-role">40 ans de desk trading</div>
+            </div>
+        </div>
+        <div class="coach-content">
+            <div style="margin-bottom:16px">${patternBadges || '<span style="color:var(--green);font-size:11px">Aucun pattern destructeur detecte</span>'}</div>
+
+            <h3>TES FORCES</h3>
+            <ul style="list-style:none;padding:0">${strengthsHtml}</ul>
+
+            <h3>PATTERNS DETECTES</h3>
+            ${patternDetails || '<div style="color:var(--green);font-size:11px">RAS</div>'}
+
+            <h3>PLAN D\'ACTION</h3>
+            ${actionsHtml}
+
+            <div class="desk-rule">${data.desk_rule || ''}</div>
+        </div>
+    </div>
+
+    <!-- Session PnL -->
+    <div class="card" style="margin-top:16px">
+        <div class="card-title">P&L PAR SESSION</div>
+        <div class="chart-container" style="height:160px"><canvas id="session-chart"></canvas></div>
+    </div>
+
+    <!-- Key numbers -->
+    <div class="card" style="margin-top:16px">
+        <div class="card-title">CHIFFRES CLES</div>
+        <div style="display:grid;gap:8px;font-size:11px">
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--text2)">Serie gagnante max</span><span class="positive">${m.max_consec_wins}</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--text2)">Serie perdante max</span><span class="negative">${m.max_consec_losses}</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--text2)">Gain moyen</span><span class="positive">$${(m.avg_win||0).toFixed(2)}</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--text2)">Perte moyenne</span><span class="negative">$${(m.avg_loss||0).toFixed(2)}</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--text2)">Confiance analyse</span><span style="color:var(--cyan)">${data.confidence_level || '-'}</span></div>
+        </div>
+    </div>`;
+
+    app.appendChild(right);
+
+    // ===== CHARTS =====
+    renderEquityChart(data);
+    renderSessionChart(m.session_pnl || {});
+}
+
+function renderEquityChart(data) {
+    const dm = data.daily_metrics || {};
+    const days = Object.keys(dm).sort();
+    let cumPnl = 0;
+    const labels = [];
+    const values = [];
+    const colors = [];
+
+    for (const d of days) {
+        cumPnl += (dm[d].net_pnl || 0);
+        labels.push(new Date(d + 'T12:00:00').toLocaleDateString('fr-FR', {day:'numeric', month:'short'}));
+        values.push(cumPnl);
+        colors.push(cumPnl >= 0 ? 'rgba(0,255,136,1)' : 'rgba(255,61,90,1)');
+    }
+
+    const ctx = document.getElementById('equity-chart');
+    if (!ctx) return;
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [{
+                data: values,
+                borderColor: 'rgba(0,224,255,0.8)',
+                backgroundColor: 'rgba(0,224,255,0.05)',
+                fill: true,
+                tension: 0.3,
+                pointRadius: 5,
+                pointBackgroundColor: colors,
+                pointBorderColor: colors,
+                borderWidth: 2,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { ticks: { color: '#5d7490', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.03)' } },
+                y: {
+                    ticks: { color: '#5d7490', font: { size: 10 }, callback: v => '$' + v },
+                    grid: { color: 'rgba(255,255,255,0.03)' },
+                },
+            },
+        },
+    });
+}
+
+function renderSessionChart(sessionPnl) {
+    const labels = [];
+    const values = [];
+    const colors = [];
+    const sessionNames = { asia: 'Asia', london: 'London', new_york: 'New York', overnight: 'Overnight' };
+
+    for (const [s, v] of Object.entries(sessionPnl)) {
+        labels.push(sessionNames[s] || s);
+        values.push(v);
+        colors.push(v >= 0 ? 'rgba(0,255,136,0.7)' : 'rgba(255,61,90,0.7)');
+    }
+
+    const ctx = document.getElementById('session-chart');
+    if (!ctx) return;
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [{ data: values, backgroundColor: colors, borderRadius: 6, barThickness: 30 }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { ticks: { color: '#5d7490', font: { size: 10 } }, grid: { display: false } },
+                y: { ticks: { color: '#5d7490', font: { size: 10 }, callback: v => '$' + v }, grid: { color: 'rgba(255,255,255,0.03)' } },
+            },
+        },
+    });
+}
+
+// Load on page ready
+loadJournal();
+</script>
+</body>
+</html>

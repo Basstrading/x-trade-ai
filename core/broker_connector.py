@@ -211,27 +211,81 @@ class BrokerConnector:
 
         async def _monitor_loop():
             while self.connected:
+                any_blocked = False
                 try:
                     for acc_id in self.selected_account_ids:
                         current_positions = await self.get_positions(acc_id)
                         prev_positions = self._last_known_positions.get(acc_id, [])
 
-                        # Detecter les trades fermes
-                        # Si on avait des positions avant et plus maintenant → trade ferme
+                        # Construire les maps par contract_id (ignorer les None)
                         prev_sizes = {
                             p.get("contract_id"): p
-                            for p in prev_positions if p.get("size", 0) != 0
+                            for p in prev_positions
+                            if p.get("size", 0) != 0 and p.get("contract_id")
                         }
                         current_sizes = {
                             p.get("contract_id"): p
-                            for p in current_positions if p.get("size", 0) != 0
+                            for p in current_positions
+                            if p.get("size", 0) != 0 and p.get("contract_id")
                         }
 
-                        # Positions qui ont disparu → trades fermes
+                        # Sync balance UNE SEULE FOIS avant de traiter les trades
+                        # (evite les appels API redondants)
+                        new_balance = None
+                        if self._sync_callback or prev_sizes != current_sizes:
+                            try:
+                                accounts = await self._fetch_accounts()
+                                for acc in accounts:
+                                    if acc["id"] == acc_id:
+                                        new_balance = acc.get("balance", 0)
+                                        break
+                            except Exception as e:
+                                logger.debug(f"Fetch accounts: {e}")
+
+                        # Detecter les closes partielles (taille qui diminue)
                         for cid, prev_pos in prev_sizes.items():
-                            if cid not in current_sizes:
-                                # Trade ferme ! Calculer le PnL via le changement de balance
-                                await self._on_trade_closed(acc_id, prev_pos)
+                            if cid in current_sizes:
+                                cur_pos = current_sizes[cid]
+                                prev_size = abs(prev_pos.get("size", 0))
+                                cur_size = abs(cur_pos.get("size", 0))
+                                if cur_size < prev_size:
+                                    logger.info(
+                                        f"CLOSE PARTIELLE | {cid} | "
+                                        f"{prev_size} -> {cur_size} ct"
+                                    )
+
+                        # Positions qui ont disparu → trades fermes
+                        # Maj balance AVANT la boucle pour que le PnL soit correct
+                        closed_positions = [
+                            (cid, prev_pos) for cid, prev_pos in prev_sizes.items()
+                            if cid not in current_sizes
+                        ]
+                        if closed_positions and new_balance is not None:
+                            # Calculer le PnL total de TOUTES les closes de ce cycle
+                            old_balance = self._last_known_balances.get(acc_id, 0)
+                            total_pnl = new_balance - old_balance
+                            self._last_known_balances[acc_id] = new_balance
+
+                            if len(closed_positions) == 1:
+                                # Un seul trade ferme → PnL complet
+                                cid, prev_pos = closed_positions[0]
+                                await self._on_trade_closed_with_pnl(
+                                    acc_id, prev_pos, total_pnl, new_balance
+                                )
+                            else:
+                                # Plusieurs trades fermes dans le meme cycle
+                                # On ne peut pas split le PnL → on attribue au premier
+                                # et log un warning
+                                logger.warning(
+                                    f"MULTI-CLOSE | {len(closed_positions)} trades "
+                                    f"fermes en meme temps | PnL total: ${total_pnl:+,.2f}"
+                                )
+                                for cid, prev_pos in closed_positions:
+                                    await self._on_trade_closed_with_pnl(
+                                        acc_id, prev_pos,
+                                        total_pnl / len(closed_positions),
+                                        new_balance,
+                                    )
 
                         # Positions nouvelles → trades ouverts
                         for cid, cur_pos in current_sizes.items():
@@ -261,13 +315,9 @@ class BrokerConnector:
                         self._last_known_positions[acc_id] = current_positions
 
                         # Sync balance broker → risk desk
-                        if self._sync_callback:
+                        if self._sync_callback and new_balance is not None:
                             try:
-                                accounts = await self._fetch_accounts()
-                                for acc in accounts:
-                                    if acc["id"] == acc_id:
-                                        self._sync_callback(acc.get("balance", 0))
-                                        break
+                                self._sync_callback(new_balance)
                             except Exception as e:
                                 logger.debug(f"Sync callback: {e}")
 
@@ -275,9 +325,12 @@ class BrokerConnector:
                         if self._enforce_callback:
                             try:
                                 result = await self._enforce_callback(self.client, acc_id)
-                                self._is_blocked = (result == -1)
+                                if result == -1:
+                                    any_blocked = True
                             except Exception as e:
                                 logger.debug(f"Enforce callback: {e}")
+
+                    self._is_blocked = any_blocked
 
                 except Exception as e:
                     logger.warning(f"Trade monitor: {e}")
@@ -291,19 +344,10 @@ class BrokerConnector:
             f"(polling adaptatif: 2s normal, 1s si bloque)"
         )
 
-    async def _on_trade_closed(self, account_id: int, closed_position: dict):
-        """Appele quand un trade est detecte comme ferme."""
-        # Recuperer la nouvelle balance pour calculer le PnL
-        accounts = await self._fetch_accounts()
-        new_balance = 0
-        for acc in accounts:
-            if acc["id"] == account_id:
-                new_balance = acc.get("balance", 0)
-
-        old_balance = self._last_known_balances.get(account_id, 0)
-        pnl = new_balance - old_balance
-        self._last_known_balances[account_id] = new_balance
-
+    async def _on_trade_closed_with_pnl(self, account_id: int,
+                                        closed_position: dict,
+                                        pnl: float, new_balance: float):
+        """Appele quand un trade est detecte comme ferme, PnL deja calcule."""
         direction = closed_position.get("direction", "")
         size = closed_position.get("size", 0)
         entry = closed_position.get("avg_price", 0)
@@ -315,13 +359,13 @@ class BrokerConnector:
             f"Balance: ${new_balance:,.2f}"
         )
 
-        # Appeler le callback du Risk Desk
-        if self._trade_callback and pnl != 0:
+        # Appeler le callback du Risk Desk (meme si PnL = 0, c'est un trade reel)
+        if self._trade_callback:
             self._trade_callback(
                 pnl=pnl,
                 direction=direction,
                 entry=entry,
-                exit_price=0,  # Pas dispo directement
+                exit_price=0,
                 contracts=abs(size),
                 reason="broker_detected",
             )

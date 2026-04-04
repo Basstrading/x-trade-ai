@@ -651,17 +651,25 @@ class SessionGuard:
 
     def can_trade(self, now_et: time = None) -> Tuple[bool, str]:
         """Vérifie si la session permet le trading."""
+        # Calculer l'heure ET si pas fournie
+        if now_et is None:
+            try:
+                from zoneinfo import ZoneInfo
+                now_et = datetime.now(ZoneInfo("America/New_York")).time()
+            except Exception:
+                now_et = (datetime.utcnow() - timedelta(hours=4)).time()
+
         phase = self.get_phase(now_et)
 
         if phase not in self.allowed_phases:
             return False, f"Session {phase.value} — trading interdit"
 
-        if now_et and now_et > self.last_entry_time:
+        if now_et > self.last_entry_time:
             return False, f"Après {self.last_entry_time} — plus de nouvelles positions"
 
         # Vérifier les fenêtres bloquées (news)
         for start, end, reason in self.blocked_windows:
-            if now_et and start <= now_et <= end:
+            if start <= now_et <= end:
                 return False, f"Fenêtre bloquée: {reason}"
 
         return True, f"Session {phase.value} — OK"
@@ -776,8 +784,12 @@ class InstitutionalRiskManager:
     # ── Daily Reset ──
 
     def new_day(self):
-        """Reset quotidien automatique."""
-        today = date.today()
+        """Reset quotidien automatique (basé sur l'heure ET, pas locale)."""
+        try:
+            from zoneinfo import ZoneInfo
+            today = datetime.now(ZoneInfo("America/New_York")).date()
+        except Exception:
+            today = date.today()
         if self.current_date == today:
             return
         if self.current_date:

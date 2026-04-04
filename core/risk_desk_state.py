@@ -290,13 +290,17 @@ class RiskDeskStateManager:
         """
         if abs(broker_balance - self.state.current_balance) > 0.01:
             old = self.state.current_balance
+            # Mettre a jour total_profit pour rester en sync
+            delta = broker_balance - self.state.current_balance
+            self.state.total_profit += delta
             self.state.current_balance = broker_balance
             if broker_balance > self.state.peak_balance:
                 self.state.peak_balance = broker_balance
             self.state.trailing_drawdown = broker_balance - self.state.peak_balance
             self._save()
             logger.info(
-                f"Balance synced: ${old:,.0f} -> ${broker_balance:,.0f}"
+                f"Balance synced: ${old:,.0f} -> ${broker_balance:,.0f} "
+                f"(total_profit ajuste: ${self.state.total_profit:+,.0f})"
             )
 
     # ── Day management ──
@@ -423,24 +427,25 @@ class RiskDeskStateManager:
     # ── Persistence ──
 
     def _save(self):
-        """Sauvegarde l'etat dans un fichier JSON."""
+        """Sauvegarde l'etat dans un fichier JSON (ecriture atomique)."""
         self.state.last_updated = datetime.now().isoformat()
         try:
             data = asdict(self.state)
-            self.state_file.write_text(
-                json.dumps(data, ensure_ascii=False, indent=2),
-                encoding="utf-8",
-            )
+            content = json.dumps(data, ensure_ascii=False, indent=2)
+            # Ecriture atomique : tmp + rename pour eviter la corruption
+            tmp = self.state_file.with_suffix('.tmp')
+            tmp.write_text(content, encoding="utf-8")
+            tmp.replace(self.state_file)
         except Exception as e:
             logger.error(f"Erreur sauvegarde state: {e}")
 
     def _save_trades(self):
-        """Sauvegarde tous les trades dans un fichier separe."""
+        """Sauvegarde tous les trades dans un fichier separe (ecriture atomique)."""
         try:
-            self.trades_file.write_text(
-                json.dumps(self._all_trades, ensure_ascii=False, indent=2),
-                encoding="utf-8",
-            )
+            content = json.dumps(self._all_trades, ensure_ascii=False, indent=2)
+            tmp = self.trades_file.with_suffix('.tmp')
+            tmp.write_text(content, encoding="utf-8")
+            tmp.replace(self.trades_file)
         except Exception as e:
             logger.error(f"Erreur sauvegarde trades: {e}")
 

@@ -199,26 +199,23 @@ class ConsistencyMonitor:
 
 class ProfitProtector:
     """
-    Double protection des gains :
+    Trailing daily stop simple : plancher = peak_pnl - $300.
 
-    1. Trailing daily stop : plancher = peak - $300 (toujours actif)
-       → protege des le premier dollar de gain, pas de trou
+    Le plancher monte avec les gains, jamais ne redescend.
+    Toujours $300 de drawdown autorise depuis le plus haut du jour.
 
-    2. Profit lock (paliers) : verrouille un % du peak
-       - $150+ : 40%
-       - $300+ : 50%
-       - $500+ : 60%
-       → protege les grosses journees plus agressivement
-
-    Le plancher effectif = MAX(trailing, profit_lock, base_daily_limit)
-    Le trader voit juste le chiffre, pas la mecanique.
+    Exemples (TRAILING_DISTANCE = 300):
+      PnL $0   → plancher -$300
+      PnL $100 → plancher -$200
+      PnL $300 → plancher $0
+      PnL $500 → plancher +$200
     """
 
-    TRAILING_DISTANCE = 300.0  # Trailing fixe en dollars
+    TRAILING_DISTANCE = 300.0  # Drawdown max depuis le peak du jour
 
     def __init__(self):
         self.peak_pnl: float = 0.0
-        self.locked_profit: float = 0.0
+        self.locked_profit: float = 0.0  # Garde pour compat dashboard
         self.trailing_floor: float = 0.0
         self.min_pnl: float = 0.0
 
@@ -231,29 +228,19 @@ class ProfitProtector:
         if current_pnl > self.peak_pnl:
             self.peak_pnl = current_pnl
 
-        # 1. Trailing daily stop : peak - $300
+        # Trailing : peak - $300
         self.trailing_floor = self.peak_pnl - self.TRAILING_DISTANCE
 
-        # 2. Profit lock (paliers)
-        if self.peak_pnl >= 500:
-            self.locked_profit = self.peak_pnl * 0.60
-        elif self.peak_pnl >= 300:
-            self.locked_profit = self.peak_pnl * 0.50
-        elif self.peak_pnl >= 150:
-            self.locked_profit = self.peak_pnl * 0.40
-        else:
-            self.locked_profit = 0.0
-
-        # Plancher effectif = MAX des trois protections
-        self.min_pnl = max(base_daily_limit, self.trailing_floor, self.locked_profit)
+        # Plancher effectif = MAX(daily_limit, trailing)
+        # Le daily limit est la protection de base, le trailing prend le relais
+        # quand les gains montent
+        self.min_pnl = max(base_daily_limit, self.trailing_floor)
+        self.locked_profit = max(0.0, self.trailing_floor)
 
         return self.min_pnl
 
     def is_breached(self, current_pnl: float) -> bool:
         """Le P&L a-t-il franchi le plancher ?"""
-        # Le plancher monte avec les gains. Si le P&L descend en dessous → breach.
-        # On ne breach que si le plancher est au-dessus du daily limit de base
-        # (sinon c'est le daily limit normal qui gère)
         return current_pnl < self.min_pnl and self.peak_pnl > 0
 
     def reset(self):
@@ -335,11 +322,11 @@ class RiskProfile:
     # 2. Reduction progressive apres chaque jour perdant consecutif
     # 3. Cap: jamais plus de Y% du DD RESTANT en un jour
     # 4. Blocked quand DD restant < Z% du total ou 5+ jours perdants
-    agent_base_daily_pct: float = 0.20    # 20% du DD total = limite de base
+    agent_base_daily_pct: float = 0.15    # 15% du DD total = limite de base ($300 sur 50K)
     agent_dd_remaining_cap: float = 0.25  # Jamais plus de 25% du DD restant
     agent_dd_block_pct: float = 0.15      # Bloque quand DD restant < 15% du total
     agent_max_consec_losing_days: int = 5  # Bloque apres 5 jours perdants
-    agent_max_trades: int = 6
+    agent_max_trades: int = 12
     agent_max_consecutive_losses: int = 3
     strategy_stats: Optional[StrategyStats] = None
     allowed_sessions: List[SessionPhase] = field(default_factory=lambda: [
@@ -542,6 +529,7 @@ class RiskDeskEngine:
 
         # Historique des trades du jour
         self._trades_today: List[dict] = self.state.state.today_trade_log
+        self._pnl_synced_today: bool = False  # Evite re-inference en boucle
 
         # Maintenant que le state est charge, calculer les jours consecutifs
         self._consec_losing_days = self._calc_consec_losing_days()
@@ -907,21 +895,38 @@ class RiskDeskEngine:
         # 3. Si le P&L du jour est 0 mais la balance a bougé
         #    → le trader a tradé sans le Risk Desk
         #    → recalculer le daily P&L depuis la balance d'ouverture
-        if self.irm.daily_trades == 0 and abs(broker_balance - old_balance) > 0.50:
+        #    MAIS: ne JAMAIS inférer un PnL négatif qui bloquerait le trading
+        #    au premier sync (risque de faux blocage dû à un écart state/broker)
+        if self.irm.daily_trades == 0 and not self._pnl_synced_today and abs(broker_balance - old_balance) > 0.50:
             # Retrouver la balance d'ouverture du jour
             opening = self.state.state.initial_balance + (
                 self.state.state.total_profit - self.state.state.today_pnl
             )
             inferred_pnl = broker_balance - opening
             if abs(inferred_pnl) > 0.50:
-                self.irm.daily_pnl = inferred_pnl
-                self.state.state.today_pnl = inferred_pnl
-                self.state._save()
-                logger.warning(
-                    f"SYNC: P&L du jour recalcule depuis broker: "
-                    f"${inferred_pnl:+,.2f} (balance {old_balance:,.0f} -> "
-                    f"{broker_balance:,.0f})"
-                )
+                # Si le PnL inféré est négatif et qu'aucun trade n'a été
+                # enregistré aujourd'hui, c'est probablement un écart
+                # state/broker (fees, ajustement, restart VPS).
+                # On log l'écart mais on ne bloque PAS le trading.
+                self._pnl_synced_today = True
+                if inferred_pnl < 0:
+                    logger.warning(
+                        f"SYNC: Ecart balance detecte: "
+                        f"${inferred_pnl:+,.2f} (broker={broker_balance:,.2f}, "
+                        f"attendu={opening:,.2f}) — PAS applique comme PnL "
+                        f"(aucun trade enregistre, possible ecart state/broker)"
+                    )
+                else:
+                    # PnL positif inféré = le trader a gagné hors Risk Desk
+                    # On l'applique (pas de risque de blocage)
+                    self.irm.daily_pnl = inferred_pnl
+                    self.state.state.today_pnl = inferred_pnl
+                    self.state._save()
+                    logger.warning(
+                        f"SYNC: P&L du jour recalcule depuis broker: "
+                        f"${inferred_pnl:+,.2f} (balance {old_balance:,.0f} -> "
+                        f"{broker_balance:,.0f})"
+                    )
 
         if abs(broker_balance - old_balance) > 0.01:
             logger.info(
