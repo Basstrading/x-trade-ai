@@ -37,12 +37,14 @@ class TradingCoach:
             if t.get('broker_account_id')
         ))
 
-        # Regrouper les fills en round-trips (1 entree + sortie = 1 trade)
-        trades = self._fills_to_round_trips(raw_fills)
+        # Fills de sortie = ceux avec un PnL != 0 (les entrees ont pnl=0)
+        # On utilise net_pnl (colonne GENERATED = pnl - fees) si disponible
+        exit_fills = [t for t in raw_fills if (t.get('pnl') or 0) != 0]
+        trades = exit_fills
 
         # Grouper par jour
         by_day = defaultdict(list)
-        for t in trades:
+        for t in exit_fills:
             d = (t.get('entry_time') or '')[:10]
             if d:
                 by_day[d].append(t)
@@ -184,9 +186,12 @@ class TradingCoach:
 
         pnls = []
         for t in trades:
-            pnl = (t.get('pnl') or 0)
-            fees = (t.get('fees') or 0)
-            pnls.append(pnl - fees)
+            # Utiliser net_pnl (colonne Supabase) si dispo, sinon pnl - fees
+            net = t.get('net_pnl')
+            if net is not None:
+                pnls.append(net)
+            else:
+                pnls.append((t.get('pnl') or 0) - (t.get('fees') or 0))
 
         wins = [p for p in pnls if p > 0]
         losses = [p for p in pnls if p < 0]

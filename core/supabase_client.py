@@ -89,23 +89,37 @@ class SupabaseClient:
             return 0
 
     async def get_trades(self, user_id: str, start_date: str = None,
-                         end_date: str = None, limit: int = 1000) -> List[dict]:
-        """Recupere les trades d'un user."""
-        params = {
-            'user_id': f'eq.{user_id}',
-            'order': 'entry_time.asc',
-            'limit': str(limit),
-        }
-        if start_date:
-            params['entry_time'] = f'gte.{start_date}'
-        if end_date:
-            params['entry_time'] = f'lte.{end_date}'
+                         end_date: str = None) -> List[dict]:
+        """Recupere TOUS les trades d'un user (pagination auto)."""
+        all_trades = []
+        page_size = 1000
+        offset = 0
 
-        r = await self._client.get('/trades', params=params)
-        if r.status_code == 200:
-            return r.json()
-        logger.error(f"Supabase get_trades: {r.status_code}")
-        return []
+        while True:
+            params = {
+                'user_id': f'eq.{user_id}',
+                'order': 'entry_time.asc',
+                'limit': str(page_size),
+                'offset': str(offset),
+            }
+            if start_date:
+                params['entry_time'] = f'gte.{start_date}'
+            if end_date:
+                params['entry_time'] = f'lte.{end_date}'
+
+            r = await self._client.get('/trades', params=params)
+            if r.status_code != 200:
+                logger.error(f"Supabase get_trades: {r.status_code}")
+                break
+
+            batch = r.json()
+            all_trades.extend(batch)
+
+            if len(batch) < page_size:
+                break
+            offset += page_size
+
+        return all_trades
 
     async def get_trades_by_date(self, user_id: str,
                                   trade_date: str) -> List[dict]:
