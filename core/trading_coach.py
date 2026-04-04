@@ -31,6 +31,12 @@ class TradingCoach:
         if broker_account_id:
             raw_fills = [t for t in raw_fills if t.get('broker_account_id') == broker_account_id]
 
+        # Compter les comptes actifs
+        accounts_count = len(set(
+            t.get('broker_account_id') for t in raw_fills
+            if t.get('broker_account_id')
+        ))
+
         # Regrouper les fills en round-trips (1 entree + sortie = 1 trade)
         trades = self._fills_to_round_trips(raw_fills)
 
@@ -89,6 +95,7 @@ class TradingCoach:
             "full_report": full_report,
             "trades_analyzed": len(trades),
             "confidence_level": confidence,
+            "accounts_count": accounts_count,
             "metrics": metrics,
             "daily_metrics": daily_metrics,
         }

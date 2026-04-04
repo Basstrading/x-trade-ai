@@ -279,7 +279,7 @@ function renderJournal(data) {
         <div class="stat">
             <div class="stat-label">Net P&L</div>
             <div class="stat-value ${netPnl>=0?'positive':'negative'}">$${netPnl.toFixed(0)}</div>
-            <div class="stat-sub">${m.total_trades} trades / ${days.length} jours</div>
+            <div class="stat-sub">${m.total_trades} trades / ${days.length} jours (${data.accounts_count || 1} comptes)</div>
         </div>
         <div class="stat">
             <div class="stat-label">Win Rate</div>
@@ -304,42 +304,19 @@ function renderJournal(data) {
     </div>`;
 
     // ═══ CALENDAR + EQUITY ═══
+    // Store calDays globally for month navigation
+    window._calDays = {};
+    for (const d of days) { window._calDays[d] = dm[d]; }
+
+    // Current month to display (default: current month)
+    const now = new Date();
+    window._calCurrentMonth = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+
     html += `<div class="row-2">`;
-
-    // Calendar
-    const calDays = {};
-    for (const d of days) { calDays[d] = dm[d]; }
-    const lastDay = days.length ? days[days.length-1] : new Date().toISOString().slice(0,10);
-    const calMonth = lastDay.slice(0,7);
-    const firstOfMonth = new Date(calMonth + '-01T12:00:00');
-    const monthName = firstOfMonth.toLocaleDateString('fr-FR', {month:'long', year:'numeric'});
-    const startDow = firstOfMonth.getDay() || 7; // Mon=1
-    const daysInMonth = new Date(firstOfMonth.getFullYear(), firstOfMonth.getMonth()+1, 0).getDate();
-
-    let calCells = '';
-    const dowNames = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
-    for (const d of dowNames) calCells += `<div class="cal-header">${d}</div>`;
-    for (let i = 1; i < startDow; i++) calCells += `<div class="cal-day empty"></div>`;
-    for (let d = 1; d <= daysInMonth; d++) {
-        const dateStr = calMonth + '-' + String(d).padStart(2,'0');
-        const dayData = calDays[dateStr];
-        let cls = 'flat', pnlStr = '', tradesStr = '';
-        if (dayData) {
-            const net = dayData.net_pnl || 0;
-            cls = net > 0 ? 'win' : net < 0 ? 'loss' : 'flat';
-            pnlStr = `<span class="day-pnl ${net>=0?'positive':'negative'}">$${net.toFixed(0)}</span>`;
-            tradesStr = `<span class="day-trades">${dayData.total_trades}t</span>`;
-        }
-        calCells += `<div class="cal-day ${cls}"><span class="day-num">${d}</span>${pnlStr}${tradesStr}</div>`;
-    }
 
     html += `
     <div class="card">
-        <div class="cal-nav">
-            <div class="card-title" style="margin:0">Calendrier</div>
-            <div class="cal-nav-month">${monthName}</div>
-        </div>
-        <div class="calendar">${calCells}</div>
+        <div id="calendar-container"></div>
     </div>`;
 
     // Equity curve
@@ -444,6 +421,7 @@ function renderJournal(data) {
     app.innerHTML = html;
 
     // Charts
+    renderCalendar(window._calCurrentMonth);
     renderEquityChart(data);
     renderSessionChart(m.session_pnl || {});
 }
@@ -500,6 +478,64 @@ function renderSessionChart(sp) {
             },
         },
     });
+}
+
+// Calendar with month navigation
+function renderCalendar(monthStr) {
+    window._calCurrentMonth = monthStr;
+    const container = document.getElementById('calendar-container');
+    if (!container) return;
+
+    const [y, mo] = monthStr.split('-').map(Number);
+    const firstOfMonth = new Date(y, mo - 1, 1);
+    const monthName = firstOfMonth.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+    const startDow = firstOfMonth.getDay() || 7;
+    const daysInMonth = new Date(y, mo, 0).getDate();
+    const calDays = window._calDays || {};
+
+    // Month total
+    let monthPnl = 0, monthTrades = 0;
+    for (let d = 1; d <= daysInMonth; d++) {
+        const ds = monthStr + '-' + String(d).padStart(2, '0');
+        if (calDays[ds]) { monthPnl += calDays[ds].net_pnl || 0; monthTrades += calDays[ds].total_trades || 0; }
+    }
+
+    const dowNames = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+    let cells = dowNames.map(d => `<div class="cal-header">${d}</div>`).join('');
+    for (let i = 1; i < startDow; i++) cells += `<div class="cal-day empty"></div>`;
+    for (let d = 1; d <= daysInMonth; d++) {
+        const ds = monthStr + '-' + String(d).padStart(2, '0');
+        const dayData = calDays[ds];
+        let cls = '', pnlStr = '', tradesStr = '';
+        if (dayData) {
+            const net = dayData.net_pnl || 0;
+            cls = net > 0 ? 'win' : net < 0 ? 'loss' : 'flat';
+            pnlStr = `<span class="day-pnl ${net >= 0 ? 'positive' : 'negative'}">$${net.toFixed(0)}</span>`;
+            tradesStr = `<span class="day-trades">${dayData.total_trades}t</span>`;
+        }
+        cells += `<div class="cal-day ${cls}"><span class="day-num">${d}</span>${pnlStr}${tradesStr}</div>`;
+    }
+
+    // Prev/next months
+    const prev = new Date(y, mo - 2, 1);
+    const next = new Date(y, mo, 1);
+    const prevStr = prev.getFullYear() + '-' + String(prev.getMonth() + 1).padStart(2, '0');
+    const nextStr = next.getFullYear() + '-' + String(next.getMonth() + 1).padStart(2, '0');
+
+    container.innerHTML = `
+        <div class="cal-nav">
+            <button onclick="renderCalendar('${prevStr}')" style="background:none;border:1px solid var(--border);color:var(--text2);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:13px;font-family:var(--font)">&larr;</button>
+            <div>
+                <div class="cal-nav-month">${monthName}</div>
+                <div style="font-size:11px;color:var(--text2);text-align:center">
+                    <span class="${monthPnl >= 0 ? 'positive' : 'negative'}" style="font-weight:600">$${monthPnl.toFixed(0)}</span>
+                    <span style="margin-left:6px">${monthTrades} trades</span>
+                </div>
+            </div>
+            <button onclick="renderCalendar('${nextStr}')" style="background:none;border:1px solid var(--border);color:var(--text2);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:13px;font-family:var(--font)">&rarr;</button>
+        </div>
+        <div class="calendar">${cells}</div>
+    `;
 }
 
 function markdownToHtml(md) {
