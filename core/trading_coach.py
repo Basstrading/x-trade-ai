@@ -51,13 +51,28 @@ class TradingCoach:
 
         # Pour le comptage des trades: 1 seul compte (le principal)
         # Car les copies sont les memes trades repliques
+        # Un trade de 3 contrats = 3 fills d'entree mais 1 seul trade
+        # On regroupe les entrees < 5 sec d'ecart = meme trade
         if ba_ids:
-            primary_ba = ba_ids[0]  # Premier compte = principal
+            primary_ba = ba_ids[0]
             primary_fills = [t for t in raw_fills if t.get('broker_account_id') == primary_ba]
             primary_exits = [t for t in primary_fills if (t.get('pnl') or 0) != 0]
-            # Compter les entrees comme round-trips (1 entree = 1 trade)
-            primary_entries = [t for t in primary_fills if (t.get('pnl') or 0) == 0]
-            real_trade_count = len(primary_entries)
+            primary_entries = sorted(
+                [t for t in primary_fills if (t.get('pnl') or 0) == 0],
+                key=lambda x: x.get('entry_time', '')
+            )
+            # Regrouper les entrees proches (< 5s = meme ordre)
+            real_trade_count = 0
+            last_entry_time = None
+            for e in primary_entries:
+                ts = e.get('entry_time', '')
+                try:
+                    et = datetime.fromisoformat(ts.replace('Z', '+00:00'))
+                    if last_entry_time is None or (et - last_entry_time).total_seconds() > 5:
+                        real_trade_count += 1
+                    last_entry_time = et
+                except Exception:
+                    real_trade_count += 1
         else:
             real_trade_count = len(exit_fills)
             primary_exits = exit_fills
@@ -81,12 +96,24 @@ class TradingCoach:
         metrics['real_trade_count'] = real_trade_count  # Vrais round-trips (1 compte)
         daily_metrics = {d: self._compute_metrics(dt) for d, dt in by_day.items()}
 
-        # Ajouter le vrai nombre de trades par jour (1 compte)
-        for d, dt_primary in by_day_primary.items():
-            if d in daily_metrics:
-                # Compter les entrees du jour sur le compte principal
-                primary_day_all = [t for t in [f for f in raw_fills if f.get('broker_account_id') == (ba_ids[0] if ba_ids else None)] if (t.get('entry_time') or '')[:10] == d and (t.get('pnl') or 0) == 0]
-                daily_metrics[d]['real_trade_count'] = len(primary_day_all)
+        # Ajouter le vrai nombre de trades par jour (1 compte, entrees regroupees)
+        if ba_ids:
+            for d in daily_metrics:
+                day_entries = sorted(
+                    [t for t in primary_entries if (t.get('entry_time') or '')[:10] == d],
+                    key=lambda x: x.get('entry_time', '')
+                )
+                count = 0
+                last_t = None
+                for e in day_entries:
+                    try:
+                        et = datetime.fromisoformat(e['entry_time'].replace('Z', '+00:00'))
+                        if last_t is None or (et - last_t).total_seconds() > 5:
+                            count += 1
+                        last_t = et
+                    except Exception:
+                        count += 1
+                daily_metrics[d]['real_trade_count'] = count
 
         # Detecter les patterns (utiliser les fills du compte principal pour les patterns temporels)
         patterns = self._detect_patterns(primary_exits, by_day_primary, metrics, daily_metrics)
