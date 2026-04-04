@@ -31,110 +31,143 @@ class TradingCoach:
         if broker_account_id:
             raw_fills = [t for t in raw_fills if t.get('broker_account_id') == broker_account_id]
 
-        # Compter les comptes actifs
-        accounts_count = len(set(
+        # Identifier les comptes actifs
+        ba_ids = sorted(set(
             t.get('broker_account_id') for t in raw_fills
             if t.get('broker_account_id')
         ))
+        accounts_count = len(ba_ids)
 
-        # Separer les broker_account_ids pour identifier le compte principal
-        ba_ids = list(set(
-            t.get('broker_account_id') for t in raw_fills
-            if t.get('broker_account_id')
-        ))
-
-        # Fills de sortie = ceux avec un PnL != 0
-        exit_fills = [t for t in raw_fills if (t.get('pnl') or 0) != 0]
-
-        # Pour les metriques PnL: tous les comptes cumules
-        trades = exit_fills
-
-        # Pour le comptage des trades: 1 seul compte (le principal)
-        # Car les copies sont les memes trades repliques
-        # Un trade de 3 contrats = 3 fills d'entree mais 1 seul trade
-        # On regroupe les entrees < 5 sec d'ecart = meme trade
+        # Compte principal = celui avec le plus de fills (le "leader")
         if ba_ids:
-            primary_ba = ba_ids[0]
-            primary_fills = [t for t in raw_fills if t.get('broker_account_id') == primary_ba]
-            primary_exits = [t for t in primary_fills if (t.get('pnl') or 0) != 0]
-            primary_entries = sorted(
-                [t for t in primary_fills if (t.get('pnl') or 0) == 0],
-                key=lambda x: x.get('entry_time', '')
-            )
-            # Regrouper les entrees proches (< 5s = meme ordre)
-            real_trade_count = 0
-            last_entry_time = None
-            for e in primary_entries:
-                ts = e.get('entry_time', '')
-                try:
-                    et = datetime.fromisoformat(ts.replace('Z', '+00:00'))
-                    if last_entry_time is None or (et - last_entry_time).total_seconds() > 5:
-                        real_trade_count += 1
-                    last_entry_time = et
-                except Exception:
-                    real_trade_count += 1
+            ba_counts = {ba: sum(1 for t in raw_fills if t.get('broker_account_id') == ba) for ba in ba_ids}
+            primary_ba = max(ba_counts, key=ba_counts.get)
         else:
-            real_trade_count = len(exit_fills)
-            primary_exits = exit_fills
+            primary_ba = None
 
-        # Grouper par jour (exits de tous les comptes pour le PnL)
+        # Fills de sortie = pnl != 0 (entrees ont pnl=0 dans Supabase)
+        all_exits = [t for t in raw_fills if (t.get('pnl') or 0) != 0]
+        primary_exits = [t for t in all_exits if t.get('broker_account_id') == primary_ba] if primary_ba else all_exits
+
+        # ═══ METRIQUES ═══
+        # PnL total = tous comptes cumules
+        total_net_pnl = sum(
+            (t.get('net_pnl') if t.get('net_pnl') is not None else (t.get('pnl') or 0) - (t.get('fees') or 0))
+            for t in all_exits
+        )
+
+        # Win/Loss/WinRate/PF/RR = 1 seul compte (identique a ce que Topstep affiche)
+        primary_pnls = []
+        for t in primary_exits:
+            net = t.get('net_pnl') if t.get('net_pnl') is not None else (t.get('pnl') or 0) - (t.get('fees') or 0)
+            primary_pnls.append(net)
+
+        wins = sum(1 for p in primary_pnls if p > 0)
+        losses = sum(1 for p in primary_pnls if p < 0)
+        total_trades = wins + losses
+        win_rate = round(wins / total_trades * 100, 1) if total_trades > 0 else 0
+        avg_win = sum(p for p in primary_pnls if p > 0) / wins if wins else 0
+        avg_loss = sum(p for p in primary_pnls if p < 0) / losses if losses else 0
+        gross_profit = sum(p for p in primary_pnls if p > 0)
+        gross_loss = abs(sum(p for p in primary_pnls if p < 0))
+        profit_factor = round(gross_profit / gross_loss, 2) if gross_loss > 0 else 0
+        rr_ratio = round(abs(avg_win / avg_loss), 2) if avg_loss != 0 else 0
+        expectancy = round(total_net_pnl / total_trades, 2) if total_trades > 0 else 0
+
+        # Consecutive W/L
+        max_cw = max_cl = cw = cl = 0
+        for p in primary_pnls:
+            if p > 0: cw += 1; cl = 0
+            elif p < 0: cl += 1; cw = 0
+            max_cw = max(max_cw, cw); max_cl = max(max_cl, cl)
+
+        # Peak et drawdown (tous comptes)
+        running = peak = max_dd = 0.0
+        for t in sorted(all_exits, key=lambda x: x.get('entry_time', '')):
+            net = t.get('net_pnl') if t.get('net_pnl') is not None else (t.get('pnl') or 0) - (t.get('fees') or 0)
+            running += net
+            if running > peak: peak = running
+            dd = running - peak
+            if dd < max_dd: max_dd = dd
+
+        # Heures (Paris, 1 seul compte)
+        by_hour = defaultdict(lambda: {'pnl': 0.0, 'count': 0})
+        for t in primary_exits:
+            ts = t.get('entry_time', '')
+            if len(ts) >= 13:
+                try:
+                    from zoneinfo import ZoneInfo
+                    dt = datetime.fromisoformat(ts.replace('Z', '+00:00'))
+                    h_paris = dt.astimezone(ZoneInfo('Europe/Paris')).hour
+                    net = t.get('net_pnl') if t.get('net_pnl') is not None else (t.get('pnl') or 0) - (t.get('fees') or 0)
+                    by_hour[h_paris]['pnl'] += net
+                    by_hour[h_paris]['count'] += 1
+                except Exception:
+                    pass
+
+        best_hour = max(by_hour, key=lambda h: by_hour[h]['pnl']) if by_hour else None
+        worst_hour = min(by_hour, key=lambda h: by_hour[h]['pnl']) if by_hour else None
+
+        # Session PnL
+        by_session = defaultdict(float)
+        for t in all_exits:
+            s = t.get('session', 'unknown')
+            net = t.get('net_pnl') if t.get('net_pnl') is not None else (t.get('pnl') or 0) - (t.get('fees') or 0)
+            by_session[s] += net
+
+        metrics = {
+            'total_trades': total_trades,
+            'real_trade_count': total_trades,
+            'wins': wins,
+            'losses': losses,
+            'win_rate': win_rate,
+            'avg_win': round(avg_win * accounts_count, 2),
+            'avg_loss': round(avg_loss * accounts_count, 2),
+            'rr_ratio': rr_ratio,
+            'profit_factor': profit_factor,
+            'expectancy': expectancy,
+            'net_pnl': round(total_net_pnl, 2),
+            'gross_profit': round(gross_profit * accounts_count, 2),
+            'gross_loss': round(gross_loss * accounts_count, 2),
+            'largest_win': round(max(primary_pnls) * accounts_count, 2) if primary_pnls else 0,
+            'largest_loss': round(min(primary_pnls) * accounts_count, 2) if primary_pnls else 0,
+            'peak_pnl': round(peak, 2),
+            'max_drawdown': round(max_dd, 2),
+            'max_consec_wins': max_cw,
+            'max_consec_losses': max_cl,
+            'best_hour_et': best_hour,
+            'worst_hour_et': worst_hour,
+            'session_pnl': {s: round(v, 2) for s, v in by_session.items()},
+            'by_hour': {h: round(info['pnl'], 2) for h, info in by_hour.items()},
+        }
+
+        # Daily metrics (PnL = tous comptes cumules)
+        trades = all_exits
         by_day = defaultdict(list)
-        for t in exit_fills:
+        for t in all_exits:
             d = (t.get('entry_time') or '')[:10]
             if d:
                 by_day[d].append(t)
+        daily_metrics = {d: self._compute_metrics(dt) for d, dt in by_day.items()}
 
-        # Grouper par jour pour le comptage (1 seul compte)
+        # Daily metrics par jour pour le compte principal
+        for d in daily_metrics:
+            day_primary = [t for t in primary_exits if (t.get('entry_time') or '')[:10] == d]
+            w = sum(1 for t in day_primary if (t.get('net_pnl') if t.get('net_pnl') is not None else (t.get('pnl') or 0) - (t.get('fees') or 0)) > 0)
+            l = sum(1 for t in day_primary if (t.get('net_pnl') if t.get('net_pnl') is not None else (t.get('pnl') or 0) - (t.get('fees') or 0)) < 0)
+            daily_metrics[d]['real_trade_count'] = w + l
+            daily_metrics[d]['wins'] = w
+            daily_metrics[d]['losses'] = l
+            daily_metrics[d]['win_rate'] = round(w / (w + l) * 100, 1) if (w + l) > 0 else 0
+
+        # Grouper par jour pour les patterns (1 seul compte)
         by_day_primary = defaultdict(list)
         for t in primary_exits:
             d = (t.get('entry_time') or '')[:10]
             if d:
                 by_day_primary[d].append(t)
 
-        # Calculer les metriques (PnL = tous comptes, trades = 1 compte)
-        # Metriques PnL = tous comptes cumules (pour le net total)
-        metrics = self._compute_metrics(trades)
-
-        # Win/Loss/WinRate = basé sur 1 seul compte (identique a Topstep)
-        # Chaque fill de sortie = 1 trade (comme Topstep le compte)
-        primary_metrics = self._compute_metrics(primary_exits)
-        metrics['wins'] = primary_metrics['wins']
-        metrics['losses'] = primary_metrics['losses']
-        metrics['total_trades'] = primary_metrics['total_trades']
-        metrics['real_trade_count'] = primary_metrics['total_trades']
-        metrics['win_rate'] = primary_metrics['win_rate']
-        metrics['max_consec_wins'] = primary_metrics['max_consec_wins']
-        metrics['max_consec_losses'] = primary_metrics['max_consec_losses']
-        # Avg win/loss x nombre de comptes (PnL cumule)
-        metrics['avg_win'] = round(primary_metrics['avg_win'] * accounts_count, 2)
-        metrics['avg_loss'] = round(primary_metrics['avg_loss'] * accounts_count, 2)
-        metrics['rr_ratio'] = primary_metrics['rr_ratio']
-        metrics['profit_factor'] = primary_metrics['profit_factor']
-        # Esperance = PnL total (tous comptes) / trades (1 compte)
-        if metrics['total_trades'] > 0:
-            metrics['expectancy'] = round(metrics['net_pnl'] / metrics['total_trades'], 2)
-        daily_metrics = {d: self._compute_metrics(dt) for d, dt in by_day.items()}
-
-        # Ajouter le vrai nombre de trades par jour (1 compte, entrees regroupees)
-        if ba_ids:
-            for d in daily_metrics:
-                day_entries = sorted(
-                    [t for t in primary_entries if (t.get('entry_time') or '')[:10] == d],
-                    key=lambda x: x.get('entry_time', '')
-                )
-                count = 0
-                last_t = None
-                for e in day_entries:
-                    try:
-                        et = datetime.fromisoformat(e['entry_time'].replace('Z', '+00:00'))
-                        if last_t is None or (et - last_t).total_seconds() > 5:
-                            count += 1
-                        last_t = et
-                    except Exception:
-                        count += 1
-                daily_metrics[d]['real_trade_count'] = count
-
-        # Detecter les patterns (utiliser les fills du compte principal pour les patterns temporels)
+        # Detecter les patterns
         patterns = self._detect_patterns(primary_exits, by_day_primary, metrics, daily_metrics)
 
         # Identifier forces et faiblesses
@@ -166,7 +199,7 @@ class TradingCoach:
             "report_type": "on_demand",
             "period_start": min(by_day.keys()) if by_day else None,
             "period_end": max(by_day.keys()) if by_day else None,
-            "total_trades": real_trade_count,
+            "total_trades": metrics["total_trades"],
             "win_rate": metrics["win_rate"],
             "profit_factor": metrics["profit_factor"],
             "net_pnl": metrics["net_pnl"],
