@@ -94,6 +94,9 @@ class TradingCoach:
         # Calculer les metriques (PnL = tous comptes, trades = 1 compte)
         metrics = self._compute_metrics(trades)
         metrics['real_trade_count'] = real_trade_count  # Vrais round-trips (1 compte)
+        # Recalculer l'esperance par vrai trade (pas par fill)
+        if real_trade_count > 0:
+            metrics['expectancy'] = round(metrics['net_pnl'] / real_trade_count, 2)
         daily_metrics = {d: self._compute_metrics(dt) for d, dt in by_day.items()}
 
         # Ajouter le vrai nombre de trades par jour (1 compte, entrees regroupees)
