@@ -131,17 +131,25 @@ class TradingCoach:
             s = t.get('session', 'unknown')
             by_session[s] += (t.get('pnl') or 0) - (t.get('fees') or 0)
 
+        # Nombre de trades = compte principal (pas x5)
+        primary_trades = per_account[primary_ba]['trades'] if primary_ba and primary_ba in per_account else total_trades
+        primary_w = per_account[primary_ba]['wins'] if primary_ba and primary_ba in per_account else total_w
+        primary_l = per_account[primary_ba]['losses'] if primary_ba and primary_ba in per_account else total_l
+        primary_wr = round(primary_w / primary_trades * 100, 1) if primary_trades > 0 else 0
+        # Esperance = Net PnL total (5 comptes) / trades (1 compte)
+        real_expectancy = round(total_net_pnl / primary_trades, 2) if primary_trades > 0 else 0
+
         metrics = {
-            'total_trades': total_trades,
-            'real_trade_count': total_trades,
-            'wins': total_w,
-            'losses': total_l,
-            'win_rate': win_rate,
+            'total_trades': primary_trades,
+            'real_trade_count': primary_trades,
+            'wins': primary_w,
+            'losses': primary_l,
+            'win_rate': primary_wr,
             'avg_win': round(avg_win, 2),
             'avg_loss': round(-avg_loss, 2),
             'rr_ratio': rr_ratio,
             'profit_factor': profit_factor,
-            'expectancy': expectancy,
+            'expectancy': real_expectancy,
             'net_pnl': round(total_net_pnl, 2),
             'gross_profit': round(total_gw, 2),
             'gross_loss': round(total_gl, 2),
