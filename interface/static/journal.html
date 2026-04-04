@@ -4,210 +4,214 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>x-trade.ai — Journal & Coach</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 :root {
-    --bg: #07090f;
-    --bg2: #0b0e17;
-    --bg3: #111827;
-    --cyan: #00e0ff;
-    --green: #00ff88;
-    --red: #ff3d5a;
-    --gold: #ffcc44;
-    --orange: #ff8c42;
-    --text1: #e2eaf5;
-    --text2: #5d7490;
-    --font-mono: 'JetBrains Mono', monospace;
-    --font-title: 'Syne', sans-serif;
+    --bg: #0a0e14;
+    --bg2: #0f1319;
+    --bg3: #161b24;
+    --border: rgba(255,255,255,0.06);
+    --accent: #3b82f6;
+    --accent2: #6366f1;
+    --green: #22c55e;
+    --red: #ef4444;
+    --gold: #eab308;
+    --text1: #f1f5f9;
+    --text2: #64748b;
+    --text3: #94a3b8;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
-body { background:var(--bg); color:var(--text1); font-family:var(--font-mono); min-height:100vh; }
+body { background:var(--bg); color:var(--text1); font-family:var(--font); font-size:14px; line-height:1.5; min-height:100vh; }
 
 /* Header */
 .header {
     display:flex; align-items:center; justify-content:space-between;
-    padding:16px 24px; border-bottom:1px solid rgba(0,224,255,0.1);
+    padding:12px 32px; border-bottom:1px solid var(--border);
     background:var(--bg2);
 }
-.header-brand { font-family:var(--font-title); font-size:18px; font-weight:700; color:var(--cyan); }
-.header-sub { font-size:10px; color:var(--text2); letter-spacing:2px; }
-.header-nav { display:flex; gap:12px; }
+.header-brand { font-size:16px; font-weight:700; color:var(--text1); letter-spacing:-0.3px; }
+.header-brand span { color:var(--accent); }
+.header-sub { font-size:11px; color:var(--text2); font-weight:400; }
+.header-nav { display:flex; gap:8px; align-items:center; }
 .header-nav a {
-    padding:6px 16px; border-radius:6px; font-size:11px; letter-spacing:1px;
-    color:var(--text2); text-decoration:none; font-family:var(--font-title);
-    border:1px solid transparent; transition:all 0.2s;
+    padding:6px 14px; border-radius:6px; font-size:12px; font-weight:500;
+    color:var(--text2); text-decoration:none; transition:all 0.15s;
 }
-.header-nav a:hover, .header-nav a.active {
-    color:var(--cyan); border-color:rgba(0,224,255,0.3);
-    background:rgba(0,224,255,0.06);
-}
+.header-nav a:hover { color:var(--text1); background:var(--bg3); }
+.header-nav a.active { color:var(--accent); background:rgba(59,130,246,0.1); }
+.header-nav .user-email { color:var(--text2); font-size:11px; padding:6px 8px; }
+.header-nav .logout { color:var(--text2); font-size:11px; }
+.header-nav .logout:hover { color:var(--red); }
 
-/* Layout */
-.main { display:grid; grid-template-columns:1fr 480px; gap:20px; padding:20px; max-width:1500px; margin:0 auto; }
-@media(max-width:900px) { .main { grid-template-columns:1fr; } }
+/* Container */
+.container { max-width:1200px; margin:0 auto; padding:24px 32px; }
+
+/* Stats */
+.stats-row { display:grid; grid-template-columns:repeat(5, 1fr); gap:12px; margin-bottom:20px; }
+@media(max-width:800px) { .stats-row { grid-template-columns:repeat(2, 1fr); } }
+.stat {
+    background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:16px 18px;
+}
+.stat-label { font-size:11px; font-weight:500; color:var(--text2); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; }
+.stat-value { font-size:26px; font-weight:700; letter-spacing:-0.5px; }
+.stat-sub { font-size:11px; color:var(--text2); margin-top:2px; }
+.positive { color:var(--green); }
+.negative { color:var(--red); }
+.neutral { color:var(--accent); }
 
 /* Cards */
 .card {
-    background:var(--bg2); border:1px solid rgba(255,255,255,0.04);
-    border-radius:12px; padding:20px; margin-bottom:16px;
+    background:var(--bg2); border:1px solid var(--border); border-radius:10px;
+    padding:20px; margin-bottom:16px;
 }
-.card-title {
-    font-family:var(--font-title); font-size:11px; letter-spacing:2px;
-    color:var(--text2); margin-bottom:14px; text-transform:uppercase;
-}
+.card-title { font-size:12px; font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:16px; }
 
-/* Stats grid */
-.stats-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin-bottom:16px; }
-@media(max-width:700px) { .stats-grid { grid-template-columns:repeat(2, 1fr); } }
-.stat-card {
-    background:var(--bg3); border-radius:10px; padding:14px;
-    border:1px solid rgba(255,255,255,0.03);
-}
-.stat-label { font-size:9px; color:var(--text2); letter-spacing:1.5px; font-family:var(--font-title); margin-bottom:6px; }
-.stat-value { font-size:22px; font-weight:600; }
-.stat-sub { font-size:10px; color:var(--text2); margin-top:2px; }
-.positive { color:var(--green); }
-.negative { color:var(--red); }
-.neutral { color:var(--cyan); }
+/* Two column row */
+.row-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+@media(max-width:800px) { .row-2 { grid-template-columns:1fr; } }
 
-/* Payout progress */
-.payout-bar-container {
-    background:var(--bg3); border-radius:12px; padding:16px; margin-bottom:16px;
-    border:1px solid rgba(0,255,136,0.1);
+/* Payout bar */
+.payout-bar {
+    background:var(--bg2); border:1px solid rgba(34,197,94,0.15); border-radius:10px;
+    padding:16px 20px; margin-bottom:20px;
 }
-.payout-bar-bg {
-    height:28px; background:rgba(255,255,255,0.04); border-radius:8px;
-    overflow:hidden; position:relative; margin-top:10px;
+.payout-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.payout-bg { height:10px; background:var(--bg3); border-radius:5px; overflow:hidden; }
+.payout-fill {
+    height:100%; border-radius:5px; transition:width 1s ease;
+    background:linear-gradient(90deg, var(--accent), var(--green));
 }
-.payout-bar-fill {
-    height:100%; border-radius:8px; transition:width 1s ease;
-    background:linear-gradient(90deg, var(--cyan), var(--green));
-    box-shadow:0 0 20px rgba(0,255,136,0.3);
-}
-.payout-bar-text {
-    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-    font-size:11px; font-weight:600; color:var(--text1); text-shadow:0 1px 4px rgba(0,0,0,0.8);
-}
+.payout-text { font-size:12px; color:var(--text2); margin-top:6px; text-align:center; }
 
-/* Daily table */
-.daily-table { width:100%; border-collapse:collapse; font-size:12px; }
-.daily-table th {
-    text-align:left; padding:8px 10px; font-size:9px; letter-spacing:1.5px;
-    color:var(--text2); font-family:var(--font-title); border-bottom:1px solid rgba(255,255,255,0.06);
+/* Calendar */
+.calendar { display:grid; grid-template-columns:repeat(7, 1fr); gap:4px; }
+.cal-header { font-size:10px; font-weight:600; color:var(--text2); text-align:center; padding:6px; text-transform:uppercase; }
+.cal-day {
+    aspect-ratio:1.2; border-radius:8px; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; font-size:11px; gap:2px;
+    border:1px solid transparent; transition:all 0.15s; cursor:default;
 }
-.daily-table td { padding:8px 10px; border-bottom:1px solid rgba(255,255,255,0.03); }
-.daily-table tr:hover { background:rgba(0,224,255,0.03); }
+.cal-day.empty { opacity:0; }
+.cal-day.win { background:rgba(34,197,94,0.12); border-color:rgba(34,197,94,0.2); }
+.cal-day.loss { background:rgba(239,68,68,0.12); border-color:rgba(239,68,68,0.2); }
+.cal-day.flat { background:var(--bg3); }
+.cal-day .day-num { font-weight:600; color:var(--text3); font-size:10px; }
+.cal-day .day-pnl { font-weight:700; font-size:11px; }
+.cal-day .day-trades { font-size:9px; color:var(--text2); }
+.cal-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+.cal-nav-month { font-size:14px; font-weight:600; }
+
+/* Hour heatmap */
+.hour-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(72px, 1fr)); gap:6px; }
+.hour-cell {
+    border-radius:8px; padding:12px 8px; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:4px; transition:transform 0.15s;
+}
+.hour-cell:hover { transform:scale(1.05); }
+.hour-label { font-size:12px; font-weight:600; color:var(--text3); }
+.hour-value { font-weight:700; font-size:13px; }
+
+/* Table */
+.data-table { width:100%; border-collapse:collapse; font-size:13px; }
+.data-table th {
+    text-align:left; padding:10px 12px; font-size:11px; font-weight:600;
+    color:var(--text2); text-transform:uppercase; letter-spacing:0.3px;
+    border-bottom:1px solid var(--border);
+}
+.data-table td { padding:10px 12px; border-bottom:1px solid var(--border); }
+.data-table tr:hover { background:rgba(59,130,246,0.03); }
 
 /* Coach section */
-.coach-card {
-    background:linear-gradient(135deg, rgba(0,224,255,0.04), rgba(0,255,136,0.02));
-    border:1px solid rgba(0,224,255,0.15); border-radius:12px; padding:20px;
-}
-.coach-header {
-    display:flex; align-items:center; gap:10px; margin-bottom:16px;
+.coach-section { margin-top:24px; }
+.coach-header-bar {
+    display:flex; align-items:center; gap:12px; margin-bottom:20px;
+    padding:16px 20px; background:var(--bg2); border:1px solid rgba(59,130,246,0.15);
+    border-radius:10px;
 }
 .coach-avatar {
-    width:40px; height:40px; border-radius:50%;
-    background:linear-gradient(135deg, var(--cyan), var(--green));
+    width:44px; height:44px; border-radius:50%;
+    background:linear-gradient(135deg, var(--accent), var(--accent2));
     display:flex; align-items:center; justify-content:center;
-    font-size:18px; font-weight:700; color:var(--bg);
+    font-size:18px; font-weight:700; color:white;
 }
-.coach-name { font-family:var(--font-title); font-size:14px; font-weight:600; color:var(--cyan); }
-.coach-role { font-size:10px; color:var(--text2); }
-.coach-content { font-size:12px; line-height:1.7; color:var(--text1); }
-.coach-content h3 { font-family:var(--font-title); font-size:12px; color:var(--cyan); margin:16px 0 8px; letter-spacing:1px; }
-.coach-content strong { color:var(--gold); }
-.coach-content li { margin:4px 0; padding-left:4px; }
-.coach-content blockquote {
-    margin:12px 0; padding:12px 16px; border-left:3px solid var(--cyan);
-    background:rgba(0,224,255,0.05); border-radius:0 8px 8px 0;
-    font-family:var(--font-title); font-size:13px; color:var(--cyan);
-}
+.coach-name { font-size:15px; font-weight:600; }
+.coach-role { font-size:12px; color:var(--text2); }
 
 /* Pattern badges */
-.pattern-badge {
-    display:inline-flex; align-items:center; gap:6px;
-    padding:6px 12px; border-radius:20px; font-size:10px;
-    font-family:var(--font-title); letter-spacing:0.5px; margin:3px;
+.badges { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
+.badge {
+    padding:5px 12px; border-radius:20px; font-size:11px; font-weight:500;
 }
-.pattern-critical { background:rgba(255,61,90,0.12); color:var(--red); border:1px solid rgba(255,61,90,0.3); }
-.pattern-serious { background:rgba(255,140,66,0.12); color:var(--orange); border:1px solid rgba(255,140,66,0.3); }
-.pattern-moderate { background:rgba(255,204,68,0.12); color:var(--gold); border:1px solid rgba(255,204,68,0.3); }
+.badge-critical { background:rgba(239,68,68,0.1); color:var(--red); border:1px solid rgba(239,68,68,0.2); }
+.badge-serious { background:rgba(245,158,11,0.1); color:#f59e0b; border:1px solid rgba(245,158,11,0.2); }
+.badge-moderate { background:rgba(234,179,8,0.1); color:var(--gold); border:1px solid rgba(234,179,8,0.2); }
 
-/* Action items */
-.action-item {
-    display:flex; gap:10px; padding:10px 14px; margin:6px 0;
-    background:rgba(0,255,136,0.04); border:1px solid rgba(0,255,136,0.1);
-    border-radius:8px; font-size:11px; line-height:1.5;
+/* Coach report content */
+.report {
+    background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:28px 32px;
+    font-size:14px; line-height:1.8; color:var(--text3);
 }
-.action-num {
-    width:22px; height:22px; border-radius:50%; flex-shrink:0;
+.report h2 { font-size:16px; font-weight:700; color:var(--text1); margin:28px 0 12px; letter-spacing:-0.3px; }
+.report h2:first-child { margin-top:0; }
+.report h3 { font-size:14px; font-weight:600; color:var(--accent); margin:20px 0 10px; }
+.report strong { color:var(--text1); font-weight:600; }
+.report em { color:var(--text2); font-style:italic; }
+.report p { margin-bottom:12px; }
+.report blockquote {
+    margin:16px 0; padding:14px 20px; border-left:3px solid var(--accent);
+    background:rgba(59,130,246,0.05); border-radius:0 8px 8px 0;
+    font-size:14px; font-weight:500; color:var(--accent); line-height:1.6;
+}
+.report table { width:100%; border-collapse:collapse; margin:12px 0; font-size:12px; }
+.report th { text-align:left; padding:8px 10px; color:var(--text2); font-weight:600; border-bottom:1px solid var(--border); }
+.report td { padding:8px 10px; border-bottom:1px solid var(--border); }
+.report li { margin:4px 0; }
+.report .action-item {
+    display:flex; gap:12px; padding:12px 16px; margin:8px 0;
+    background:rgba(34,197,94,0.04); border:1px solid rgba(34,197,94,0.1);
+    border-radius:8px; font-size:13px;
+}
+.report .action-num {
+    width:24px; height:24px; border-radius:50%; flex-shrink:0;
     background:var(--green); color:var(--bg); font-weight:700;
     display:flex; align-items:center; justify-content:center; font-size:11px;
 }
 
-/* Desk rule */
-.desk-rule {
-    padding:16px; margin-top:16px; text-align:center;
-    background:rgba(255,204,68,0.06); border:1px solid rgba(255,204,68,0.2);
-    border-radius:10px; font-family:var(--font-title); font-size:13px;
-    color:var(--gold); letter-spacing:0.5px; line-height:1.6;
-}
-
-/* Charts */
-.chart-container { position:relative; height:200px; margin:10px 0; }
-
-/* Hour heatmap */
-.hour-grid { display:grid; grid-template-columns:repeat(12, 1fr); gap:4px; margin-top:8px; }
-.hour-cell {
-    aspect-ratio:1; border-radius:6px; display:flex; flex-direction:column;
-    align-items:center; justify-content:center; font-size:8px; gap:2px;
-    transition:transform 0.2s;
-}
-.hour-cell:hover { transform:scale(1.15); }
-.hour-label { font-family:var(--font-title); opacity:0.7; }
-.hour-value { font-weight:600; font-size:9px; }
+/* Chart */
+.chart-box { position:relative; height:220px; }
 
 /* Loading */
-.loading {
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    padding:60px; color:var(--text2);
-}
-.loading-spinner {
-    width:40px; height:40px; border:3px solid rgba(0,224,255,0.1);
-    border-top-color:var(--cyan); border-radius:50%;
-    animation:spin 0.8s linear infinite; margin-bottom:16px;
-}
+.loading { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:80px; color:var(--text2); }
+.spinner { width:36px; height:36px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin 0.7s linear infinite; margin-bottom:16px; }
 @keyframes spin { to { transform:rotate(360deg); } }
 
 /* Scrollbar */
-::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar { width:5px; }
 ::-webkit-scrollbar-track { background:transparent; }
-::-webkit-scrollbar-thumb { background:rgba(0,224,255,0.15); border-radius:3px; }
+::-webkit-scrollbar-thumb { background:rgba(100,116,139,0.2); border-radius:3px; }
 </style>
 </head>
 <body>
 
-<!-- Header -->
 <div class="header">
     <div>
-        <div class="header-brand">x-trade.ai</div>
-        <div class="header-sub">JOURNAL & COACHING</div>
+        <div class="header-brand"><span>x-trade</span>.ai</div>
+        <div class="header-sub">Performance & Coaching</div>
     </div>
     <div class="header-nav">
-        <a href="/journal" class="active">JOURNAL</a>
-        <a href="/risk-desk">RISK DESK</a>
-        <span style="color:var(--text2);font-size:10px;padding:6px 8px" id="user-email"></span>
-        <a href="#" onclick="logout();return false" style="color:var(--red)">LOGOUT</a>
+        <a href="/journal" class="active">Journal</a>
+        <a href="/risk-desk">Risk Desk</a>
+        <span class="user-email" id="user-email"></span>
+        <a href="#" class="logout" onclick="logout();return false">Logout</a>
     </div>
 </div>
 
-<!-- Main -->
-<div class="main" id="app">
+<div class="container" id="app">
     <div class="loading" id="loading">
-        <div class="loading-spinner"></div>
-        <div style="font-family:var(--font-title);font-size:12px;letter-spacing:2px">ANALYSE EN COURS...</div>
+        <div class="spinner"></div>
+        <div style="font-size:13px;font-weight:500">Analyse en cours...</div>
     </div>
 </div>
 
@@ -216,23 +220,15 @@ const SUPABASE_URL = 'https://yqmjootmvonhqzzmtwij.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_p84R-Eu5vTObiFC42DHNxA_AysCkQdn';
 const API_BASE = window.location.origin;
 
-// Auth check
 const sbToken = localStorage.getItem('sb_token');
 const sbUserId = localStorage.getItem('sb_user_id');
-if (!sbToken || !sbUserId) {
-    window.location.href = '/journal/login';
-}
+if (!sbToken || !sbUserId) window.location.href = '/journal/login';
 
-// Logout function
 function logout() {
-    localStorage.removeItem('sb_token');
-    localStorage.removeItem('sb_refresh');
-    localStorage.removeItem('sb_user_id');
-    localStorage.removeItem('sb_email');
+    localStorage.clear();
     window.location.href = '/journal/login';
 }
 
-// Show user email
 const emailEl = document.getElementById('user-email');
 if (emailEl) emailEl.textContent = localStorage.getItem('sb_email') || '';
 
@@ -240,15 +236,13 @@ async function loadJournal() {
     try {
         const r = await fetch(`${API_BASE}/api/journal?user_id=${sbUserId}`);
         const data = await r.json();
-
         if (data.error) {
-            document.getElementById('app').innerHTML = `<div class="card" style="grid-column:1/-1;text-align:center;padding:60px"><div style="color:var(--red);font-size:14px">${data.error}</div></div>`;
+            document.getElementById('app').innerHTML = `<div style="text-align:center;padding:80px;color:var(--text2)">${data.error}</div>`;
             return;
         }
-
         renderJournal(data);
     } catch(e) {
-        document.getElementById('app').innerHTML = `<div class="card" style="grid-column:1/-1;text-align:center;padding:60px"><div style="color:var(--red)">Erreur de connexion</div><div style="color:var(--text2);font-size:11px;margin-top:8px">${e.message}</div></div>`;
+        document.getElementById('app').innerHTML = `<div style="text-align:center;padding:80px;color:var(--red)">${e.message}</div>`;
     }
 }
 
@@ -257,216 +251,199 @@ function renderJournal(data) {
     const dm = data.daily_metrics || {};
     const patterns = data.patterns_detected || [];
     const days = Object.keys(dm).sort();
-
-    // Compute payout info
-    const netPnl = m.net_pnl || 0;
-    const payoutTarget = 3000; // Topstep 50K
-    const payoutPct = Math.min(100, Math.max(0, (netPnl / payoutTarget) * 100));
-
     const app = document.getElementById('app');
-    app.innerHTML = '';
 
-    // ===== LEFT COLUMN =====
-    const left = document.createElement('div');
+    const netPnl = m.net_pnl || 0;
+    const numAccounts = 5; // TODO: from API
+    const totalPnl = netPnl; // Already aggregated from API
+    const payoutTarget = 3000;
+    const payoutPct = Math.min(100, Math.max(0, (totalPnl / payoutTarget) * 100));
 
-    // Payout progress
-    left.innerHTML += `
-    <div class="payout-bar-container">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-            <div class="card-title" style="margin:0">PROGRESSION PAYOUT</div>
-            <div style="font-size:11px;color:var(--text2)">Objectif: $${payoutTarget.toLocaleString()}</div>
+    let html = '';
+
+    // ═══ PAYOUT BAR ═══
+    html += `
+    <div class="payout-bar">
+        <div class="payout-header">
+            <div class="card-title" style="margin:0">Progression Payout</div>
+            <div style="font-size:12px;color:var(--text2)">Objectif: $${payoutTarget.toLocaleString()}</div>
         </div>
-        <div class="payout-bar-bg">
-            <div class="payout-bar-fill" style="width:${Math.max(2, payoutPct)}%"></div>
-            <div class="payout-bar-text">$${netPnl.toFixed(0)} / $${payoutTarget.toLocaleString()} (${payoutPct.toFixed(0)}%)</div>
+        <div class="payout-bg"><div class="payout-fill" style="width:${Math.max(1,payoutPct)}%"></div></div>
+        <div class="payout-text">$${totalPnl.toFixed(0)} / $${payoutTarget.toLocaleString()} (${payoutPct.toFixed(0)}%)</div>
+    </div>`;
+
+    // ═══ KEY STATS ═══
+    const wr = m.win_rate||0, pf = m.profit_factor||0, rr = m.rr_ratio||0, exp = m.expectancy||0;
+    html += `
+    <div class="stats-row">
+        <div class="stat">
+            <div class="stat-label">Net P&L</div>
+            <div class="stat-value ${netPnl>=0?'positive':'negative'}">$${netPnl.toFixed(0)}</div>
+            <div class="stat-sub">${m.total_trades} trades / ${days.length} jours</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Win Rate</div>
+            <div class="stat-value ${wr>=50?'positive':wr>=40?'neutral':'negative'}">${wr.toFixed(1)}%</div>
+            <div class="stat-sub">${m.wins}W / ${m.losses}L</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Profit Factor</div>
+            <div class="stat-value ${pf>=1.5?'positive':pf>=1?'neutral':'negative'}">${pf.toFixed(2)}</div>
+            <div class="stat-sub">R:R ${rr.toFixed(2)}</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Esperance</div>
+            <div class="stat-value ${exp>=0?'positive':'negative'}">$${exp.toFixed(2)}</div>
+            <div class="stat-sub">par trade</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Max Drawdown</div>
+            <div class="stat-value negative">$${(m.max_drawdown||0).toFixed(0)}</div>
+            <div class="stat-sub">peak to valley</div>
         </div>
     </div>`;
 
-    // Stats grid
-    const winRate = m.win_rate || 0;
-    const pf = m.profit_factor || 0;
-    const rr = m.rr_ratio || 0;
-    const exp = m.expectancy || 0;
-    left.innerHTML += `
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-label">NET P&L</div>
-            <div class="stat-value ${netPnl >= 0 ? 'positive' : 'negative'}">$${netPnl.toFixed(0)}</div>
-            <div class="stat-sub">${m.total_trades} trades / ${days.length} jours</div>
+    // ═══ CALENDAR + EQUITY ═══
+    html += `<div class="row-2">`;
+
+    // Calendar
+    const calDays = {};
+    for (const d of days) { calDays[d] = dm[d]; }
+    const lastDay = days.length ? days[days.length-1] : new Date().toISOString().slice(0,10);
+    const calMonth = lastDay.slice(0,7);
+    const firstOfMonth = new Date(calMonth + '-01T12:00:00');
+    const monthName = firstOfMonth.toLocaleDateString('fr-FR', {month:'long', year:'numeric'});
+    const startDow = firstOfMonth.getDay() || 7; // Mon=1
+    const daysInMonth = new Date(firstOfMonth.getFullYear(), firstOfMonth.getMonth()+1, 0).getDate();
+
+    let calCells = '';
+    const dowNames = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+    for (const d of dowNames) calCells += `<div class="cal-header">${d}</div>`;
+    for (let i = 1; i < startDow; i++) calCells += `<div class="cal-day empty"></div>`;
+    for (let d = 1; d <= daysInMonth; d++) {
+        const dateStr = calMonth + '-' + String(d).padStart(2,'0');
+        const dayData = calDays[dateStr];
+        let cls = 'flat', pnlStr = '', tradesStr = '';
+        if (dayData) {
+            const net = dayData.net_pnl || 0;
+            cls = net > 0 ? 'win' : net < 0 ? 'loss' : 'flat';
+            pnlStr = `<span class="day-pnl ${net>=0?'positive':'negative'}">$${net.toFixed(0)}</span>`;
+            tradesStr = `<span class="day-trades">${dayData.total_trades}t</span>`;
+        }
+        calCells += `<div class="cal-day ${cls}"><span class="day-num">${d}</span>${pnlStr}${tradesStr}</div>`;
+    }
+
+    html += `
+    <div class="card">
+        <div class="cal-nav">
+            <div class="card-title" style="margin:0">Calendrier</div>
+            <div class="cal-nav-month">${monthName}</div>
         </div>
-        <div class="stat-card">
-            <div class="stat-label">WIN RATE</div>
-            <div class="stat-value ${winRate >= 50 ? 'positive' : winRate >= 40 ? 'neutral' : 'negative'}">${winRate.toFixed(1)}%</div>
-            <div class="stat-sub">${m.wins}W / ${m.losses}L</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-label">PROFIT FACTOR</div>
-            <div class="stat-value ${pf >= 1.5 ? 'positive' : pf >= 1.0 ? 'neutral' : 'negative'}">${pf.toFixed(2)}</div>
-            <div class="stat-sub">R:R ${rr.toFixed(2)}</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-label">ESPERANCE</div>
-            <div class="stat-value ${exp >= 0 ? 'positive' : 'negative'}">$${exp.toFixed(2)}</div>
-            <div class="stat-sub">par trade</div>
-        </div>
+        <div class="calendar">${calCells}</div>
     </div>`;
 
     // Equity curve
-    left.innerHTML += `
+    html += `
     <div class="card">
-        <div class="card-title">EQUITY CURVE</div>
-        <div class="chart-container"><canvas id="equity-chart"></canvas></div>
+        <div class="card-title">Equity Curve</div>
+        <div class="chart-box"><canvas id="equity-chart"></canvas></div>
     </div>`;
 
-    // Hour heatmap — convert ET to Paris (ET + 6h)
+    html += `</div>`; // end row-2
+
+    // ═══ HOURS + DAILY TABLE ═══
+    html += `<div class="row-2">`;
+
+    // Hour heatmap (Paris time)
     const byHour = m.by_hour || {};
     const byHourParis = {};
     for (const [hEt, v] of Object.entries(byHour)) {
-        const hParis = (parseInt(hEt) + 6) % 24;
-        byHourParis[hParis] = (byHourParis[hParis] || 0) + v;
+        const hP = (parseInt(hEt) + 6) % 24;
+        byHourParis[hP] = (byHourParis[hP] || 0) + v;
     }
-    const parisHours = Object.keys(byHourParis).map(Number).sort((a,b) => a - b);
-    const startH = Math.min(...parisHours, 10);
-    const endH = Math.max(...parisHours, 21);
-    let hourCells = '';
+    const allHours = Object.keys(byHourParis).map(Number).sort((a,b)=>a-b);
+    const hStart = Math.min(...allHours, 9);
+    const hEnd = Math.max(...allHours, 22);
     const maxAbs = Math.max(...Object.values(byHourParis).map(Math.abs), 1);
-    for (let h = startH; h <= endH; h++) {
+    let hourCells = '';
+    for (let h = hStart; h <= hEnd; h++) {
         const v = byHourParis[h] || 0;
-        const intensity = Math.abs(v) / maxAbs;
+        const int = Math.abs(v) / maxAbs;
         let bg;
-        if (v > 0) bg = `rgba(0,255,136,${0.1 + intensity * 0.4})`;
-        else if (v < 0) bg = `rgba(255,61,90,${0.1 + intensity * 0.4})`;
-        else bg = 'rgba(255,255,255,0.03)';
-        hourCells += `<div class="hour-cell" style="background:${bg}"><span class="hour-label">${h}h</span><span class="hour-value ${v >= 0 ? 'positive' : 'negative'}">$${v.toFixed(0)}</span></div>`;
+        if (v > 0) bg = `rgba(34,197,94,${0.08 + int * 0.35})`;
+        else if (v < 0) bg = `rgba(239,68,68,${0.08 + int * 0.35})`;
+        else bg = 'var(--bg3)';
+        hourCells += `<div class="hour-cell" style="background:${bg}"><span class="hour-label">${h}h</span><span class="hour-value ${v>=0?'positive':'negative'}">$${v.toFixed(0)}</span></div>`;
     }
-    const bestParis = m.best_hour_et != null ? (m.best_hour_et + 6) % 24 : '-';
-    const worstParis = m.worst_hour_et != null ? (m.worst_hour_et + 6) % 24 : '-';
-    left.innerHTML += `
+    const bestP = m.best_hour_et!=null ? (m.best_hour_et+6)%24 : '-';
+    const worstP = m.worst_hour_et!=null ? (m.worst_hour_et+6)%24 : '-';
+
+    html += `
     <div class="card">
-        <div class="card-title">PERFORMANCE PAR HEURE (PARIS)</div>
+        <div class="card-title">Performance par heure (Paris)</div>
         <div class="hour-grid">${hourCells}</div>
-        <div style="margin-top:8px;font-size:10px;color:var(--text2)">
-            Meilleure heure: <span style="color:var(--green)">${bestParis}h</span>
-            &nbsp;|&nbsp;
-            Pire heure: <span style="color:var(--red)">${worstParis}h</span>
+        <div style="margin-top:10px;font-size:12px;color:var(--text2)">
+            Meilleure : <strong class="positive">${bestP}h</strong> &nbsp; Pire : <strong class="negative">${worstP}h</strong>
         </div>
     </div>`;
 
-    // Daily breakdown
-    let dailyRows = '';
+    // Daily table
+    let rows = '';
     for (const d of days) {
         const day = dm[d];
-        const net = day.net_pnl || 0;
-        const wr = day.win_rate || 0;
-        const dayName = new Date(d + 'T12:00:00').toLocaleDateString('fr-FR', {weekday: 'short', day: 'numeric', month: 'short'});
-        dailyRows += `<tr>
+        const net = day.net_pnl||0;
+        const dayName = new Date(d+'T12:00:00').toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'});
+        rows += `<tr>
             <td style="color:var(--text2)">${dayName}</td>
-            <td class="${net >= 0 ? 'positive' : 'negative'}" style="font-weight:600">$${net.toFixed(2)}</td>
+            <td class="${net>=0?'positive':'negative'}" style="font-weight:600">$${net.toFixed(2)}</td>
             <td>${day.total_trades}</td>
-            <td>${wr.toFixed(0)}%</td>
-            <td class="${(day.max_drawdown||0) < -200 ? 'negative' : ''}">${day.max_drawdown ? '$'+day.max_drawdown.toFixed(0) : '-'}</td>
-            <td>${day.max_consec_losses || 0}</td>
+            <td>${(day.win_rate||0).toFixed(0)}%</td>
+            <td style="font-size:12px;color:var(--text2)">${day.max_drawdown?'$'+day.max_drawdown.toFixed(0):'-'}</td>
         </tr>`;
     }
-    left.innerHTML += `
+    html += `
     <div class="card">
-        <div class="card-title">HISTORIQUE PAR JOUR</div>
-        <table class="daily-table">
-            <thead><tr><th>JOUR</th><th>NET P&L</th><th>TRADES</th><th>WIN%</th><th>MAX DD</th><th>CONSEC L</th></tr></thead>
-            <tbody>${dailyRows}</tbody>
+        <div class="card-title">Historique par jour</div>
+        <table class="data-table">
+            <thead><tr><th>Jour</th><th>Net P&L</th><th>Trades</th><th>Win%</th><th>Max DD</th></tr></thead>
+            <tbody>${rows}</tbody>
         </table>
     </div>`;
 
-    // Extra stats
-    left.innerHTML += `
-    <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
-        <div class="stat-card">
-            <div class="stat-label">PLUS GROS GAIN</div>
-            <div class="stat-value positive" style="font-size:16px">$${(m.largest_win||0).toFixed(0)}</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-label">PLUS GROSSE PERTE</div>
-            <div class="stat-value negative" style="font-size:16px">$${(m.largest_loss||0).toFixed(0)}</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-label">MAX DRAWDOWN</div>
-            <div class="stat-value negative" style="font-size:16px">$${(m.max_drawdown||0).toFixed(0)}</div>
-        </div>
+    html += `</div>`; // end row-2
+
+    // ═══ SESSION PNL ═══
+    html += `
+    <div class="card">
+        <div class="card-title">P&L par session</div>
+        <div class="chart-box" style="height:160px"><canvas id="session-chart"></canvas></div>
     </div>`;
 
-    app.appendChild(left);
-
-    // ===== RIGHT COLUMN (COACH) =====
-    const right = document.createElement('div');
-
-    // Patterns detected
+    // ═══ COACH SECTION (full width, below data) ═══
     let patternBadges = '';
     for (const p of patterns) {
-        const cls = p.severity === 'critical' ? 'pattern-critical' : p.severity === 'serious' ? 'pattern-serious' : 'pattern-moderate';
-        patternBadges += `<span class="pattern-badge ${cls}">${p.name}</span>`;
+        const cls = p.severity==='critical'?'badge-critical':p.severity==='serious'?'badge-serious':'badge-moderate';
+        patternBadges += `<span class="badge ${cls}">${p.name}</span>`;
     }
 
-    // Strengths
-    let strengthsHtml = '';
-    for (const s of data.strengths || []) {
-        strengthsHtml += `<li>${s}</li>`;
-    }
-
-    // Weaknesses as pattern details
-    let patternDetails = '';
-    for (const p of patterns) {
-        const color = p.severity === 'critical' ? 'var(--red)' : p.severity === 'serious' ? 'var(--orange)' : 'var(--gold)';
-        patternDetails += `
-        <div style="margin:12px 0;padding:12px;background:rgba(255,255,255,0.02);border-radius:8px;border-left:3px solid ${color}">
-            <div style="font-family:var(--font-title);font-size:11px;color:${color};margin-bottom:6px">${p.name.toUpperCase()}</div>
-            <div style="font-size:11px;color:var(--text2);margin-bottom:4px">${p.evidence}</div>
-            <div style="font-size:11px;color:var(--text1)">${p.impact}</div>
-        </div>`;
-    }
-
-    // Action plan
-    let actionsHtml = '';
-    (data.action_plan || []).forEach((a, i) => {
-        actionsHtml += `<div class="action-item"><div class="action-num">${i+1}</div><div>${a}</div></div>`;
-    });
-
-    // Parse the full_report markdown into HTML
     const reportHtml = markdownToHtml(data.full_report || '');
 
-    right.innerHTML = `
-    <div class="coach-card">
-        <div class="coach-header">
+    html += `
+    <div class="coach-section">
+        <div class="coach-header-bar">
             <div class="coach-avatar">C</div>
             <div>
                 <div class="coach-name">Coach x-trade</div>
-                <div class="coach-role">40 ans de desk trading</div>
+                <div class="coach-role">Analyse comportementale — 40 ans de desk trading</div>
             </div>
         </div>
-        <div style="margin-bottom:16px">${patternBadges || '<span style="color:var(--green);font-size:11px">Aucun pattern destructeur detecte</span>'}</div>
-        <div class="coach-content">${reportHtml}</div>
-    </div>
-
-    <!-- Session PnL -->
-    <div class="card" style="margin-top:16px">
-        <div class="card-title">P&L PAR SESSION</div>
-        <div class="chart-container" style="height:160px"><canvas id="session-chart"></canvas></div>
-    </div>
-
-    <!-- Key numbers -->
-    <div class="card" style="margin-top:16px">
-        <div class="card-title">CHIFFRES CLES</div>
-        <div style="display:grid;gap:8px;font-size:11px">
-            <div style="display:flex;justify-content:space-between"><span style="color:var(--text2)">Serie gagnante max</span><span class="positive">${m.max_consec_wins}</span></div>
-            <div style="display:flex;justify-content:space-between"><span style="color:var(--text2)">Serie perdante max</span><span class="negative">${m.max_consec_losses}</span></div>
-            <div style="display:flex;justify-content:space-between"><span style="color:var(--text2)">Gain moyen</span><span class="positive">$${(m.avg_win||0).toFixed(2)}</span></div>
-            <div style="display:flex;justify-content:space-between"><span style="color:var(--text2)">Perte moyenne</span><span class="negative">$${(m.avg_loss||0).toFixed(2)}</span></div>
-            <div style="display:flex;justify-content:space-between"><span style="color:var(--text2)">Confiance analyse</span><span style="color:var(--cyan)">${data.confidence_level || '-'}</span></div>
-        </div>
+        <div class="badges">${patternBadges}</div>
+        <div class="report">${reportHtml}</div>
     </div>`;
 
-    app.appendChild(right);
+    app.innerHTML = html;
 
-    // ===== CHARTS =====
+    // Charts
     renderEquityChart(data);
     renderSessionChart(m.session_pnl || {});
 }
@@ -474,116 +451,79 @@ function renderJournal(data) {
 function renderEquityChart(data) {
     const dm = data.daily_metrics || {};
     const days = Object.keys(dm).sort();
-    let cumPnl = 0;
-    const labels = [];
-    const values = [];
-    const colors = [];
-
+    let cum = 0;
+    const labels = [], values = [], colors = [];
     for (const d of days) {
-        cumPnl += (dm[d].net_pnl || 0);
-        labels.push(new Date(d + 'T12:00:00').toLocaleDateString('fr-FR', {day:'numeric', month:'short'}));
-        values.push(cumPnl);
-        colors.push(cumPnl >= 0 ? 'rgba(0,255,136,1)' : 'rgba(255,61,90,1)');
+        cum += (dm[d].net_pnl || 0);
+        labels.push(new Date(d+'T12:00:00').toLocaleDateString('fr-FR',{day:'numeric',month:'short'}));
+        values.push(cum);
+        colors.push(cum >= 0 ? '#22c55e' : '#ef4444');
     }
-
     const ctx = document.getElementById('equity-chart');
     if (!ctx) return;
     new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels,
-            datasets: [{
-                data: values,
-                borderColor: 'rgba(0,224,255,0.8)',
-                backgroundColor: 'rgba(0,224,255,0.05)',
-                fill: true,
-                tension: 0.3,
-                pointRadius: 5,
-                pointBackgroundColor: colors,
-                pointBorderColor: colors,
-                borderWidth: 2,
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-                x: { ticks: { color: '#5d7490', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.03)' } },
-                y: {
-                    ticks: { color: '#5d7490', font: { size: 10 }, callback: v => '$' + v },
-                    grid: { color: 'rgba(255,255,255,0.03)' },
-                },
+        type:'line',
+        data:{ labels, datasets:[{
+            data:values, borderColor:'#3b82f6', backgroundColor:'rgba(59,130,246,0.06)',
+            fill:true, tension:0.3, pointRadius:5, pointBackgroundColor:colors,
+            pointBorderColor:colors, borderWidth:2,
+        }]},
+        options:{
+            responsive:true, maintainAspectRatio:false,
+            plugins:{legend:{display:false}},
+            scales:{
+                x:{ticks:{color:'#64748b',font:{size:11,family:'Inter'}},grid:{color:'rgba(255,255,255,0.03)'}},
+                y:{ticks:{color:'#64748b',font:{size:11,family:'Inter'},callback:v=>'$'+v},grid:{color:'rgba(255,255,255,0.03)'}},
             },
         },
     });
 }
 
-function renderSessionChart(sessionPnl) {
-    const labels = [];
-    const values = [];
-    const colors = [];
-    const sessionNames = { asia: 'Asia', london: 'London', new_york: 'New York', overnight: 'Overnight' };
-
-    for (const [s, v] of Object.entries(sessionPnl)) {
-        labels.push(sessionNames[s] || s);
-        values.push(v);
-        colors.push(v >= 0 ? 'rgba(0,255,136,0.7)' : 'rgba(255,61,90,0.7)');
+function renderSessionChart(sp) {
+    const names = {asia:'Asia',london:'London',new_york:'New York',overnight:'Overnight'};
+    const labels=[],values=[],colors=[];
+    for (const [s,v] of Object.entries(sp)) {
+        labels.push(names[s]||s); values.push(v);
+        colors.push(v>=0?'rgba(34,197,94,0.7)':'rgba(239,68,68,0.7)');
     }
-
     const ctx = document.getElementById('session-chart');
     if (!ctx) return;
     new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels,
-            datasets: [{ data: values, backgroundColor: colors, borderRadius: 6, barThickness: 30 }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-                x: { ticks: { color: '#5d7490', font: { size: 10 } }, grid: { display: false } },
-                y: { ticks: { color: '#5d7490', font: { size: 10 }, callback: v => '$' + v }, grid: { color: 'rgba(255,255,255,0.03)' } },
+        type:'bar',
+        data:{labels,datasets:[{data:values,backgroundColor:colors,borderRadius:6,barThickness:36}]},
+        options:{
+            responsive:true, maintainAspectRatio:false,
+            plugins:{legend:{display:false}},
+            scales:{
+                x:{ticks:{color:'#64748b',font:{size:11,family:'Inter'}},grid:{display:false}},
+                y:{ticks:{color:'#64748b',font:{size:11,family:'Inter'},callback:v=>'$'+v},grid:{color:'rgba(255,255,255,0.03)'}},
             },
         },
     });
 }
 
-// Simple markdown to HTML
 function markdownToHtml(md) {
     if (!md) return '';
-    let html = md
-        // Tables
-        .replace(/\|(.+)\|\n\|[-| :]+\|\n([\s\S]*?)(?=\n\n|\n###|\n$)/g, (match, header, body) => {
-            const ths = header.split('|').filter(Boolean).map(h => `<th>${h.trim()}</th>`).join('');
-            const rows = body.trim().split('\n').map(row => {
-                const tds = row.split('|').filter(Boolean).map(c => `<td>${c.trim()}</td>`).join('');
+    return md
+        .replace(/\|(.+)\|\n\|[-| :]+\|\n([\s\S]*?)(?=\n\n|\n###|\n##|\n$)/g, (m, header, body) => {
+            const ths = header.split('|').filter(Boolean).map(h=>`<th>${h.trim()}</th>`).join('');
+            const rows = body.trim().split('\n').map(r=>{
+                const tds = r.split('|').filter(Boolean).map(c=>`<td>${c.trim()}</td>`).join('');
                 return `<tr>${tds}</tr>`;
             }).join('');
-            return `<table class="daily-table"><thead><tr>${ths}</tr></thead><tbody>${rows}</tbody></table>`;
+            return `<table><thead><tr>${ths}</tr></thead><tbody>${rows}</tbody></table>`;
         })
-        // Headers
         .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-        .replace(/^## (.+)$/gm, '<h2 style="font-size:14px;color:var(--cyan);margin:20px 0 10px;font-family:var(--font-title)">$1</h2>')
-        // Bold
+        .replace(/^## (.+)$/gm, '<h2>$1</h2>')
         .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-        // Italic
-        .replace(/\*(.+?)\*/g, '<em style="color:var(--text2)">$1</em>')
-        // Blockquotes
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
         .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
-        // List items
         .replace(/^(\d+)\.\s+(.+)$/gm, '<div class="action-item"><div class="action-num">$1</div><div>$2</div></div>')
         .replace(/^- (.+)$/gm, '<li>$1</li>')
-        // Paragraphs
         .replace(/\n\n/g, '</p><p>')
         .replace(/\n(?!<)/g, '<br>');
-
-    return `<p>${html}</p>`;
 }
 
-// Load on page ready
 loadJournal();
 </script>
 </body>
