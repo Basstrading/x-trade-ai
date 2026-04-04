@@ -37,24 +37,59 @@ class TradingCoach:
             if t.get('broker_account_id')
         ))
 
-        # Fills de sortie = ceux avec un PnL != 0 (les entrees ont pnl=0)
-        # On utilise net_pnl (colonne GENERATED = pnl - fees) si disponible
+        # Separer les broker_account_ids pour identifier le compte principal
+        ba_ids = list(set(
+            t.get('broker_account_id') for t in raw_fills
+            if t.get('broker_account_id')
+        ))
+
+        # Fills de sortie = ceux avec un PnL != 0
         exit_fills = [t for t in raw_fills if (t.get('pnl') or 0) != 0]
+
+        # Pour les metriques PnL: tous les comptes cumules
         trades = exit_fills
 
-        # Grouper par jour
+        # Pour le comptage des trades: 1 seul compte (le principal)
+        # Car les copies sont les memes trades repliques
+        if ba_ids:
+            primary_ba = ba_ids[0]  # Premier compte = principal
+            primary_fills = [t for t in raw_fills if t.get('broker_account_id') == primary_ba]
+            primary_exits = [t for t in primary_fills if (t.get('pnl') or 0) != 0]
+            # Compter les entrees comme round-trips (1 entree = 1 trade)
+            primary_entries = [t for t in primary_fills if (t.get('pnl') or 0) == 0]
+            real_trade_count = len(primary_entries)
+        else:
+            real_trade_count = len(exit_fills)
+            primary_exits = exit_fills
+
+        # Grouper par jour (exits de tous les comptes pour le PnL)
         by_day = defaultdict(list)
         for t in exit_fills:
             d = (t.get('entry_time') or '')[:10]
             if d:
                 by_day[d].append(t)
 
-        # Calculer les metriques
+        # Grouper par jour pour le comptage (1 seul compte)
+        by_day_primary = defaultdict(list)
+        for t in primary_exits:
+            d = (t.get('entry_time') or '')[:10]
+            if d:
+                by_day_primary[d].append(t)
+
+        # Calculer les metriques (PnL = tous comptes, trades = 1 compte)
         metrics = self._compute_metrics(trades)
+        metrics['real_trade_count'] = real_trade_count  # Vrais round-trips (1 compte)
         daily_metrics = {d: self._compute_metrics(dt) for d, dt in by_day.items()}
 
-        # Detecter les patterns comportementaux
-        patterns = self._detect_patterns(trades, by_day, metrics, daily_metrics)
+        # Ajouter le vrai nombre de trades par jour (1 compte)
+        for d, dt_primary in by_day_primary.items():
+            if d in daily_metrics:
+                # Compter les entrees du jour sur le compte principal
+                primary_day_all = [t for t in [f for f in raw_fills if f.get('broker_account_id') == (ba_ids[0] if ba_ids else None)] if (t.get('entry_time') or '')[:10] == d and (t.get('pnl') or 0) == 0]
+                daily_metrics[d]['real_trade_count'] = len(primary_day_all)
+
+        # Detecter les patterns (utiliser les fills du compte principal pour les patterns temporels)
+        patterns = self._detect_patterns(primary_exits, by_day_primary, metrics, daily_metrics)
 
         # Identifier forces et faiblesses
         strengths = self._identify_strengths(metrics, daily_metrics, patterns)
@@ -85,7 +120,7 @@ class TradingCoach:
             "report_type": "on_demand",
             "period_start": min(by_day.keys()) if by_day else None,
             "period_end": max(by_day.keys()) if by_day else None,
-            "total_trades": len(trades),
+            "total_trades": real_trade_count,
             "win_rate": metrics["win_rate"],
             "profit_factor": metrics["profit_factor"],
             "net_pnl": metrics["net_pnl"],
@@ -234,9 +269,14 @@ class TradingCoach:
             if len(ts) >= 13:
                 try:
                     dt = datetime.fromisoformat(ts.replace('Z', '+00:00'))
-                    h_et = (dt.hour - 4) % 24
-                    pnl = (t.get('pnl') or 0) - (t.get('fees') or 0)
-                    by_hour[h_et].append(pnl)
+                    # Convertir en heure Paris (UTC+1 CET / UTC+2 CEST)
+                    try:
+                        from zoneinfo import ZoneInfo
+                        h_paris = dt.astimezone(ZoneInfo("Europe/Paris")).hour
+                    except Exception:
+                        h_paris = (dt.hour + 2) % 24  # Fallback CEST
+                    net = t.get('net_pnl') if t.get('net_pnl') is not None else ((t.get('pnl') or 0) - (t.get('fees') or 0))
+                    by_hour[h_paris].append(net)
                 except Exception:
                     pass
 
@@ -323,11 +363,12 @@ class TradingCoach:
                 "solution": "Regle de desk : 5 minutes MINIMUM entre deux trades. Timer obligatoire.",
             })
 
-        # 2. OVERTRADING — > 12 trades dans une journee
+        # 2. OVERTRADING — > 12 trades dans une journee (vrais round-trips)
         overtrading_days = []
         for d, dm in daily_metrics.items():
-            if dm['total_trades'] > 12:
-                overtrading_days.append((d, dm['total_trades'], dm['net_pnl']))
+            rt = dm.get('real_trade_count', dm['total_trades'])
+            if rt > 12:
+                overtrading_days.append((d, rt, dm['net_pnl']))
 
         if overtrading_days:
             total_lost = sum(pnl for _, _, pnl in overtrading_days if pnl < 0)

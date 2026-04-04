@@ -331,13 +331,8 @@ function renderJournal(data) {
     // ═══ HOURS + DAILY TABLE ═══
     html += `<div class="row-2">`;
 
-    // Hour heatmap (Paris time)
-    const byHour = m.by_hour || {};
-    const byHourParis = {};
-    for (const [hEt, v] of Object.entries(byHour)) {
-        const hP = (parseInt(hEt) + 6) % 24;
-        byHourParis[hP] = (byHourParis[hP] || 0) + v;
-    }
+    // Hour heatmap (already in Paris time from backend)
+    const byHourParis = m.by_hour || {};
     const allHours = Object.keys(byHourParis).map(Number).sort((a,b)=>a-b);
     const hStart = Math.min(...allHours, 9);
     const hEnd = Math.max(...allHours, 22);
@@ -352,8 +347,8 @@ function renderJournal(data) {
         else bg = 'var(--bg3)';
         hourCells += `<div class="hour-cell" style="background:${bg}"><span class="hour-label">${h}h</span><span class="hour-value ${v>=0?'positive':'negative'}">$${v.toFixed(0)}</span></div>`;
     }
-    const bestP = m.best_hour_et!=null ? (m.best_hour_et+6)%24 : '-';
-    const worstP = m.worst_hour_et!=null ? (m.worst_hour_et+6)%24 : '-';
+    const bestP = m.best_hour_et != null ? m.best_hour_et : '-';
+    const worstP = m.worst_hour_et != null ? m.worst_hour_et : '-';
 
     html += `
     <div class="card">
@@ -373,7 +368,7 @@ function renderJournal(data) {
         rows += `<tr>
             <td style="color:var(--text2)">${dayName}</td>
             <td class="${net>=0?'positive':'negative'}" style="font-weight:600">$${net.toFixed(2)}</td>
-            <td>${day.total_trades}</td>
+            <td>${day.real_trade_count || day.total_trades}</td>
             <td>${(day.win_rate||0).toFixed(0)}%</td>
             <td style="font-size:12px;color:var(--text2)">${day.max_drawdown?'$'+day.max_drawdown.toFixed(0):'-'}</td>
         </tr>`;
