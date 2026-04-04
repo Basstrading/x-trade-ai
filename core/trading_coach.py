@@ -92,11 +92,72 @@ class TradingCoach:
                 by_day_primary[d].append(t)
 
         # Calculer les metriques (PnL = tous comptes, trades = 1 compte)
+        # Metriques PnL = tous comptes cumules
         metrics = self._compute_metrics(trades)
-        metrics['real_trade_count'] = real_trade_count  # Vrais round-trips (1 compte)
-        # Recalculer l'esperance par vrai trade (pas par fill)
-        if real_trade_count > 0:
-            metrics['expectancy'] = round(metrics['net_pnl'] / real_trade_count, 2)
+
+        # Grouper les fills du compte principal en round-trips
+        # Chaque entree + ses exits = 1 round-trip avec PnL cumule
+        primary_all = sorted(
+            [t for t in raw_fills if t.get('broker_account_id') == (ba_ids[0] if ba_ids else None)],
+            key=lambda x: x.get('entry_time', '')
+        )
+        round_trips_pnl = []
+        current_rt_pnl = 0.0
+        in_trade = False
+        last_entry_time = None
+        for f in primary_all:
+            pnl = f.get('pnl') or 0
+            net = f.get('net_pnl') if f.get('net_pnl') is not None else (pnl - (f.get('fees') or 0))
+            if pnl == 0:
+                # Entree - sauver le round-trip precedent
+                ts = f.get('entry_time', '')
+                try:
+                    et = datetime.fromisoformat(ts.replace('Z', '+00:00'))
+                    new_trade = last_entry_time is None or (et - last_entry_time).total_seconds() > 5
+                    last_entry_time = et
+                except Exception:
+                    new_trade = True
+                if new_trade:
+                    if in_trade and current_rt_pnl != 0:
+                        round_trips_pnl.append(current_rt_pnl)
+                    current_rt_pnl = 0.0
+                    in_trade = True
+            else:
+                # Sortie - ajouter au round-trip courant
+                current_rt_pnl += net
+                in_trade = True
+        if in_trade and current_rt_pnl != 0:
+            round_trips_pnl.append(current_rt_pnl)
+
+        # Metriques basees sur les vrais round-trips
+        rt_wins = sum(1 for p in round_trips_pnl if p > 0)
+        rt_losses = sum(1 for p in round_trips_pnl if p < 0)
+        rt_total = rt_wins + rt_losses
+        metrics['real_trade_count'] = rt_total if rt_total > 0 else real_trade_count
+        metrics['total_trades'] = metrics['real_trade_count']
+        metrics['wins'] = rt_wins
+        metrics['losses'] = rt_losses
+        metrics['win_rate'] = round(rt_wins / rt_total * 100, 1) if rt_total > 0 else 0
+        # Consecutive W/L sur round-trips
+        max_cw = max_cl = cw = cl = 0
+        for p in round_trips_pnl:
+            if p > 0:
+                cw += 1; cl = 0
+            elif p < 0:
+                cl += 1; cw = 0
+            max_cw = max(max_cw, cw)
+            max_cl = max(max_cl, cl)
+        metrics['max_consec_wins'] = max_cw
+        metrics['max_consec_losses'] = max_cl
+        # R:R sur round-trips
+        rt_avg_win = sum(p for p in round_trips_pnl if p > 0) / rt_wins if rt_wins else 0
+        rt_avg_loss = sum(p for p in round_trips_pnl if p < 0) / rt_losses if rt_losses else 0
+        metrics['avg_win'] = round(rt_avg_win * accounts_count, 2)  # x comptes
+        metrics['avg_loss'] = round(rt_avg_loss * accounts_count, 2)
+        metrics['rr_ratio'] = round(abs(rt_avg_win / rt_avg_loss), 2) if rt_avg_loss != 0 else 0
+        # Esperance = PnL total (5 comptes) / vrais trades
+        if metrics['real_trade_count'] > 0:
+            metrics['expectancy'] = round(metrics['net_pnl'] / metrics['real_trade_count'], 2)
         daily_metrics = {d: self._compute_metrics(dt) for d, dt in by_day.items()}
 
         # Ajouter le vrai nombre de trades par jour (1 compte, entrees regroupees)

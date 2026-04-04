@@ -284,7 +284,7 @@ function renderJournal(data) {
         <div class="stat">
             <div class="stat-label">Win Rate</div>
             <div class="stat-value ${wr>=50?'positive':wr>=40?'neutral':'negative'}">${wr.toFixed(1)}%</div>
-            <div class="stat-sub">${m.wins}W / ${m.losses}L</div>
+            <div class="stat-sub">${m.wins}W / ${m.losses}L (1 compte)</div>
         </div>
         <div class="stat">
             <div class="stat-label">Profit Factor</div>
@@ -492,7 +492,7 @@ function renderCalendar(monthStr) {
     let monthPnl = 0, monthTrades = 0;
     for (let d = 1; d <= daysInMonth; d++) {
         const ds = monthStr + '-' + String(d).padStart(2, '0');
-        if (calDays[ds]) { monthPnl += calDays[ds].net_pnl || 0; monthTrades += calDays[ds].total_trades || 0; }
+        if (calDays[ds]) { monthPnl += calDays[ds].net_pnl || 0; monthTrades += calDays[ds].real_trade_count || calDays[ds].total_trades || 0; }
     }
 
     const dowNames = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
