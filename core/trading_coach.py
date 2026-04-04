@@ -697,6 +697,7 @@ class TradingCoach:
 
         payout_target = 3000  # Topstep 50K
         remaining = payout_target - m['net_pnl']
+        days_needed = 0
         if remaining > 0:
             avg_day_pnl = m['net_pnl'] / days if days > 0 else 0
             if avg_day_pnl > 0:
