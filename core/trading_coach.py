@@ -50,47 +50,65 @@ class TradingCoach:
         primary_exits = [t for t in all_exits if t.get('broker_account_id') == primary_ba] if primary_ba else all_exits
 
         # ═══ METRIQUES ═══
-        # PnL total = tous comptes cumules
-        total_net_pnl = sum(
-            (t.get('net_pnl') if t.get('net_pnl') is not None else (t.get('pnl') or 0) - (t.get('fees') or 0))
-            for t in all_exits
-        )
+        # Topstep methode: chaque fill de sortie = 1 trade, PnL = brut (profitAndLoss)
+        # W/L basé sur le PnL brut (>0 = win, <0 = loss)
+        # Net P&L = brut - toutes les fees (= changement de balance reel)
 
-        # Win/Loss/WinRate/PF/RR = 1 seul compte (identique a ce que Topstep affiche)
-        primary_pnls = []
-        for t in primary_exits:
-            net = t.get('net_pnl') if t.get('net_pnl') is not None else (t.get('pnl') or 0) - (t.get('fees') or 0)
-            primary_pnls.append(net)
+        # --- Par compte ---
+        per_account = {}
+        for ba_id in ba_ids:
+            acc_fills = [t for t in raw_fills if t.get('broker_account_id') == ba_id]
+            acc_exits = [t for t in acc_fills if (t.get('pnl') or 0) != 0]
+            acc_entries = [t for t in acc_fills if (t.get('pnl') or 0) == 0]
 
-        wins = sum(1 for p in primary_pnls if p > 0)
-        losses = sum(1 for p in primary_pnls if p < 0)
-        total_trades = wins + losses
-        win_rate = round(wins / total_trades * 100, 1) if total_trades > 0 else 0
-        avg_win = sum(p for p in primary_pnls if p > 0) / wins if wins else 0
-        avg_loss = sum(p for p in primary_pnls if p < 0) / losses if losses else 0
-        gross_profit = sum(p for p in primary_pnls if p > 0)
-        gross_loss = abs(sum(p for p in primary_pnls if p < 0))
-        profit_factor = round(gross_profit / gross_loss, 2) if gross_loss > 0 else 0
-        rr_ratio = round(abs(avg_win / avg_loss), 2) if avg_loss != 0 else 0
+            brut_pnls = [t.get('pnl') or 0 for t in acc_exits]
+            w = sum(1 for p in brut_pnls if p > 0)
+            l = sum(1 for p in brut_pnls if p < 0)
+            gw = sum(p for p in brut_pnls if p > 0)
+            gl = abs(sum(p for p in brut_pnls if p < 0))
+            all_fees = sum(t.get('fees') or 0 for t in acc_fills)
+            net_pnl = sum(brut_pnls) - all_fees
+
+            per_account[ba_id] = {
+                'wins': w, 'losses': l, 'trades': w + l,
+                'gross_win': gw, 'gross_loss': gl,
+                'net_pnl': net_pnl, 'fees': all_fees,
+            }
+
+        # --- Agrege ---
+        total_w = sum(a['wins'] for a in per_account.values())
+        total_l = sum(a['losses'] for a in per_account.values())
+        total_trades = total_w + total_l
+        total_gw = sum(a['gross_win'] for a in per_account.values())
+        total_gl = sum(a['gross_loss'] for a in per_account.values())
+        total_net_pnl = sum(a['net_pnl'] for a in per_account.values())
+
+        win_rate = round(total_w / total_trades * 100, 1) if total_trades > 0 else 0
+        avg_win = total_gw / total_w if total_w else 0
+        avg_loss = total_gl / total_l if total_l else 0
+        profit_factor = round(total_gw / total_gl, 2) if total_gl > 0 else 0
+        rr_ratio = round(avg_win / avg_loss, 2) if avg_loss > 0 else 0
         expectancy = round(total_net_pnl / total_trades, 2) if total_trades > 0 else 0
 
-        # Consecutive W/L
+        # Consecutive W/L (sur le compte principal, PnL brut)
+        primary_brut_pnls = [t.get('pnl') or 0 for t in sorted(primary_exits, key=lambda x: x.get('entry_time', ''))]
         max_cw = max_cl = cw = cl = 0
-        for p in primary_pnls:
+        for p in primary_brut_pnls:
             if p > 0: cw += 1; cl = 0
             elif p < 0: cl += 1; cw = 0
             max_cw = max(max_cw, cw); max_cl = max(max_cl, cl)
 
-        # Peak et drawdown (tous comptes)
+        # Peak et drawdown (tous comptes, net)
         running = peak = max_dd = 0.0
-        for t in sorted(all_exits, key=lambda x: x.get('entry_time', '')):
-            net = t.get('net_pnl') if t.get('net_pnl') is not None else (t.get('pnl') or 0) - (t.get('fees') or 0)
+        all_sorted = sorted(all_exits, key=lambda x: x.get('entry_time', ''))
+        for t in all_sorted:
+            net = (t.get('pnl') or 0) - (t.get('fees') or 0)
             running += net
             if running > peak: peak = running
             dd = running - peak
             if dd < max_dd: max_dd = dd
 
-        # Heures (Paris, 1 seul compte)
+        # Heures (Paris, compte principal, PnL brut)
         by_hour = defaultdict(lambda: {'pnl': 0.0, 'count': 0})
         for t in primary_exits:
             ts = t.get('entry_time', '')
@@ -99,8 +117,7 @@ class TradingCoach:
                     from zoneinfo import ZoneInfo
                     dt = datetime.fromisoformat(ts.replace('Z', '+00:00'))
                     h_paris = dt.astimezone(ZoneInfo('Europe/Paris')).hour
-                    net = t.get('net_pnl') if t.get('net_pnl') is not None else (t.get('pnl') or 0) - (t.get('fees') or 0)
-                    by_hour[h_paris]['pnl'] += net
+                    by_hour[h_paris]['pnl'] += t.get('pnl') or 0
                     by_hour[h_paris]['count'] += 1
                 except Exception:
                     pass
@@ -108,29 +125,28 @@ class TradingCoach:
         best_hour = max(by_hour, key=lambda h: by_hour[h]['pnl']) if by_hour else None
         worst_hour = min(by_hour, key=lambda h: by_hour[h]['pnl']) if by_hour else None
 
-        # Session PnL
+        # Session PnL (tous comptes, net)
         by_session = defaultdict(float)
         for t in all_exits:
             s = t.get('session', 'unknown')
-            net = t.get('net_pnl') if t.get('net_pnl') is not None else (t.get('pnl') or 0) - (t.get('fees') or 0)
-            by_session[s] += net
+            by_session[s] += (t.get('pnl') or 0) - (t.get('fees') or 0)
 
         metrics = {
             'total_trades': total_trades,
             'real_trade_count': total_trades,
-            'wins': wins,
-            'losses': losses,
+            'wins': total_w,
+            'losses': total_l,
             'win_rate': win_rate,
-            'avg_win': round(avg_win * accounts_count, 2),
-            'avg_loss': round(avg_loss * accounts_count, 2),
+            'avg_win': round(avg_win, 2),
+            'avg_loss': round(-avg_loss, 2),
             'rr_ratio': rr_ratio,
             'profit_factor': profit_factor,
             'expectancy': expectancy,
             'net_pnl': round(total_net_pnl, 2),
-            'gross_profit': round(gross_profit * accounts_count, 2),
-            'gross_loss': round(gross_loss * accounts_count, 2),
-            'largest_win': round(max(primary_pnls) * accounts_count, 2) if primary_pnls else 0,
-            'largest_loss': round(min(primary_pnls) * accounts_count, 2) if primary_pnls else 0,
+            'gross_profit': round(total_gw, 2),
+            'gross_loss': round(total_gl, 2),
+            'largest_win': round(max(primary_brut_pnls, default=0), 2),
+            'largest_loss': round(min(primary_brut_pnls, default=0), 2),
             'peak_pnl': round(peak, 2),
             'max_drawdown': round(max_dd, 2),
             'max_consec_wins': max_cw,
