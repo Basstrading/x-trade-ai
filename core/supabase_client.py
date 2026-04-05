@@ -174,7 +174,7 @@ class SupabaseClient:
         if r.status_code in (200, 201):
             data = r.json()
             return data[0]['id'] if data else None
-        logger.error(f"Supabase save report: {r.status_code}")
+        logger.error(f"Supabase save report: {r.status_code} | {r.text[:500]}")
         return None
 
     async def get_coaching_reports(self, user_id: str,
@@ -198,7 +198,7 @@ class SupabaseClient:
         return r.json() if r.status_code == 200 else []
 
     async def save_broker_account(self, user_id: str, account: dict) -> bool:
-        """Ajoute ou met a jour un compte broker."""
+        """Ajoute ou met a jour un compte broker (upsert sur user_id+account_id)."""
         row = {'user_id': user_id, **account}
         r = await self._client.post(
             '/broker_accounts',
@@ -207,7 +207,10 @@ class SupabaseClient:
                 **self.headers,
                 'Prefer': 'return=minimal,resolution=merge-duplicates',
             },
+            params={'on_conflict': 'user_id,account_id'},
         )
+        if r.status_code not in (200, 201):
+            logger.error(f"Supabase save broker_account: {r.status_code} {r.text[:200]}")
         return r.status_code in (200, 201)
 
 

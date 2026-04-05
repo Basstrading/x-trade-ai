@@ -100,13 +100,43 @@ class TradingCoach:
 
         # Peak et drawdown (tous comptes, net)
         running = peak = max_dd = 0.0
+        max_dd_duration_g = dd_duration_g = 0
         all_sorted = sorted(all_exits, key=lambda x: x.get('entry_time', ''))
         for t in all_sorted:
             net = (t.get('pnl') or 0) - (t.get('fees') or 0)
             running += net
-            if running > peak: peak = running
+            if running > peak:
+                peak = running
+                dd_duration_g = 0
+            else:
+                dd_duration_g += 1
+                max_dd_duration_g = max(max_dd_duration_g, dd_duration_g)
             dd = running - peak
             if dd < max_dd: max_dd = dd
+
+        # Métriques avancées globales (daily-based, tous comptes)
+        global_daily_pnls = defaultdict(float)
+        for t in all_sorted:
+            d = (t.get('entry_time') or '')[:10]
+            if d:
+                global_daily_pnls[d] += (t.get('pnl') or 0) - (t.get('fees') or 0)
+        gdv = list(global_daily_pnls.values())
+        g_num_days = len(gdv)
+        g_avg_daily = sum(gdv) / g_num_days if g_num_days > 0 else 0
+
+        if g_num_days >= 2:
+            g_mean = sum(gdv) / g_num_days
+            g_var = sum((x - g_mean) ** 2 for x in gdv) / (g_num_days - 1)
+            g_daily_vol = math.sqrt(g_var)
+            g_sharpe = (g_mean / g_daily_vol) * math.sqrt(252) if g_daily_vol > 0 else 0
+            g_neg_devs = [min(0, x) ** 2 for x in gdv]
+            g_downside = math.sqrt(sum(g_neg_devs) / g_num_days)
+            g_sortino = (g_mean / g_downside) * math.sqrt(252) if g_downside > 0 else 0
+            g_annual = g_mean * 252
+            g_calmar = g_annual / abs(max_dd) if max_dd != 0 else 0
+        else:
+            g_daily_vol = g_sharpe = g_sortino = g_calmar = 0.0
+        g_recovery = sum(gdv) / abs(max_dd) if max_dd != 0 else 0
 
         # Heures (Paris, compte principal, PnL brut)
         by_hour = defaultdict(lambda: {'pnl': 0.0, 'count': 0})
@@ -159,10 +189,18 @@ class TradingCoach:
             'max_drawdown': round(max_dd, 2),
             'max_consec_wins': max_cw,
             'max_consec_losses': max_cl,
+            'max_dd_duration': max_dd_duration_g,
             'best_hour_et': best_hour,
             'worst_hour_et': worst_hour,
             'session_pnl': {s: round(v, 2) for s, v in by_session.items()},
             'by_hour': {h: round(info['pnl'], 2) for h, info in by_hour.items()},
+            'sharpe_ratio': round(g_sharpe, 2),
+            'sortino_ratio': round(g_sortino, 2),
+            'calmar_ratio': round(g_calmar, 2),
+            'recovery_factor': round(g_recovery, 2),
+            'avg_daily_pnl': round(g_avg_daily, 2),
+            'daily_volatility': round(g_daily_vol, 2),
+            'num_trading_days': g_num_days,
         }
 
         # Daily metrics (PnL = tous comptes cumules)
@@ -249,9 +287,14 @@ class TradingCoach:
             "daily_metrics": daily_metrics,
         }
 
-        # Sauvegarder le rapport
-        report_to_save = {k: v for k, v in result.items()
-                          if k not in ('metrics', 'daily_metrics')}
+        # Sauvegarder le rapport (colonnes existantes dans coaching_reports uniquement)
+        _report_cols = {
+            'report_type', 'period_start', 'period_end', 'total_trades',
+            'win_rate', 'profit_factor', 'net_pnl', 'patterns_detected',
+            'strengths', 'weaknesses', 'action_plan', 'desk_rule',
+            'full_report', 'trades_analyzed', 'confidence_level',
+        }
+        report_to_save = {k: v for k, v in result.items() if k in _report_cols}
         await self.sb.save_coaching_report(user_id, report_to_save)
 
         return result
@@ -354,13 +397,55 @@ class TradingCoach:
 
         # Peak et drawdown
         running = peak = max_dd = 0.0
+        max_dd_duration = dd_duration = 0
         for p in pnls:
             running += p
             if running > peak:
                 peak = running
+                dd_duration = 0
+            else:
+                dd_duration += 1
+                max_dd_duration = max(max_dd_duration, dd_duration)
             dd = running - peak
             if dd < max_dd:
                 max_dd = dd
+
+        # ── Métriques avancées (daily-based) ──
+        daily_pnls = defaultdict(float)
+        for t in trades:
+            d = (t.get('entry_time') or '')[:10]
+            if d:
+                net = t.get('net_pnl')
+                if net is not None:
+                    daily_pnls[d] += net
+                else:
+                    daily_pnls[d] += (t.get('pnl') or 0) - (t.get('fees') or 0)
+
+        daily_values = list(daily_pnls.values()) if daily_pnls else []
+        num_days = len(daily_values)
+        avg_daily_pnl = sum(daily_values) / num_days if num_days > 0 else 0
+
+        if num_days >= 2:
+            mean_d = sum(daily_values) / num_days
+            variance = sum((x - mean_d) ** 2 for x in daily_values) / (num_days - 1)
+            daily_vol = math.sqrt(variance)
+
+            # Sharpe (annualisé, risk-free ≈ 0 pour futures)
+            sharpe = (mean_d / daily_vol) * math.sqrt(252) if daily_vol > 0 else 0
+
+            # Sortino (downside deviation only)
+            neg_devs = [(min(0, x - 0)) ** 2 for x in daily_values]
+            downside_dev = math.sqrt(sum(neg_devs) / num_days)
+            sortino = (mean_d / downside_dev) * math.sqrt(252) if downside_dev > 0 else 0
+
+            # Calmar (annualized return / max drawdown)
+            annual_pnl = mean_d * 252
+            calmar = annual_pnl / abs(max_dd) if max_dd != 0 else 0
+        else:
+            daily_vol = sharpe = sortino = calmar = 0.0
+
+        # Recovery Factor = Net PnL / |Max Drawdown|
+        recovery_factor = sum(pnls) / abs(max_dd) if max_dd != 0 else 0
 
         # Consecutive
         max_cw = max_cl = cw = cl = 0
@@ -426,10 +511,18 @@ class TradingCoach:
             "max_drawdown": round(max_dd, 2),
             "max_consec_wins": max_cw,
             "max_consec_losses": max_cl,
+            "max_dd_duration": max_dd_duration,
             "best_hour_et": best_hour,
             "worst_hour_et": worst_hour,
             "session_pnl": session_pnl,
             "by_hour": {h: round(sum(ps), 2) for h, ps in by_hour.items()},
+            "sharpe_ratio": round(sharpe, 2),
+            "sortino_ratio": round(sortino, 2),
+            "calmar_ratio": round(calmar, 2),
+            "recovery_factor": round(recovery_factor, 2),
+            "avg_daily_pnl": round(avg_daily_pnl, 2),
+            "daily_volatility": round(daily_vol, 2),
+            "num_trading_days": num_days,
         }
 
     def _empty_metrics(self):
@@ -438,9 +531,12 @@ class TradingCoach:
             "avg_win": 0, "avg_loss": 0, "rr_ratio": 0, "profit_factor": 0,
             "expectancy": 0, "net_pnl": 0, "gross_profit": 0, "gross_loss": 0,
             "largest_win": 0, "largest_loss": 0, "peak_pnl": 0, "max_drawdown": 0,
-            "max_consec_wins": 0, "max_consec_losses": 0,
+            "max_consec_wins": 0, "max_consec_losses": 0, "max_dd_duration": 0,
             "best_hour_et": None, "worst_hour_et": None,
             "session_pnl": {}, "by_hour": {},
+            "sharpe_ratio": 0, "sortino_ratio": 0, "calmar_ratio": 0,
+            "recovery_factor": 0, "avg_daily_pnl": 0, "daily_volatility": 0,
+            "num_trading_days": 0,
         }
 
     # ── Detection de patterns ──
@@ -904,7 +1000,11 @@ class TradingCoach:
         r.append(f"| Profit factor | {m['profit_factor']} | 0.5-0.9 | 1.0-1.5 | 1.5-3.0 |")
         r.append(f"| R:R moyen | {m['rr_ratio']} | 0.5-0.8 | 1.0-1.5 | 1.5-3.0 |")
         r.append(f"| Max DD | ${m['max_drawdown']:,.0f} | -50% compte | -20% | -5-10% |")
-        r.append(f"| Trades/jour | {m['total_trades']/days:.0f} | 15-30 | 5-12 | 2-6 |")
+        tpd = f"{m['total_trades']/days:.0f}" if days > 0 else "N/A"
+        r.append(f"| Trades/jour | {tpd} | 15-30 | 5-12 | 2-6 |")
+        r.append(f"| Sharpe | {m.get('sharpe_ratio', 0)} | < 0 | 0.5-1.0 | 1.0-2.5 |")
+        r.append(f"| Sortino | {m.get('sortino_ratio', 0)} | < 0 | 0.5-1.5 | 1.5-4.0 |")
+        r.append(f"| Recovery Factor | {m.get('recovery_factor', 0)} | < 0.5 | 0.5-1.5 | 2.0+ |")
         r.append("")
 
         level = "debutant"
@@ -913,11 +1013,11 @@ class TradingCoach:
         elif m['profit_factor'] >= 1.0:
             level = "intermediaire"
 
+        tpd_val = m['total_trades'] / days if days > 0 else 0
         r.append(
             f"**Ton profil actuel: {level}.** "
             f"Ton R:R de {m['rr_ratio']} est {'bon' if m['rr_ratio'] >= 1.0 else 'a ameliorer'}. "
-            f"Ton nombre de trades/jour ({m['total_trades']/days:.0f}) est trop eleve pour un prop trader — "
-            f"les pros font 2-6 trades/jour. Moins de trades = moins d'erreurs = plus de profit."
+            f"Ton nombre de trades/jour ({tpd_val:.0f}) est {'trop eleve pour un prop trader — les pros font 2-6 trades/jour. Moins de trades = moins d erreurs = plus de profit.' if tpd_val > 12 else 'dans une fourchette correcte.'}"
         )
         r.append("")
 

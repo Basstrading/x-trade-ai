@@ -112,6 +112,128 @@ async def journal_data(user_id: str = ""):
         return {"error": str(e)}
 
 
+@app.post("/api/sync-trades")
+async def sync_trades(user_id: str = "", days_back: int = 7):
+    """Sync les trades d'un user depuis Topstep → Supabase."""
+    try:
+        from core.supabase_client import SupabaseClient
+        from core.trade_sync import TradeSync
+
+        if not user_id:
+            return {"error": "user_id requis"}
+
+        sb = SupabaseClient(key=os.getenv('SUPABASE_SERVICE_KEY', ''))
+        sync = TradeSync(sb)
+        result = await sync.sync_all_accounts(user_id, days_back=days_back)
+        await sb.close()
+        return result
+    except Exception as e:
+        logger.error(f"Sync trades error: {e}")
+        return {"error": str(e)}
+
+
+@app.post("/api/journal/connect-topstep")
+async def journal_connect_topstep(user_id: str = "", username: str = "",
+                                   api_key: str = ""):
+    """
+    Connecte les comptes Topstep d'un user pour le journal.
+    1. Login Topstep
+    2. Liste les comptes actifs
+    3. Sauvegarde dans broker_accounts (Supabase)
+    4. Sync initial des trades
+    """
+    if not user_id or not username or not api_key:
+        return {"error": "user_id, username et api_key requis"}
+
+    try:
+        import httpx
+        from core.supabase_client import SupabaseClient
+        from core.trade_sync import TradeSync
+
+        topstep_url = os.getenv('PROJECTX_API_URL', 'https://api.topstepx.com')
+
+        async with httpx.AsyncClient(timeout=30) as c:
+            # 1. Login
+            r = await c.post(f'{topstep_url}/api/Auth/loginKey', json={
+                'userName': username, 'apiKey': api_key,
+            })
+            data = r.json()
+            if not data.get('token'):
+                return {"error": "Login Topstep échoué. Vérifiez vos identifiants."}
+
+            token = data['token']
+            c.headers['Authorization'] = f'Bearer {token}'
+
+            # 2. Liste les comptes actifs
+            r = await c.post(f'{topstep_url}/api/Account/search', json={
+                'onlyActiveAccounts': True,
+            })
+            accounts_data = r.json()
+            accounts = accounts_data.get('accounts') or []
+
+            if not accounts:
+                return {"error": "Aucun compte actif trouvé sur Topstep"}
+
+        # 3. Sauvegarder dans Supabase
+        sb = SupabaseClient(key=os.getenv('SUPABASE_SERVICE_KEY', ''))
+        saved = []
+        for acc in accounts:
+            acc_name = acc.get('name', '')
+            # Détecter le type de compte (50K, 100K, etc.)
+            plan = '50k'
+            for size in ['300k', '150k', '100k', '50k', '25k']:
+                if size.upper().replace('K', '') in acc_name:
+                    plan = size
+                    break
+
+            await sb.save_broker_account(user_id, {
+                'broker': 'topstep',
+                'account_id': acc.get('id'),
+                'account_name': acc_name,
+                'account_size': acc.get('balance', 0),
+                'plan': plan,
+                'username': username,
+                'api_key_encrypted': api_key,
+                'is_active': True,
+            })
+            saved.append({
+                'id': acc.get('id'),
+                'name': acc_name,
+                'balance': acc.get('balance', 0),
+                'plan': plan,
+            })
+
+        # 4. Sync initial des trades (30 jours)
+        sync = TradeSync(sb)
+        sync_result = await sync.sync_all_accounts(user_id, days_back=30)
+        await sb.close()
+
+        return {
+            "ok": True,
+            "accounts": saved,
+            "accounts_count": len(saved),
+            "sync": sync_result,
+        }
+    except Exception as e:
+        logger.error(f"Connect Topstep error: {e}")
+        return {"error": str(e)}
+
+
+@app.get("/api/journal/accounts")
+async def journal_accounts(user_id: str = ""):
+    """Liste les comptes broker d'un user."""
+    if not user_id:
+        return {"accounts": []}
+    try:
+        from core.supabase_client import SupabaseClient
+        sb = SupabaseClient(key=os.getenv('SUPABASE_SERVICE_KEY', ''))
+        accounts = await sb.get_broker_accounts(user_id)
+        await sb.close()
+        return {"accounts": accounts}
+    except Exception as e:
+        return {"error": str(e)}
+
+
 @app.get("/owner")
 async def owner_page(admin_key: str = ""):
     """Owner panel — gestion business, licences, codes promo."""
@@ -1766,6 +1888,14 @@ async def start_server(brain=None):
     """Demarre le serveur FastAPI"""
     if brain:
         create_app(brain)
+
+    # Démarrer le cron de sync des trades en background
+    try:
+        from core.trade_sync import run_sync_cron
+        sync_interval = int(os.getenv('SYNC_INTERVAL_HOURS', '1'))
+        asyncio.create_task(run_sync_cron(interval_hours=sync_interval))
+    except Exception as e:
+        logger.warning(f"Trade sync cron not started: {e}")
 
     port = int(os.getenv('TRADING_PORT', '8001'))
     logger.info(f"Dashboard trading: http://localhost:{port}")

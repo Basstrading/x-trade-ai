@@ -1,7 +1,10 @@
 """
 Trade Sync — Fetch trades from Project X API and store in Supabase.
 Runs per user, called by the API or a cron job.
+Supports multi-account: syncs all broker_accounts for a user.
 """
+import os
+import asyncio
 import httpx
 from datetime import datetime, date, timedelta
 from collections import defaultdict
@@ -10,7 +13,7 @@ from loguru import logger
 
 from core.supabase_client import SupabaseClient
 
-TOPSTEP_API = 'https://api.topstepx.com'
+TOPSTEP_API = os.getenv('PROJECTX_API_URL', 'https://api.topstepx.com')
 
 
 class TradeSync:
@@ -192,3 +195,113 @@ class TradeSync:
             }
 
         return result
+
+    async def sync_all_accounts(self, user_id: str,
+                                days_back: int = 7) -> dict:
+        """
+        Sync TOUS les broker_accounts d'un user.
+        Utilise les credentials du user ou fallback sur les env vars.
+        """
+        accounts = await self.sb.get_broker_accounts(user_id)
+        if not accounts:
+            return {"ok": False, "error": "Aucun compte broker configuré"}
+
+        # Trouver les credentials
+        username = api_key = None
+        for acc in accounts:
+            username = acc.get('username')
+            api_key = acc.get('api_key_encrypted')
+            if username and api_key:
+                break
+
+        if not username or not api_key:
+            username = os.getenv('PROJECTX_USERNAME')
+            api_key = os.getenv('PROJECTX_API_KEY')
+
+        if not username or not api_key:
+            return {"ok": False, "error": "Pas de credentials Topstep"}
+
+        since = (date.today() - timedelta(days=days_back)).isoformat()
+        results = {}
+        total_trades = 0
+
+        for acc in accounts:
+            account_id = acc.get('account_id')
+            broker_account_id = acc.get('id')
+            if not account_id:
+                continue
+
+            res = await self.sync_user(
+                user_id, username, api_key,
+                account_id, broker_account_id, since
+            )
+            results[str(account_id)] = res
+            if res.get('ok'):
+                total_trades += res.get('trades_upserted', 0)
+
+            # Mettre à jour last_sync_at
+            try:
+                await self.sb._client.patch(
+                    '/broker_accounts',
+                    params={'id': f"eq.{broker_account_id}"},
+                    json={'last_sync_at': datetime.utcnow().isoformat()},
+                )
+            except Exception:
+                pass
+
+        return {
+            "ok": True,
+            "accounts_synced": len(results),
+            "total_trades": total_trades,
+            "details": results,
+        }
+
+    async def sync_all_users(self) -> dict:
+        """
+        Sync tous les users actifs. Appelé par le cron job.
+        """
+        r = await self.sb._client.get('/broker_accounts', params={
+            'is_active': 'eq.true',
+            'select': 'user_id',
+        })
+        if r.status_code != 200:
+            logger.error(f"Cron sync: failed to list accounts: {r.status_code}")
+            return {}
+
+        user_ids = list(set(row['user_id'] for row in r.json()))
+        logger.info(f"Cron sync: {len(user_ids)} users à synchroniser")
+
+        results = {}
+        for uid in user_ids:
+            try:
+                res = await self.sync_all_accounts(uid, days_back=3)
+                results[uid[:8]] = res
+                logger.info(f"Cron sync user {uid[:8]}: {res.get('total_trades', 0)} trades")
+            except Exception as e:
+                logger.error(f"Cron sync user {uid[:8]} failed: {e}")
+                results[uid[:8]] = {"error": str(e)}
+
+        return results
+
+
+async def run_sync_cron(interval_hours: int = 1):
+    """
+    Background task: sync automatique toutes les N heures.
+    Lancé au démarrage de l'app.
+    """
+    logger.info(f"Trade sync cron started (every {interval_hours}h)")
+    while True:
+        await asyncio.sleep(interval_hours * 3600)
+        try:
+            sb = SupabaseClient()
+            sync = TradeSync(sb)
+            results = await sync.sync_all_users()
+            total = sum(
+                r.get('total_trades', 0)
+                for r in results.values()
+                if isinstance(r, dict)
+            )
+            logger.info(f"Cron sync done: {len(results)} users, {total} trades total")
+            await sb.close()
+        except Exception as e:
+            logger.error(f"Cron sync error: {e}")

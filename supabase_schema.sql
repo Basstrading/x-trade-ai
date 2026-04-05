@@ -24,7 +24,8 @@ CREATE TABLE IF NOT EXISTS broker_accounts (
     api_key_encrypted TEXT,
     is_active BOOLEAN DEFAULT true,
     last_sync_at TIMESTAMPTZ,
-    created_at TIMESTAMPTZ DEFAULT now()
+    created_at TIMESTAMPTZ DEFAULT now(),
+    UNIQUE(user_id, account_id)
 );
 
 -- 3. Trades (coeur du journal)
