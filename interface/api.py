@@ -1632,6 +1632,87 @@ async def broker_trades(account_id: int):
 
 
 # ==================================================================
+# MULTI-FIRM COPIER
+# ==================================================================
+
+_copier = None
+
+def _get_copier():
+    global _copier
+    if not _copier:
+        from core.multi_firm_copier import MultiFirmCopier
+        _copier = MultiFirmCopier()
+    return _copier
+
+
+@app.get("/api/copier/status")
+async def copier_status():
+    """Statut du multi-firm copier."""
+    return _get_copier().get_status()
+
+
+@app.post("/api/copier/add-firm")
+async def copier_add_firm(firm_name: str, username: str, api_key: str,
+                          account_ids: str = ""):
+    """
+    Ajoute une firm au copier.
+    account_ids = "123,456,789" (vide = tous les comptes actifs)
+    """
+    copier = _get_copier()
+    ids = [int(x.strip()) for x in account_ids.split(",") if x.strip()] if account_ids else []
+    copier.add_firm(firm_name, username, api_key, ids)
+    return {"ok": True, "firm": firm_name, "account_ids": ids}
+
+
+@app.post("/api/copier/remove-firm")
+async def copier_remove_firm(firm_name: str):
+    """Retire une firm du copier."""
+    copier = _get_copier()
+    copier.remove_firm(firm_name)
+    return {"ok": True}
+
+
+@app.post("/api/copier/connect")
+async def copier_connect():
+    """Connecte toutes les firms configurées."""
+    copier = _get_copier()
+    result = await copier.connect_all()
+    return result
+
+
+@app.post("/api/copier/disconnect")
+async def copier_disconnect():
+    """Déconnecte toutes les firms."""
+    copier = _get_copier()
+    await copier.disconnect_all()
+    return {"ok": True}
+
+
+@app.post("/api/copier/order")
+async def copier_order(contract_id: str, side: str, size: int = 1):
+    """Place un ordre copié sur toutes les firms."""
+    copier = _get_copier()
+    return await copier.copy_order(contract_id, side, size)
+
+
+@app.post("/api/copier/close")
+async def copier_close(contract_id: str):
+    """Ferme les positions sur toutes les firms."""
+    copier = _get_copier()
+    return await copier.copy_close(contract_id)
+
+
+@app.post("/api/copier/discover-accounts")
+async def copier_discover_accounts(firm_name: str):
+    """Liste tous les comptes disponibles pour une firm connectée."""
+    copier = _get_copier()
+    session = copier.firms.get(firm_name)
+    if not session or not session.connected:
+        return {"error": f"Firm {firm_name} non connectée"}
+    return {"firm": firm_name, "accounts": session.accounts}
+
+
+# ==================================================================
 # LICENSING & STRIPE
 # ==================================================================
 

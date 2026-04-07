@@ -466,7 +466,7 @@ class OPRLive:
             pass
 
     async def place_market_order(self, side: str, size: int):
-        """Place un ordre market sur le compte master + comptes copies."""
+        """Place un ordre market sur le compte master + comptes copies (single + multi-firm)."""
         order_side = OrderSide.BUY if side == 'long' else OrderSide.SELL
 
         # Ordre sur le compte master
@@ -479,22 +479,45 @@ class OPRLive:
         )
         logger.info(f"ORDRE {side.upper()} x{size} @ MARKET envoye (master {self.account_id})")
 
-        # Copy trading: replique sur les comptes copies
+        # Copy trading same-firm: replique sur les comptes copies (même login)
         self.reload_copy_accounts()
+        copy_tasks = []
         for copy_id in self.copy_accounts:
-            try:
-                await self.client.place_order(
-                    accountId=copy_id,
-                    contractId=str(self.contract_id),
-                    type=OrderType.MARKET,
-                    side=order_side,
-                    size=size,
-                )
-                logger.success(f"COPY {side.upper()} x{size} -> compte {copy_id}")
-            except Exception as e:
-                logger.error(f"COPY ERREUR compte {copy_id}: {e}")
+            copy_tasks.append(self._copy_one_order(copy_id, order_side, size))
+
+        # Multi-firm copy: replique sur les autres firms en parallèle
+        try:
+            from core.multi_firm_copier import MultiFirmCopier
+            copier_state = Path(__file__).parent / "data" / "copier_state.json"
+            if copier_state.exists():
+                copier = MultiFirmCopier()
+                if copier.firms:
+                    await copier.connect_all()
+                    copy_tasks.append(
+                        copier.copy_order(str(self.contract_id), side, size)
+                    )
+        except Exception as e:
+            logger.debug(f"Multi-firm copier: {e}")
+
+        # Exécuter tous les copies en parallèle
+        if copy_tasks:
+            await asyncio.gather(*copy_tasks, return_exceptions=True)
 
         return order
+
+    async def _copy_one_order(self, copy_id: int, order_side, size: int):
+        """Copy un ordre sur un seul compte (same-firm)."""
+        try:
+            await self.client.place_order(
+                accountId=copy_id,
+                contractId=str(self.contract_id),
+                type=OrderType.MARKET,
+                side=order_side,
+                size=size,
+            )
+            logger.success(f"COPY x{size} -> compte {copy_id}")
+        except Exception as e:
+            logger.error(f"COPY ERREUR compte {copy_id}: {e}")
 
     async def close_position(self):
         """Ferme la position sur le compte master + comptes copies."""
@@ -517,17 +540,39 @@ class OPRLive:
                 size=CONTRACTS,
             )
 
-        # Copy trading: ferme sur les comptes copies
+        # Copy trading: ferme sur les comptes copies (same-firm + multi-firm)
+        close_tasks = []
         self.reload_copy_accounts()
         for copy_id in self.copy_accounts:
-            try:
-                await self.client.close_position(
-                    accountId=copy_id,
-                    contractId=str(self.contract_id),
-                )
-                logger.success(f"COPY fermeture -> compte {copy_id}")
-            except Exception as e:
-                logger.error(f"COPY fermeture ERREUR compte {copy_id}: {e}")
+            close_tasks.append(self._close_one_copy(copy_id))
+
+        # Multi-firm close
+        try:
+            from core.multi_firm_copier import MultiFirmCopier
+            copier_state = Path(__file__).parent / "data" / "copier_state.json"
+            if copier_state.exists():
+                copier = MultiFirmCopier()
+                if copier.firms:
+                    await copier.connect_all()
+                    close_tasks.append(
+                        copier.copy_close(str(self.contract_id))
+                    )
+        except Exception as e:
+            logger.debug(f"Multi-firm close: {e}")
+
+        if close_tasks:
+            await asyncio.gather(*close_tasks, return_exceptions=True)
+
+    async def _close_one_copy(self, copy_id: int):
+        """Ferme la position sur un compte copié (same-firm)."""
+        try:
+            await self.client.close_position(
+                accountId=copy_id,
+                contractId=str(self.contract_id),
+            )
+            logger.success(f"COPY fermeture -> compte {copy_id}")
+        except Exception as e:
+            logger.error(f"COPY fermeture ERREUR compte {copy_id}: {e}")
 
     async def check_and_trade(self):
         """Boucle principale — appelee toutes les ~30s."""
